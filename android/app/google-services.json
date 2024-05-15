@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "446869420254",
+    "project_id": "cash-stacker",
+    "storage_bucket": "cash-stacker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446869420254:android:826157c7e1a68048d42a4f",
+        "android_client_info": {
+          "package_name": "com.cash.stacker.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAHvxmzVpr4PV4LSWDOhZHlJdbb1doxqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
