@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
+import 'package:cash_stacker_flutter_app/setting/screen/setting_screen.dart';
 import 'package:flutter/material.dart';
 
 class RootTab extends StatefulWidget {
@@ -37,23 +38,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: '',
-      // bottomNavigationBar: BottomNavigationBar(
-      //   showSelectedLabels: false,
-      //   showUnselectedLabels: false,
-      //   items: const [
-
-      //   ],
-      //   selectedItemColor: PRIMARY_COLOR,
-      //   unselectedItemColor: BODY_TEXT_COLOR,
-      //   selectedFontSize: 10,
-      //   unselectedFontSize: 10,
-      //   type: BottomNavigationBarType.fixed,
-      //   onTap: (index) {
-      //     controller.animateTo(index);
-      //   },
-      //   currentIndex: index,
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         shape: const CircleBorder(),
@@ -83,35 +67,11 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(
-                icon: const Icon(
-                  Icons.home_outlined,
-                  color: PRIMARY_COLOR,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.attach_money,
-                  color: PRIMARY_COLOR,
-                ),
-                onPressed: () {},
-              ),
+              TabIcon(icon: Icons.home, tab_number: 0),
+              TabIcon(icon: Icons.attach_money, tab_number: 1),
               const SizedBox(width: 20),
-              IconButton(
-                icon: const Icon(
-                  Icons.real_estate_agent,
-                  color: PRIMARY_COLOR,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.settings,
-                  color: PRIMARY_COLOR,
-                ),
-                onPressed: () {},
-              ),
+              TabIcon(icon: Icons.real_estate_agent, tab_number: 2),
+              TabIcon(icon: Icons.settings, tab_number: 3)
             ],
           ),
         ),
@@ -122,11 +82,24 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         children: [
           // const HomeScreen(),
           const HomeScreen(),
-          Center(child: Container(child: const Text('음식'))),
-          Center(child: Container(child: const Text('주문'))),
-          Center(child: Container(child: const Text('프로필'))),
+          Center(child: Container(child: const Text('가계부'))),
+          Center(child: Container(child: const Text('포트폴리오'))),
+          const SettingScreen(),
         ],
       ),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  IconButton TabIcon({required IconData icon, required int tab_number}) {
+    return IconButton(
+      icon: Icon(
+        icon,
+        color: index == tab_number ? PRIMARY_COLOR : const Color(0xffa289f5),
+      ),
+      onPressed: () {
+        controller.animateTo(tab_number);
+      },
     );
   }
 }

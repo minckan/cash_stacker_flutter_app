@@ -24,7 +24,7 @@ void main() async {
     MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        fontFamily: 'NotoSansKR',
+        fontFamily: 'Notosans',
       ),
       home: const RootTab(),
     ),

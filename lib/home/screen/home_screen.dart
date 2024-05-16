@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      title: '',
       child: Container(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -28,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         'Total asset',
                         style: TextStyle(
-                          fontFamily: 'NotoSansKR',
+                          fontFamily: 'Notosans',
                           color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         '자산이 지난달 대비 10% 올랐어요!',
                         style: TextStyle(
-                          fontFamily: 'NotoSansKR',
+                          fontFamily: 'Notosans',
                           color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

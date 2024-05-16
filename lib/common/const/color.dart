@@ -1,4 +1,6 @@
 // 주색상
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 const PRIMARY_COLOR = Color(0xff5F33E1);
@@ -31,6 +33,9 @@ const TIP_COLOR = Color(0xff5B5B5B);
 const TIP_BG_COLOR = Color(0xffD9D9D9);
 
 // 스크린 그레이 백그라운드
-const SCREEN_BACKGROUND_COLOR = Color(0xffF7F7F9);
+const SCREEN_GREY_BACKGROUND_COLOR = Color(0xffF7F7F9);
 
 const LOGO_BACKGROUND_COLOR = Color(0xffECEEED);
+
+const SWITCH_ON_COLOR = Color(0xffF8D7A0);
+const SWITCH_OFF_COLOR = Color(0xff6865F8);
