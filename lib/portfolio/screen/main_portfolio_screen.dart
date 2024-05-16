@@ -15,6 +15,15 @@ class MainPortfolioScreen extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {
+            print('현재 환율 확인');
+          },
+          icon: const Icon(
+            Icons.currency_exchange,
+            color: Colors.black,
+          ),
+        ),
+        IconButton(
+          onPressed: () {
             print('카테고리 수정 메뉴');
           },
           icon: const Icon(
