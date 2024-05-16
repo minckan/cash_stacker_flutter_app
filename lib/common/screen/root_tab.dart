@@ -1,6 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
+import 'package:cash_stacker_flutter_app/ledger/screen/main_ledger_screen.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/main_portfolio_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/setting_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -79,12 +81,11 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
-        children: [
-          // const HomeScreen(),
-          const HomeScreen(),
-          Center(child: Container(child: const Text('가계부'))),
-          Center(child: Container(child: const Text('포트폴리오'))),
-          const SettingScreen(),
+        children: const [
+          HomeScreen(),
+          MainLedgerScreen(),
+          MainPortfolioScreen(),
+          SettingScreen(),
         ],
       ),
     );
