@@ -6,6 +6,8 @@ class DefaultLayout extends StatelessWidget {
   final String? title;
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
+  final Widget? leading;
+  final List<Widget>? actions;
 
   const DefaultLayout({
     super.key,
@@ -14,6 +16,8 @@ class DefaultLayout extends StatelessWidget {
     this.title,
     this.bottomNavigationBar,
     this.floatingActionButton,
+    this.leading,
+    this.actions,
   });
 
   @override
@@ -34,6 +38,7 @@ class DefaultLayout extends StatelessWidget {
       return null;
     } else {
       return AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
@@ -44,6 +49,8 @@ class DefaultLayout extends StatelessWidget {
           ),
         ),
         foregroundColor: Colors.black,
+        actions: actions,
+        leading: leading,
       );
     }
   }

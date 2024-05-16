@@ -7,9 +7,29 @@ class MainLedgerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultLayout(
+    return DefaultLayout(
       title: '',
-      child: LedgerScreen(),
+      leading: IconButton(
+        onPressed: () {
+          print('기록 찾기 메뉴');
+        },
+        icon: const Icon(
+          Icons.search,
+          color: Colors.black,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            print('카테고리 수정 메뉴');
+          },
+          icon: const Icon(
+            Icons.category_outlined,
+            color: Colors.black,
+          ),
+        ),
+      ],
+      child: const LedgerScreen(),
     );
   }
 }

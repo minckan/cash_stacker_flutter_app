@@ -62,13 +62,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
         firstDayOfMonth.subtract(const Duration(days: 1));
     int daysInPreviousMonth = lastDayOfPreviousMonth.day;
 
-    // print('daysInMonth : $daysInMonth');
-    // print('firstDayOfMonth : $firstDayOfMonth');
-    // print('weekdayOfFirstDay : $weekdayOfFirstDay');
-    // print('lastDayOfPreviousMonth : $lastDayOfPreviousMonth');
-    // print('daysInPreviousMonth : $daysInPreviousMonth');
-
-    // return Container();
     return Expanded(
       child: GridView.builder(
         padding: EdgeInsets.zero,
@@ -76,9 +69,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
             crossAxisCount: 7, childAspectRatio: 0.6),
         itemCount: daysInMonth + weekdayOfFirstDay % 7,
         itemBuilder: (context, index) {
-          print(weekdayOfFirstDay);
-          print('index" $index');
-
           if (weekdayOfFirstDay < 7) {
             if (index < weekdayOfFirstDay) {
               int previousMonthDay =

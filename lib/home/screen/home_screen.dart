@@ -10,6 +10,17 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '',
+      actions: [
+        IconButton(
+          onPressed: () {
+            print('알림 확인 메뉴');
+          },
+          icon: const Icon(
+            Icons.notifications_outlined,
+            color: Colors.black,
+          ),
+        ),
+      ],
       child: Container(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

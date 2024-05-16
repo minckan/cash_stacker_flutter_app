@@ -9,10 +9,11 @@ class Asset {
     required this.currentOriginalTotalValuation,
     required this.currentOriginalValuation,
     required this.initialBuyingDate,
-    this.exchangeRate,
-    this.currentExchangedTotalValuation,
-    this.currentExchangedValuation,
-    this.rateOfReturn,
+    required this.buyingCurrencyUnit,
+    required this.exchangeRate,
+    required this.currentExchangedTotalValuation,
+    required this.currentExchangedValuation,
+    required this.rateOfReturn,
   });
 
   // 종목명
@@ -30,17 +31,17 @@ class Asset {
   // 현재가(기존 통화)
   final double currentOriginalValuation;
   // 원화대비 구매 환율
-  final double? exchangeRate;
+  final double exchangeRate;
   // 구매 통화
   final String buyingCurrency;
   // 구매 통화 유닛
   final String buyingCurrencyUnit;
   // 평가액(원화환산 평가액)
-  final double? currentExchangedTotalValuation;
+  final double currentExchangedTotalValuation;
   // 현재가(현재환율)
-  final double? currentExchangedValuation;
+  final double currentExchangedValuation;
   // 수익률(원화환산 수익률)
-  final double? rateOfReturn;
+  final double rateOfReturn;
   // 최초 편입일
   final DateTime initialBuyingDate;
 }
