@@ -4,7 +4,6 @@ import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_row.dart'
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PortfolioTable extends StatefulWidget {
   const PortfolioTable({super.key});
@@ -15,13 +14,11 @@ class PortfolioTable extends StatefulWidget {
 
 class _PortfolioTableState extends State<PortfolioTable> {
   List<Asset> assets = <Asset>[];
-  late AssetDataSource assetDataSource;
 
   @override
   void initState() {
     super.initState();
     assets = getAssetData();
-    assetDataSource = AssetDataSource(assetData: assets);
   }
 
   @override
@@ -158,41 +155,5 @@ class _PortfolioTableState extends State<PortfolioTable> {
           currentExchangedValuation: 890,
           rateOfReturn: 0.6)
     ];
-  }
-}
-
-/// An object to set the asset collection data source to the datagrid. This
-/// is used to map the asset data to the datagrid widget.
-class AssetDataSource extends DataGridSource {
-  /// Creates the asset data source class with required details.
-  AssetDataSource({required List<Asset> assetData}) {
-    _assetData = assetData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'assetName', value: e.assetName),
-              DataGridCell<double>(
-                  columnName: 'buyingPrice', value: e.buyingPrice),
-              DataGridCell<int>(
-                  columnName: 'buyingAmount', value: e.buyingAmount),
-              DataGridCell<double>(
-                  columnName: 'proportion', value: e.proportion),
-            ]))
-        .toList();
-  }
-
-  List<DataGridRow> _assetData = [];
-
-  @override
-  List<DataGridRow> get rows => _assetData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
   }
 }

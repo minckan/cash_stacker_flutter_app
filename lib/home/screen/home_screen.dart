@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:cash_stacker_flutter_app/common/component/chart/bar_chart.dart';
 import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,9 +26,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ],
-      child: Container(
+      child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.only(
+              left: 20, right: 20, bottom: Platform.isIOS ? 96 : 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -136,16 +142,28 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                       const Text(
-                        '1000000원중 25000000원을 사용했어요!',
+                        '1000000원 중 25000000원을 사용했어요!',
                         style: TextStyle(
                           fontSize: 12,
                         ),
                       ),
+                      const SizedBox(height: 4),
+                      LinearPercentIndicator(
+                        percent: 0.5,
+                        progressColor: PRIMARY_COLOR,
+                        lineHeight: 10,
+                        alignment: MainAxisAlignment.start,
+                        padding: EdgeInsets.zero,
+                        width: MediaQuery.of(context).size.width - 80,
+                        barRadius: const Radius.circular(10),
+                      ),
+                      const SizedBox(height: 20),
                       const Text(
                         '예산을 대부분 사용했어요!\n예산을 초과하지 않도록 주의해주세요!',
                         style: TextStyle(
-                          fontSize: 12,
-                        ),
+                            height: 1.1,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -156,6 +174,8 @@ class HomeScreen extends StatelessWidget {
                 '월간 자산 규모 추이',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
               ),
+              const SizedBox(height: 20),
+              BarChartSample1()
             ],
           ),
         ),
