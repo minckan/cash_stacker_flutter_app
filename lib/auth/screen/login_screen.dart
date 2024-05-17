@@ -1,4 +1,4 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_auth.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store.dart';
@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: LOGO_BACKGROUND_COLOR,
+      backgroundColor: AppColors.splashScreenBackground,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,6 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class DailyLedger extends StatelessWidget {
   const DailyLedger({super.key});
@@ -16,7 +17,7 @@ class DailyLedger extends StatelessWidget {
 
   Widget buildDailyContent() {
     const TextStyle normalStyle = TextStyle(
-      color: DEEP_BODY_TEXT_COLOR,
+      color: AppColors.bodyTextDark,
       fontSize: 12,
     );
     return Column(
@@ -24,10 +25,10 @@ class DailyLedger extends StatelessWidget {
         Container(
           decoration: const BoxDecoration(
             border: Border(
-              top: BorderSide(width: 1.0, color: BORDER_COLOR),
-              bottom: BorderSide(width: 1.0, color: BORDER_COLOR),
+              top: BorderSide(width: 1.0, color: AppColors.border),
+              bottom: BorderSide(width: 1.0, color: AppColors.border),
             ),
-            color: LIGHT_BACKGROUND_COLOR,
+            color: AppColors.lightBackground1,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,7 +58,7 @@ class DailyLedger extends StatelessWidget {
                                 horizontal: 3, vertical: 1),
                             child: Text('월요일',
                                 style: normalStyle.copyWith(
-                                    color: DEEP_BODY_TEXT_COLOR)),
+                                    color: AppColors.bodyTextDark)),
                           ),
                         ),
                       ],
@@ -66,19 +67,19 @@ class DailyLedger extends StatelessWidget {
                       children: [
                         Text(
                           '200,000',
-                          style: normalStyle.copyWith(color: INCOME_COLOR),
+                          style: normalStyle.copyWith(color: AppColors.income),
                         ),
                         const SizedBox(width: 50),
                         Text(
                           '500,000',
-                          style: normalStyle.copyWith(color: EXPENSE_COLOR),
+                          style: normalStyle.copyWith(color: AppColors.expense),
                         ),
                       ],
                     )
                   ],
                 ),
                 const Divider(
-                  color: BORDER_COLOR,
+                  color: AppColors.border,
                 ),
                 ...List.generate(
                   3,
@@ -98,7 +99,7 @@ class DailyLedger extends StatelessWidget {
                               Text(
                                 '카드',
                                 style: normalStyle.copyWith(
-                                    color: DEEP_BODY_TEXT_COLOR),
+                                    color: AppColors.bodyTextDark),
                               ),
                             ],
                           ),
@@ -107,7 +108,8 @@ class DailyLedger extends StatelessWidget {
                           children: [
                             Text(
                               '500,000',
-                              style: normalStyle.copyWith(color: EXPENSE_COLOR),
+                              style: normalStyle.copyWith(
+                                  color: AppColors.expense),
                             ),
                           ],
                         )

@@ -1,4 +1,5 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
 import 'package:cash_stacker_flutter_app/ledger/screen/main_ledger_screen.dart';
@@ -44,7 +45,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         onPressed: () {},
         shape: const CircleBorder(),
         elevation: 0,
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: AppColors.primary,
         child: const Icon(
           Icons.add,
           color: Colors.white,
@@ -96,7 +97,8 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     return IconButton(
       icon: Icon(
         icon,
-        color: index == tab_number ? PRIMARY_COLOR : const Color(0xffa289f5),
+        color:
+            index == tab_number ? AppColors.primary : AppColors.mainTabInactive,
       ),
       onPressed: () {
         controller.animateTo(tab_number);

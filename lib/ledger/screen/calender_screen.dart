@@ -1,5 +1,5 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:flutter/material.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class CalenderScreen extends StatefulWidget {
   final DateTime today;
@@ -29,13 +29,13 @@ class _CalenderScreenState extends State<CalenderScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildWeekDay(day: '일', textColor: SUNDAY_COLOR),
+          _buildWeekDay(day: '일', textColor: AppColors.sunday),
           _buildWeekDay(day: '월'),
           _buildWeekDay(day: '화'),
           _buildWeekDay(day: '수'),
           _buildWeekDay(day: '목'),
           _buildWeekDay(day: '금'),
-          _buildWeekDay(day: '토', textColor: SATURDAY_COLOR),
+          _buildWeekDay(day: '토', textColor: AppColors.saturday),
         ],
       ),
     );
@@ -78,7 +78,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                 padding: const EdgeInsets.all(1.0),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: SCREEN_GREY_BACKGROUND_COLOR,
+                    color: AppColors.lightGreyBackground,
                   ),
                   alignment: Alignment.center,
                   child: Text(previousMonthDay.toString(),
@@ -96,7 +96,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   padding: const EdgeInsets.all(1.0),
                   child: Container(
                     decoration: const BoxDecoration(
-                      color: SCREEN_GREY_BACKGROUND_COLOR,
+                      color: AppColors.lightGreyBackground,
                     ),
                     child: Column(
                       children: [
@@ -121,7 +121,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                 padding: const EdgeInsets.all(1.0),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: SCREEN_GREY_BACKGROUND_COLOR,
+                    color: AppColors.lightGreyBackground,
                   ),
                   child: Column(
                     children: [

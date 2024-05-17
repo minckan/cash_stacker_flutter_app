@@ -1,9 +1,9 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_column.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_row.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class PortfolioTable extends StatefulWidget {
   const PortfolioTable({super.key});
@@ -25,7 +25,7 @@ class _PortfolioTableState extends State<PortfolioTable> {
   Widget build(BuildContext context) {
     const TextStyle columnStyle = TextStyle(
         fontSize: 14,
-        color: TABLE_COLUMN_TEXT_COLOR,
+        color: AppColors.tableColumnText,
         fontWeight: FontWeight.w500);
     const TextStyle rowStyle = TextStyle(
         fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500);
@@ -36,10 +36,10 @@ class _PortfolioTableState extends State<PortfolioTable> {
       children: [
         Container(
           decoration: const BoxDecoration(
-            color: TABLE_COLUMN_BG_COLOR,
+            color: AppColors.tableColumnBg,
             border: Border(
-              top: BorderSide(color: TABLE_BORDER_COLOR),
-              bottom: BorderSide(color: TABLE_BORDER_COLOR),
+              top: BorderSide(color: AppColors.tableBorder),
+              bottom: BorderSide(color: AppColors.tableBorder),
             ),
           ),
           child: const PortfolioColumn(
@@ -49,7 +49,7 @@ class _PortfolioTableState extends State<PortfolioTable> {
           (asset) => Container(
             decoration: const BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: TABLE_BORDER_COLOR),
+                bottom: BorderSide(color: AppColors.tableBorder),
               ),
             ),
             child: PortfolioRow(

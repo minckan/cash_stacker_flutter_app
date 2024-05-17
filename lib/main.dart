@@ -33,6 +33,7 @@ void main() async {
       supportedLocales: const [Locale('ko', 'KO')],
       locale: const Locale('ko'),
       home: const RootTab(),
+      debugShowCheckedModeBanner: false,
     ),
   );
 }

@@ -1,9 +1,9 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/ledger/screen/analystic_screen.dart';
 import 'package:cash_stacker_flutter_app/ledger/screen/calender_screen.dart';
 import 'package:cash_stacker_flutter_app/ledger/component/daily_ledger.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 extension DateOnlyCompare on DateTime {
   bool isSameDate(DateTime other) {
@@ -139,7 +139,7 @@ class _LedgerScreenState extends State<LedgerScreen>
       controller: tabController,
       labelColor: Colors.black87,
       unselectedLabelColor: Colors.grey,
-      labelStyle: const TextStyle(color: PRIMARY_COLOR),
+      labelStyle: const TextStyle(color: AppColors.primary),
       unselectedLabelStyle: const TextStyle(
         fontSize: 14,
       ),
@@ -181,7 +181,8 @@ class _LedgerScreenState extends State<LedgerScreen>
     return Container(
       height: 40,
       decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: BORDER_COLOR))),
+          border:
+              Border(bottom: BorderSide(width: 1, color: AppColors.border))),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Row(
@@ -197,7 +198,7 @@ class _LedgerScreenState extends State<LedgerScreen>
                 const SizedBox(width: 4),
                 Text(
                   '0',
-                  style: numberStyle.copyWith(color: INCOME_COLOR),
+                  style: numberStyle.copyWith(color: AppColors.income),
                 )
               ],
             ),
@@ -209,7 +210,7 @@ class _LedgerScreenState extends State<LedgerScreen>
                   style: TextStyle(fontSize: 10),
                 ),
                 const SizedBox(width: 4),
-                Text('0', style: numberStyle.copyWith(color: EXPENSE_COLOR))
+                Text('0', style: numberStyle.copyWith(color: AppColors.expense))
               ],
             ),
             Column(

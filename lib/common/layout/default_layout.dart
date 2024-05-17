@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
@@ -8,6 +10,7 @@ class DefaultLayout extends StatelessWidget {
   final Widget? floatingActionButton;
   final Widget? leading;
   final List<Widget>? actions;
+  final bool? isSliverView;
 
   const DefaultLayout({
     super.key,
@@ -18,18 +21,39 @@ class DefaultLayout extends StatelessWidget {
     this.floatingActionButton,
     this.leading,
     this.actions,
+    this.isSliverView = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: renderAppBar(),
+      appBar: isSliverView == false ? renderAppBar() : null,
       backgroundColor: backgroundColor ?? Colors.white,
-      body: child,
+      body: isSliverView == false ? child : renderCustomScrollView(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       extendBody: true,
+    );
+  }
+
+  CustomScrollView renderCustomScrollView() {
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          backgroundColor: Colors.white,
+          expandedHeight: 60.0,
+          flexibleSpace: FlexibleSpaceBar(
+            // 확장되는 영역
+            title: Text(title ?? ''),
+          ),
+          actions: actions,
+          leading: leading,
+        ),
+        SliverToBoxAdapter(
+          child: child,
+        )
+      ],
     );
   }
 

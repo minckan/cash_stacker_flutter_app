@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return DefaultLayout(
       title: 'Settings',
       child: Container(
-        color: SCREEN_GREY_BACKGROUND_COLOR,
+        color: AppColors.lightGreyBackground,
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
           child: Column(
@@ -34,7 +34,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50.0),
-                        color: BODY_TEXT_COLOR,
+                        color: AppColors.bodyText,
                       ),
                       width: 44,
                       height: 44,
@@ -49,7 +49,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () {},
                       icon: const Icon(
                         Icons.chevron_right,
-                        color: BODY_TEXT_COLOR,
+                        color: AppColors.bodyText,
                       ),
                     ),
                   )
@@ -67,7 +67,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () {},
                       icon: const Icon(
                         Icons.chevron_right,
-                        color: BODY_TEXT_COLOR,
+                        color: AppColors.bodyText,
                       ),
                     ),
                   ),
@@ -80,7 +80,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () {},
                       icon: const Icon(
                         Icons.chevron_right,
-                        color: BODY_TEXT_COLOR,
+                        color: AppColors.bodyText,
                       ),
                     ),
                   ),
@@ -93,7 +93,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () {},
                       icon: const Icon(
                         Icons.chevron_right,
-                        color: BODY_TEXT_COLOR,
+                        color: AppColors.bodyText,
                       ),
                     ),
                   ),
@@ -108,7 +108,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         Switch(
                           value: isLightMode,
-                          activeTrackColor: SWITCH_ON_COLOR,
+                          activeTrackColor: AppColors.switchOn,
                           onChanged: (switchOn) {
                             setState(() {
                               isLightMode = switchOn;

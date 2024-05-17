@@ -1,5 +1,5 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:flutter/material.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class PortfolioColumn extends StatelessWidget {
   const PortfolioColumn({
@@ -48,7 +48,7 @@ class PortfolioColumn extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           height: 1,
-                          color: TABLE_COLUMN_LIGHT_TEXT_COLOR),
+                          color: AppColors.tableColumnLightText),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -77,7 +77,7 @@ class PortfolioColumn extends StatelessWidget {
         ),
         Container(
           height: 1,
-          color: TABLE_LIGHT_BORDER_COLOR,
+          color: AppColors.tableBorderLight,
         ),
         SizedBox(
           height: 50,
@@ -101,7 +101,7 @@ class PortfolioColumn extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           height: 1,
-                          color: TABLE_COLUMN_LIGHT_TEXT_COLOR),
+                          color: AppColors.tableColumnLightText),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -124,7 +124,7 @@ class PortfolioColumn extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           height: 1,
-                          color: TABLE_COLUMN_LIGHT_TEXT_COLOR),
+                          color: AppColors.tableColumnLightText),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -147,7 +147,7 @@ class PortfolioColumn extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           height: 1,
-                          color: TABLE_COLUMN_LIGHT_TEXT_COLOR),
+                          color: AppColors.tableColumnLightText),
                       textAlign: TextAlign.center,
                     ),
                   ],

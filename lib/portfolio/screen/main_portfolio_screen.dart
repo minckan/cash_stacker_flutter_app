@@ -11,17 +11,17 @@ class MainPortfolioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: '',
-      actions: [
-        IconButton(
-          onPressed: () {
-            print('현재 환율 확인');
-          },
-          icon: const Icon(
-            Icons.currency_exchange,
-            color: Colors.black,
-          ),
+      isSliverView: true,
+      leading: IconButton(
+        onPressed: () {
+          print('현재 환율 확인');
+        },
+        icon: const Icon(
+          Icons.currency_exchange,
+          color: Colors.black,
         ),
+      ),
+      actions: [
         IconButton(
           onPressed: () {
             print('카테고리 수정 메뉴');

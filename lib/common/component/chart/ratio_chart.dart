@@ -1,5 +1,5 @@
-import 'package:cash_stacker_flutter_app/common/component/lib/AppColors.dart';
 import 'package:cash_stacker_flutter_app/common/component/lib/Indicator.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 

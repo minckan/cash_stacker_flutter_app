@@ -1,7 +1,8 @@
-import 'package:cash_stacker_flutter_app/common/const/color.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class PortfolioRow extends StatelessWidget {
   const PortfolioRow({
@@ -71,7 +72,7 @@ class PortfolioRow extends StatelessWidget {
         ),
         Container(
           height: 1,
-          color: TABLE_LIGHT_BORDER_COLOR,
+          color: AppColors.tableBorderLight,
         ),
         SizedBox(
           height: 50,
