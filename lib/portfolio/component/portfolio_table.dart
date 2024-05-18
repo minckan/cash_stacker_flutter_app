@@ -4,6 +4,7 @@ import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class PortfolioTable extends StatefulWidget {
   const PortfolioTable({super.key});
@@ -23,49 +24,134 @@ class _PortfolioTableState extends State<PortfolioTable> {
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle columnStyle = TextStyle(
-        fontSize: 14,
-        color: AppColors.tableColumnText,
-        fontWeight: FontWeight.w500);
-    const TextStyle rowStyle = TextStyle(
-        fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500);
-
     const double maxColumnWidth = 130;
+    final safePadding = MediaQuery.of(context).padding.top;
 
-    return Column(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: AppColors.tableColumnBg,
-            border: Border(
-              top: BorderSide(color: AppColors.tableBorder),
-              bottom: BorderSide(color: AppColors.tableBorder),
+    return StickyHeader(
+        header: Column(
+          children: [
+            Container(
+              height: safePadding,
+              color: Colors.white,
             ),
-          ),
-          child: const PortfolioColumn(
-              maxColumnWidth: maxColumnWidth, columnStyle: columnStyle),
-        ),
-        ...assets.map(
-          (asset) => Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: AppColors.tableBorder),
+            Container(
+              decoration: const BoxDecoration(
+                color: AppColors.tableColumnBg,
+                border: Border(
+                  top: BorderSide(color: AppColors.tableBorder),
+                  bottom: BorderSide(color: AppColors.tableBorder),
+                ),
+              ),
+              child: const PortfolioColumn(
+                maxColumnWidth: maxColumnWidth,
               ),
             ),
-            child: PortfolioRow(
-                asset: asset,
-                maxColumnWidth: maxColumnWidth,
-                rowStyle: rowStyle),
-          ),
-        )
-      ],
-    );
+          ],
+        ),
+        content: Column(
+          children: [
+            ...assets.map(
+              (asset) => Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: AppColors.tableBorder),
+                  ),
+                ),
+                child: PortfolioRow(
+                  asset: asset,
+                  maxColumnWidth: maxColumnWidth,
+                ),
+              ),
+            )
+          ],
+        ));
+
+    // return Column(
+    //   children: [
+
+    //   ],
+    // );
   }
 
   List<Asset> getAssetData() {
     return [
       Asset(
           buyingCurrency: '엔',
+          assetName: '엔화노출 미장기국채 ETF엔화노출 미장기국채 ETF엔화노출 미장기국채 ETF (2621)',
+          assetCategory: '채권',
+          buyingPrice: 1000,
+          buyingAmount: 100,
+          proportion: 100,
+          currentOriginalTotalValuation: 120000,
+          currentOriginalValuation: 12000,
+          initialBuyingDate: DateTime.now(),
+          buyingCurrencyUnit: '엔',
+          exchangeRate: 890,
+          currentExchangedTotalValuation: 890000,
+          currentExchangedValuation: 890,
+          rateOfReturn: 0.6),
+      Asset(
+          buyingCurrency: '엔',
+          assetName: '엔화노출 미장기국채 ETF (2621)',
+          assetCategory: '채권',
+          buyingPrice: 1000,
+          buyingAmount: 100,
+          proportion: 100,
+          currentOriginalTotalValuation: 120000,
+          currentOriginalValuation: 12000,
+          initialBuyingDate: DateTime.now(),
+          buyingCurrencyUnit: '엔',
+          exchangeRate: 890,
+          currentExchangedTotalValuation: 890000,
+          currentExchangedValuation: 890,
+          rateOfReturn: 0.6),
+      Asset(
+          buyingCurrency: '엔',
+          assetName: '엔화노출 미장기국채 ETF (2621)',
+          assetCategory: '채권',
+          buyingPrice: 1000,
+          buyingAmount: 100,
+          proportion: 100,
+          currentOriginalTotalValuation: 120000,
+          currentOriginalValuation: 12000,
+          initialBuyingDate: DateTime.now(),
+          buyingCurrencyUnit: '엔',
+          exchangeRate: 890,
+          currentExchangedTotalValuation: 890000,
+          currentExchangedValuation: 890,
+          rateOfReturn: 0.6),
+      Asset(
+          buyingCurrency: '엔',
+          assetName: '엔화노출 미장기국채 ETF (2621)',
+          assetCategory: '채권',
+          buyingPrice: 1000,
+          buyingAmount: 100,
+          proportion: 100,
+          currentOriginalTotalValuation: 120000,
+          currentOriginalValuation: 12000,
+          initialBuyingDate: DateTime.now(),
+          buyingCurrencyUnit: '엔',
+          exchangeRate: 890,
+          currentExchangedTotalValuation: 890000,
+          currentExchangedValuation: 890,
+          rateOfReturn: 0.6),
+      Asset(
+          buyingCurrency: '엔',
+          assetName: '엔화노출 미장기국채 ETF (2621)',
+          assetCategory: '채권',
+          buyingPrice: 1000,
+          buyingAmount: 100,
+          proportion: 100,
+          currentOriginalTotalValuation: 120000,
+          currentOriginalValuation: 12000,
+          initialBuyingDate: DateTime.now(),
+          buyingCurrencyUnit: '엔',
+          exchangeRate: 890,
+          currentExchangedTotalValuation: 890000,
+          currentExchangedValuation: 890,
+          rateOfReturn: 0.6),
+      Asset(
+          buyingCurrency: '엔',
           assetName: '엔화노출 미장기국채 ETF (2621)',
           assetCategory: '채권',
           buyingPrice: 1000,
@@ -153,7 +239,22 @@ class _PortfolioTableState extends State<PortfolioTable> {
           exchangeRate: 890,
           currentExchangedTotalValuation: 890000,
           currentExchangedValuation: 890,
-          rateOfReturn: 0.6)
+          rateOfReturn: 0.6),
+      Asset(
+          buyingCurrency: '엔',
+          assetName: '엔화노출 미장기국채 ETF (2621)',
+          assetCategory: '채권',
+          buyingPrice: 1000,
+          buyingAmount: 100,
+          proportion: 100,
+          currentOriginalTotalValuation: 120000,
+          currentOriginalValuation: 12000,
+          initialBuyingDate: DateTime.now(),
+          buyingCurrencyUnit: '엔',
+          exchangeRate: 890,
+          currentExchangedTotalValuation: 890000,
+          currentExchangedValuation: 890,
+          rateOfReturn: 0.6),
     ];
   }
 }

@@ -34,16 +34,26 @@ class MainPortfolioScreen extends StatelessWidget {
       ],
       child: Padding(
         padding: EdgeInsets.only(bottom: Platform.isIOS ? 96 : 0),
-        child: const SingleChildScrollView(
-          child: Column(
-            children: [
-              RatioChart(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: PortfolioTable(),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Text(
+                '전체 자산 비중',
+                style: TextStyle(
+                  fontFamily: 'Notosans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ],
-          ),
+            ),
+            RatioChart(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: PortfolioTable(),
+            ),
+          ],
         ),
       ),
     );

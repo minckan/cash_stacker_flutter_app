@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/ledger/screen/analystic_screen.dart';
 import 'package:cash_stacker_flutter_app/ledger/screen/calender_screen.dart';
 import 'package:cash_stacker_flutter_app/ledger/component/daily_ledger.dart';
@@ -197,7 +198,7 @@ class _LedgerScreenState extends State<LedgerScreen>
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  '0',
+                  addComma.format(2500000),
                   style: numberStyle.copyWith(color: AppColors.income),
                 )
               ],
@@ -210,7 +211,8 @@ class _LedgerScreenState extends State<LedgerScreen>
                   style: TextStyle(fontSize: 10),
                 ),
                 const SizedBox(width: 4),
-                Text('0', style: numberStyle.copyWith(color: AppColors.expense))
+                Text(addComma.format(2500000),
+                    style: numberStyle.copyWith(color: AppColors.expense))
               ],
             ),
             Column(
@@ -223,7 +225,7 @@ class _LedgerScreenState extends State<LedgerScreen>
                   ),
                 ),
                 const SizedBox(width: 4),
-                Text('0', style: numberStyle)
+                Text(addComma.format(2500000), style: numberStyle)
               ],
             ),
           ],

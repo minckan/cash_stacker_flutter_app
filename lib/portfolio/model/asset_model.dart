@@ -21,15 +21,15 @@ class Asset {
   // 종목 타입 : 미국채권, 엔화노출미국채권, 국내주식, 현금
   final String assetCategory;
   // 매입가:
-  final double buyingPrice;
+  final double? buyingPrice;
   // 수량:
-  final int buyingAmount;
+  final int? buyingAmount;
   // 비중:
   final double proportion;
   // 평가액(기존 통화)
   final double currentOriginalTotalValuation;
   // 현재가(기존 통화)
-  final double currentOriginalValuation;
+  final double? currentOriginalValuation;
   // 원화대비 구매 환율
   final double exchangeRate;
   // 구매 통화

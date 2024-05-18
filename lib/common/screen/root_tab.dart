@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
@@ -5,6 +7,7 @@ import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
 import 'package:cash_stacker_flutter_app/ledger/screen/main_ledger_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/main_portfolio_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/setting_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RootTab extends StatefulWidget {
@@ -38,11 +41,33 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     });
   }
 
+  final ScrollController scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showCupertinoModalPopup(
+              context: context,
+              builder: (context) => CupertinoActionSheet(
+                    title: const Text('자산관리'),
+                    actions: [
+                      CupertinoActionSheetAction(
+                        onPressed: () {},
+                        child: const Text('수입 추가'),
+                      ),
+                      CupertinoActionSheetAction(
+                        onPressed: () {},
+                        child: const Text('지출 추가'),
+                      ),
+                      CupertinoActionSheetAction(
+                        onPressed: () {},
+                        child: const Text('자산 추가'),
+                      ),
+                    ],
+                  ));
+        },
         shape: const CircleBorder(),
         elevation: 0,
         backgroundColor: AppColors.primary,
@@ -102,6 +127,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       ),
       onPressed: () {
         controller.animateTo(tab_number);
+        PrimaryScrollController.of(context).jumpTo(0);
       },
     );
   }

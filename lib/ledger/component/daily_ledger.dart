@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
@@ -66,12 +67,12 @@ class DailyLedger extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '200,000',
+                          addComma.format(2500000),
                           style: normalStyle.copyWith(color: AppColors.income),
                         ),
                         const SizedBox(width: 50),
                         Text(
-                          '500,000',
+                          addComma.format(2500000),
                           style: normalStyle.copyWith(color: AppColors.expense),
                         ),
                       ],
@@ -107,7 +108,7 @@ class DailyLedger extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '500,000',
+                              addComma.format(2500000),
                               style: normalStyle.copyWith(
                                   color: AppColors.expense),
                             ),

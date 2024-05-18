@@ -2,6 +2,7 @@ import 'package:cash_stacker_flutter_app/common/component/chart/bar_chart2.dart'
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
 import 'package:flutter/material.dart';
 
@@ -37,12 +38,13 @@ class HomeScreen extends StatelessWidget {
                   color: AppColors.primary,
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 27, vertical: 22),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 27, vertical: 22),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
+                      const Text(
                         'Total asset',
                         style: TextStyle(
                           fontFamily: 'Notosans',
@@ -51,19 +53,32 @@ class HomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        '30,540,000',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w900,
-                        ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            '₩',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'Roboto'),
+                          ),
+                          Text(
+                            addComma.format(250000000),
+                            style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 27,
                       ),
-                      Text(
+                      const Text(
                         '자산이 지난달 대비 10% 올랐어요!',
                         style: TextStyle(
                           fontFamily: 'Notosans',
@@ -120,10 +135,10 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Row(
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             '₩',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,
@@ -131,8 +146,8 @@ class HomeScreen extends StatelessWidget {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            '250000',
-                            style: TextStyle(
+                            addComma.format(2500000),
+                            style: const TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 32,
                               fontFamily: 'Roboto',
@@ -140,9 +155,9 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Text(
-                        '1000000원 중 25000000원을 사용했어요!',
-                        style: TextStyle(
+                      Text(
+                        '${addComma.format(1000000)}원 중 ${addComma.format(750000)}원을 사용했어요!',
+                        style: const TextStyle(
                           fontSize: 12,
                         ),
                       ),
