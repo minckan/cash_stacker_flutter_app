@@ -1,7 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/ledger/screen/analystic_screen.dart';
-import 'package:cash_stacker_flutter_app/ledger/screen/calender_screen.dart';
-import 'package:cash_stacker_flutter_app/ledger/component/daily_ledger.dart';
+import 'package:cash_stacker_flutter_app/transactions/screen/analystic_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/screen/calender_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/component/daily_transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
@@ -12,14 +12,14 @@ extension DateOnlyCompare on DateTime {
   }
 }
 
-class LedgerScreen extends StatefulWidget {
-  const LedgerScreen({super.key});
+class TransactionScreen extends StatefulWidget {
+  const TransactionScreen({super.key});
 
   @override
-  State<LedgerScreen> createState() => _LedgerScreenState();
+  State<TransactionScreen> createState() => _TransactionScreenState();
 }
 
-class _LedgerScreenState extends State<LedgerScreen>
+class _TransactionScreenState extends State<TransactionScreen>
     with SingleTickerProviderStateMixin {
   // 페이지를 중간부터 보이도록 하기위해 24(2년)를 더한다.
   final PageController _pageController =
@@ -166,7 +166,7 @@ class _LedgerScreenState extends State<LedgerScreen>
       controller: tabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        const DailyLedger(),
+        const DailyTransaction(),
         CalenderScreen(today: _currentDate),
         const AnalyticsScreen()
       ],

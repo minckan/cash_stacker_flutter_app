@@ -4,7 +4,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
-import 'package:cash_stacker_flutter_app/ledger/screen/main_ledger_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/screen/main_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/main_portfolio_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/setting_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -109,7 +109,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         controller: controller,
         children: const [
           HomeScreen(),
-          MainLedgerScreen(),
+          MainTransactionScreen(),
           MainPortfolioScreen(),
           SettingScreen(),
         ],

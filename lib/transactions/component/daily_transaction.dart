@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
-class DailyLedger extends StatelessWidget {
-  const DailyLedger({super.key});
+class DailyTransaction extends StatelessWidget {
+  const DailyTransaction({super.key});
 
   @override
   Widget build(BuildContext context) {
