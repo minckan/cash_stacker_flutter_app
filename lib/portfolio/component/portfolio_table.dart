@@ -29,6 +29,7 @@ class _PortfolioTableState extends State<PortfolioTable> {
 
     return StickyHeader(
         header: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: safePadding,

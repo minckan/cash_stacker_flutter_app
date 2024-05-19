@@ -1,9 +1,5 @@
-import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 
 Future<bool> createUserWithEmailAndPwd(
     {required int id, required String email}) async {
