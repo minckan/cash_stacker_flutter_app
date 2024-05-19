@@ -1,3 +1,5 @@
+import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
+import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/screen/splash_screen.dart';
 
@@ -6,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 
 void main() async {
@@ -21,7 +24,16 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    MaterialApp(
+    const ProviderScope(child: MyApp()),
+  );
+}
+
+class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         fontFamily: 'Notosans',
@@ -35,6 +47,6 @@ void main() async {
       locale: const Locale('ko'),
       home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
-    ),
-  );
+    );
+  }
 }

@@ -1,5 +1,6 @@
 class Asset {
   Asset({
+    required this.id,
     required this.buyingCurrency,
     required this.assetName,
     required this.assetCategory,
@@ -15,6 +16,9 @@ class Asset {
     required this.currentExchangedValuation,
     required this.rateOfReturn,
   });
+
+  // asset id
+  final String id;
 
   // 종목명
   final String assetName;
@@ -44,4 +48,44 @@ class Asset {
   final double rateOfReturn;
   // 최초 편입일
   final DateTime initialBuyingDate;
+
+  factory Asset.fromJson(Map<String, dynamic> data) {
+    return Asset(
+      id: data['id'],
+      buyingCurrency: data['buyingCurrency'],
+      assetName: data['assetName'],
+      assetCategory: data['assetCategory'],
+      buyingPrice: data['buyingPrice'],
+      buyingAmount: data['buyingAmount'],
+      proportion: data['proportion'],
+      currentOriginalTotalValuation: data['currentOriginalTotalValuation'],
+      currentOriginalValuation: data['currentOriginalValuation'],
+      exchangeRate: data['exchangeRate'],
+      buyingCurrencyUnit: data['buyingCurrencyUnit'],
+      initialBuyingDate: DateTime.parse(data['initialBuyingDate']),
+      currentExchangedTotalValuation: data['currentExchangedTotalValuation'],
+      currentExchangedValuation: data['currentExchangedValuation'],
+      rateOfReturn: data['rateOfReturn'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'buyingCurrency': buyingCurrency,
+      'assetName': assetName,
+      'assetCategory': assetCategory,
+      'buyingPrice': buyingPrice,
+      'buyingAmount': buyingAmount,
+      'proportion': proportion,
+      'currentOriginalTotalValuation': currentOriginalTotalValuation,
+      'currentOriginalValuation': currentOriginalValuation,
+      'exchangeRate': exchangeRate,
+      'buyingCurrencyUnit': buyingCurrencyUnit,
+      'initialBuyingDate': initialBuyingDate.toIso8601String(),
+      'currentExchangedTotalValuation': currentExchangedTotalValuation,
+      'currentExchangedValuation': currentExchangedValuation,
+      'rateOfReturn': rateOfReturn,
+    };
+  }
 }

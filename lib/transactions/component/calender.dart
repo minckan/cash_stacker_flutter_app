@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
-class CalenderScreen extends StatefulWidget {
+class Calender extends StatefulWidget {
   final DateTime today;
-  const CalenderScreen({
+  const Calender({
     super.key,
     required this.today,
   });
 
   @override
-  State<CalenderScreen> createState() => _CalenderScreenState();
+  State<Calender> createState() => _CalenderState();
 }
 
-class _CalenderScreenState extends State<CalenderScreen> {
+class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return Column(

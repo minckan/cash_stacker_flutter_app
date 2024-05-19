@@ -1,22 +1,30 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DailyTransaction extends StatelessWidget {
+class DailyTransaction extends ConsumerWidget {
   const DailyTransaction({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final transactionsViewModel = ref.watch(transactionViewModelProvider);
+
+    print(transactionsViewModel);
     return ListView.builder(
       itemBuilder: (context, index) {
+        final transactions = transactionsViewModel[index];
         return buildDailyContent();
       },
-      itemCount: 10,
+      itemCount: transactionsViewModel.length,
     );
   }
 
-  Widget buildDailyContent() {
+  Widget buildDailyContent(TransactionModel transaction) {
     const TextStyle normalStyle = TextStyle(
       color: AppColors.bodyTextDark,
       fontSize: 12,
@@ -40,9 +48,9 @@ class DailyTransaction extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Text(
-                          '14',
-                          style: TextStyle(
+                        Text(
+                          transaction.date.day.toString(),
+                          style: const TextStyle(
                             fontFamily: 'roboto',
                             fontSize: 24,
                             fontWeight: FontWeight.w900,

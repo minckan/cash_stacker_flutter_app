@@ -1,8 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/component/chart/ratio_chart.dart';
 import 'package:flutter/material.dart';
 
-class AnalyticsScreen extends StatelessWidget {
-  const AnalyticsScreen({super.key});
+class Analytics extends StatelessWidget {
+  const Analytics({super.key});
 
   @override
   Widget build(BuildContext context) {

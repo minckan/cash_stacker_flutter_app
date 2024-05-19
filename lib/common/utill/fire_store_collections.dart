@@ -1,0 +1,6 @@
+class Collection {
+  static const users = 'users';
+  static const workspaces = 'workspaces';
+  static const assets = 'assets';
+  static const transactions = 'transactions';
+}

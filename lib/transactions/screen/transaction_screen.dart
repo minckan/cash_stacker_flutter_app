@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/transactions/screen/analystic_screen.dart';
-import 'package:cash_stacker_flutter_app/transactions/screen/calender_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/component/analystic.dart';
+import 'package:cash_stacker_flutter_app/transactions/component/calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/daily_transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -166,9 +166,9 @@ class _TransactionScreenState extends State<TransactionScreen>
       controller: tabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        const DailyTransaction(),
-        CalenderScreen(today: _currentDate),
-        const AnalyticsScreen()
+        DailyTransaction(),
+        Calender(today: _currentDate),
+        const Analytics()
       ],
     );
   }
