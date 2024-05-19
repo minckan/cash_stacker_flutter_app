@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
+import 'package:cash_stacker_flutter_app/common/screen/splash_screen.dart';
 
 import 'package:cash_stacker_flutter_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +33,7 @@ void main() async {
       ],
       supportedLocales: const [Locale('ko', 'KO')],
       locale: const Locale('ko'),
-      home: const RootTab(),
+      home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
     ),
   );
