@@ -3,6 +3,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -100,11 +101,15 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.edit,
-                        size: 18,
-                      ))
+                    icon: const Icon(
+                      Icons.edit,
+                      size: 18,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const BudgetSettingScreen()));
+                    },
+                  )
                 ],
               ),
               Container(

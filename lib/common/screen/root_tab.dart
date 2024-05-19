@@ -4,6 +4,9 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/screen/add_expense_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/screen/add_income_screen.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/main_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/main_portfolio_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/setting_screen.dart';
@@ -49,24 +52,37 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showCupertinoModalPopup(
-              context: context,
-              builder: (context) => CupertinoActionSheet(
-                    title: const Text('자산관리'),
-                    actions: [
-                      CupertinoActionSheetAction(
-                        onPressed: () {},
-                        child: const Text('수입 추가'),
-                      ),
-                      CupertinoActionSheetAction(
-                        onPressed: () {},
-                        child: const Text('지출 추가'),
-                      ),
-                      CupertinoActionSheetAction(
-                        onPressed: () {},
-                        child: const Text('자산 추가'),
-                      ),
-                    ],
-                  ));
+            context: context,
+            builder: (context) => CupertinoActionSheet(
+              title: const Text('자산관리'),
+              actions: [
+                CupertinoActionSheetAction(
+                  child: const Text('수입 추가'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddIncomeScreen()));
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  child: const Text('지출 추가'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddExpenseScreen()));
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddAssetScreen()));
+                  },
+                  child: const Text('자산 추가'),
+                ),
+              ],
+            ),
+          );
         },
         shape: const CircleBorder(),
         elevation: 0,
