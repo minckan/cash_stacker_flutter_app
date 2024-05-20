@@ -1,6 +1,3 @@
-import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
-import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
-import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/screen/splash_screen.dart';
 
 import 'package:cash_stacker_flutter_app/firebase_options.dart';

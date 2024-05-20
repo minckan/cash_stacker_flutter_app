@@ -18,7 +18,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
   final Ref _ref;
 
   AuthViewModel(this._ref) : super(null) {
-    _loadUser();
+    loadUser();
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,7 +27,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
   UserModel? get user => _user;
 
-  Future<void> _loadUser() async {
+  Future<void> loadUser() async {
     final firebaseUser = _auth.currentUser;
     if (firebaseUser != null) {
       final DocumentSnapshot userDoc = await FirebaseFirestore.instance

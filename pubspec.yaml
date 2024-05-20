@@ -50,6 +50,7 @@ dependencies:
   percent_indicator: ^4.2.3
   sticky_headers: "^0.3.0"
   flutter_riverpod: ^2.5.1
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:

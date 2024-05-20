@@ -1,7 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
@@ -14,11 +13,10 @@ class DailyTransaction extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionsViewModel = ref.watch(transactionViewModelProvider);
 
-    print(transactionsViewModel);
     return ListView.builder(
       itemBuilder: (context, index) {
-        final transactions = transactionsViewModel[index];
-        return buildDailyContent();
+        final transaction = transactionsViewModel[index];
+        return buildDailyContent(transaction);
       },
       itemCount: transactionsViewModel.length,
     );

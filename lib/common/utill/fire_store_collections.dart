@@ -3,4 +3,5 @@ class Collection {
   static const workspaces = 'workspaces';
   static const assets = 'assets';
   static const transactions = 'transactions';
+  static const category = 'category';
 }
