@@ -13,7 +13,6 @@ class IncomeCategoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryViewModel = ref.watch(categoryViewModelProvider);
 
-    print(categoryViewModel);
     return DefaultLayout(
       title: '수입 카테고리 관리',
       actions: [

@@ -18,7 +18,6 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
         .collection(Collection.category)
         .get();
 
-    print(categorySnapshot.docs);
     if (categorySnapshot.docs.isNotEmpty) {
       state = categorySnapshot.docs
           .map((doc) =>

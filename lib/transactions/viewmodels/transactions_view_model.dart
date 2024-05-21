@@ -26,6 +26,7 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
 
   Future<void> addTransaction(
       TransactionModel transaction, String workspaceId) async {
+    print(transaction);
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
