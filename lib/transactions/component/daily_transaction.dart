@@ -5,20 +5,35 @@ import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class DailyTransaction extends ConsumerWidget {
-  const DailyTransaction({super.key});
+  const DailyTransaction({
+    super.key,
+    required this.currentDate,
+  });
+
+  final DateTime currentDate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionsViewModel = ref.watch(transactionViewModelProvider);
+    final transactionsViewModel =
+        ref.read(transactionViewModelProvider.notifier);
+    String yearMonth = DateFormat('yyyy-MM').format(currentDate);
+    List<TransactionModel> transactions =
+        transactionsViewModel.getMonthTransactions(yearMonth);
 
+    if (transactions.isEmpty) {
+      return Center(
+        child: Text('$yearMonth의 데이터가 없습니다.'),
+      );
+    }
     return ListView.builder(
       itemBuilder: (context, index) {
-        final transaction = transactionsViewModel[index];
+        final transaction = transactions[index];
         return buildDailyContent(transaction);
       },
-      itemCount: transactionsViewModel.length,
+      itemCount: transactions.length,
     );
   }
 
@@ -27,6 +42,8 @@ class DailyTransaction extends ConsumerWidget {
       color: AppColors.bodyTextDark,
       fontSize: 12,
     );
+
+    DateFormat dateFormat = DateFormat('EEEE', 'ko');
     return Column(
       children: [
         Container(
@@ -63,7 +80,7 @@ class DailyTransaction extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 3, vertical: 1),
-                            child: Text('월요일',
+                            child: Text(dateFormat.format(transaction.date),
                                 style: normalStyle.copyWith(
                                     color: AppColors.bodyTextDark)),
                           ),

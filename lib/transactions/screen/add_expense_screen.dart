@@ -93,14 +93,13 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                     onPressed: () async {
                       final value = _formKey.currentState?.value;
                       TransactionModel transaction;
-
                       if (_formKey.currentState!.saveAndValidate() &&
-                          value != null) {
+                          value != null &&
+                          value.isNotEmpty) {
                         String docId = uuid.v4();
                         final workspaceId =
                             ref.watch(workspaceViewModelProvider)!.id;
-
-                        print(value);
+                        print('value: $value');
 
                         transaction = TransactionModel(
                           id: docId,
@@ -111,10 +110,13 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                           paymentMethod: value['paymentMethod'],
                         );
 
-                        print(transaction.toJson());
+                        print('transaction : $transaction');
                         await ref
                             .read(transactionViewModelProvider.notifier)
                             .addTransaction(transaction, workspaceId);
+
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
                       }
                     },
                     child: const Text('저장'),
@@ -193,6 +195,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       child: FormBuilderDropdown(
         name: 'category',
         isExpanded: true,
+        decoration: const InputDecoration(border: InputBorder.none),
         items: categories
             .map(
               (category) => DropdownMenuItem(
@@ -218,6 +221,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       child: FormBuilderDropdown(
         name: 'paymentMethod',
         isExpanded: true,
+        decoration: const InputDecoration(border: InputBorder.none),
         items: payments
             .map(
               (payment) => DropdownMenuItem(

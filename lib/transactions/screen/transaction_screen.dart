@@ -166,7 +166,9 @@ class _TransactionScreenState extends State<TransactionScreen>
       controller: tabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        DailyTransaction(),
+        DailyTransaction(
+          currentDate: _currentDate,
+        ),
         Calender(today: _currentDate),
         const Analytics()
       ],
@@ -219,7 +221,7 @@ class _TransactionScreenState extends State<TransactionScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  '총합',
+                  '합계',
                   style: TextStyle(
                     fontSize: 10,
                   ),
