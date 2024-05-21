@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +17,7 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
   Future<void> loadWorkspace(String userId) async {
     final QuerySnapshot workspacesQuery = await FirebaseFirestore.instance
         .collection('workspaces')
-        .where('members', isEqualTo: userId)
+        .where('user', arrayContains: userId)
         .get();
 
     if (workspacesQuery.docs.isNotEmpty) {
@@ -26,6 +27,9 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       await _ref
           .read(transactionViewModelProvider.notifier)
           .loadTransactions(state!.id);
+      await _ref
+          .read(categoryViewModelProvider.notifier)
+          .loadCategory(workspaceId: state!.id);
     }
   }
 

@@ -2,17 +2,19 @@ import 'dart:async';
 
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -27,7 +29,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
+    print(user);
     if (user != null) {
+      await ref
+          .read(workspaceViewModelProvider.notifier)
+          .loadWorkspace(user.uid);
+      if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const RootTab()), (route) => false);
     } else {
