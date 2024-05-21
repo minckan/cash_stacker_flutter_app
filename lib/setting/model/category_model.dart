@@ -18,7 +18,7 @@ class CategoryModel {
     return CategoryModel(
       id: json['id'],
       name: json['name'],
-      type: json['type'],
+      type: CategoryType.values[json['type']],
     );
   }
 

@@ -1,14 +1,14 @@
 import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class ExpenseAddCategoryScreen extends ConsumerWidget {
-  const ExpenseAddCategoryScreen({super.key});
+class IncomeAddCategoryScreen extends ConsumerWidget {
+  const IncomeAddCategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +16,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
     const Uuid uuid = Uuid();
 
     return DefaultLayout(
-      title: '지출 카테고리 추가',
+      title: '수입 카테고리 추가',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -33,7 +33,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
                 final category = CategoryModel(
                   id: docId,
                   name: controller.value.text.toString(),
-                  type: CategoryType.expense,
+                  type: CategoryType.income,
                 );
 
                 if (currentUser != null) {

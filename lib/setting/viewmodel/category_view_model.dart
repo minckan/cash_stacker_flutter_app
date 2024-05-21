@@ -11,15 +11,14 @@ final categoryViewModelProvider =
 class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
   CategoryViewModel() : super([]);
 
-  Future<void> loadCategory(
-      {required String workspaceId, required CategoryType type}) async {
+  Future<void> loadCategory({required String workspaceId}) async {
     final QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
         .collection(Collection.category)
-        .where('type', isEqualTo: type)
         .get();
 
+    print(categorySnapshot.docs);
     if (categorySnapshot.docs.isNotEmpty) {
       state = categorySnapshot.docs
           .map((doc) =>
