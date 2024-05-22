@@ -1,7 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/form_container.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/payment_method.dart';
@@ -27,7 +27,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   Uuid uuid = const Uuid();
 
   TextEditingController amountController = TextEditingController();
-  TransactionCategoryModel? selectedCategory;
+  CategoryModel? selectedCategory;
   PaymentMethod? selectedPaymentMethod;
   DateTime? selectedDate = DateTime.now();
 
@@ -35,7 +35,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   Widget build(BuildContext context) {
     final categoryVM = ref
         .watch(categoryViewModelProvider)
-        .where((category) => category.type == TransactionCategoryType.expense);
+        .where((category) => category.type == CategoryType.expense);
 
     return DefaultLayout(
       title: '지출 추가',
@@ -186,9 +186,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
 
   buildCategoryFormField({
     required BuildContext context,
-    required List<TransactionCategoryModel> categories,
-    required TransactionCategoryModel? selectedCategory,
-    required Function(TransactionCategoryModel?) onSelect,
+    required List<CategoryModel> categories,
+    required CategoryModel? selectedCategory,
+    required Function(CategoryModel?) onSelect,
   }) {
     return FormContainer(
       label: '카테고리',

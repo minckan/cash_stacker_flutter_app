@@ -1,4 +1,4 @@
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/payment_method.dart';
 
 enum TransactionType {
@@ -21,7 +21,7 @@ class TransactionModel {
   final DateTime date;
   final String amount;
   final TransactionType transactionType;
-  final TransactionCategoryModel category;
+  final CategoryModel category;
   final PaymentMethod? paymentMethod;
   final String? memo;
 
@@ -31,7 +31,7 @@ class TransactionModel {
       date: DateTime.parse(data['date']),
       amount: data['amount'],
       transactionType: TransactionType.values[data['transactionType']],
-      category: TransactionCategoryModel.fromJson(data['category']),
+      category: CategoryModel.fromJson(data['category']),
       memo: data['memo'],
       paymentMethod: data['paymentMethod'] != null
           ? PaymentMethod.fromJson(data['paymentMethod'])

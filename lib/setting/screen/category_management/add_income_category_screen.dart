@@ -1,7 +1,7 @@
 import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,10 +30,13 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
                 String docId = uuid.v4();
                 final currentUser = ref.watch(authViewModelProvider);
 
-                final category = TransactionCategoryModel(
+                if (controller.value.text.toString() == '') {
+                  return;
+                }
+                final category = CategoryModel(
                   id: docId,
                   name: controller.value.text.toString(),
-                  type: TransactionCategoryType.income,
+                  type: CategoryType.income,
                 );
 
                 if (currentUser != null) {

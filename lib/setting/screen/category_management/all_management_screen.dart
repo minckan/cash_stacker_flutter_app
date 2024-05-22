@@ -2,6 +2,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/setting/component/menu_item.dart';
 import 'package:cash_stacker_flutter_app/setting/component/menu_section.dart';
+import 'package:cash_stacker_flutter_app/setting/screen/category_management/asset_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/expense_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/income_category_screen.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,13 @@ class CategoryManagementScreen extends StatelessWidget {
                 MenuItem(
                   title: '[포트폴리오] 자산 카테고리',
                   rightNode: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AssetCategoryScreen(),
+                        ),
+                      );
+                    },
                     icon: const Icon(
                       Icons.chevron_right,
                       color: AppColors.bodyText,

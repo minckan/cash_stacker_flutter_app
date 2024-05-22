@@ -1,5 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_expense_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
@@ -26,14 +26,16 @@ class ExpenseCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categoryViewModel[index];
 
-          if (category.type == TransactionCategoryType.expense) {
+          print(category.type);
+
+          if (category.type == CategoryType.expense) {
             return Row(
               children: [
                 Text(category.name),
               ],
             );
           }
-          return null;
+          return const SizedBox.shrink();
         },
         itemCount: categoryViewModel.length,
       ),

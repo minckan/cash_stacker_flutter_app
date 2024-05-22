@@ -1,14 +1,14 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final categoryViewModelProvider =
-    StateNotifierProvider<CategoryViewModel, List<TransactionCategoryModel>>(
+    StateNotifierProvider<CategoryViewModel, List<CategoryModel>>(
         (ref) => CategoryViewModel());
 
-class CategoryViewModel extends StateNotifier<List<TransactionCategoryModel>> {
+class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
   CategoryViewModel() : super([]);
 
   Future<void> loadCategory({required String workspaceId}) async {
@@ -20,14 +20,13 @@ class CategoryViewModel extends StateNotifier<List<TransactionCategoryModel>> {
 
     if (categorySnapshot.docs.isNotEmpty) {
       state = categorySnapshot.docs
-          .map((doc) => TransactionCategoryModel.fromJson(
-              doc.data() as Map<String, dynamic>))
+          .map((doc) =>
+              CategoryModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
     }
   }
 
-  Future<void> addCategory(
-      TransactionCategoryModel category, String workspaceId) async {
+  Future<void> addCategory(CategoryModel category, String workspaceId) async {
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
@@ -39,7 +38,7 @@ class CategoryViewModel extends StateNotifier<List<TransactionCategoryModel>> {
   }
 
   Future<void> updateCategory(
-      TransactionCategoryModel category, String workspaceId) async {
+      CategoryModel category, String workspaceId) async {
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
@@ -51,7 +50,7 @@ class CategoryViewModel extends StateNotifier<List<TransactionCategoryModel>> {
   }
 
   Future<void> removeCategory(
-      TransactionCategoryModel category, String workspaceId) async {
+      CategoryModel category, String workspaceId) async {
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)

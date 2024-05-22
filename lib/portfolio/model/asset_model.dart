@@ -1,3 +1,5 @@
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+
 class Asset {
   Asset({
     required this.id,
@@ -23,7 +25,7 @@ class Asset {
   // 종목명
   final String assetName;
   // 종목 타입 : 미국채권, 엔화노출미국채권, 국내주식, 현금
-  final String assetCategory;
+  final CategoryModel assetCategory;
   // 매입가:
   final double? buyingPrice;
   // 수량:
@@ -54,7 +56,7 @@ class Asset {
       id: data['id'],
       buyingCurrency: data['buyingCurrency'],
       assetName: data['assetName'],
-      assetCategory: data['assetCategory'],
+      assetCategory: CategoryModel.fromJson(data['assetCategory']),
       buyingPrice: data['buyingPrice'],
       buyingAmount: data['buyingAmount'],
       proportion: data['proportion'],
@@ -74,7 +76,7 @@ class Asset {
       'id': id,
       'buyingCurrency': buyingCurrency,
       'assetName': assetName,
-      'assetCategory': assetCategory,
+      'assetCategory': assetCategory.toJson(),
       'buyingPrice': buyingPrice,
       'buyingAmount': buyingAmount,
       'proportion': proportion,

@@ -1,10 +1,11 @@
-enum TransactionCategoryType {
+enum CategoryType {
   expense,
   income,
+  asset,
 }
 
-class TransactionCategoryModel {
-  TransactionCategoryModel({
+class CategoryModel {
+  CategoryModel({
     required this.id,
     required this.name,
     required this.type,
@@ -12,13 +13,13 @@ class TransactionCategoryModel {
 
   final String id;
   final String name;
-  final TransactionCategoryType type;
+  final CategoryType type;
 
-  factory TransactionCategoryModel.fromJson(Map<String, dynamic> json) {
-    return TransactionCategoryModel(
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
       id: json['id'],
       name: json['name'],
-      type: TransactionCategoryType.values[json['type']],
+      type: CategoryType.values[json['type']],
     );
   }
 

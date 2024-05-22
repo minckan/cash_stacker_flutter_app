@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_column.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_row.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
@@ -80,7 +81,8 @@ class _PortfolioTableState extends State<PortfolioTable> {
           id: 'testsdkjflksjdklf',
           buyingCurrency: '엔',
           assetName: '엔화노출 미장기국채 ETF엔화노출 미장기국채 ETF엔화노출 미장기국채 ETF (2621)',
-          assetCategory: '채권',
+          assetCategory: CategoryModel(
+              id: 'hidsfhsdjkfhsdkj', name: '채권', type: CategoryType.asset),
           buyingPrice: 1000,
           buyingAmount: 100,
           proportion: 100,
