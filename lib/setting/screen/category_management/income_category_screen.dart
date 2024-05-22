@@ -1,5 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
@@ -27,7 +27,7 @@ class IncomeCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categoryViewModel[index];
 
-          if (category.type == CategoryType.income) {
+          if (category.type == TransactionCategoryType.income) {
             return Row(
               children: [
                 Text(category.name),

@@ -1,7 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/form_container.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/payment_method.dart';
@@ -27,14 +27,14 @@ class _AddIncomeScreenState extends ConsumerState<AddIncomeScreen> {
   Uuid uuid = const Uuid();
 
   TextEditingController amountController = TextEditingController();
-  CategoryModel? selectedCategory;
+  TransactionCategoryModel? selectedCategory;
 
   DateTime? selectedDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
     final categoryVM = ref
         .watch(categoryViewModelProvider)
-        .where((category) => category.type == CategoryType.income);
+        .where((category) => category.type == TransactionCategoryType.income);
 
     return DefaultLayout(
       title: '수입 추가',
@@ -184,9 +184,9 @@ class _AddIncomeScreenState extends ConsumerState<AddIncomeScreen> {
 
   buildCategoryFormField({
     required BuildContext context,
-    required List<CategoryModel> categories,
-    required CategoryModel? selectedCategory,
-    required Function(CategoryModel?) onSelect,
+    required List<TransactionCategoryModel> categories,
+    required TransactionCategoryModel? selectedCategory,
+    required Function(TransactionCategoryModel?) onSelect,
   }) {
     return FormContainer(
       label: '카테고리',
