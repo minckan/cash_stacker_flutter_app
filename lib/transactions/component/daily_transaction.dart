@@ -1,6 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
-import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
@@ -10,22 +9,16 @@ import 'package:intl/intl.dart';
 class DailyTransaction extends ConsumerWidget {
   const DailyTransaction({
     super.key,
-    required this.currentDate,
+    required this.transactions,
   });
 
-  final DateTime currentDate;
+  final List<Map<String, dynamic>> transactions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionsViewModel =
-        ref.read(transactionViewModelProvider.notifier);
-    String yearMonth = DateFormat('yyyy-MM').format(currentDate);
-    List<TransactionModel> transactions =
-        transactionsViewModel.getMonthTransactions(yearMonth);
-
     if (transactions.isEmpty) {
-      return Center(
-        child: Text('$yearMonth의 데이터가 없습니다.'),
+      return const Center(
+        child: Text('데이터가 없습니다.'),
       );
     }
     return ListView.builder(
@@ -37,13 +30,18 @@ class DailyTransaction extends ConsumerWidget {
     );
   }
 
-  Widget buildDailyContent(TransactionModel transaction) {
+  Widget buildDailyContent(Map<String, dynamic> transactionByDay) {
     const TextStyle normalStyle = TextStyle(
       color: AppColors.bodyTextDark,
       fontSize: 12,
     );
 
     DateFormat dateFormat = DateFormat('EEEE', 'ko');
+    DateTime date = transactionByDay['date'] as DateTime;
+    double totalIncome = transactionByDay['totalIncome'];
+    double totalExpense = transactionByDay['totalExpense'];
+    // double netIncome = transactionByDay['netIncome'];
+    List<TransactionModel> transactions = transactionByDay['transactions'];
     return Column(
       children: [
         Container(
@@ -64,7 +62,7 @@ class DailyTransaction extends ConsumerWidget {
                     Row(
                       children: [
                         Text(
-                          transaction.date.day.toString(),
+                          date.day.toString(),
                           style: const TextStyle(
                             fontFamily: 'roboto',
                             fontSize: 24,
@@ -80,9 +78,11 @@ class DailyTransaction extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 3, vertical: 1),
-                            child: Text(dateFormat.format(transaction.date),
-                                style: normalStyle.copyWith(
-                                    color: AppColors.bodyTextDark)),
+                            child: Text(
+                              dateFormat.format(date),
+                              style: normalStyle.copyWith(
+                                  color: AppColors.bodyTextDark),
+                            ),
                           ),
                         ),
                       ],
@@ -90,13 +90,17 @@ class DailyTransaction extends ConsumerWidget {
                     Row(
                       children: [
                         Text(
-                          addComma.format(2500000),
+                          addComma.format(totalIncome),
                           style: normalStyle.copyWith(color: AppColors.income),
                         ),
-                        const SizedBox(width: 50),
-                        Text(
-                          addComma.format(2500000),
-                          style: normalStyle.copyWith(color: AppColors.expense),
+                        Container(
+                          width: 120,
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            addComma.format(totalExpense),
+                            style:
+                                normalStyle.copyWith(color: AppColors.expense),
+                          ),
                         ),
                       ],
                     )
@@ -105,42 +109,45 @@ class DailyTransaction extends ConsumerWidget {
                 const Divider(
                   color: AppColors.border,
                 ),
-                ...List.generate(
-                  3,
-                  (index) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 30,
-                          child: Row(
-                            children: [
-                              const Text(
-                                '식비🍣',
-                                style: normalStyle,
-                              ),
-                              const SizedBox(width: 20),
-                              Text(
-                                '카드',
-                                style: normalStyle.copyWith(
-                                    color: AppColors.bodyTextDark),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
+                ...List.generate(transactions.length, (index) {
+                  final transaction = transactions[index];
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: Row(
                           children: [
                             Text(
-                              addComma.format(2500000),
+                              transaction.category.name,
+                              style: normalStyle,
+                            ),
+                            const SizedBox(width: 20),
+                            Text(
+                              transaction.paymentMethod != null
+                                  ? transaction.paymentMethod!.name
+                                  : '',
                               style: normalStyle.copyWith(
-                                  color: AppColors.expense),
+                                  color: AppColors.bodyTextDark),
                             ),
                           ],
-                        )
-                      ],
-                    );
-                  },
-                )
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            addComma.format(double.parse(transaction.amount)),
+                            style: normalStyle.copyWith(
+                                color: transaction.transactionType ==
+                                        TransactionType.expense
+                                    ? AppColors.expense
+                                    : AppColors.income),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                })
               ],
             ),
           ),

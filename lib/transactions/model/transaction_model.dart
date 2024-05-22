@@ -13,7 +13,7 @@ class TransactionModel {
     required this.amount,
     required this.transactionType,
     required this.category,
-    required this.paymentMethod,
+    this.paymentMethod,
     this.memo,
   });
 
@@ -22,7 +22,7 @@ class TransactionModel {
   final String amount;
   final TransactionType transactionType;
   final CategoryModel category;
-  final PaymentMethod paymentMethod;
+  final PaymentMethod? paymentMethod;
   final String? memo;
 
   factory TransactionModel.fromJson(Map<String, dynamic> data) {
@@ -33,7 +33,9 @@ class TransactionModel {
       transactionType: TransactionType.values[data['transactionType']],
       category: CategoryModel.fromJson(data['category']),
       memo: data['memo'],
-      paymentMethod: PaymentMethod.fromJson(data['paymentMethod']),
+      paymentMethod: data['paymentMethod'] != null
+          ? PaymentMethod.fromJson(data['paymentMethod'])
+          : null,
     );
   }
 
@@ -45,7 +47,7 @@ class TransactionModel {
       'transactionType': transactionType.index,
       'category': category.toJson(),
       'memo': memo,
-      'paymentMethod': paymentMethod.toJson(),
+      'paymentMethod': paymentMethod?.toJson(),
     };
   }
 }

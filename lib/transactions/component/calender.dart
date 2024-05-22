@@ -1,11 +1,14 @@
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:flutter/material.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class Calender extends StatefulWidget {
   final DateTime today;
+  final List<Map<String, dynamic>> transactions;
   const Calender({
     super.key,
     required this.today,
+    required this.transactions,
   });
 
   @override
@@ -18,7 +21,10 @@ class _CalenderState extends State<Calender> {
     return Column(
       children: [
         _buildWeek(),
-        _buildCalendar(widget.today),
+        _buildCalendar(
+          date: widget.today,
+          transactions: widget.transactions,
+        ),
       ],
     );
   }
@@ -52,7 +58,10 @@ class _CalenderState extends State<Calender> {
     );
   }
 
-  Widget _buildCalendar(DateTime date) {
+  Widget _buildCalendar({
+    required DateTime date,
+    required List<Map<String, dynamic>> transactions,
+  }) {
     // 월별 화면의 디테일을 계산
     int daysInMonth = DateTime(date.year, date.month + 1, 0).day;
     DateTime firstDayOfMonth = DateTime(date.year, date.month, 1);
@@ -80,15 +89,29 @@ class _CalenderState extends State<Calender> {
                   decoration: const BoxDecoration(
                     color: AppColors.lightGreyBackground,
                   ),
-                  alignment: Alignment.center,
-                  child: Text(previousMonthDay.toString(),
-                      style: const TextStyle(color: Colors.grey)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          previousMonthDay.toString(),
+                          textAlign: TextAlign.left,
+                          style:
+                              const TextStyle(fontSize: 10, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               );
             } else {
               DateTime dateTime = DateTime(
                   date.year, date.month, index - weekdayOfFirstDay + 1);
-              String text = dateTime.day.toString();
+              String day = dateTime.day.toString();
+              Map<String, dynamic> transaction = transactions.firstWhere(
+                  (t) => (t['date'] as DateTime).day == dateTime.day,
+                  orElse: () => {});
 
               return InkWell(
                 onTap: () {},
@@ -98,14 +121,33 @@ class _CalenderState extends State<Calender> {
                     decoration: const BoxDecoration(
                       color: AppColors.lightGreyBackground,
                     ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Text(text),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            day,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(fontSize: 10),
                           ),
-                        )
-                      ],
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          if (transaction.isNotEmpty)
+                            Text(
+                              addComma.format(transaction['totalIncome']),
+                              style: const TextStyle(
+                                  fontSize: 9, color: AppColors.income),
+                            ),
+                          if (transaction.isNotEmpty)
+                            Text(
+                              addComma.format(transaction['totalExpense']),
+                              style: const TextStyle(
+                                  fontSize: 9, color: AppColors.expense),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -113,7 +155,7 @@ class _CalenderState extends State<Calender> {
             }
           } else {
             DateTime dateTime = DateTime(date.year, date.month, index + 1);
-            String text = dateTime.day.toString();
+            String day = dateTime.day.toString();
 
             return InkWell(
               onTap: () {},
@@ -123,14 +165,18 @@ class _CalenderState extends State<Calender> {
                   decoration: const BoxDecoration(
                     color: AppColors.lightGreyBackground,
                   ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(text),
-                        ),
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          day,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(fontSize: 10),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

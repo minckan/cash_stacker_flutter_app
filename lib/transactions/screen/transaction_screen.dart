@@ -2,7 +2,9 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/analystic.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/daily_transaction.dart';
+import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
@@ -12,14 +14,14 @@ extension DateOnlyCompare on DateTime {
   }
 }
 
-class TransactionScreen extends StatefulWidget {
+class TransactionScreen extends ConsumerStatefulWidget {
   const TransactionScreen({super.key});
 
   @override
-  State<TransactionScreen> createState() => _TransactionScreenState();
+  ConsumerState<TransactionScreen> createState() => _TransactionScreenState();
 }
 
-class _TransactionScreenState extends State<TransactionScreen>
+class _TransactionScreenState extends ConsumerState<TransactionScreen>
     with SingleTickerProviderStateMixin {
   // 페이지를 중간부터 보이도록 하기위해 24(2년)를 더한다.
   final PageController _pageController =
@@ -37,12 +39,20 @@ class _TransactionScreenState extends State<TransactionScreen>
 
   @override
   Widget build(BuildContext context) {
+    final transactionViewModel =
+        ref.read(transactionViewModelProvider.notifier);
+
+    String yearMonth = DateFormat('yyyy-MM').format(_currentDate);
+    List<Map<String, dynamic>> transactions =
+        transactionViewModel.getMonthTransactions(yearMonth);
+    Map<String, double>? currentMonthTotals =
+        transactionViewModel.currentMonthTotal(_currentDate);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildHeader(),
         _buildTab(),
-        _buildIndicators(),
+        _buildIndicators(currentMonthTotals),
         Expanded(
           child: PageView.builder(
             controller: _pageController,
@@ -58,7 +68,7 @@ class _TransactionScreenState extends State<TransactionScreen>
               DateTime date =
                   DateTime(_currentDate.year, (pageIndex % 12) + 1, 1);
 
-              return _buildTabBarView();
+              return _buildTabBarView(transactions);
             },
           ),
         )
@@ -161,21 +171,24 @@ class _TransactionScreenState extends State<TransactionScreen>
     );
   }
 
-  Widget _buildTabBarView() {
+  Widget _buildTabBarView(List<Map<String, dynamic>> transactions) {
     return TabBarView(
       controller: tabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
         DailyTransaction(
-          currentDate: _currentDate,
+          transactions: transactions,
         ),
-        Calender(today: _currentDate),
+        Calender(
+          today: _currentDate,
+          transactions: transactions,
+        ),
         const Analytics()
       ],
     );
   }
 
-  Widget _buildIndicators() {
+  Widget _buildIndicators(Map<String, double>? monthlyTotal) {
     TextStyle numberStyle = const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w700,
@@ -189,46 +202,58 @@ class _TransactionScreenState extends State<TransactionScreen>
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  '수입',
-                  style: TextStyle(fontSize: 10),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  addComma.format(2500000),
-                  style: numberStyle.copyWith(color: AppColors.income),
-                )
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  '지출',
-                  style: TextStyle(fontSize: 10),
-                ),
-                const SizedBox(width: 4),
-                Text(addComma.format(2500000),
-                    style: numberStyle.copyWith(color: AppColors.expense))
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  '합계',
-                  style: TextStyle(
-                    fontSize: 10,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '수입',
+                    style: TextStyle(fontSize: 10),
                   ),
-                ),
-                const SizedBox(width: 4),
-                Text(addComma.format(2500000), style: numberStyle)
-              ],
+                  // const SizedBox(width: 4),
+                  Text(
+                    addComma.format(
+                        monthlyTotal != null ? monthlyTotal['income'] : 0),
+                    style: numberStyle.copyWith(color: AppColors.income),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '지출',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  // const SizedBox(width: 4),
+                  Text(
+                      addComma.format(
+                          monthlyTotal != null ? monthlyTotal['expanse'] : 0),
+                      style: numberStyle.copyWith(color: AppColors.expense))
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '합계',
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
+                  // const SizedBox(width: 4),
+                  Text(
+                      addComma.format(
+                          monthlyTotal != null ? monthlyTotal['netIncome'] : 0),
+                      style: numberStyle)
+                ],
+              ),
             ),
           ],
         ),

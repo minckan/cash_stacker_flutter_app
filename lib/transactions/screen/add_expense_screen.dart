@@ -48,13 +48,14 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             child: Column(
               children: [
                 buildDateFormField(
-                    context: context,
-                    selectedDate: selectedDate,
-                    onDateSelect: (value) => {
-                          setState(() {
-                            selectedDate = value;
-                          })
-                        }),
+                  context: context,
+                  selectedDate: selectedDate,
+                  onDateSelect: (value) => {
+                    setState(() {
+                      selectedDate = value;
+                    })
+                  },
+                ),
                 const SizedBox(height: 10),
                 buildAmountFormField(
                   context: context,
@@ -90,35 +91,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 40,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      final value = _formKey.currentState?.value;
-                      TransactionModel transaction;
-                      if (_formKey.currentState!.saveAndValidate() &&
-                          value != null &&
-                          value.isNotEmpty) {
-                        String docId = uuid.v4();
-                        final workspaceId =
-                            ref.watch(workspaceViewModelProvider)!.id;
-                        print('value: $value');
-
-                        transaction = TransactionModel(
-                          id: docId,
-                          date: value['date'],
-                          amount: value['amount'],
-                          category: value['category'],
-                          transactionType: TransactionType.expense,
-                          paymentMethod: value['paymentMethod'],
-                        );
-
-                        print('transaction : $transaction');
-                        await ref
-                            .read(transactionViewModelProvider.notifier)
-                            .addTransaction(transaction, workspaceId);
-
-                        if (!mounted) return;
-                        Navigator.of(context).pop();
-                      }
-                    },
+                    onPressed: handleSave,
                     child: const Text('저장'),
                   ),
                 ),
@@ -128,6 +101,33 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
         ),
       ),
     );
+  }
+
+  handleSave() async {
+    final value = _formKey.currentState?.value;
+    TransactionModel transaction;
+    if (_formKey.currentState!.saveAndValidate() &&
+        value != null &&
+        value.isNotEmpty) {
+      String docId = uuid.v4();
+      final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
+
+      transaction = TransactionModel(
+        id: docId,
+        date: value['date'],
+        amount: value['amount'],
+        category: value['category'],
+        transactionType: TransactionType.expense,
+        paymentMethod: value['paymentMethod'],
+      );
+
+      await ref
+          .read(transactionViewModelProvider.notifier)
+          .addTransaction(transaction, workspaceId);
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
   }
 
   buildDateFormField({
