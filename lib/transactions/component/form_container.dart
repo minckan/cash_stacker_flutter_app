@@ -5,11 +5,11 @@ class FormContainer extends StatefulWidget {
   const FormContainer({
     super.key,
     required this.child,
-    required this.label,
+    this.label,
   });
 
   final Widget child;
-  final String label;
+  final String? label;
 
   @override
   State<FormContainer> createState() => _FormContainerState();
@@ -38,12 +38,13 @@ class _FormContainerState extends State<FormContainer> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              widget.label,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500, color: AppColors.bodyTextDark),
-            ),
-            const SizedBox(width: 20),
+            if (widget.label != null)
+              Text(
+                widget.label!,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500, color: AppColors.bodyTextDark),
+              ),
+            if (widget.label != null) const SizedBox(width: 20),
             Expanded(
               child: Container(
                 alignment: Alignment.centerRight,

@@ -20,7 +20,6 @@ class _PortfolioTableState extends State<PortfolioTable> {
   @override
   void initState() {
     super.initState();
-    assets = getAssetData();
   }
 
   @override
@@ -73,27 +72,5 @@ class _PortfolioTableState extends State<PortfolioTable> {
 
     //   ],
     // );
-  }
-
-  List<Asset> getAssetData() {
-    return [
-      Asset(
-          id: 'testsdkjflksjdklf',
-          buyingCurrency: '엔',
-          assetName: '엔화노출 미장기국채 ETF엔화노출 미장기국채 ETF엔화노출 미장기국채 ETF (2621)',
-          assetCategory: CategoryModel(
-              id: 'hidsfhsdjkfhsdkj', name: '채권', type: CategoryType.asset),
-          buyingPrice: 1000,
-          buyingAmount: 100,
-          proportion: 100,
-          currentOriginalTotalValuation: 120000,
-          currentOriginalValuation: 12000,
-          initialBuyingDate: DateTime.now(),
-          buyingCurrencyUnit: '엔',
-          exchangeRate: 890,
-          currentExchangedTotalValuation: 890000,
-          currentExchangedValuation: 890,
-          rateOfReturn: 0.6),
-    ];
   }
 }

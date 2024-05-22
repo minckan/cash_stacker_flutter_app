@@ -65,7 +65,7 @@ class DailyTransaction extends ConsumerWidget {
                           date.day.toString(),
                           style: const TextStyle(
                             fontFamily: 'roboto',
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
@@ -81,7 +81,8 @@ class DailyTransaction extends ConsumerWidget {
                             child: Text(
                               dateFormat.format(date),
                               style: normalStyle.copyWith(
-                                  color: AppColors.bodyTextDark),
+                                color: AppColors.bodyTextDark,
+                              ),
                             ),
                           ),
                         ),

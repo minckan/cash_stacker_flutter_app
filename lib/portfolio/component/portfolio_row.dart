@@ -54,7 +54,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.buyingPrice),
+                    addComma.format(0),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -75,8 +75,8 @@ class PortfolioRow extends StatelessWidget {
               Container(
                 width: smallColumnWidth,
                 alignment: Alignment.center,
-                child: Text(
-                  '${asset.proportion.toStringAsFixed(1)}%',
+                child: const Text(
+                  '${0}%',
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -101,7 +101,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.currentExchangedTotalValuation),
+                    addComma.format(0),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -115,7 +115,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.currentExchangedValuation),
+                    addComma.format(0),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -126,8 +126,8 @@ class PortfolioRow extends StatelessWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
-                child: Text(
-                  '${asset.rateOfReturn.toStringAsFixed(1)}%',
+                child: const Text(
+                  '${0}%',
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -137,7 +137,7 @@ class PortfolioRow extends StatelessWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 child: Text(
-                  DateFormat('yyyy.MM.dd').format(asset.initialBuyingDate),
+                  DateFormat('yyyy.MM.dd').format(DateTime.now()),
                   style: rowStyle.copyWith(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),

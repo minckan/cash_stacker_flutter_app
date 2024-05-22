@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 
@@ -28,10 +29,17 @@ class IncomeCategoryScreen extends ConsumerWidget {
           final category = categoryViewModel[index];
 
           if (category.type == CategoryType.income) {
-            return Row(
-              children: [
-                Text(category.name),
-              ],
+            return Container(
+              decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: AppColors.border))),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Text(category.name),
+                  ],
+                ),
+              ),
             );
           } else {
             return const SizedBox.shrink();

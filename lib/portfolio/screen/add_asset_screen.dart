@@ -1,16 +1,269 @@
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/component/form_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
-class AddAssetScreen extends StatelessWidget {
+class AddAssetScreen extends ConsumerStatefulWidget {
   const AddAssetScreen({super.key});
 
   @override
+  ConsumerState<AddAssetScreen> createState() => _AddAssetScreenState();
+}
+
+class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
+  final _formKey = GlobalKey<FormBuilderState>();
+  Uuid uuid = const Uuid();
+
+  CategoryModel? selectedCategory;
+  DateTime? selectedDate = DateTime.now();
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController buyingPriceController = TextEditingController();
+  TextEditingController buyingAmtController = TextEditingController();
+  TextEditingController currentPriceController = TextEditingController();
+  TextEditingController currencyController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    return const DefaultLayout(
+    final categoryVM = ref
+        .watch(categoryViewModelProvider)
+        .where((category) => category.type == CategoryType.asset);
+    return DefaultLayout(
       title: '자산 추가',
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Text('Add Assets'),
+      child: Container(
+        color: AppColors.lightGreyBackground,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: FormBuilder(
+            key: _formKey,
+            child: Column(
+              children: [
+                buildDateFormField(
+                  context: context,
+                  selectedDate: selectedDate,
+                  onDateSelect: (value) => {
+                    setState(() {
+                      selectedDate = value;
+                    })
+                  },
+                ),
+                const SizedBox(height: 10),
+                buildTextAreaFormField(
+                  context: context,
+                  controller: nameController,
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: buildCategoryFormField(
+                        context: context,
+                        categories: categoryVM.toList(),
+                        selectedCategory: selectedCategory,
+                        onSelect: (value) {},
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: buildCategoryFormField(
+                        context: context,
+                        categories: categoryVM.toList(),
+                        selectedCategory: selectedCategory,
+                        onSelect: (value) {},
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: buildAmountFormField(
+                        context: context,
+                        controller: buyingPriceController,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: buildAmountFormField(
+                        context: context,
+                        controller: buyingAmtController,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: buildAmountFormField(
+                        context: context,
+                        controller: buyingPriceController,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: buildAmountFormField(
+                        context: context,
+                        controller: buyingAmtController,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 40,
+                  child: ElevatedButton(
+                    onPressed: handleSave,
+                    child: const Text('저장'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  handleSave() async {
+    final value = _formKey.currentState?.value;
+    Asset asset;
+    if (_formKey.currentState!.saveAndValidate() &&
+        value != null &&
+        value.isNotEmpty) {
+      String docId = uuid.v4();
+      final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
+
+      // asset = Asset(
+      //   id: docId,
+      // );
+
+      // await ref
+      //     .read(assetViewModelProvider.notifier)
+      //     .addAsset(asset, workspaceId);
+
+      // if (!mounted) return;
+      // Navigator.of(context).pop();
+    }
+  }
+
+  buildDateFormField({
+    required BuildContext context,
+    required DateTime? selectedDate,
+    required Function(DateTime) onDateSelect,
+  }) {
+    return FormContainer(
+      label: '날짜',
+      child: FormBuilderDateTimePicker(
+        name: 'date',
+        initialDate: selectedDate ?? DateTime.now(),
+        initialValue: selectedDate ?? DateTime.now(),
+        inputType: InputType.date,
+        format: DateFormat("yyyy-MM-dd"),
+        // decoration: const InputDecoration(labelText: "Date"),
+        initialEntryMode: DatePickerEntryMode.calendar,
+        textAlign: TextAlign.right,
+        validator: (value) {
+          if (value != null && value != selectedDate) {
+            onDateSelect(value);
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  buildTextAreaFormField({
+    required BuildContext context,
+    required TextEditingController controller,
+  }) {
+    return FormContainer(
+      label: '종목명',
+      child: FormBuilderTextField(
+        name: 'name',
+        keyboardType: TextInputType.text,
+        inputFormatters: const [],
+        controller: controller,
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+        ),
+        textAlign: TextAlign.right,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter some text';
+          }
+
+          return null;
+        },
+      ),
+    );
+  }
+
+  buildCategoryFormField({
+    required BuildContext context,
+    required List<CategoryModel> categories,
+    required CategoryModel? selectedCategory,
+    required Function(CategoryModel?) onSelect,
+  }) {
+    return FormContainer(
+      child: FormBuilderDropdown(
+        name: 'category',
+        isExpanded: true,
+        decoration: const InputDecoration(border: InputBorder.none),
+        items: categories
+            .map(
+              (category) => DropdownMenuItem(
+                alignment: Alignment.centerRight,
+                value: category,
+                child: Text(category.name),
+              ),
+            )
+            .toList(),
+        onChanged: onSelect,
+      ),
+    );
+  }
+
+  buildAmountFormField({
+    required BuildContext context,
+    required TextEditingController controller,
+  }) {
+    return FormContainer(
+      child: FormBuilderTextField(
+        name: 'amount',
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        controller: controller,
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+        ),
+        textAlign: TextAlign.right,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter some text';
+          }
+          if (double.tryParse(value) == null) {
+            return 'Please enter a valid number';
+          }
+          return null;
+        },
       ),
     );
   }

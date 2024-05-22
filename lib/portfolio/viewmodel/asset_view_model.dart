@@ -23,6 +23,16 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
   }
 
   Future<void> addAsset(Asset asset, String workspaceId) async {
+    final QuerySnapshot doc = await FirebaseFirestore.instance
+        .collection(Collection.workspaces)
+        .doc(workspaceId)
+        .collection(Collection.assets)
+        .where('id', isEqualTo: asset.id)
+        .get();
+
+    print('has asset? ${doc.size}');
+
+    // TODO: 여기서 아이디 셋팅이랑 최초 구매일 셋팅 (initialBuyingDate)
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
@@ -58,5 +68,12 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
 
   void clearAssets() {
     state = [];
+  }
+
+  List<Asset> getParticularAssets(String assetId) {
+    final result = state.where((element) => element.id == assetId).toList();
+    result.sort((a, b) => b.buyingDate.compareTo(a.buyingDate));
+
+    return result;
   }
 }
