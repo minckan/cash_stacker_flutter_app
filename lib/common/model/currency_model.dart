@@ -19,26 +19,25 @@ class Currency {
     this.isCustomized = false,
   });
 
-  factory Currency.fromJson(DocumentSnapshot doc) {
-    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
-
+  factory Currency.fromJson(Map<String, dynamic> json) {
     return Currency(
-      countryCode: doc.id,
+      countryCode: json['country_code'],
       countryName: json['country_name'],
       currencyCode: json['currency_code'],
       currencyName: json['currency_name'],
       currencySymbol: json['currency_symbol'],
-      isCustomized: json['is_customized'] ?? false,
+      // isCustomized: json['is_customized'] ?? false,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'country_code': countryCode,
       'country_name': countryName,
       'currency_code': currencyCode,
       'currency_name': currencyName,
       'currency_symbol': currencySymbol,
-      'is_customized': isCustomized ?? false,
+      // 'is_customized': isCustomized ?? false,
     };
   }
 }

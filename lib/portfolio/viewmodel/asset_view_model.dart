@@ -36,9 +36,15 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
         .collection(Collection.assets)
         .get();
 
-    state = assetsQuery.docs
-        .map((doc) => Asset.fromJson(doc.data() as Map<String, dynamic>))
-        .toList();
+    state = assetsQuery.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      print('data : $data');
+      if (data != null) {
+        return Asset.fromJson(data);
+      } else {
+        throw Exception("Document data is null");
+      }
+    }).toList();
   }
 
   Future<void> addAsset(Asset asset, String workspaceId) async {

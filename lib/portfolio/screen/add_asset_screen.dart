@@ -127,6 +127,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                         controller: currentPriceController,
                         formName: 'currentPrice',
                         placeholder: '현재가',
+                        isOptional: true,
                       ),
                     ),
                     const SizedBox(
@@ -158,6 +159,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     );
   }
 
+//TODO: 바로 요청이 안됨.
   handleSave() async {
     final value = _formKey.currentState?.value;
     Asset asset;
@@ -177,7 +179,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         exchangeRate: double.parse(value['exchangeRate']),
         buyingCurrency: value['currency'],
         originalCurrencyBuyingPrice: double.parse(value['buyingPrice']),
-        originalCurrencyCurrentPrice: double.parse(value['currentPrice']),
+        originalCurrencyCurrentPrice: double.tryParse(value['currentPrice']),
         currentKrwPrice: 0,
         krwBuyingPrice: 0,
       );
@@ -301,6 +303,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required TextEditingController controller,
     required String formName,
     required String placeholder,
+    bool isOptional = false,
   }) {
     return FormContainer(
       child: FormBuilderTextField(
@@ -314,11 +317,13 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         ),
         textAlign: TextAlign.right,
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter some text';
-          }
-          if (double.tryParse(value) == null) {
-            return 'Please enter a valid number';
+          if (isOptional == false) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter some text';
+            }
+            if (double.tryParse(value) == null) {
+              return 'Please enter a valid number';
+            }
           }
           return null;
         },

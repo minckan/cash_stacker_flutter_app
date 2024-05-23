@@ -46,7 +46,7 @@ class PortfolioRow extends StatelessWidget {
                   textAlign: TextAlign.left,
                 ),
               ),
-              // 매입가(현재환율)
+              // 매입가(원화)
               Container(
                 width: smallColumnWidth,
                 alignment: Alignment.centerRight,
@@ -54,10 +54,21 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(0),
+                    addComma.format(asset.krwBuyingPrice),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
+                ),
+              ),
+              // 매입가(외화)
+              Container(
+                width: smallColumnWidth,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(border: rightBorder),
+                child: Text(
+                  addComma.format(asset.originalCurrencyBuyingPrice),
+                  style: rowStyle,
+                  textAlign: TextAlign.center,
                 ),
               ),
               // 수량
@@ -67,16 +78,6 @@ class PortfolioRow extends StatelessWidget {
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
                   addComma.format(asset.buyingAmount),
-                  style: rowStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              // 비중
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                child: const Text(
-                  '${0}%',
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -101,15 +102,62 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(0),
+                    addComma.format(asset.krwBuyingPrice * asset.buyingAmount),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
                 ),
               ),
-              // 현재가 (현재환율)
+              // 현재가 (원화)
               Container(
                 width: smallColumnWidth,
+                alignment: Alignment.centerRight,
+                decoration: const BoxDecoration(border: rightBorder),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Text(
+                    addComma.format(asset.currentKrwPrice),
+                    style: rowStyle,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ),
+              // 현재가(외화)
+              Container(
+                width: smallColumnWidth,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(border: rightBorder),
+                child: const Text(
+                  '${0}%',
+                  style: rowStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              // 비중
+              Container(
+                width: smallColumnWidth,
+                alignment: Alignment.center,
+                child: Text(
+                  '10%',
+                  style: rowStyle.copyWith(fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 1,
+          color: AppColors.tableBorderLight,
+        ),
+        SizedBox(
+          height: rowMinHeight,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // 외화 평가액
+              Container(
+                width: maxColumnWidth,
                 alignment: Alignment.centerRight,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Padding(
@@ -121,7 +169,21 @@ class PortfolioRow extends StatelessWidget {
                   ),
                 ),
               ),
-              // 수익률(원화환산 수익률)
+              // 평가 수익률 (원화환산)
+              Container(
+                width: smallColumnWidth,
+                alignment: Alignment.centerRight,
+                decoration: const BoxDecoration(border: rightBorder),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  child: Text(
+                    '${0}%',
+                    style: rowStyle,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ),
+              // 평가 수익률 (외화)
               Container(
                 width: smallColumnWidth,
                 alignment: Alignment.center,
@@ -137,7 +199,7 @@ class PortfolioRow extends StatelessWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 child: Text(
-                  DateFormat('yyyy.MM.dd').format(DateTime.now()),
+                  DateFormat('yyyy.MM.dd').format(asset.buyingDate),
                   style: rowStyle.copyWith(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),

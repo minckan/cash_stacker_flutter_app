@@ -18,8 +18,9 @@ class CurrencyViewModel extends StateNotifier<List<Currency>> {
   Future<void> loadCurrencies() async {
     try {
       QuerySnapshot snapshot = await _currenciesRef.get();
-      List<Currency> currencies =
-          snapshot.docs.map((doc) => Currency.fromJson(doc)).toList();
+      List<Currency> currencies = snapshot.docs
+          .map((doc) => Currency.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
       state = currencies;
     } catch (e) {
       // Handle error

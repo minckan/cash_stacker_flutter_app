@@ -59,6 +59,20 @@ class Asset {
   // final String? buyingCurrencyUnit;
 
   factory Asset.fromJson(Map<String, dynamic> json) {
+    // print(json['id']);
+    // print(json['assetName']);
+    // print(CategoryModel.fromJson(json['assetCategory']));
+    // print(json['buyingAmount']);
+    // print(DateTime.parse(json['buyingDate']));
+    // print(json['krwBuyingPrice']);
+    // print(json['currentKrwPrice']);
+    // print(json['exchangeRate']);
+    // print(Currency.fromJson(json['buyingCurrency']));
+    // print(json['originalCurrencyBuyingPrice']);
+    // print(json['originalCurrencyCurrentPrice']);
+    // print(json['isInitialBuying'] ?? false);
+
+    print('asset: ${json['buyingCurrency']}');
     return Asset(
       id: json['id'],
       assetName: json['assetName'],
@@ -68,11 +82,10 @@ class Asset {
       krwBuyingPrice: json['krwBuyingPrice'],
       currentKrwPrice: json['currentKrwPrice'],
       exchangeRate: json['exchangeRate'],
-      // buyingCurrencyUnit: json['buyingCurrencyUnit'],
       buyingCurrency: Currency.fromJson(json['buyingCurrency']),
       originalCurrencyBuyingPrice: json['originalCurrencyBuyingPrice'],
       originalCurrencyCurrentPrice: json['originalCurrencyCurrentPrice'],
-      isInitialBuying: json['isInitialBuying'],
+      isInitialBuying: json['isInitialBuying'] ?? false,
     );
   }
 
