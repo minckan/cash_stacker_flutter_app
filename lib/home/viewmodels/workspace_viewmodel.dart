@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
@@ -30,6 +31,8 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       await _ref
           .read(categoryViewModelProvider.notifier)
           .loadCategory(workspaceId: state!.id);
+
+      await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
     }
   }
 

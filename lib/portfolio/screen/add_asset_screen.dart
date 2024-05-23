@@ -1,5 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
+import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
@@ -25,6 +27,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   Uuid uuid = const Uuid();
 
   CategoryModel? selectedCategory;
+  Currency? selectedCurrency;
   DateTime? selectedDate = DateTime.now();
 
   TextEditingController nameController = TextEditingController();
@@ -37,7 +40,10 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   Widget build(BuildContext context) {
     final categoryVM = ref
         .watch(categoryViewModelProvider)
-        .where((category) => category.type == CategoryType.asset);
+        .where((category) => category.type == CategoryType.asset)
+        .toList();
+
+    final currencyVM = ref.watch(currencyViewModelProvider).toList();
     return DefaultLayout(
       title: '자산 추가',
       child: Container(
@@ -70,7 +76,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     Expanded(
                       child: buildCategoryFormField(
                         context: context,
-                        categories: categoryVM.toList(),
+                        categories: categoryVM,
                         selectedCategory: selectedCategory,
                         onSelect: (value) {},
                       ),
@@ -81,8 +87,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     Expanded(
                       child: buildCurrencyFormField(
                         context: context,
-                        categories: categoryVM.toList(),
-                        selectedCategory: selectedCategory,
+                        currencies: currencyVM,
+                        selectedCurrency: selectedCurrency,
                         onSelect: (value) {},
                       ),
                     ),
@@ -254,22 +260,23 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
   buildCurrencyFormField({
     required BuildContext context,
-    required List<CategoryModel> categories,
-    required CategoryModel? selectedCategory,
-    required Function(CategoryModel?) onSelect,
+    required List<Currency> currencies,
+    required Currency? selectedCurrency,
+    required Function(Currency?) onSelect,
   }) {
     return FormContainer(
       child: FormBuilderDropdown(
-        name: 'category',
+        name: 'currency',
         isExpanded: true,
         decoration:
             const InputDecoration(border: InputBorder.none, labelText: '구매통화'),
-        items: categories
+        items: currencies
             .map(
-              (category) => DropdownMenuItem(
+              (currency) => DropdownMenuItem(
                 alignment: Alignment.centerRight,
-                value: category,
-                child: Text(category.name),
+                value: currency,
+                child: Text(
+                    '${currency.currencySymbol}(${currency.currencyName})'),
               ),
             )
             .toList(),
