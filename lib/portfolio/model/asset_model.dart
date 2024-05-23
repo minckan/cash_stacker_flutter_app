@@ -26,7 +26,7 @@ class Asset {
 
   // 종목명
   final String assetName;
-  // 종목 타입 : 미국채권, 엔화노출미국채권, 국내주식, 현금
+  // 종목 타입, 자산분류 :해외채권, 국내주식, 현금
   final CategoryModel assetCategory;
   // 수량:
   final int buyingAmount;
