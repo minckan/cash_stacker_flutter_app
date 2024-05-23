@@ -19,7 +19,7 @@ class CurrencyViewModel extends StateNotifier<List<Currency>> {
     try {
       QuerySnapshot snapshot = await _currenciesRef.get();
       List<Currency> currencies =
-          snapshot.docs.map((doc) => Currency.fromFirestore(doc)).toList();
+          snapshot.docs.map((doc) => Currency.fromJson(doc)).toList();
       state = currencies;
     } catch (e) {
       // Handle error
@@ -29,9 +29,7 @@ class CurrencyViewModel extends StateNotifier<List<Currency>> {
 
   Future<void> addCurrency(Currency currency) async {
     try {
-      await _currenciesRef
-          .doc(currency.countryCode)
-          .set(currency.toFirestore());
+      await _currenciesRef.doc(currency.countryCode).set(currency.toJson());
       state = [...state, currency];
     } catch (e) {
       // Handle error
@@ -41,9 +39,7 @@ class CurrencyViewModel extends StateNotifier<List<Currency>> {
 
   Future<void> updateCurrency(Currency currency) async {
     try {
-      await _currenciesRef
-          .doc(currency.countryCode)
-          .update(currency.toFirestore());
+      await _currenciesRef.doc(currency.countryCode).update(currency.toJson());
       state = state
           .map((c) => c.countryCode == currency.countryCode ? currency : c)
           .toList();

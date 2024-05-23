@@ -19,20 +19,20 @@ class Currency {
     this.isCustomized = false,
   });
 
-  factory Currency.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  factory Currency.fromJson(DocumentSnapshot doc) {
+    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
 
     return Currency(
       countryCode: doc.id,
-      countryName: data['country_name'],
-      currencyCode: data['currency_code'],
-      currencyName: data['currency_name'],
-      currencySymbol: data['currency_symbol'],
-      isCustomized: data['is_customized'] ?? false,
+      countryName: json['country_name'],
+      currencyCode: json['currency_code'],
+      currencyName: json['currency_name'],
+      currencySymbol: json['currency_symbol'],
+      isCustomized: json['is_customized'] ?? false,
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'country_name': countryName,
       'currency_code': currencyCode,
