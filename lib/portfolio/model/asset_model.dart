@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 
 class Asset {
@@ -13,8 +14,8 @@ class Asset {
     // this.buyingCurrencyUnit,
     this.buyingCurrency,
     this.originalCurrencyBuyingPrice,
-    this.currentOriginalCurrencyPrice,
-    this.initialBuyingDate,
+    this.originalCurrencyCurrentPrice,
+    this.isInitialBuying = false,
   });
 
   // asset id - 동일한 종목을 구매할때 아이디를 동일하게 저장(문서아이디는 다름)
@@ -22,7 +23,7 @@ class Asset {
 
   // ⭐️ 인풋 입력 값
   // 구매 통화
-  final String? buyingCurrency;
+  final Currency? buyingCurrency;
 
   // 종목명
   final String assetName;
@@ -35,7 +36,7 @@ class Asset {
   // 원화환산 매입가
   final double krwBuyingPrice;
   // 기존통화 현재가 (원이면 원화입력)
-  final double? currentOriginalCurrencyPrice;
+  final double? originalCurrencyCurrentPrice;
   // 원화환산 현재가
   final double currentKrwPrice;
   // 해외 자산 구매 환율
@@ -43,8 +44,8 @@ class Asset {
   // 구매일
   final DateTime buyingDate;
 
-  // 최초 구매일
-  final DateTime? initialBuyingDate;
+  // 최초거래 여부
+  bool? isInitialBuying;
 
   // 계산해서 자동입력 해야하는 값
 
@@ -68,10 +69,10 @@ class Asset {
       currentKrwPrice: json['currentKrwPrice'],
       exchangeRate: json['exchangeRate'],
       // buyingCurrencyUnit: json['buyingCurrencyUnit'],
-      buyingCurrency: json['buyingCurrency'],
+      buyingCurrency: Currency.fromJson(json['buyingCurrency']),
       originalCurrencyBuyingPrice: json['originalCurrencyBuyingPrice'],
-      currentOriginalCurrencyPrice: json['currentOriginalCurrencyPrice'],
-      initialBuyingDate: json['initialBuyingDate'],
+      originalCurrencyCurrentPrice: json['originalCurrencyCurrentPrice'],
+      isInitialBuying: json['isInitialBuying'],
     );
   }
 
@@ -86,10 +87,10 @@ class Asset {
       'currentKrwPrice': currentKrwPrice,
       'exchangeRate': exchangeRate,
       // 'buyingCurrencyUnit': buyingCurrencyUnit,
-      'buyingCurrency': buyingCurrency,
+      'buyingCurrency': buyingCurrency?.toJson(),
       'originalCurrencyBuyingPrice': originalCurrencyBuyingPrice,
-      'currentOriginalCurrencyPrice': currentOriginalCurrencyPrice,
-      'initialBuyingDate': initialBuyingDate,
+      'originalCurrencyCurrentPrice': originalCurrencyCurrentPrice,
+      'isInitialBuying': isInitialBuying,
     };
   }
 }

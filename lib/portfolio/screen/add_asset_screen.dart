@@ -167,16 +167,27 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       String docId = uuid.v4();
       final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
 
-      // asset = Asset(
-      //   id: docId,
-      // );
+      //TODO: 자산 거래 추가시에 아이디 받아와오기
+      asset = Asset(
+        id: docId,
+        assetCategory: value['category'],
+        assetName: value['name'],
+        buyingAmount: int.parse(value['amount']),
+        buyingDate: value['date'],
+        exchangeRate: double.parse(value['exchangeRate']),
+        buyingCurrency: value['currency'],
+        originalCurrencyBuyingPrice: double.parse(value['buyingPrice']),
+        originalCurrencyCurrentPrice: double.parse(value['currentPrice']),
+        currentKrwPrice: 0,
+        krwBuyingPrice: 0,
+      );
 
-      // await ref
-      //     .read(assetViewModelProvider.notifier)
-      //     .addAsset(asset, workspaceId);
+      await ref
+          .read(assetViewModelProvider.notifier)
+          .addAsset(asset, workspaceId);
 
-      // if (!mounted) return;
-      // Navigator.of(context).pop();
+      if (!mounted) return;
+      Navigator.of(context).pop();
     }
   }
 
@@ -276,7 +287,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 alignment: Alignment.centerRight,
                 value: currency,
                 child: Text(
-                    '${currency.currencySymbol}(${currency.currencyName})'),
+                    '${currency.currencyName} - ${currency.currencySymbol}'),
               ),
             )
             .toList(),

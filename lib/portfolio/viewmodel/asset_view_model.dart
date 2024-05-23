@@ -10,6 +10,25 @@ final assetViewModelProvider =
 class AssetViewModel extends StateNotifier<List<Asset>> {
   AssetViewModel() : super([]);
 
+  Future<List<Asset>?> getPreviousTransactions(
+      String workspaceId, String id) async {
+    final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
+        .collection(Collection.workspaces)
+        .doc(workspaceId)
+        .collection(Collection.assets)
+        .where('id', isEqualTo: id)
+        .where('isInitialBuying', isEqualTo: true)
+        .get();
+
+    if (assetsQuery.size > 0) {
+      return assetsQuery.docs
+          .map((doc) => Asset.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+    } else {
+      return null;
+    }
+  }
+
   Future<void> loadAssets(String workspaceId) async {
     final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
         .collection(Collection.workspaces)
@@ -23,16 +42,6 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
   }
 
   Future<void> addAsset(Asset asset, String workspaceId) async {
-    final QuerySnapshot doc = await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.assets)
-        .where('id', isEqualTo: asset.id)
-        .get();
-
-    print('has asset? ${doc.size}');
-
-    // TODO: 여기서 아이디 셋팅이랑 최초 구매일 셋팅 (initialBuyingDate)
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
