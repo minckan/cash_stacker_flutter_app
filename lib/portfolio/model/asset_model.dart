@@ -1,91 +1,117 @@
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 
 class Asset {
+  /// 자산 고유 아이디
+  final String id;
+
+  /// 자산 이름
+  final String assetName;
+
+  /// asset 카테고리
+  final CategoryModel assetCategory;
+
+  /// 매수 자산 통화
+  final Currency? buyingCurrency;
+
+  /// 최초 매수일
+  final DateTime initialPurchaseDate;
+
+  /// 자산 거래 내역
+  final List<AssetTransaction> transactions;
+
+  /// 자산 현재가 update 가능
+  final double currentPrice;
+
   Asset({
     required this.id,
     required this.assetName,
     required this.assetCategory,
-    required this.buyingAmount,
-    required this.buyingDate,
-    required this.krwBuyingPrice,
-    required this.currentKrwPrice,
-    this.exchangeRate,
-    // this.buyingCurrencyUnit,
-    this.buyingCurrency,
-    this.originalCurrencyBuyingPrice,
-    this.originalCurrencyCurrentPrice,
-    this.isInitialBuying = false,
+    required this.buyingCurrency,
+    required this.initialPurchaseDate,
+    required this.transactions,
+    required this.currentPrice,
   });
 
-  // asset id - 동일한 종목을 구매할때 아이디를 동일하게 저장(문서아이디는 다름)
-  final String id;
+  /// 매수 이력 리스트
+  List<AssetTransaction> get purchaseTransactions {
+    return transactions
+        .where((transaction) => transaction.type == AssetTransactionType.buy)
+        .toList();
+  }
 
-  // ⭐️ 인풋 입력 값
-  // 구매 통화
-  final Currency? buyingCurrency;
+  /// 매도 이력 리스트
+  List<AssetTransaction> get sellingTransactions {
+    return transactions
+        .where((transaction) => transaction.type == AssetTransactionType.sell)
+        .toList();
+  }
 
-  // 종목명
-  final String assetName;
-  // 종목 타입, 자산분류 :해외채권, 국내주식, 현금
-  final CategoryModel assetCategory;
-  // 수량:
-  final int buyingAmount;
-  // 기존 통화 매입가 (원이면 원화입력)
-  final double? originalCurrencyBuyingPrice;
-  // 원화환산 매입가
-  final double krwBuyingPrice;
-  // 기존통화 현재가 (원이면 원화입력)
-  final double? originalCurrencyCurrentPrice;
-  // 원화환산 현재가
-  final double currentKrwPrice;
-  // 해외 자산 구매 환율
-  final double? exchangeRate;
-  // 구매일
-  final DateTime buyingDate;
+  /// 전체 투자 금액 (실제 투자 원금 총액)
+  double get totalPurchaseAmount {
+    return purchaseTransactions.fold(0,
+        (sum, transaction) => sum + (transaction.price * transaction.quantity));
+  }
 
-  // 최초거래 여부
-  bool? isInitialBuying;
+  /// 전체 투자 수량
+  double get totalQuantity {
+    return purchaseTransactions.fold(
+        0, (sum, transaction) => sum + transaction.quantity);
+  }
 
-  // 계산해서 자동입력 해야하는 값
+  /// 전체 투자 수량 대비 현재 금액 평가 총액
+  double get totalEvaluation {
+    return currentPrice * totalQuantity;
+  }
 
-  // 비중:
-  // final double proportion;
-  // 평가액(원화환산 평가액)
-  // 수익률(원화환산 수익률)
-  // final double rateOfReturn;
+  /// 실투자 원금 대비 현재평가 총액 손익손실률
+  double get profitLossRate {
+    final totalPurchase = totalPurchaseAmount;
+    final totalEval = totalEvaluation;
+    return totalPurchase > 0
+        ? ((totalEval - totalPurchase) / totalPurchase) * 100
+        : 0;
+  }
 
-  // // 구매 통화 유닛
-  // final String? buyingCurrencyUnit;
+  /// 평단가
+  double get averagePrice {
+    final totalPurchasePrice = purchaseTransactions.fold(
+        0.0, (sum, transaction) => sum + transaction.price);
+    return totalPurchasePrice / transactions.length;
+  }
+
+  /// 현재가 수정
+  Asset copyWith({
+    double? currentPrice,
+  }) {
+    return Asset(
+      id: id,
+      assetName: assetName,
+      assetCategory: assetCategory,
+      buyingCurrency: buyingCurrency,
+      initialPurchaseDate: initialPurchaseDate,
+      transactions: transactions,
+      currentPrice: currentPrice ?? this.currentPrice,
+    );
+  }
 
   factory Asset.fromJson(Map<String, dynamic> json) {
-    // print(json['id']);
-    // print(json['assetName']);
-    // print(CategoryModel.fromJson(json['assetCategory']));
-    // print(json['buyingAmount']);
-    // print(DateTime.parse(json['buyingDate']));
-    // print(json['krwBuyingPrice']);
-    // print(json['currentKrwPrice']);
-    // print(json['exchangeRate']);
-    // print(Currency.fromJson(json['buyingCurrency']));
-    // print(json['originalCurrencyBuyingPrice']);
-    // print(json['originalCurrencyCurrentPrice']);
-    // print(json['isInitialBuying'] ?? false);
+    var transactionsJson = json['transactions'] as List<dynamic>;
+    List<AssetTransaction> transactionsList = transactionsJson
+        .map((transactionJson) => AssetTransaction.fromJson(transactionJson))
+        .toList();
 
-    print('asset: ${json['buyingCurrency']}');
     return Asset(
       id: json['id'],
       assetName: json['assetName'],
       assetCategory: CategoryModel.fromJson(json['assetCategory']),
-      buyingAmount: json['buyingAmount'],
-      buyingDate: DateTime.parse(json['buyingDate']),
-      krwBuyingPrice: json['krwBuyingPrice'],
-      currentKrwPrice: json['currentKrwPrice'],
-      exchangeRate: json['exchangeRate'],
-      buyingCurrency: Currency.fromJson(json['buyingCurrency']),
-      originalCurrencyBuyingPrice: json['originalCurrencyBuyingPrice'],
-      originalCurrencyCurrentPrice: json['originalCurrencyCurrentPrice'],
-      isInitialBuying: json['isInitialBuying'] ?? false,
+      buyingCurrency: json['buyingCurrency'] != null
+          ? Currency.fromJson(json['buyingCurrency'])
+          : null,
+      initialPurchaseDate: DateTime.parse(json['initialPurchaseDate']),
+      transactions: transactionsList,
+      currentPrice: json['currentPrice'].toDouble(),
     );
   }
 
@@ -94,16 +120,11 @@ class Asset {
       'id': id,
       'assetName': assetName,
       'assetCategory': assetCategory.toJson(),
-      'buyingAmount': buyingAmount,
-      'buyingDate': buyingDate.toIso8601String(),
-      'krwBuyingPrice': krwBuyingPrice,
-      'currentKrwPrice': currentKrwPrice,
-      'exchangeRate': exchangeRate,
-      // 'buyingCurrencyUnit': buyingCurrencyUnit,
       'buyingCurrency': buyingCurrency?.toJson(),
-      'originalCurrencyBuyingPrice': originalCurrencyBuyingPrice,
-      'originalCurrencyCurrentPrice': originalCurrencyCurrentPrice,
-      'isInitialBuying': isInitialBuying,
+      'initialPurchaseDate': initialPurchaseDate.toIso8601String(),
+      'transactions':
+          transactions.map((transaction) => transaction.toJson()).toList(),
+      'currentPrice': currentPrice,
     };
   }
 }

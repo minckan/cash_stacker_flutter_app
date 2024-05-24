@@ -10,25 +10,6 @@ final assetViewModelProvider =
 class AssetViewModel extends StateNotifier<List<Asset>> {
   AssetViewModel() : super([]);
 
-  Future<List<Asset>?> getPreviousTransactions(
-      String workspaceId, String id) async {
-    final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.assets)
-        .where('id', isEqualTo: id)
-        .where('isInitialBuying', isEqualTo: true)
-        .get();
-
-    if (assetsQuery.size > 0) {
-      return assetsQuery.docs
-          .map((doc) => Asset.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
-    } else {
-      return null;
-    }
-  }
-
   Future<void> loadAssets(String workspaceId) async {
     final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
         .collection(Collection.workspaces)
@@ -38,7 +19,7 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
 
     state = assetsQuery.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>?;
-      print('data : $data');
+
       if (data != null) {
         return Asset.fromJson(data);
       } else {
@@ -85,9 +66,10 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
     state = [];
   }
 
-  List<Asset> getParticularAssets(String assetId) {
-    final result = state.where((element) => element.id == assetId).toList();
-    result.sort((a, b) => b.buyingDate.compareTo(a.buyingDate));
+  Asset getParticularAssets(String assetId) {
+    final result = state.firstWhere((element) => element.id == assetId);
+
+    result.transactions.sort((a, b) => b.date.compareTo(a.date));
 
     return result;
   }

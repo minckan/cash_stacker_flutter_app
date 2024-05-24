@@ -170,26 +170,16 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
 
       //TODO: 자산 거래 추가시에 아이디 받아와오기
-      asset = Asset(
-        id: docId,
-        assetCategory: value['category'],
-        assetName: value['name'],
-        buyingAmount: int.parse(value['amount']),
-        buyingDate: value['date'],
-        exchangeRate: double.parse(value['exchangeRate']),
-        buyingCurrency: value['currency'],
-        originalCurrencyBuyingPrice: double.parse(value['buyingPrice']),
-        originalCurrencyCurrentPrice: double.tryParse(value['currentPrice']),
-        currentKrwPrice: 0,
-        krwBuyingPrice: 0,
-      );
+      // asset = Asset(
 
-      await ref
-          .read(assetViewModelProvider.notifier)
-          .addAsset(asset, workspaceId);
+      // );
 
-      if (!mounted) return;
-      Navigator.of(context).pop();
+      // await ref
+      //     .read(assetViewModelProvider.notifier)
+      //     .addAsset(asset, workspaceId);
+
+      // if (!mounted) return;
+      // Navigator.of(context).pop();
     }
   }
 
