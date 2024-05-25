@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cash_stacker_flutter_app/common/component/chart/ratio_chart.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,10 @@ class MainPortfolioScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assets = ref.watch(assetViewModelProvider).toList();
+    final assetSummary = ref.read(assetSummaryProvider.notifier);
+    final currentAssetSummary =
+        assetSummary.getAssetSummaryByMonth(getMonth(DateTime.now()));
+
     return DefaultLayout(
       isSliverView: true,
       leading: IconButton(
@@ -76,7 +82,7 @@ class MainPortfolioScreen extends ConsumerWidget {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(250000000),
+                            addComma.format(currentAssetSummary?.totalAssets),
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,
