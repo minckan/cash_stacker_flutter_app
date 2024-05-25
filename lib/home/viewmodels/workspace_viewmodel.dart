@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
@@ -25,6 +26,9 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       state = Workspace.fromJson(
           workspacesQuery.docs.first.data() as Map<String, dynamic>);
       await _ref.read(assetViewModelProvider.notifier).loadAssets(state!.id);
+      await _ref
+          .read(assetSummaryProvider.notifier)
+          .loadAssetSummaries(state!.id);
       await _ref
           .read(transactionViewModelProvider.notifier)
           .loadTransactions(state!.id);

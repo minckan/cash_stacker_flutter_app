@@ -2,14 +2,18 @@ import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart'
+    as kakao_user;
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, UserModel?>(
     (ref) => AuthViewModel(ref));
@@ -22,7 +26,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final UserApi kakaoUserApi = UserApi.instance;
+  final kakao_user.UserApi kakaoUserApi = kakao_user.UserApi.instance;
   UserModel? _user;
 
   UserModel? get user => _user;
@@ -56,16 +60,17 @@ class AuthViewModel extends StateNotifier<UserModel?> {
   }
 
   Future<void> _loginWithKakao(BuildContext context) async {
-    if (await isKakaoTalkInstalled()) {
-      final user = await UserApi.instance.loginWithKakaoTalk();
+    if (await kakao_user.isKakaoTalkInstalled()) {
+      final user = await kakao_user.UserApi.instance.loginWithKakaoTalk();
       _loginToFIrebase(context, user);
     } else {
-      final user = await UserApi.instance.loginWithKakaoAccount();
+      final user = await kakao_user.UserApi.instance.loginWithKakaoAccount();
       _loginToFIrebase(context, user);
     }
   }
 
-  Future<void> _loginToFIrebase(BuildContext context, OAuthToken user) async {
+  Future<void> _loginToFIrebase(
+      BuildContext context, kakao_user.OAuthToken user) async {
     // oidc 인증
     var provider = OAuthProvider('oidc.cashstakcer');
 
@@ -86,37 +91,60 @@ class AuthViewModel extends StateNotifier<UserModel?> {
           .get();
 
       if (!userDoc.exists) {
-        // 유저가 존재하지 않으면
-        _user = UserModel(
-          uid: firebaseUser.uid,
-          email: firebaseUser.email ?? '',
-          role: UserRole.keyUser,
-          profileImage: firebaseUser.photoURL ?? '',
-          displayName: firebaseUser.displayName ?? '',
-          workspaceId: 'workspace_${firebaseUser.uid}',
-        );
-        // 신규 유저 추가
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(_user!.uid)
-            .set(
-              _user!.toJson(),
-              SetOptions(merge: true),
-            );
+        final workspaceId = 'workspace_${firebaseUser.uid}';
+        try {
+          // 유저가 존재하지 않으면
+          _user = UserModel(
+            uid: firebaseUser.uid,
+            email: firebaseUser.email ?? '',
+            role: UserRole.keyUser,
+            profileImage: firebaseUser.photoURL ?? '',
+            displayName: firebaseUser.displayName ?? '',
+            workspaceId: workspaceId,
+          );
+          // 신규 유저 추가
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_user!.uid)
+              .set(
+                _user!.toJson(),
+                SetOptions(merge: true),
+              );
+        } catch (e) {
+          print('[User create error]: $e');
+          await _handleCreateUserError(firebaseUser);
+          return;
+        }
 
         // 신규 워크스페이스 추가
-        final workspace = Workspace(
-            id: 'workspace_${firebaseUser.uid}',
-            // assets: [],
-            // transactions: [],
-            members: [state!.uid],
-            totalAmount: 0);
+        try {
+          final workspace = Workspace(
+            id: workspaceId,
+            members: [firebaseUser.uid],
+          );
 
-        await FirebaseFirestore.instance
-            .collection('workspaces')
-            .doc('workspace_${firebaseUser.uid}')
-            .set(workspace.toJson());
-        _ref.read(workspaceViewModelProvider.notifier).setWorkspace(workspace);
+          await FirebaseFirestore.instance
+              .collection('workspaces')
+              .doc(workspaceId)
+              .set(workspace.toJson());
+          _ref
+              .read(workspaceViewModelProvider.notifier)
+              .setWorkspace(workspace);
+
+          final assetSummary = AssetSummary(month: getMonth(DateTime.now()));
+
+          _ref
+              .read(assetSummaryProvider.notifier)
+              .addAssetSummary(workspaceId, assetSummary);
+        } catch (e) {
+          print('[Workspace create error]: $e');
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_user!.uid)
+              .delete();
+          await _handleCreateUserError(firebaseUser);
+          return;
+        }
       } else {
         state = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
         _ref
@@ -126,6 +154,14 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const RootTab()), (route) => false);
+    }
+  }
+
+  Future<void> _handleCreateUserError(User firebaseUser) async {
+    try {
+      await firebaseUser.delete();
+    } catch (e) {
+      print('[Firebase Auth delete error]: $e');
     }
   }
 

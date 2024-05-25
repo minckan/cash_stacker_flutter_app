@@ -39,7 +39,7 @@ class PortfolioRow extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  asset.assetName,
+                  asset.name,
                   style: rowStyle.copyWith(
                       decoration: TextDecoration.underline, letterSpacing: 0),
                   textAlign: TextAlign.left,
@@ -53,7 +53,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.averagePrice),
+                    addComma.format(asset.averageKrwPrice),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -101,7 +101,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.totalEvaluation),
+                    addComma.format(asset.totalKrwEvaluation),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -115,7 +115,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.currentPrice),
+                    addComma.format(asset.currentKrwPrice),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -159,10 +159,10 @@ class PortfolioRow extends StatelessWidget {
                 width: maxColumnWidth,
                 alignment: Alignment.centerRight,
                 decoration: const BoxDecoration(border: rightBorder),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    '-',
+                    addComma.format(asset.totalEvaluation),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -176,7 +176,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    '${asset.profitLossRate}%',
+                    '${asset.krwProfitLossRate.toStringAsFixed(2)}%',
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -188,7 +188,7 @@ class PortfolioRow extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  '${asset.profitLossRate}%',
+                  '${asset.profitLossRate.toStringAsFixed(2)}%',
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),

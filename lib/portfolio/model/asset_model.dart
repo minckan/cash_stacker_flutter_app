@@ -7,13 +7,13 @@ class Asset {
   final String id;
 
   /// 자산 이름
-  final String assetName;
+  final String name;
 
   /// asset 카테고리
-  final CategoryModel assetCategory;
+  final CategoryModel category;
 
   /// 매수 자산 통화
-  final Currency? buyingCurrency;
+  final Currency? currency;
 
   /// 최초 매수일
   final DateTime initialPurchaseDate;
@@ -22,17 +22,25 @@ class Asset {
   final List<AssetTransaction> transactions;
 
   /// 자산 현재가 update 가능
-  final double currentPrice;
+  final double inputCurrentPrice;
 
   Asset({
     required this.id,
-    required this.assetName,
-    required this.assetCategory,
-    required this.buyingCurrency,
+    required this.name,
+    required this.category,
+    required this.currency,
     required this.initialPurchaseDate,
     required this.transactions,
-    required this.currentPrice,
+    required this.inputCurrentPrice,
   });
+
+  bool get _isKrwAsset {
+    if (currency == null || currency!.currencyCode == "KRW") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /// 매수 이력 리스트
   List<AssetTransaction> get purchaseTransactions {
@@ -60,39 +68,91 @@ class Asset {
         0, (sum, transaction) => sum + transaction.quantity);
   }
 
-  /// 전체 투자 수량 대비 현재 금액 평가 총액
-  double get totalEvaluation {
-    return currentPrice * totalQuantity;
+  /// 평균 매입가 (원화)
+  double get averageKrwPrice {
+    final totalPurchasePrice = purchaseTransactions.fold(
+        0.0, (sum, transaction) => sum + transaction.krwPrice);
+    return totalPurchasePrice / transactions.length;
   }
 
-  /// 실투자 원금 대비 현재평가 총액 손익손실률
-  double get profitLossRate {
+  /// 평균 매입가 (외화)
+  double get averagePrice {
+    if (_isKrwAsset) {
+      return 0;
+    } else {
+      final totalPurchasePrice = purchaseTransactions.fold(
+          0.0, (sum, transaction) => sum + transaction.price);
+      return totalPurchasePrice / transactions.length;
+    }
+  }
+
+  /// 현재가(원화)/ 현재환율 필요.
+  /// 현재 환율 * 현재가
+  double get currentKrwPrice {
+    if (_isKrwAsset) {
+      return inputCurrentPrice;
+    }
+    // TODO: 현재환율 불러와서 * inputCurrentPrice
+    return 0;
+  }
+
+  /// 현재가(외화)
+  double get currentPrice {
+    if (_isKrwAsset) {
+      return 0.0;
+    } else {
+      return inputCurrentPrice;
+    }
+  }
+
+  /// 현재 평가액(원화)
+  double get totalKrwEvaluation {
+    return currentKrwPrice * totalQuantity;
+  }
+
+  /// 현재 평가액(외화)
+  double get totalEvaluation {
+    if (_isKrwAsset) {
+      return 0;
+    } else {
+      return currentPrice * totalQuantity;
+    }
+  }
+
+  /// 원화 환산 수익률
+  double get krwProfitLossRate {
     final totalPurchase = totalPurchaseAmount;
-    final totalEval = totalEvaluation;
+    final totalEval = totalKrwEvaluation;
     return totalPurchase > 0
         ? ((totalEval - totalPurchase) / totalPurchase) * 100
         : 0;
   }
 
-  /// 평단가
-  double get averagePrice {
-    final totalPurchasePrice = purchaseTransactions.fold(
-        0.0, (sum, transaction) => sum + transaction.price);
-    return totalPurchasePrice / transactions.length;
+  /// 외화 수익률
+  double get profitLossRate {
+    if (_isKrwAsset) {
+      return 0;
+    } else {
+      final totalPurchase = totalPurchaseAmount;
+      final totalEval = totalEvaluation;
+      return totalPurchase > 0
+          ? ((totalEval - totalPurchase) / totalPurchase) * 100
+          : 0;
+    }
   }
 
   /// 현재가 수정
   Asset copyWith({
-    double? currentPrice,
+    double? inputCurrentPrice,
   }) {
     return Asset(
       id: id,
-      assetName: assetName,
-      assetCategory: assetCategory,
-      buyingCurrency: buyingCurrency,
+      name: name,
+      category: category,
+      currency: currency,
       initialPurchaseDate: initialPurchaseDate,
       transactions: transactions,
-      currentPrice: currentPrice ?? this.currentPrice,
+      inputCurrentPrice: inputCurrentPrice ?? this.inputCurrentPrice,
     );
   }
 
@@ -104,27 +164,26 @@ class Asset {
 
     return Asset(
       id: json['id'],
-      assetName: json['assetName'],
-      assetCategory: CategoryModel.fromJson(json['assetCategory']),
-      buyingCurrency: json['buyingCurrency'] != null
-          ? Currency.fromJson(json['buyingCurrency'])
-          : null,
+      name: json['name'],
+      category: CategoryModel.fromJson(json['category']),
+      currency:
+          json['currency'] != null ? Currency.fromJson(json['currency']) : null,
       initialPurchaseDate: DateTime.parse(json['initialPurchaseDate']),
       transactions: transactionsList,
-      currentPrice: json['currentPrice'].toDouble(),
+      inputCurrentPrice: json['inputCurrentPrice'].toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'assetName': assetName,
-      'assetCategory': assetCategory.toJson(),
-      'buyingCurrency': buyingCurrency?.toJson(),
+      'name': name,
+      'category': category.toJson(),
+      'currency': currency?.toJson(),
       'initialPurchaseDate': initialPurchaseDate.toIso8601String(),
       'transactions':
           transactions.map((transaction) => transaction.toJson()).toList(),
-      'currentPrice': currentPrice,
+      'inputCurrentPrice': inputCurrentPrice,
     };
   }
 }

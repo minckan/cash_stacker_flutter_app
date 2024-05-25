@@ -1,34 +1,33 @@
 class AssetSummary {
-  final String id;
   final double totalAssets;
   final double monthlyBudget;
   final double monthlyExpenditure;
+
+  /// yyyy-MM
   final String month;
 
   AssetSummary({
-    required this.id,
-    required this.totalAssets,
-    required this.monthlyBudget,
-    required this.monthlyExpenditure,
+    this.totalAssets = 0,
+    this.monthlyBudget = 0,
+    this.monthlyExpenditure = 0,
     required this.month,
   });
 
-  Map<String, dynamic> toMap() {
+  factory AssetSummary.fromJson(Map<String, dynamic> json) {
+    print(json);
+    return AssetSummary(
+      totalAssets: json['totalAssets'],
+      monthlyBudget: json['monthlyBudget'],
+      monthlyExpenditure: json['monthlyExpenditure'],
+      month: json['month'],
+    );
+  }
+  Map<String, dynamic> toJson() {
     return {
       'totalAssets': totalAssets,
       'monthlyBudget': monthlyBudget,
       'monthlyExpenditure': monthlyExpenditure,
       'month': month,
     };
-  }
-
-  factory AssetSummary.fromMap(Map<String, dynamic> map, String id) {
-    return AssetSummary(
-      id: id,
-      totalAssets: map['totalAssets'],
-      monthlyBudget: map['monthlyBudget'],
-      monthlyExpenditure: map['monthlyExpenditure'],
-      month: map['month'],
-    );
   }
 }

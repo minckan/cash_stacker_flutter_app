@@ -1,19 +1,16 @@
 class Workspace {
   Workspace({
-    required this.members,
-    required this.totalAmount,
     required this.id,
+    required this.members,
   });
 
   final String id;
   final List<String> members;
-  final double totalAmount;
 
   factory Workspace.fromJson(Map<String, dynamic> data) {
     return Workspace(
       id: data['id'],
       members: List<String>.from(data['user']),
-      totalAmount: data['totalAmount'],
     );
   }
 
@@ -21,7 +18,6 @@ class Workspace {
     return {
       'id': id,
       'user': members,
-      'totalAmount': totalAmount,
     };
   }
 }

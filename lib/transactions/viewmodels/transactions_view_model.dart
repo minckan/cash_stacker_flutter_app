@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,7 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
 
   Map<String, Map<String, double>> monthlyTotals = {};
   currentMonthTotal(DateTime current) {
-    final String currentMonthKey = DateFormat('yyyy-MM').format(current);
+    final String currentMonthKey = getMonth(current);
     return monthlyTotals[currentMonthKey];
   }
 
@@ -78,7 +79,7 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
 
   List<Map<String, dynamic>> getMonthTransactions(String yearMonth) {
     List<TransactionModel> monthlyTransactions = state.where((transaction) {
-      String monthKey = DateFormat('yyyy-MM').format(transaction.date);
+      String monthKey = getMonth(transaction.date);
       return monthKey == yearMonth;
     }).toList();
 
@@ -130,7 +131,7 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
     Map<String, Map<String, double>> totals = {};
 
     for (var transaction in transactions) {
-      String monthKey = DateFormat('yyyy-MM').format(transaction.date);
+      String monthKey = getMonth(transaction.date);
 
       if (!totals.containsKey(monthKey)) {
         totals[monthKey] = {'income': 0, 'expanse': 0, 'netIncome': 0};

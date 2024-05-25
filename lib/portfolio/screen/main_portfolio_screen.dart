@@ -5,15 +5,16 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
-import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainPortfolioScreen extends StatelessWidget {
+class MainPortfolioScreen extends ConsumerWidget {
   const MainPortfolioScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final assets = ref.watch(assetViewModelProvider).toList();
     return DefaultLayout(
       isSliverView: true,
       leading: IconButton(
@@ -104,25 +105,21 @@ class MainPortfolioScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const RatioChart(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: PortfolioTable(),
-            ),
-            Container(
-              height: 100,
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AssetTransactionListScreen(),
-                    ),
-                  );
-                },
-                child: const Text('거래내역 모두보기'),
+            if (assets.isEmpty)
+              Container(
+                alignment: Alignment.center,
+                height: 100,
+                child: const Text('현재 보유중인 자산이 없습니다.'),
+              )
+            else ...[
+              const RatioChart(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: PortfolioTable(
+                  assets: assets,
+                ),
               ),
-            )
+            ],
           ],
         ),
       ),

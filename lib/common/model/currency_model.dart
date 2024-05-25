@@ -1,5 +1,4 @@
 // currency_model.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Currency {
   final String countryCode;
@@ -7,8 +6,7 @@ class Currency {
   final String currencyCode;
   final String currencyName;
   final String currencySymbol;
-
-  final bool? isCustomized;
+  // final bool? isCustomized;
 
   Currency({
     required this.countryCode,
@@ -16,7 +14,7 @@ class Currency {
     required this.currencyCode,
     required this.currencyName,
     required this.currencySymbol,
-    this.isCustomized = false,
+    // this.isCustomized = false,
   });
 
   factory Currency.fromJson(Map<String, dynamic> json) {

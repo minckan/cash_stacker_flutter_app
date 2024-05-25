@@ -4,6 +4,7 @@ import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
@@ -166,20 +167,35 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     if (_formKey.currentState!.saveAndValidate() &&
         value != null &&
         value.isNotEmpty) {
-      String docId = uuid.v4();
       final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
 
-      //TODO: 자산 거래 추가시에 아이디 받아와오기
-      // asset = Asset(
+      print('value is $value');
 
-      // );
+      asset = Asset(
+        id: uuid.v4(),
+        name: value['name'],
+        category: value['category'],
+        currency: value['currency'],
+        inputCurrentPrice: double.parse(value['currentPrice']),
+        initialPurchaseDate: value['date'],
+        transactions: [
+          AssetTransaction(
+            id: uuid.v4(),
+            date: value['date'],
+            exchangeRate: double.parse(value['exchangeRate']),
+            price: double.parse(value['buyingPrice']),
+            quantity: double.parse(value['amount']),
+            type: AssetTransactionType.buy,
+            currency: value['currency'],
+          )
+        ],
+      );
+      await ref
+          .read(assetViewModelProvider.notifier)
+          .addAsset(asset, workspaceId);
 
-      // await ref
-      //     .read(assetViewModelProvider.notifier)
-      //     .addAsset(asset, workspaceId);
-
-      // if (!mounted) return;
-      // Navigator.of(context).pop();
+      if (!mounted) return;
+      Navigator.of(context).pop();
     }
   }
 
@@ -298,8 +314,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     return FormContainer(
       child: FormBuilderTextField(
         name: formName,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: [decimalInputFormatter()],
         controller: controller,
         decoration: InputDecoration(
           border: InputBorder.none,
@@ -320,4 +336,22 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       ),
     );
   }
+}
+
+TextInputFormatter decimalInputFormatter() {
+  return TextInputFormatter.withFunction((oldValue, newValue) {
+    final text = newValue.text;
+
+    if (text.isEmpty) {
+      return newValue;
+    }
+
+    final regex = RegExp(r'^\d*\.?\d*');
+
+    if (regex.hasMatch(text)) {
+      return newValue;
+    }
+
+    return oldValue;
+  });
 }

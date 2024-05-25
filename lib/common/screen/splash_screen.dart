@@ -29,15 +29,27 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     if (!mounted) return;
 
-    print(user);
-    if (user != null) {
-      await ref
-          .read(workspaceViewModelProvider.notifier)
-          .loadWorkspace(user.uid);
-      if (!mounted) return;
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const RootTab()), (route) => false);
-    } else {
+    try {
+      print(user);
+      if (user != null) {
+        await user.reload();
+        user = FirebaseAuth.instance.currentUser;
+
+        if (user != null) {
+          await ref
+              .read(workspaceViewModelProvider.notifier)
+              .loadWorkspace(user.uid);
+          if (!mounted) return;
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const RootTab()),
+              (route) => false);
+        }
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
+      }
+    } catch (e) {
+      print('error: $e');
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
     }

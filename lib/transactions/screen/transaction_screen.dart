@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/analystic.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender.dart';
@@ -42,7 +43,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     final transactionViewModel =
         ref.read(transactionViewModelProvider.notifier);
 
-    String yearMonth = DateFormat('yyyy-MM').format(_currentDate);
+    String yearMonth = getMonth(_currentDate);
     List<Map<String, dynamic>> transactions =
         transactionViewModel.getMonthTransactions(yearMonth);
     Map<String, double>? currentMonthTotals =
