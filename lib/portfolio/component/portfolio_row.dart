@@ -1,11 +1,13 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
-class PortfolioRow extends StatelessWidget {
+class PortfolioRow extends ConsumerWidget {
   const PortfolioRow({
     super.key,
     required this.maxColumnWidth,
@@ -18,7 +20,7 @@ class PortfolioRow extends StatelessWidget {
   final rowMinHeight = 40.0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const TextStyle rowStyle = TextStyle(
         fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500);
     final smallColumnWidth =
@@ -27,6 +29,8 @@ class PortfolioRow extends StatelessWidget {
     const rightBorder = Border(
       right: BorderSide(color: AppColors.tableBorderLight, width: 1),
     );
+
+    final assetViewModel = ref.read(assetViewModelProvider.notifier);
     return Column(
       children: [
         SizedBox(
@@ -101,7 +105,8 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.totalKrwEvaluation),
+                    addComma.format(
+                        assetViewModel.getCurrentKrwTotalEvaluation(asset)),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -115,7 +120,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.currentKrwPrice),
+                    addComma.format(assetViewModel.getCurrentKrwPrice(asset)),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -176,7 +181,7 @@ class PortfolioRow extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    '${asset.krwProfitLossRate.toStringAsFixed(2)}%',
+                    '${assetViewModel.getKrwProfitLossRate(asset).toStringAsFixed(2)}%',
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),

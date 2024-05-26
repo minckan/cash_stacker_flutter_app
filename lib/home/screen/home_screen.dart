@@ -4,10 +4,9 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
+import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +21,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(exchangeRateProvider.notifier).loadExchangeRates();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentMonthKey = getMonth(DateTime.now());

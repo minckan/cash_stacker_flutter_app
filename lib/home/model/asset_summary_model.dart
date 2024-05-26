@@ -20,5 +20,6 @@ class AssetSummary {
 
   factory AssetSummary.fromJson(Map<String, dynamic> json) =>
       _$AssetSummaryFromJson(json);
+
   Map<String, dynamic> toJson() => _$AssetSummaryToJson(this);
 }

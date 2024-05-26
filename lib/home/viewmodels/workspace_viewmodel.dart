@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -17,40 +18,51 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
   WorkspaceViewModel(this._ref) : super(null);
 
   Future<void> loadWorkspace(String userId) async {
-    final QuerySnapshot workspacesQuery = await FirebaseFirestore.instance
-        .collection('workspaces')
-        .where('user', arrayContains: userId)
-        .get();
+    try {
+      final QuerySnapshot workspacesQuery = await FirebaseFirestore.instance
+          .collection('workspaces')
+          .where('members', arrayContains: userId)
+          .get();
 
-    if (workspacesQuery.docs.isNotEmpty) {
-      state = Workspace.fromJson(
-          workspacesQuery.docs.first.data() as Map<String, dynamic>);
-      await _ref.read(assetViewModelProvider.notifier).loadAssets(state!.id);
-      await _ref
-          .read(assetSummaryProvider.notifier)
-          .loadAssetSummaries(state!.id);
-      await _ref
-          .read(transactionViewModelProvider.notifier)
-          .loadTransactions(state!.id);
-      await _ref
-          .read(categoryViewModelProvider.notifier)
-          .loadCategory(workspaceId: state!.id);
-
-      await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
+      if (workspacesQuery.docs.isNotEmpty) {
+        state = Workspace.fromJson(
+            workspacesQuery.docs.first.data() as Map<String, dynamic>);
+        await _ref.read(assetViewModelProvider.notifier).loadAssets(state!.id);
+        await _ref
+            .read(assetSummaryProvider.notifier)
+            .loadAssetSummaries(state!.id);
+        await _ref
+            .read(transactionViewModelProvider.notifier)
+            .loadTransactions(state!.id);
+        await _ref
+            .read(categoryViewModelProvider.notifier)
+            .loadCategory(workspaceId: state!.id);
+        await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
+      }
+    } catch (e) {
+      logger.e('Error loading workspace for user $userId: $e');
     }
   }
 
   void setWorkspace(Workspace workspace) {
     state = workspace;
-    _ref.read(assetViewModelProvider.notifier).loadAssets(workspace.id);
-    _ref
-        .read(transactionViewModelProvider.notifier)
-        .loadTransactions(workspace.id);
+    try {
+      _ref.read(assetViewModelProvider.notifier).loadAssets(workspace.id);
+      _ref
+          .read(transactionViewModelProvider.notifier)
+          .loadTransactions(workspace.id);
+    } catch (e) {
+      logger.e('Error setting workspace: $e');
+    }
   }
 
   void clearWorkspace() {
     state = null;
-    _ref.read(assetViewModelProvider.notifier).clearAssets();
-    _ref.read(transactionViewModelProvider.notifier).clearTransactions();
+    try {
+      _ref.read(assetViewModelProvider.notifier).clearAssets();
+      _ref.read(transactionViewModelProvider.notifier).clearTransactions();
+    } catch (e) {
+      logger.e('Error clearing workspace: $e');
+    }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'currency_api_model.g.dart';
+part 'exchange_rate_api_model.g.dart';
 
 @JsonSerializable()
-class CurrencyApiModel {
+class ExchangeRateApiModel {
   /// 조회 결과 (1: 성공, 2: Data code 오류, 3: 인증코드 오류, 4: 일일 제한횟수 마감)
-  final String result;
+  final int result;
 
   /// 통화 코드
   final String cur_unit;
@@ -36,7 +36,7 @@ class CurrencyApiModel {
   /// 국가/통화명
   final String cur_nm;
 
-  CurrencyApiModel({
+  ExchangeRateApiModel({
     required this.result,
     required this.cur_unit,
     required this.ttb,
@@ -51,9 +51,9 @@ class CurrencyApiModel {
   });
 
   // JSON -> 객체
-  factory CurrencyApiModel.fromJson(Map<String, dynamic> json) =>
-      _$CurrencyApiModelFromJson(json);
+  factory ExchangeRateApiModel.fromJson(Map<String, dynamic> json) =>
+      _$ExchangeRateApiModelFromJson(json);
 
   // 객체 -> JSON
-  Map<String, dynamic> toJson() => _$CurrencyApiModelToJson(this);
+  Map<String, dynamic> toJson() => _$ExchangeRateApiModelToJson(this);
 }

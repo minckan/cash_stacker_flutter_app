@@ -1,14 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'currency_api_model.dart';
+part of 'exchange_rate_api_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CurrencyApiModel _$CurrencyApiModelFromJson(Map<String, dynamic> json) =>
-    CurrencyApiModel(
-      result: json['result'] as String,
+ExchangeRateApiModel _$ExchangeRateApiModelFromJson(
+        Map<String, dynamic> json) =>
+    ExchangeRateApiModel(
+      result: (json['result'] as num).toInt(),
       cur_unit: json['cur_unit'] as String,
       ttb: json['ttb'] as String,
       tts: json['tts'] as String,
@@ -21,7 +22,8 @@ CurrencyApiModel _$CurrencyApiModelFromJson(Map<String, dynamic> json) =>
       cur_nm: json['cur_nm'] as String,
     );
 
-Map<String, dynamic> _$CurrencyApiModelToJson(CurrencyApiModel instance) =>
+Map<String, dynamic> _$ExchangeRateApiModelToJson(
+        ExchangeRateApiModel instance) =>
     <String, dynamic>{
       'result': instance.result,
       'cur_unit': instance.cur_unit,

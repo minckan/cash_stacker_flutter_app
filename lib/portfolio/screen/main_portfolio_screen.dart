@@ -3,16 +3,31 @@ import 'dart:io';
 import 'package:cash_stacker_flutter_app/common/component/chart/ratio_chart.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/model/exchange_rate_api_model.dart';
+import 'package:cash_stacker_flutter_app/common/repository/exchange_rate_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/current_exchange_rate_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MainPortfolioScreen extends ConsumerWidget {
   const MainPortfolioScreen({super.key});
+
+//  dio.interceptors.add(CustomInterceptor(storage: storage));
+  Future<List<ExchangeRateApiModel>> _getExchangeRates() async {
+    final dio = Dio();
+
+    final repository =
+        ExchangeRateRepository(dio, baseUrl: dotenv.get('API_BASE_URL'));
+
+    return repository.getCurrentExchangeRates();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +40,8 @@ class MainPortfolioScreen extends ConsumerWidget {
       isSliverView: true,
       leading: IconButton(
         onPressed: () {
-          print('현재 환율 확인');
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => const CurrentExchangeRateScreen()));
         },
         icon: const Icon(
           Icons.currency_exchange,

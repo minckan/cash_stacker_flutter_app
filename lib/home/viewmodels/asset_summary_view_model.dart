@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,13 +21,14 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
           .collection('assetSummaries')
           .get();
 
+      logger.d('loadAssetSummaries : ${querySnapshot.docs}');
       final assetSummaries = querySnapshot.docs.map((doc) {
         return AssetSummary.fromJson(doc.data());
       }).toList();
 
       state = assetSummaries;
     } catch (e) {
-      print('Error loading asset summaries: $e');
+      logger.e('Error loading asset summaries for workspace $workspaceId: $e');
     }
   }
 
@@ -42,7 +44,7 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
 
       state = [...state, assetSummary];
     } catch (e) {
-      print('Error adding asset summary: $e');
+      logger.e('Error adding asset summary for workspace $workspaceId: $e');
     }
   }
 
@@ -61,7 +63,7 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
               summary.month == assetSummary.month ? assetSummary : summary)
           .toList();
     } catch (e) {
-      print('Error updating asset summary: $e');
+      logger.e('Error updating asset summary for workspace $workspaceId: $e');
     }
   }
 
@@ -76,15 +78,16 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
 
       state = state.where((summary) => summary.month != month).toList();
     } catch (e) {
-      print('Error deleting asset summary: $e');
+      logger.e('Error deleting asset summary for workspace $workspaceId: $e');
     }
   }
 
   AssetSummary? getAssetSummaryByMonth(String monthKey) {
     try {
+      logger.d('state: $state');
       return state.firstWhere((s) => s.month == monthKey);
     } catch (e) {
-      print('Error getting asset summary for month $monthKey: $e');
+      logger.e('Error getting asset summary for month $monthKey: $e');
       return null;
     }
   }

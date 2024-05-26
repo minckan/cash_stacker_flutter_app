@@ -86,15 +86,13 @@ class Asset {
     }
   }
 
-  /// 현재가(원화)/ 현재환율 필요.
-  /// 현재 환율 * 현재가
-  double get currentKrwPrice {
-    if (_isKrwAsset) {
-      return inputCurrentPrice;
-    }
-    // TODO: 현재환율 불러와서 * inputCurrentPrice
-    return 0;
-  }
+  // double get currentKrwPrice {
+  //   if (_isKrwAsset) {
+  //     return inputCurrentPrice;
+  //   }
+  //   // TODO: 현재환율 불러와서 * inputCurrentPrice
+  //   return 0;
+  // }
 
   /// 현재가(외화)
   double get currentPrice {
@@ -106,9 +104,9 @@ class Asset {
   }
 
   /// 현재 평가액(원화)
-  double get totalKrwEvaluation {
-    return currentKrwPrice * totalQuantity;
-  }
+  // double get totalKrwEvaluation {
+  //   return currentKrwPrice * totalQuantity;
+  // }
 
   /// 현재 평가액(외화)
   double get totalEvaluation {
@@ -120,13 +118,13 @@ class Asset {
   }
 
   /// 원화 환산 수익률
-  double get krwProfitLossRate {
-    final totalPurchase = totalPurchaseAmount;
-    final totalEval = totalKrwEvaluation;
-    return totalPurchase > 0
-        ? ((totalEval - totalPurchase) / totalPurchase) * 100
-        : 0;
-  }
+  // double get krwProfitLossRate {
+  //   final totalPurchase = totalPurchaseAmount;
+  //   final totalEval = totalKrwEvaluation;
+  //   return totalPurchase > 0
+  //       ? ((totalEval - totalPurchase) / totalPurchase) * 100
+  //       : 0;
+  // }
 
   /// 외화 수익률
   double get profitLossRate {

@@ -143,7 +143,10 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       ),
       onPressed: () {
         controller.animateTo(tab_number);
-        PrimaryScrollController.of(context).jumpTo(0);
+        final primaryScrollController = PrimaryScrollController.of(context);
+        if (primaryScrollController.hasClients) {
+          primaryScrollController.jumpTo(0);
+        }
       },
     );
   }
