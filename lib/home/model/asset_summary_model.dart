@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'asset_summary_model.g.dart';
+
+@JsonSerializable()
 class AssetSummary {
   final double totalAssets;
   final double monthlyBudget;
@@ -13,21 +18,7 @@ class AssetSummary {
     required this.month,
   });
 
-  factory AssetSummary.fromJson(Map<String, dynamic> json) {
-    print(json);
-    return AssetSummary(
-      totalAssets: json['totalAssets'],
-      monthlyBudget: json['monthlyBudget'],
-      monthlyExpenditure: json['monthlyExpenditure'],
-      month: json['month'],
-    );
-  }
-  Map<String, dynamic> toJson() {
-    return {
-      'totalAssets': totalAssets,
-      'monthlyBudget': monthlyBudget,
-      'monthlyExpenditure': monthlyExpenditure,
-      'month': month,
-    };
-  }
+  factory AssetSummary.fromJson(Map<String, dynamic> json) =>
+      _$AssetSummaryFromJson(json);
+  Map<String, dynamic> toJson() => _$AssetSummaryToJson(this);
 }

@@ -1,10 +1,13 @@
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'asset_transaction.g.dart';
 
 enum AssetTransactionType {
   sell,
   buy,
 }
 
+@JsonSerializable()
 class AssetTransaction {
   final String id;
   final DateTime date;
@@ -34,27 +37,8 @@ class AssetTransaction {
     }
   }
 
-  factory AssetTransaction.fromJson(Map<String, dynamic> json) {
-    return AssetTransaction(
-      id: json['id'],
-      date: DateTime.parse(json['date']),
-      price: json['price'],
-      quantity: json['quantity'],
-      exchangeRate: json['exchangeRate'] ?? 0,
-      type: AssetTransactionType.values[json['type']],
-      currency: json['currency'] ?? 0.0,
-    );
-  }
+  factory AssetTransaction.fromJson(Map<String, dynamic> json) =>
+      _$AssetTransactionFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'date': date.toIso8601String(),
-      'price': price,
-      'quantity': quantity,
-      'exchangeRate': exchangeRate ?? 0.0,
-      'type': type.index,
-      'currency': currency,
-    };
-  }
+  Map<String, dynamic> toJson() => _$AssetTransactionToJson(this);
 }

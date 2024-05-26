@@ -1,8 +1,13 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'user_model.g.dart';
+
 enum UserRole {
   keyUser,
   memberUser,
 }
 
+@JsonSerializable()
 class UserModel {
   final String uid;
   final String email;
@@ -24,29 +29,8 @@ class UserModel {
     this.darkMode = false,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> data) {
-    return UserModel(
-      uid: data['uid'],
-      email: data['email'],
-      role: UserRole.values[data['role']],
-      profileImage: data['profileImage'],
-      displayName: data['displayName'],
-      workspaceId: data['workspaceId'],
-      pushEnables: data['pushEnables'],
-      darkMode: data['darkMode'],
-    );
-  }
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'uid': uid,
-      'email': email,
-      'role': role.index,
-      'profileImage': profileImage,
-      'displayName': displayName,
-      'workspaceId': workspaceId,
-      'pushEnables': pushEnables,
-      'darkMode': darkMode,
-    };
-  }
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

@@ -1,11 +1,14 @@
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/payment_method.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'transaction_model.g.dart';
 
 enum TransactionType {
   expense,
   income,
 }
 
+@JsonSerializable()
 class TransactionModel {
   TransactionModel({
     required this.id,
@@ -25,29 +28,8 @@ class TransactionModel {
   final PaymentMethod? paymentMethod;
   final String? memo;
 
-  factory TransactionModel.fromJson(Map<String, dynamic> data) {
-    return TransactionModel(
-      id: data['id'],
-      date: DateTime.parse(data['date']),
-      amount: data['amount'],
-      transactionType: TransactionType.values[data['transactionType']],
-      category: CategoryModel.fromJson(data['category']),
-      memo: data['memo'],
-      paymentMethod: data['paymentMethod'] != null
-          ? PaymentMethod.fromJson(data['paymentMethod'])
-          : null,
-    );
-  }
+  factory TransactionModel.fromJson(Map<String, dynamic> json) =>
+      _$TransactionModelFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'date': date.toIso8601String(),
-      'amount': amount,
-      'transactionType': transactionType.index,
-      'category': category.toJson(),
-      'memo': memo,
-      'paymentMethod': paymentMethod?.toJson(),
-    };
-  }
+  Map<String, dynamic> toJson() => _$TransactionModelToJson(this);
 }

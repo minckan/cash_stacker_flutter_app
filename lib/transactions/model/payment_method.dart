@@ -1,8 +1,13 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'payment_method.g.dart';
+
 enum PaymentType {
   cash,
   card,
 }
 
+@JsonSerializable()
 class PaymentMethod {
   PaymentMethod({
     required this.name,
@@ -11,19 +16,10 @@ class PaymentMethod {
   final PaymentType type;
   final String name;
 
-  factory PaymentMethod.fromJson(Map<String, dynamic> json) {
-    return PaymentMethod(
-      name: json['name'],
-      type: PaymentType.values[json['type']],
-    );
-  }
+  factory PaymentMethod.fromJson(Map<String, dynamic> json) =>
+      _$PaymentMethodFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'type': type.index,
-    };
-  }
+  Map<String, dynamic> toJson() => _$PaymentMethodToJson(this);
 }
 
 List<PaymentMethod> allExpandPayments = [

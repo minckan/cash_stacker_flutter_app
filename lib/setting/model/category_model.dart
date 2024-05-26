@@ -1,9 +1,14 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'category_model.g.dart';
+
 enum CategoryType {
   expense,
   income,
   asset,
 }
 
+@JsonSerializable()
 class CategoryModel {
   CategoryModel({
     required this.id,
@@ -15,19 +20,8 @@ class CategoryModel {
   final String name;
   final CategoryType type;
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
-      id: json['id'],
-      name: json['name'],
-      type: CategoryType.values[json['type']],
-    );
-  }
+  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryModelFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'type': type.index,
-    };
-  }
+  Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
 }
