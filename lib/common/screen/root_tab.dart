@@ -7,6 +7,7 @@ import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/add_expense_screen.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/add_income_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/screen/add_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/main_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/main_portfolio_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/setting_screen.dart';
@@ -56,6 +57,14 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             builder: (context) => CupertinoActionSheet(
               title: const Text('자산관리'),
               actions: [
+                CupertinoActionSheetAction(
+                  child: const Text('가계부 추가'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddTransactionScreen()));
+                  },
+                ),
                 CupertinoActionSheetAction(
                   child: const Text('수입 추가'),
                   onPressed: () {

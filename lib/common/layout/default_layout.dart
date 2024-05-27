@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
@@ -11,6 +12,7 @@ class DefaultLayout extends StatelessWidget {
   final Widget? leading;
   final List<Widget>? actions;
   final bool? isSliverView;
+  final bool? isFormView;
 
   const DefaultLayout({
     super.key,
@@ -22,12 +24,14 @@ class DefaultLayout extends StatelessWidget {
     this.leading,
     this.actions,
     this.isSliverView = false,
+    this.isFormView = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isSliverView == false ? renderAppBar() : null,
+      appBar:
+          isSliverView == false ? renderAppBar(isFormView: isFormView) : null,
       backgroundColor: backgroundColor ?? Colors.white,
       body: isSliverView == false ? child : renderCustomScrollView(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -57,25 +61,43 @@ class DefaultLayout extends StatelessWidget {
     );
   }
 
-  AppBar? renderAppBar() {
+  AppBar? renderAppBar({bool? isFormView}) {
     if (title == null) {
       return null;
     } else {
-      return AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          title!,
-          style: const TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w500,
+      if (isFormView == false) {
+        return AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            title!,
+            style: const TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        foregroundColor: Colors.black,
-        actions: actions,
-        leading: leading,
-      );
+          foregroundColor: Colors.black,
+          actions: actions,
+          leading: leading,
+        );
+      } else {
+        return AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: AppColors.primary,
+          elevation: 0,
+          title: Text(
+            title!,
+            style: const TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          foregroundColor: Colors.white,
+          actions: actions,
+          leading: leading,
+        );
+      }
     }
   }
 }
