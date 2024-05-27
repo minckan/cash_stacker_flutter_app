@@ -25,7 +25,7 @@ class ExchangeRateViewModel extends StateNotifier<List<ExchangeRateApiModel>> {
 
       state = exchangeRates;
 
-      logger.d(state);
+      // logger.d(state);
     } catch (e) {
       logger.e('Error fetching exchange rates: $e');
       state = [];

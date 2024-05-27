@@ -7,17 +7,17 @@ part of 'currency_model.dart';
 // **************************************************************************
 
 Currency _$CurrencyFromJson(Map<String, dynamic> json) => Currency(
-      countryCode: json['countryCode'] as String,
-      countryName: json['countryName'] as String,
-      currencyCode: json['currencyCode'] as String,
-      currencyName: json['currencyName'] as String,
-      currencySymbol: json['currencySymbol'] as String,
+      countryCode: json['country_code'] as String,
+      countryName: json['country_name'] as String,
+      currencyCode: json['currency_code'] as String,
+      currencyName: json['currency_name'] as String,
+      currencySymbol: json['currency_symbol'] as String,
     );
 
 Map<String, dynamic> _$CurrencyToJson(Currency instance) => <String, dynamic>{
-      'countryCode': instance.countryCode,
-      'countryName': instance.countryName,
-      'currencyCode': instance.currencyCode,
-      'currencyName': instance.currencyName,
-      'currencySymbol': instance.currencySymbol,
+      'country_code': instance.countryCode,
+      'country_name': instance.countryName,
+      'currency_code': instance.currencyCode,
+      'currency_name': instance.currencyName,
+      'currency_symbol': instance.currencySymbol,
     };

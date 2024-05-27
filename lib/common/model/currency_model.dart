@@ -6,10 +6,15 @@ part 'currency_model.g.dart';
 
 @JsonSerializable()
 class Currency {
+  @JsonKey(name: 'country_code')
   final String countryCode;
+  @JsonKey(name: 'country_name')
   final String countryName;
+  @JsonKey(name: 'currency_code')
   final String currencyCode;
+  @JsonKey(name: 'currency_name')
   final String currencyName;
+  @JsonKey(name: 'currency_symbol')
   final String currencySymbol;
 
   Currency({
