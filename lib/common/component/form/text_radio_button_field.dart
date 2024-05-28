@@ -2,7 +2,12 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class TextRadioButtonField extends StatefulWidget {
-  const TextRadioButtonField({super.key});
+  const TextRadioButtonField({
+    super.key,
+    required this.onTabAddCategory,
+  });
+
+  final void Function() onTabAddCategory;
 
   @override
   State<TextRadioButtonField> createState() => _TextRadioButtonFieldState();
@@ -28,7 +33,7 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
 
         if (index == 0) {
           return GestureDetector(
-            onTap: () {},
+            onTap: widget.onTabAddCategory,
             child: Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 20.0),
