@@ -7,7 +7,7 @@ enum AssetTransactionType {
   buy,
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AssetTransaction {
   final String id;
   final DateTime date;

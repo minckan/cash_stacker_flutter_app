@@ -1,16 +1,38 @@
 import 'package:cash_stacker_flutter_app/common/component/form/%08form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/text_radio_button_field.dart';
+import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
-import 'package:flutter/material.dart';
 
-class AddIncomeTab extends StatelessWidget {
-  const AddIncomeTab({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class AddIncomeTab extends ConsumerStatefulWidget {
+  const AddIncomeTab({
+    super.key,
+    required this.selectedDate,
+    required this.handleChangeSelectDate,
+  });
+
+  @override
+  ConsumerState<AddIncomeTab> createState() => AddIncomeTabState();
+
+  final DateTime selectedDate;
+  final void Function(DateTime) handleChangeSelectDate;
+}
+
+class AddIncomeTabState extends ConsumerState<AddIncomeTab> {
+  final priceController = TextEditingController();
+  CategoryModel? selectedCategory;
 
   @override
   Widget build(BuildContext context) {
-    final priceController = TextEditingController();
+    final categories = ref
+        .watch(categoryViewModelProvider)
+        .where((category) => category.type == CategoryType.income)
+        .toList();
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
@@ -18,7 +40,10 @@ class AddIncomeTab extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const WeeklyCalendar(),
+          WeeklyCalendar(
+            selectedDate: widget.selectedDate,
+            handleChangeSelectDate: widget.handleChangeSelectDate,
+          ),
           const SizedBox(height: 28),
           FormFieldWithLabel(
             label: '금액',
@@ -31,7 +56,13 @@ class AddIncomeTab extends StatelessWidget {
           FormFieldWithLabel(
             label: '수입 카테고리',
             formField: TextRadioButtonField(
-              onTabAddCategory: () {
+              list: categories,
+              onTabSelectItem: (selectedItem) {
+                setState(() {
+                  selectedCategory = selectedItem;
+                });
+              },
+              onTabAddItem: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const IncomeAddCategoryScreen()));
               },
@@ -42,3 +73,6 @@ class AddIncomeTab extends StatelessWidget {
     );
   }
 }
+
+
+// 

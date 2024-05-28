@@ -1,22 +1,28 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+
 import 'package:flutter/material.dart';
 
 class WeeklyCalendar extends StatefulWidget {
-  const WeeklyCalendar({super.key});
+  const WeeklyCalendar({
+    super.key,
+    required this.selectedDate,
+    required this.handleChangeSelectDate,
+  });
 
   @override
   State<WeeklyCalendar> createState() => _WeeklyCalendarState();
+
+  final DateTime selectedDate;
+  final void Function(DateTime) handleChangeSelectDate;
 }
 
 class _WeeklyCalendarState extends State<WeeklyCalendar> {
   late DateTime _startOfWeek;
-  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    _startOfWeek = _findStartOfWeek(DateTime.now());
+    _startOfWeek = _findStartOfWeek(widget.selectedDate);
   }
 
   DateTime _findStartOfWeek(DateTime date) {
@@ -27,14 +33,16 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   void _previousWeek() {
     setState(() {
       _startOfWeek = _startOfWeek.subtract(const Duration(days: 7));
-      _selectedDate = _selectedDate.subtract(const Duration(days: 7));
+      widget.handleChangeSelectDate(
+          widget.selectedDate.subtract(const Duration(days: 7)));
     });
   }
 
   void _nextWeek() {
     setState(() {
       _startOfWeek = _startOfWeek.add(const Duration(days: 7));
-      _selectedDate = _selectedDate.add(const Duration(days: 7));
+      widget.handleChangeSelectDate(
+          widget.selectedDate.add(const Duration(days: 7)));
     });
   }
 
@@ -44,7 +52,8 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       return _startOfWeek.add(Duration(days: index));
     });
 
-    final selectedMonth = '${_selectedDate.year}년 ${_selectedDate.month}월';
+    final selectedMonth =
+        '${widget.selectedDate.year}년 ${widget.selectedDate.month}월';
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -52,10 +61,11 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
+            spreadRadius: 1, // Spread radius를 줄여서 그림자의 크기를 줄입니다.
+            blurRadius: 3, // Blur radius를 줄여서 그림자의 흐림 정도를 줄입니다.
+            offset: const Offset(
+                0, 4), // x값을 0으로 두고 y값을 2로 하여 아래로 약간 그림자가 생기도록 합니다.
+          )
         ],
       ),
       child: Padding(
@@ -120,10 +130,10 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             ),
             _buildCalendarView(
                 days: days,
-                selectedDate: _selectedDate,
+                selectedDate: widget.selectedDate,
                 onSelectDate: (selectedDate) {
                   setState(() {
-                    _selectedDate = selectedDate;
+                    widget.handleChangeSelectDate(selectedDate);
                   });
                 }),
           ],

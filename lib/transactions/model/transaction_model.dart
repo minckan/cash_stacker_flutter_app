@@ -4,11 +4,11 @@ import 'package:json_annotation/json_annotation.dart';
 part 'transaction_model.g.dart';
 
 enum TransactionType {
-  expense,
   income,
+  expense,
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TransactionModel {
   TransactionModel({
     required this.id,

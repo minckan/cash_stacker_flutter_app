@@ -25,7 +25,7 @@ Map<String, dynamic> _$AssetTransactionToJson(AssetTransaction instance) =>
       'price': instance.price,
       'quantity': instance.quantity,
       'exchangeRate': instance.exchangeRate,
-      'currency': instance.currency,
+      'currency': instance.currency.toJson(),
     };
 
 const _$AssetTransactionTypeEnumMap = {

@@ -26,6 +26,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
               String docId = uuid.v4();
               final currentUser = ref.watch(authViewModelProvider);
 
+              print(controller.value.text);
               if (controller.value.text.toString() == '') {
                 return;
               }

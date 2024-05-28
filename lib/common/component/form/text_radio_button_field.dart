@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 class TextRadioButtonField extends StatefulWidget {
   const TextRadioButtonField({
     super.key,
-    required this.onTabAddCategory,
+    required this.list,
+    required this.onTabAddItem,
+    required this.onTabSelectItem,
   });
 
-  final void Function() onTabAddCategory;
+  final List<dynamic> list;
+  final void Function() onTabAddItem;
+  final void Function(dynamic selectedItem) onTabSelectItem;
 
   @override
   State<TextRadioButtonField> createState() => _TextRadioButtonFieldState();
@@ -15,6 +19,7 @@ class TextRadioButtonField extends StatefulWidget {
 
 class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
   int? selectedIndex;
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -27,13 +32,13 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
         mainAxisSpacing: 6,
         childAspectRatio: 1.6,
       ),
-      itemCount: 8,
+      itemCount: widget.list.length + 1,
       itemBuilder: (context, index) {
         bool isSelected = selectedIndex == index;
 
         if (index == 0) {
           return GestureDetector(
-            onTap: widget.onTabAddCategory,
+            onTap: widget.onTabAddItem,
             child: Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 20.0),
@@ -54,6 +59,7 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
               setState(() {
                 selectedIndex = index;
               });
+              widget.onTabSelectItem(widget.list[index - 1]);
             },
             child: Container(
               alignment: Alignment.center,
@@ -67,7 +73,7 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Text(
-                '🍣식비',
+                widget.list[index - 1].name,
                 style: TextStyle(
                   color: isSelected ? Colors.white : Colors.black,
                   fontSize: 12,

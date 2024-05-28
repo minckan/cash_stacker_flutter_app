@@ -5,8 +5,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
-import 'package:cash_stacker_flutter_app/transactions/screen/add_expense_screen.dart';
-import 'package:cash_stacker_flutter_app/transactions/screen/add_income_screen.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/add_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/main_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/main_portfolio_screen.dart';
@@ -58,19 +57,13 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               title: const Text('자산관리'),
               actions: [
                 CupertinoActionSheetAction(
-                  child: const Text('가계부 추가'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AddTransactionScreen()));
-                  },
-                ),
-                CupertinoActionSheetAction(
                   child: const Text('수입 추가'),
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AddIncomeScreen()));
+                        builder: (context) => const AddTransactionScreen(
+                              transactionType: TransactionType.income,
+                            )));
                   },
                 ),
                 CupertinoActionSheetAction(
@@ -78,7 +71,9 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AddExpenseScreen()));
+                        builder: (context) => const AddTransactionScreen(
+                              transactionType: TransactionType.expense,
+                            )));
                   },
                 ),
                 CupertinoActionSheetAction(

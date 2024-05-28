@@ -28,6 +28,8 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
               if (controller.value.text.toString() == '') {
                 return;
               }
+
+              print(controller.value.text);
               final category = CategoryModel(
                 id: docId,
                 name: controller.value.text.toString(),

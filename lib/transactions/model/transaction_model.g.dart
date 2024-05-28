@@ -28,8 +28,8 @@ Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
       'date': instance.date.toIso8601String(),
       'amount': instance.amount,
       'transactionType': _$TransactionTypeEnumMap[instance.transactionType]!,
-      'category': instance.category,
-      'paymentMethod': instance.paymentMethod,
+      'category': instance.category.toJson(),
+      'paymentMethod': instance.paymentMethod?.toJson(),
       'memo': instance.memo,
     };
 
