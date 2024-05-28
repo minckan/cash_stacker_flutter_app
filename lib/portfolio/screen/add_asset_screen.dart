@@ -1,3 +1,5 @@
+import 'package:cash_stacker_flutter_app/common/component/form/%08form_text_field.dart';
+import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
@@ -8,6 +10,7 @@ import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart'
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/form_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,119 +49,106 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
     final currencyVM = ref.watch(currencyViewModelProvider).toList();
     return DefaultLayout(
+      isFormView: true,
       title: '자산 추가',
-      child: Container(
-        color: AppColors.lightGreyBackground,
+      actions: [
+        TextButton(
+            onPressed: () {},
+            child: const Text(
+              '저장',
+              style: TextStyle(color: Colors.white),
+            ))
+      ],
+      child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: FormBuilder(
-            key: _formKey,
-            child: Column(
-              children: [
-                buildDateFormField(
-                  context: context,
-                  selectedDate: selectedDate,
-                  onDateSelect: (value) => {
-                    setState(() {
-                      selectedDate = value;
-                    })
-                  },
-                ),
-                const SizedBox(height: 10),
-                buildTextAreaFormField(
-                  context: context,
-                  controller: nameController,
-                  formName: 'name',
-                  placeholder: '종목명 입력',
-                ),
-                const SizedBox(height: 10),
-                Row(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 30,
+          ),
+          child: Column(
+            children: [
+              FormBuilder(
+                key: _formKey,
+                child: Column(
                   children: [
-                    Expanded(
-                      child: buildCategoryFormField(
-                        context: context,
-                        categories: categoryVM,
-                        selectedCategory: selectedCategory,
-                        onSelect: (value) {},
-                      ),
+                    const WeeklyCalendar(),
+                    const SizedBox(height: 10),
+                    buildTextAreaFormField(
+                      context: context,
+                      controller: nameController,
+                      formName: 'name',
+                      placeholder: '종목명 입력',
+                    ),
+                    const SizedBox(height: 10),
+                    buildCategoryFormField(
+                      context: context,
+                      categories: categoryVM,
+                      selectedCategory: selectedCategory,
+                      onSelect: (value) {},
+                    ),
+                    const SizedBox(height: 10),
+                    buildCurrencyFormField(
+                      context: context,
+                      currencies: currencyVM,
+                      selectedCurrency: selectedCurrency,
+                      onSelect: (value) {},
+                    ),
+                    const SizedBox(height: 10),
+                    buildNumberFormField(
+                      context: context,
+                      controller: buyingPriceController,
+                      formName: 'buyingPrice',
+                      placeholder: '매입가',
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Expanded(
-                      child: buildCurrencyFormField(
-                        context: context,
-                        currencies: currencyVM,
-                        selectedCurrency: selectedCurrency,
-                        onSelect: (value) {},
-                      ),
+                    buildNumberFormField(
+                      context: context,
+                      controller: buyingAmtController,
+                      formName: 'amount',
+                      placeholder: '수량',
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: buildNumberFormField(
-                        context: context,
-                        controller: buyingPriceController,
-                        formName: 'buyingPrice',
-                        placeholder: '매입가',
-                      ),
+                    const SizedBox(height: 10),
+                    buildNumberFormField(
+                      context: context,
+                      controller: currentPriceController,
+                      formName: 'currentPrice',
+                      placeholder: '현재가',
+                      isOptional: true,
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Expanded(
-                      child: buildNumberFormField(
-                        context: context,
-                        controller: buyingAmtController,
-                        formName: 'amount',
-                        placeholder: '수량',
-                      ),
+                    buildNumberFormField(
+                      context: context,
+                      controller: exchangeRateController,
+                      formName: 'exchangeRate',
+                      placeholder: '구매 환율',
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: buildNumberFormField(
-                        context: context,
-                        controller: currentPriceController,
-                        formName: 'currentPrice',
-                        placeholder: '현재가',
-                        isOptional: true,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: buildNumberFormField(
-                        context: context,
-                        controller: exchangeRateController,
-                        formName: 'exchangeRate',
-                        placeholder: '구매 환율',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 40,
-                  child: ElevatedButton(
-                    onPressed: handleSave,
-                    child: const Text('저장'),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  final InputDecoration _inputDecoration = const InputDecoration(
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 1,
+        color: Color(0xffDFDFDF),
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Color(0xffA18AE4),
+      ),
+    ),
+  );
 
 //TODO: 바로 요청이 안됨.
   handleSave() async {
@@ -199,54 +189,16 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     }
   }
 
-  buildDateFormField({
-    required BuildContext context,
-    required DateTime? selectedDate,
-    required Function(DateTime) onDateSelect,
-  }) {
-    return FormContainer(
-      label: '매수일',
-      child: FormBuilderDateTimePicker(
-        name: 'date',
-        initialDate: selectedDate ?? DateTime.now(),
-        initialValue: selectedDate ?? DateTime.now(),
-        inputType: InputType.date,
-        format: DateFormat("yyyy-MM-dd"),
-        // decoration: const InputDecoration(labelText: "Date"),
-        initialEntryMode: DatePickerEntryMode.calendar,
-        textAlign: TextAlign.right,
-        validator: (value) {
-          if (value != null && value != selectedDate) {
-            onDateSelect(value);
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
   buildTextAreaFormField({
     required BuildContext context,
     required TextEditingController controller,
     required String formName,
     required String placeholder,
   }) {
-    return FormContainer(
-      child: FormBuilderTextField(
-        name: formName,
-        keyboardType: TextInputType.text,
-        inputFormatters: const [],
+    return FormFieldWithLabel(
+      label: placeholder,
+      formField: FormTextField(
         controller: controller,
-        decoration:
-            InputDecoration(border: InputBorder.none, labelText: placeholder),
-        textAlign: TextAlign.right,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter some text';
-          }
-
-          return null;
-        },
       ),
     );
   }
@@ -257,12 +209,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required CategoryModel? selectedCategory,
     required Function(CategoryModel?) onSelect,
   }) {
-    return FormContainer(
-      child: FormBuilderDropdown(
+    return FormFieldWithLabel(
+      label: '자산분류',
+      formField: FormBuilderDropdown(
         name: 'category',
         isExpanded: true,
-        decoration:
-            const InputDecoration(border: InputBorder.none, labelText: '자산 분류'),
+        decoration: _inputDecoration,
         items: categories
             .map(
               (category) => DropdownMenuItem(
@@ -283,12 +235,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required Currency? selectedCurrency,
     required Function(Currency?) onSelect,
   }) {
-    return FormContainer(
-      child: FormBuilderDropdown(
+    return FormFieldWithLabel(
+      label: '구매통화',
+      formField: FormBuilderDropdown(
         name: 'currency',
         isExpanded: true,
-        decoration:
-            const InputDecoration(border: InputBorder.none, labelText: '구매통화'),
+        decoration: _inputDecoration,
         items: currencies
             .map(
               (currency) => DropdownMenuItem(
@@ -311,16 +263,14 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required String placeholder,
     bool isOptional = false,
   }) {
-    return FormContainer(
-      child: FormBuilderTextField(
+    return FormFieldWithLabel(
+      label: placeholder,
+      formField: FormBuilderTextField(
         name: formName,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [decimalInputFormatter()],
         controller: controller,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          labelText: placeholder,
-        ),
+        decoration: _inputDecoration,
         textAlign: TextAlign.right,
         validator: (value) {
           if (isOptional == false) {
