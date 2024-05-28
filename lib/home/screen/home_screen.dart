@@ -27,6 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(exchangeRateProvider.notifier).loadExchangeRates();
   }
 
+// TODO: asset이 초기화 됨!
   @override
   Widget build(BuildContext context) {
     final currentMonthKey = getMonth(DateTime.now());

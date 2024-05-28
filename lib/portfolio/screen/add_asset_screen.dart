@@ -32,7 +32,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
   CategoryModel? selectedCategory;
   Currency? selectedCurrency;
-  DateTime? selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
 
   TextEditingController nameController = TextEditingController();
   TextEditingController buyingPriceController = TextEditingController();
@@ -53,7 +53,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       title: '자산 추가',
       actions: [
         TextButton(
-            onPressed: () {},
+            onPressed: handleSave,
             child: const Text(
               '저장',
               style: TextStyle(color: Colors.white),
@@ -71,7 +71,27 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // const WeeklyCalendar(),
+                    WeeklyCalendar(
+                      selectedDate: selectedDate,
+                      handleChangeSelectDate: (value) {
+                        setState(() {
+                          selectedDate = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    buildCategoryFormField(
+                      context: context,
+                      categories: categoryVM,
+                      selectedCategory: selectedCategory,
+                      onSelect: (value) {
+                        setState(() {
+                          selectedCategory = value;
+                          _formKey.currentState?.fields['category']
+                              ?.didChange(value);
+                        });
+                      },
+                    ),
                     const SizedBox(height: 10),
                     buildTextAreaFormField(
                       context: context,
@@ -80,18 +100,26 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       placeholder: '종목명 입력',
                     ),
                     const SizedBox(height: 10),
-                    buildCategoryFormField(
-                      context: context,
-                      categories: categoryVM,
-                      selectedCategory: selectedCategory,
-                      onSelect: (value) {},
-                    ),
-                    const SizedBox(height: 10),
                     buildCurrencyFormField(
                       context: context,
                       currencies: currencyVM,
                       selectedCurrency: selectedCurrency,
-                      onSelect: (value) {},
+                      onSelect: (value) {
+                        setState(() {
+                          selectedCurrency = value;
+                          _formKey.currentState?.fields['currency']
+                              ?.didChange(value);
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    buildNumberFormField(
+                      context: context,
+                      controller: exchangeRateController,
+                      formName: 'exchangeRate',
+                      placeholder: '구매 환율',
                     ),
                     const SizedBox(height: 10),
                     buildNumberFormField(
@@ -117,15 +145,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       placeholder: '현재가',
                       isOptional: true,
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    buildNumberFormField(
-                      context: context,
-                      controller: exchangeRateController,
-                      formName: 'exchangeRate',
-                      placeholder: '구매 환율',
-                    ),
                   ],
                 ),
               ),
@@ -150,42 +169,39 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     ),
   );
 
-//TODO: 바로 요청이 안됨.
   handleSave() async {
-    final value = _formKey.currentState?.value;
-    Asset asset;
-    if (_formKey.currentState!.saveAndValidate() &&
-        value != null &&
-        value.isNotEmpty) {
-      final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
+    print(_formKey.currentState?.value);
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      final value = _formKey.currentState?.value;
+      if (value != null) {
+        final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
 
-      print('value is $value');
+        final asset = Asset(
+          id: uuid.v4(),
+          name: value['name'],
+          category: value['category'],
+          currency: value['currency'],
+          inputCurrentPrice: double.tryParse(value['currentPrice']) ?? 0,
+          initialPurchaseDate: selectedDate,
+          transactions: [
+            AssetTransaction(
+              id: uuid.v4(),
+              date: selectedDate,
+              exchangeRate: double.parse(value['exchangeRate']),
+              price: double.parse(value['buyingPrice']),
+              quantity: double.parse(value['amount']),
+              type: AssetTransactionType.buy,
+              currency: value['currency'],
+            )
+          ],
+        );
+        await ref
+            .read(assetViewModelProvider.notifier)
+            .addAsset(asset, workspaceId);
 
-      asset = Asset(
-        id: uuid.v4(),
-        name: value['name'],
-        category: value['category'],
-        currency: value['currency'],
-        inputCurrentPrice: double.parse(value['currentPrice']),
-        initialPurchaseDate: value['date'],
-        transactions: [
-          AssetTransaction(
-            id: uuid.v4(),
-            date: value['date'],
-            exchangeRate: double.parse(value['exchangeRate']),
-            price: double.parse(value['buyingPrice']),
-            quantity: double.parse(value['amount']),
-            type: AssetTransactionType.buy,
-            currency: value['currency'],
-          )
-        ],
-      );
-      await ref
-          .read(assetViewModelProvider.notifier)
-          .addAsset(asset, workspaceId);
-
-      if (!mounted) return;
-      Navigator.of(context).pop();
+        if (!mounted) return;
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -197,8 +213,10 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }) {
     return FormFieldWithLabel(
       label: placeholder,
-      formField: FormTextField(
+      formField: FormBuilderTextField(
+        name: formName,
         controller: controller,
+        decoration: _inputDecoration,
       ),
     );
   }

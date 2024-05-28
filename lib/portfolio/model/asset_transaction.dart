@@ -3,7 +3,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'asset_transaction.g.dart';
 
 enum AssetTransactionType {
+  @JsonValue('매도')
   sell,
+  @JsonValue('매수')
   buy,
 }
 
@@ -41,4 +43,6 @@ class AssetTransaction {
       _$AssetTransactionFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetTransactionToJson(this);
+
+  String? typeToString() => _$AssetTransactionTypeEnumMap[type];
 }

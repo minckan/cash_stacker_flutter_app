@@ -1,6 +1,9 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -76,16 +79,24 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
     return result;
   }
 
+  List<AssetTransaction> getAllAssetTransactions() {
+    return state.fold<List<AssetTransaction>>([], (prev, elem) {
+      return [...prev, ...elem.transactions];
+    });
+  }
+
   /// 현재가(원화)/ 현재환율 필요.
   /// 현재 환율 * 현재가
   double getCurrentKrwPrice(Asset asset) {
     final exchangeRate = _ref
         .watch(exchangeRateProvider)
         .firstWhere((rate) => rate.cur_unit == asset.currency?.currencyCode);
+
     if (asset.currency?.currencyCode == 'KRW') {
       return asset.inputCurrentPrice;
     } else {
-      return asset.inputCurrentPrice * double.parse(exchangeRate.deal_bas_r);
+      return asset.inputCurrentPrice *
+          double.parse(removeComma(exchangeRate.deal_bas_r));
     }
   }
 

@@ -34,6 +34,6 @@ Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     };
 
 const _$TransactionTypeEnumMap = {
-  TransactionType.expense: 'expense',
   TransactionType.income: 'income',
+  TransactionType.expense: 'expense',
 };

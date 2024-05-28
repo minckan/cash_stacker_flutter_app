@@ -36,6 +36,8 @@ class MainPortfolioScreen extends ConsumerWidget {
     final currentAssetSummary =
         assetSummary.getAssetSummaryByMonth(getMonth(DateTime.now()));
 
+    print(assets);
+
     return DefaultLayout(
       isSliverView: true,
       leading: IconButton(

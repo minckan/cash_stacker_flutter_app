@@ -29,6 +29,6 @@ Map<String, dynamic> _$AssetTransactionToJson(AssetTransaction instance) =>
     };
 
 const _$AssetTransactionTypeEnumMap = {
-  AssetTransactionType.sell: 'sell',
-  AssetTransactionType.buy: 'buy',
+  AssetTransactionType.sell: '매도',
+  AssetTransactionType.buy: '매수',
 };

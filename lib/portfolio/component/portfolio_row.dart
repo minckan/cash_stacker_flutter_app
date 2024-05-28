@@ -33,7 +33,8 @@ class PortfolioRow extends ConsumerWidget {
     final assetViewModel = ref.read(assetViewModelProvider.notifier);
     return Column(
       children: [
-        SizedBox(
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -92,7 +93,8 @@ class PortfolioRow extends ConsumerWidget {
           height: 1,
           color: AppColors.tableBorderLight,
         ),
-        SizedBox(
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
           height: rowMinHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,8 +156,8 @@ class PortfolioRow extends ConsumerWidget {
           height: 1,
           color: AppColors.tableBorderLight,
         ),
-        SizedBox(
-          height: rowMinHeight,
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -181,7 +183,9 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    '${assetViewModel.getKrwProfitLossRate(asset).toStringAsFixed(2)}%',
+                    asset.inputCurrentPrice == 0
+                        ? '-'
+                        : '${assetViewModel.getKrwProfitLossRate(asset).toStringAsFixed(2)}%',
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -193,7 +197,9 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  '${asset.profitLossRate.toStringAsFixed(2)}%',
+                  asset.inputCurrentPrice == 0
+                      ? '-'
+                      : '${asset.profitLossRate.toStringAsFixed(2)}%',
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
