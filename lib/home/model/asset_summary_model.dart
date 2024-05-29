@@ -22,4 +22,17 @@ class AssetSummary {
       _$AssetSummaryFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetSummaryToJson(this);
+
+  AssetSummary copyWith({
+    double? totalAssets,
+    double? monthlyBudget,
+    double? monthlyExpenditure,
+  }) {
+    return AssetSummary(
+      month: month,
+      totalAssets: totalAssets ?? this.totalAssets,
+      monthlyBudget: monthlyBudget ?? this.monthlyBudget,
+      monthlyExpenditure: monthlyExpenditure ?? this.monthlyExpenditure,
+    );
+  }
 }
