@@ -90,9 +90,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       selectedCategory: selectedCategory,
                       onSelect: (value) {
                         setState(() {
-                          // selectedCategory = value;
-                          // _formKey.currentState?.fields['category']
-                          //     ?.didChange(value);
+                          selectedCategory = value;
                           categoryController.text = value!.name;
                         });
                         Navigator.pop(context);
@@ -114,9 +112,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       onSelect: (value) {
                         setState(() {
                           selectedCurrency = value;
-                          // _formKey.currentState?.fields['currency']
-                          //     ?.didChange(value);
-
                           currencyController.text = value!.currencyName;
                         });
                         Navigator.pop(context);
@@ -189,28 +184,35 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   );
 
   handleSave() async {
-    print(_formKey.currentState?.value);
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       final value = _formKey.currentState?.value;
-      if (value != null) {
+      if (value != null &&
+          selectedCategory != null &&
+          selectedCurrency != null) {
         final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
+
+        logger.d(value);
+        logger.d(selectedCategory!.toJson());
+        logger.d(selectedCurrency!.toJson());
 
         final asset = Asset(
           id: uuid.v4(),
           name: value['name'],
-          category: value['category'],
-          currency: value['currency'],
+          category: selectedCategory!,
+          currency: selectedCurrency,
           inputCurrentPrice: double.tryParse(value['currentPrice']) ?? 0,
           initialPurchaseDate: selectedDate,
           transactions: [
             AssetTransaction(
               id: uuid.v4(),
               date: selectedDate,
-              exchangeRate: double.parse(value['exchangeRate']),
+              exchangeRate: value['exchangeRate'] != null
+                  ? double.tryParse(value['exchangeRate'])
+                  : 0,
               price: double.parse(value['buyingPrice']),
               quantity: double.parse(value['amount']),
               type: AssetTransactionType.buy,
-              currency: value['currency'],
+              currency: selectedCurrency!,
             )
           ],
         );
@@ -267,9 +269,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 child: CupertinoPicker(
                   backgroundColor: Colors.white,
                   itemExtent: 32,
-                  onSelectedItemChanged: (int index) {
-                    logger.d(index);
-                  },
+                  onSelectedItemChanged: (int index) {},
                   children: List<Widget>.generate(
                     categories.length,
                     (int index) {
@@ -316,9 +316,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 child: CupertinoPicker(
                   backgroundColor: Colors.white,
                   itemExtent: 32,
-                  onSelectedItemChanged: (int index) {
-                    logger.d(index);
-                  },
+                  onSelectedItemChanged: (int index) {},
                   children: List<Widget>.generate(
                     currencies.length,
                     (int index) {
@@ -349,7 +347,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     bool disabled = false,
     String? suffixText,
   }) {
-    logger.d('$formName: $disabled');
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
@@ -359,11 +356,14 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         inputFormatters: [decimalInputFormatter()],
         controller: controller,
         decoration: _inputDecoration.copyWith(
-          suffixIcon: Container(
-            padding: const EdgeInsets.only(right: 16.0),
-            alignment: Alignment.centerRight,
-            child: Text(suffixText ?? ''),
-          ),
+          suffixIcon: suffixText != null
+              ? Container(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  alignment: Alignment.centerRight,
+                  width: 10,
+                  child: Text(suffixText),
+                )
+              : null,
         ),
         textAlign: TextAlign.right,
         validator: (value) {

@@ -1,15 +1,19 @@
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final assetSummaryProvider =
     StateNotifierProvider<AssetSummaryViewModel, List<AssetSummary>>((ref) {
-  return AssetSummaryViewModel();
+  return AssetSummaryViewModel(ref);
 });
 
 class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
-  AssetSummaryViewModel() : super([]);
+  final Ref _ref;
+
+  AssetSummaryViewModel(this._ref) : super([]);
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -81,6 +85,10 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
     }
   }
 
+  AssetSummary get assetSummaryThisMonth {
+    return state.firstWhere((s) => s.month == getMonth(DateTime.now()));
+  }
+
   AssetSummary? getAssetSummaryByMonth(String monthKey) {
     try {
       logger.d('state: $state');
@@ -117,6 +125,43 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
       return '자산이 이전달 대비 $decreaseAmt 줄었네요..!';
     } else {
       return '';
+    }
+  }
+
+  double get monthlyExpenditure {
+    final thisMonthTransactions = _ref
+        .read(transactionViewModelProvider.notifier)
+        .getMonthTransactions(getMonth(DateTime.now()));
+
+    return thisMonthTransactions.fold(
+        0.0, (total, transaction) => total + transaction['totalExpense']);
+  }
+
+  double get currentExpendableBudget {
+    final currentAssetSummary =
+        getAssetSummaryByMonth(getMonth(DateTime.now()));
+    return currentAssetSummary!.monthlyBudget - monthlyExpenditure;
+  }
+
+  double get budgetExpenditurePercentage {
+    final currentAssetSummary =
+        getAssetSummaryByMonth(getMonth(DateTime.now()));
+    return monthlyExpenditure * 100 / currentAssetSummary!.monthlyBudget;
+  }
+
+  String get warningText {
+    if (budgetExpenditurePercentage == 0) {
+      return '아직 예산을 사용하지 않으셨군요! 대단합니다!';
+    } else if (budgetExpenditurePercentage < 40) {
+      return '예산이 충분히 남아있어요!';
+    } else if (budgetExpenditurePercentage > 40 &&
+        budgetExpenditurePercentage < 70) {
+      return '예산을 절반정도 소진했어요!';
+    } else if (budgetExpenditurePercentage < 100) {
+      return '예산을 대부분 사용했어요!\n예산을 초과하지 않도록 주의해주세요!';
+    } else {
+      // 100% ~ 그이상
+      return '예산을 전부 사용했어요!';
     }
   }
 }

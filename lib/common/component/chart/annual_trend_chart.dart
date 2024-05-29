@@ -1,12 +1,19 @@
 import 'dart:math';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/extensions/color_extensions.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class _BarChart extends StatelessWidget {
-  const _BarChart();
+  const _BarChart({required this.assetSummaries});
+
+  final List<AssetSummaryDecile> assetSummaries;
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +35,17 @@ class _BarChart extends StatelessWidget {
         touchTooltipData: BarTouchTooltipData(
           getTooltipColor: (group) => Colors.transparent,
           tooltipPadding: EdgeInsets.zero,
-          tooltipMargin: 8,
+          tooltipMargin: 0,
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
             BarChartRodData rod,
             int rodIndex,
           ) {
+            final assetSummary = getAssetSummary(groupIndex);
+
             return BarTooltipItem(
-              rod.toY.round().toString(),
+              assetSummary.assetSummary.formattedTotalAssets,
               const TextStyle(
                 color: AppColors.bodyText,
                 fontWeight: FontWeight.bold,
@@ -95,32 +104,49 @@ class _BarChart extends StatelessWidget {
 
   List<BarChartGroupData> get barGroups => List.generate(
         12,
-        (index) => BarChartGroupData(
-          x: index,
-          barRods: [
-            BarChartRodData(
-              toY: Random().nextInt(10).toDouble(),
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
+        (index) {
+          final assetSummary = getAssetSummary(index);
+
+          return BarChartGroupData(
+            x: index,
+            barRods: [
+              BarChartRodData(
+                toY: assetSummary.normalizedValue,
+                gradient: _barsGradient,
+              )
+            ],
+            showingTooltipIndicators: [0],
+          );
+        },
       );
+
+  AssetSummaryDecile getAssetSummary(int index) {
+    return assetSummaries.firstWhere(
+      (decile) =>
+          getDateFromMonthKey(decile.assetSummary.month).month == index + 1,
+      orElse: () => AssetSummaryDecile.empty(), // 조건을 만족하는 요소를 찾지 못하면 null 반환
+    );
+  }
 }
 
-class BarChartSample3 extends StatefulWidget {
-  const BarChartSample3({super.key});
+class AnnualTrendChart extends ConsumerStatefulWidget {
+  const AnnualTrendChart({super.key});
 
   @override
-  State<StatefulWidget> createState() => BarChartSample3State();
+  ConsumerState<AnnualTrendChart> createState() => AnnualTrendChartState();
 }
 
-class BarChartSample3State extends State<BarChartSample3> {
+class AnnualTrendChartState extends ConsumerState<AnnualTrendChart> {
+  List<AssetSummaryDecile> normalizedSummaries = [];
+
   @override
   Widget build(BuildContext context) {
-    return const AspectRatio(
+    final assetSummaries = ref.watch(assetSummaryProvider);
+    final normalized = normalizeAssetSummaries(assetSummaries);
+    normalizedSummaries = normalized;
+    return AspectRatio(
       aspectRatio: 1.6,
-      child: _BarChart(),
+      child: _BarChart(assetSummaries: normalizedSummaries),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:cash_stacker_flutter_app/common/component/chart/bar_chart2.dart';
+import 'package:cash_stacker_flutter_app/common/component/chart/annual_trend_chart.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
@@ -184,7 +184,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             Text(
                               addComma.format(
-                                  currentAssetSummary.currentExpendableBudget),
+                                  assetSummaryVM.currentExpendableBudget),
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 32,
@@ -194,7 +194,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ],
                         ),
                         Text(
-                          '${addComma.format(currentAssetSummary.monthlyBudget)}원 중 ${addComma.format(currentAssetSummary.monthlyExpenditure)}원을 사용했어요!',
+                          '${addComma.format(currentAssetSummary.monthlyBudget)}원 중 ${addComma.format(assetSummaryVM.monthlyExpenditure)}원을 사용했어요!',
                           style: const TextStyle(
                             fontSize: 12,
                           ),
@@ -202,8 +202,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(height: 4),
                         LinearPercentIndicator(
                           percent:
-                              currentAssetSummary.budgetExpenditurePercentage /
-                                  100,
+                              assetSummaryVM.budgetExpenditurePercentage / 100,
                           progressColor: AppColors.primary,
                           lineHeight: 10,
                           alignment: MainAxisAlignment.start,
@@ -213,7 +212,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          currentAssetSummary.warningText,
+                          assetSummaryVM.warningText,
                           style: const TextStyle(
                               height: 1.1,
                               fontSize: 14,
@@ -229,9 +228,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 '월간 자산 규모 추이',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
               ),
-              const SizedBox(height: 20),
-              // BarChartSample1(),
-              const BarChartSample3(),
+              const SizedBox(height: 50),
+              const AnnualTrendChart(),
               const SizedBox(
                 height: 120,
               )
