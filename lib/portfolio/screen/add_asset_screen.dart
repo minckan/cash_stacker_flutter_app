@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
@@ -112,7 +113,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       selectedCurrency: selectedCurrency,
                       onSelect: (value) {
                         setState(() {
-                          // selectedCurrency = value;
+                          selectedCurrency = value;
                           // _formKey.currentState?.fields['currency']
                           //     ?.didChange(value);
 
@@ -122,22 +123,27 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       },
                       controller: currencyController,
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    buildNumberFormField(
-                      context: context,
-                      controller: exchangeRateController,
-                      formName: 'exchangeRate',
-                      placeholder: '구매 환율',
-                    ),
                     const SizedBox(height: 10),
                     buildNumberFormField(
                       context: context,
                       controller: buyingPriceController,
                       formName: 'buyingPrice',
                       placeholder: '매입가',
+                      disabled: currencyController.value.text == '',
+                      suffixText: selectedCurrency?.currencyCode,
                     ),
+                    if (selectedCurrency != null &&
+                        selectedCurrency?.currencyCode != 'KRW') ...[
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      buildNumberFormField(
+                          context: context,
+                          controller: exchangeRateController,
+                          formName: 'exchangeRate',
+                          placeholder: '구매 환율(구매통화 1unit 당)',
+                          suffixText: '원'),
+                    ],
                     const SizedBox(
                       width: 10,
                     ),
@@ -154,6 +160,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       formName: 'currentPrice',
                       placeholder: '현재가',
                       isOptional: true,
+                      disabled: currencyController.value.text == '',
+                      suffixText: selectedCurrency?.currencyCode,
                     ),
                   ],
                 ),
@@ -169,12 +177,13 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     border: OutlineInputBorder(
       borderSide: BorderSide(
         width: 1,
-        color: Color(0xffDFDFDF),
+        // color: Color(0xffDFDFDF),
       ),
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(
-        color: Color(0xffA18AE4),
+        width: 1.4,
+        color: AppColors.primary,
       ),
     ),
   );
@@ -329,24 +338,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         },
       ),
     );
-
-    //   FormBuilderDropdown(
-    //     name: 'currency',
-    //     isExpanded: true,
-    //     decoration: _inputDecoration,
-    //     items: currencies
-    //         .map(
-    //           (currency) => DropdownMenuItem(
-    //             alignment: Alignment.centerRight,
-    //             value: currency,
-    //             child: Text(
-    //                 '${currency.currencyName} - ${currency.currencySymbol}'),
-    //           ),
-    //         )
-    //         .toList(),
-    //     onChanged: onSelect,
-    //   ),
-    // );
   }
 
   buildNumberFormField({
@@ -355,15 +346,25 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required String formName,
     required String placeholder,
     bool isOptional = false,
+    bool disabled = false,
+    String? suffixText,
   }) {
+    logger.d('$formName: $disabled');
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
         name: formName,
+        readOnly: disabled,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [decimalInputFormatter()],
         controller: controller,
-        decoration: _inputDecoration,
+        decoration: _inputDecoration.copyWith(
+          suffixIcon: Container(
+            padding: const EdgeInsets.only(right: 16.0),
+            alignment: Alignment.centerRight,
+            child: Text(suffixText ?? ''),
+          ),
+        ),
         textAlign: TextAlign.right,
         validator: (value) {
           if (isOptional == false) {
