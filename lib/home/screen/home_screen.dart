@@ -182,8 +182,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   fontFamily: 'Roboto'),
                             ),
                             Text(
-                              addComma
-                                  .format(currentAssetSummary.monthlyBudget),
+                              addComma.format(
+                                  currentAssetSummary.currentExpendableBudget),
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 32,
@@ -200,7 +200,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         const SizedBox(height: 4),
                         LinearPercentIndicator(
-                          percent: 0.5,
+                          percent:
+                              currentAssetSummary.budgetExpenditurePercentage /
+                                  100,
                           progressColor: AppColors.primary,
                           lineHeight: 10,
                           alignment: MainAxisAlignment.start,
@@ -209,9 +211,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           barRadius: const Radius.circular(10),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          '예산을 대부분 사용했어요!\n예산을 초과하지 않도록 주의해주세요!',
-                          style: TextStyle(
+                        Text(
+                          currentAssetSummary.warningText,
+                          style: const TextStyle(
                               height: 1.1,
                               fontSize: 14,
                               fontWeight: FontWeight.w500),

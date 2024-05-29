@@ -21,7 +21,6 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
           .collection('assetSummaries')
           .get();
 
-      logger.d('loadAssetSummaries : ${querySnapshot.docs}');
       final assetSummaries = querySnapshot.docs.map((doc) {
         return AssetSummary.fromJson(doc.data());
       }).toList();
