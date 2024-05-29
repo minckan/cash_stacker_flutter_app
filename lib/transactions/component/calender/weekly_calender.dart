@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
 import 'package:flutter/material.dart';
 
@@ -46,6 +47,23 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     });
   }
 
+  Future<void> _selectDatePicker(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      initialDate: widget.selectedDate,
+    );
+
+    if (picked != null && picked != widget.selectedDate) {
+      logger.d(picked);
+      setState(() {
+        widget.handleChangeSelectDate(picked);
+        _startOfWeek = _findStartOfWeek(picked);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<DateTime> days = List.generate(7, (index) {
@@ -77,10 +95,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    selectedMonth,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
+                  TextButton(
+                    onPressed: () => _selectDatePicker(context),
+                    child: Text(
+                      selectedMonth,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Row(
                     children: [

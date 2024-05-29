@@ -1,8 +1,8 @@
-import 'package:cash_stacker_flutter_app/common/component/form/%08form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
-import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
@@ -11,12 +11,13 @@ import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.da
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
-import 'package:cash_stacker_flutter_app/transactions/component/form_container.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+
 import 'package:uuid/uuid.dart';
 
 class AddAssetScreen extends ConsumerStatefulWidget {
@@ -39,6 +40,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   TextEditingController buyingAmtController = TextEditingController();
   TextEditingController currentPriceController = TextEditingController();
   TextEditingController exchangeRateController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController currencyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -86,11 +89,14 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       selectedCategory: selectedCategory,
                       onSelect: (value) {
                         setState(() {
-                          selectedCategory = value;
-                          _formKey.currentState?.fields['category']
-                              ?.didChange(value);
+                          // selectedCategory = value;
+                          // _formKey.currentState?.fields['category']
+                          //     ?.didChange(value);
+                          categoryController.text = value!.name;
                         });
+                        Navigator.pop(context);
                       },
+                      controller: categoryController,
                     ),
                     const SizedBox(height: 10),
                     buildTextAreaFormField(
@@ -106,11 +112,15 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       selectedCurrency: selectedCurrency,
                       onSelect: (value) {
                         setState(() {
-                          selectedCurrency = value;
-                          _formKey.currentState?.fields['currency']
-                              ?.didChange(value);
+                          // selectedCurrency = value;
+                          // _formKey.currentState?.fields['currency']
+                          //     ?.didChange(value);
+
+                          currencyController.text = value!.currencyName;
                         });
+                        Navigator.pop(context);
                       },
+                      controller: currencyController,
                     ),
                     const SizedBox(
                       width: 10,
@@ -226,23 +236,47 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required List<CategoryModel> categories,
     required CategoryModel? selectedCategory,
     required Function(CategoryModel?) onSelect,
+    required TextEditingController controller,
   }) {
+    // TODO: 모달을 다시 띄웠을때 선택한 아이템이 선택되어 있도록 수정
     return FormFieldWithLabel(
       label: '자산분류',
-      formField: FormBuilderDropdown(
+      formField: FormBuilderTextField(
         name: 'category',
-        isExpanded: true,
-        decoration: _inputDecoration,
-        items: categories
-            .map(
-              (category) => DropdownMenuItem(
-                alignment: Alignment.centerRight,
-                value: category,
-                child: Text(category.name),
-              ),
-            )
-            .toList(),
-        onChanged: onSelect,
+        controller: controller,
+        decoration: _inputDecoration.copyWith(
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+        ),
+        readOnly: true,
+        onTap: () {
+          showCupertinoModalPopup(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 250,
+                color: Colors.white,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 32,
+                  onSelectedItemChanged: (int index) {
+                    logger.d(index);
+                  },
+                  children: List<Widget>.generate(
+                    categories.length,
+                    (int index) {
+                      return GestureDetector(
+                        onTap: () => onSelect(categories[index]),
+                        child: Center(
+                          child: Text(categories[index].name),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -252,26 +286,67 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required List<Currency> currencies,
     required Currency? selectedCurrency,
     required Function(Currency?) onSelect,
+    required TextEditingController controller,
   }) {
     return FormFieldWithLabel(
       label: '구매통화',
-      formField: FormBuilderDropdown(
+      formField: FormBuilderTextField(
         name: 'currency',
-        isExpanded: true,
-        decoration: _inputDecoration,
-        items: currencies
-            .map(
-              (currency) => DropdownMenuItem(
-                alignment: Alignment.centerRight,
-                value: currency,
-                child: Text(
-                    '${currency.currencyName} - ${currency.currencySymbol}'),
-              ),
-            )
-            .toList(),
-        onChanged: onSelect,
+        controller: controller,
+        decoration: _inputDecoration.copyWith(
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+        ),
+        readOnly: true,
+        onTap: () {
+          showCupertinoModalPopup(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 250,
+                color: Colors.white,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 32,
+                  onSelectedItemChanged: (int index) {
+                    logger.d(index);
+                  },
+                  children: List<Widget>.generate(
+                    currencies.length,
+                    (int index) {
+                      return GestureDetector(
+                        onTap: () => onSelect(currencies[index]),
+                        child: Center(
+                          child: Text(
+                              '${currencies[index].currencyName} - ${currencies[index].currencySymbol}'),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
+
+    //   FormBuilderDropdown(
+    //     name: 'currency',
+    //     isExpanded: true,
+    //     decoration: _inputDecoration,
+    //     items: currencies
+    //         .map(
+    //           (currency) => DropdownMenuItem(
+    //             alignment: Alignment.centerRight,
+    //             value: currency,
+    //             child: Text(
+    //                 '${currency.currencyName} - ${currency.currencySymbol}'),
+    //           ),
+    //         )
+    //         .toList(),
+    //     onChanged: onSelect,
+    //   ),
+    // );
   }
 
   buildNumberFormField({
