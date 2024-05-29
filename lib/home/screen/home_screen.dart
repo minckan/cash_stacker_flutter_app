@@ -120,9 +120,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    '5월 목표 지출 및 잔여 예산',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                  Text(
+                    '[${getMonth(DateTime.now())}] 목표 지출 및 잔여 예산',
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   IconButton(
                     icon: const Icon(
