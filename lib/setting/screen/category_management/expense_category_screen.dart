@@ -27,8 +27,6 @@ class ExpenseCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categoryViewModel[index];
 
-          print(category.type);
-
           if (category.type == CategoryType.expense) {
             return Container(
               decoration: const BoxDecoration(

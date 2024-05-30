@@ -11,6 +11,24 @@ final categoryViewModelProvider =
 class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
   CategoryViewModel() : super([]);
 
+  List<CategoryModel> get expenseCategories {
+    return state
+        .where((category) => category.type == CategoryType.expense)
+        .toList();
+  }
+
+  List<CategoryModel> get incomeCategories {
+    return state
+        .where((category) => category.type == CategoryType.income)
+        .toList();
+  }
+
+  List<CategoryModel> get assetCategories {
+    return state
+        .where((category) => category.type == CategoryType.asset)
+        .toList();
+  }
+
   Future<void> loadCategory({required String workspaceId}) async {
     final QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
         .collection(Collection.workspaces)

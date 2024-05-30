@@ -91,7 +91,6 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
 
   AssetSummary? getAssetSummaryByMonth(String monthKey) {
     try {
-      logger.d('state: $state');
       return state.firstWhere((s) => s.month == monthKey);
     } catch (e) {
       logger.e('Error getting asset summary for month $monthKey: $e');

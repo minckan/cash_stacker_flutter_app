@@ -82,6 +82,7 @@ class Asset {
     } else {
       final totalPurchasePrice = purchaseTransactions.fold(
           0.0, (sum, transaction) => sum + transaction.price);
+
       return totalPurchasePrice / transactions.length;
     }
   }
@@ -95,11 +96,6 @@ class Asset {
     }
   }
 
-  /// 현재 평가액(원화)
-  // double get totalKrwEvaluation {
-  //   return currentKrwPrice * totalQuantity;
-  // }
-
   /// 현재 평가액(외화)
   double get totalEvaluation {
     if (_isKrwAsset) {
@@ -108,15 +104,6 @@ class Asset {
       return currentPrice * totalQuantity;
     }
   }
-
-  /// 원화 환산 수익률
-  // double get krwProfitLossRate {
-  //   final totalPurchase = totalPurchaseAmount;
-  //   final totalEval = totalKrwEvaluation;
-  //   return totalPurchase > 0
-  //       ? ((totalEval - totalPurchase) / totalPurchase) * 100
-  //       : 0;
-  // }
 
   /// 외화 수익률
   double get profitLossRate {

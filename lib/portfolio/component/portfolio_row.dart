@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +30,7 @@ class PortfolioRow extends ConsumerWidget {
       right: BorderSide(color: AppColors.tableBorderLight, width: 1),
     );
 
-    final assetViewModel = ref.read(assetViewModelProvider.notifier);
+    final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
     return Column(
       children: [
         Container(
@@ -107,8 +107,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(
-                        assetViewModel.getCurrentKrwTotalEvaluation(asset)),
+                    addComma.format(assetVM.currentKrwTotalEvaluation),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -122,7 +121,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(assetViewModel.getCurrentKrwPrice(asset)),
+                    addComma.format(assetVM.currentKrwPrice),
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -144,7 +143,7 @@ class PortfolioRow extends ConsumerWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 child: Text(
-                  '${assetViewModel.getRatioValue(asset).toStringAsFixed(1)}%',
+                  '${assetVM.ratioValue.toStringAsFixed(1)}%',
                   style: rowStyle.copyWith(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
@@ -185,7 +184,7 @@ class PortfolioRow extends ConsumerWidget {
                   child: Text(
                     asset.inputCurrentPrice == 0
                         ? '-'
-                        : '${assetViewModel.getKrwProfitLossRate(asset).toStringAsFixed(2)}%',
+                        : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%',
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),

@@ -1,21 +1,20 @@
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
-import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetViewModelProvider =
-    StateNotifierProvider<AssetViewModel, List<Asset>>(
-        (ref) => AssetViewModel(ref));
+    StateNotifierProvider<AssetsViewModel, List<Asset>>(
+        (ref) => AssetsViewModel(ref));
 
-class AssetViewModel extends StateNotifier<List<Asset>> {
+class AssetsViewModel extends StateNotifier<List<Asset>> {
   final Ref _ref;
-  AssetViewModel(this._ref) : super([]);
+  AssetsViewModel(this._ref) : super([]);
 
   Future<void> loadAssets(String workspaceId) async {
     final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
@@ -44,13 +43,6 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
         .set(
           asset.toJson(),
         );
-    final assetSummaryVm = _ref.read(assetSummaryProvider.notifier);
-    final thisMonthAssetSummary =
-        assetSummaryVm.getAssetSummaryByMonth(getMonth(DateTime.now()));
-    final updated = thisMonthAssetSummary!.copyWith(
-        totalAssets: thisMonthAssetSummary.totalAssets +
-            getCurrentKrwTotalEvaluation(asset));
-    assetSummaryVm.updateAssetSummary(workspaceId, updated);
 
     state = [...state, asset];
   }
@@ -93,49 +85,5 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
     return state.fold<List<AssetTransaction>>([], (prev, elem) {
       return [...prev, ...elem.transactions];
     });
-  }
-
-  /// 현재가(원화)/ 현재환율 필요.
-  /// 현재 환율 * 현재가
-  double getCurrentKrwPrice(Asset asset) {
-    final exchangeRate = _ref
-        .watch(exchangeRateProvider)
-        .firstWhere((rate) => rate.cur_unit == asset.currency?.currencyCode);
-
-    if (asset.currency?.currencyCode == 'KRW') {
-      return asset.inputCurrentPrice != 0
-          ? asset.inputCurrentPrice
-          : asset.averageKrwPrice;
-    } else {
-      return (asset.inputCurrentPrice != 0
-              ? asset.inputCurrentPrice
-              : asset.averagePrice) *
-          double.parse(removeComma(exchangeRate.deal_bas_r));
-    }
-  }
-
-  ///현재 평가액(원화)
-  double getCurrentKrwTotalEvaluation(Asset asset) {
-    return getCurrentKrwPrice(asset) * asset.totalQuantity;
-  }
-
-  /// 원화 환산 수익률
-  double getKrwProfitLossRate(Asset asset) {
-    final totalPurchase = asset.totalPurchaseAmount;
-    final totalEval = getCurrentKrwTotalEvaluation(asset);
-    return totalPurchase > 0
-        ? ((totalEval - totalPurchase) / totalPurchase) * 100
-        : 0;
-  }
-
-// TODO: assets와 asset 뷰모델을 따로 관리해야겠음...
-  double getRatioValue(Asset asset) {
-    final totalValue = _ref
-        .read(assetSummaryProvider.notifier)
-        .getAssetSummaryByMonth(getMonth(DateTime.now()))!
-        .totalAssets;
-
-    print(totalValue);
-    return (getCurrentKrwTotalEvaluation(asset) / totalValue) * 100;
   }
 }

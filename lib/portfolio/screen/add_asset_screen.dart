@@ -3,12 +3,15 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
@@ -219,6 +222,19 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         await ref
             .read(assetViewModelProvider.notifier)
             .addAsset(asset, workspaceId);
+
+        final assetDetailVM = AssetDetailViewModel(asset: asset, ref: ref);
+        final thisMonthAssetSummary = ref
+            .read(assetSummaryProvider.notifier)
+            .getAssetSummaryByMonth(getMonth(DateTime.now()));
+
+        final updatedSummary = thisMonthAssetSummary!.copyWith(
+            totalAssets: thisMonthAssetSummary.totalAssets +
+                assetDetailVM.currentKrwTotalEvaluation);
+
+        await ref
+            .read(assetSummaryProvider.notifier)
+            .updateAssetSummary(workspaceId, updatedSummary);
 
         if (!mounted) return;
         Navigator.of(context).pop();
