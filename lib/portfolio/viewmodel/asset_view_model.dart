@@ -1,7 +1,9 @@
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,6 +44,13 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
         .set(
           asset.toJson(),
         );
+    final assetSummaryVm = _ref.read(assetSummaryProvider.notifier);
+    final thisMonthAssetSummary =
+        assetSummaryVm.getAssetSummaryByMonth(getMonth(DateTime.now()));
+    final updated = thisMonthAssetSummary!
+        .copyWith(totalAssets: getCurrentKrwTotalEvaluation(asset));
+    assetSummaryVm.updateAssetSummary(workspaceId, updated);
+
     state = [...state, asset];
   }
 
@@ -93,9 +102,13 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
         .firstWhere((rate) => rate.cur_unit == asset.currency?.currencyCode);
 
     if (asset.currency?.currencyCode == 'KRW') {
-      return asset.inputCurrentPrice;
+      return asset.inputCurrentPrice != 0
+          ? asset.inputCurrentPrice
+          : asset.averageKrwPrice;
     } else {
-      return asset.inputCurrentPrice *
+      return (asset.inputCurrentPrice != 0
+              ? asset.inputCurrentPrice
+              : asset.averagePrice) *
           double.parse(removeComma(exchangeRate.deal_bas_r));
     }
   }

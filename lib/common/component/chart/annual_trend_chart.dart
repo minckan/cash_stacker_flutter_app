@@ -104,6 +104,8 @@ class _BarChart extends StatelessWidget {
         (index) {
           final assetSummary = getAssetSummary(index);
 
+          print(assetSummary.normalizedValue);
+
           return BarChartGroupData(
             x: index,
             barRods: [

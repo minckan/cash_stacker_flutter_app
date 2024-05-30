@@ -140,24 +140,34 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
   double get currentExpendableBudget {
     final currentAssetSummary =
         getAssetSummaryByMonth(getMonth(DateTime.now()));
-    return currentAssetSummary!.monthlyBudget - monthlyExpenditure;
+    if (monthlyExpenditure > (currentAssetSummary?.monthlyBudget ?? 0)) {
+      return 0;
+    }
+    return (currentAssetSummary?.monthlyBudget ?? 0) - monthlyExpenditure;
   }
 
   double get budgetExpenditurePercentage {
     final currentAssetSummary =
         getAssetSummaryByMonth(getMonth(DateTime.now()));
-    return monthlyExpenditure * 100 / currentAssetSummary!.monthlyBudget;
+    final monthlyBudget = currentAssetSummary?.monthlyBudget ?? 0;
+
+    if (monthlyBudget == 0) {
+      return 0.0; // 예산이 0일 경우, 0%로 처리
+    }
+
+    final percentage = (monthlyExpenditure / monthlyBudget).clamp(0.0, 1.0);
+    return percentage;
   }
 
   String get warningText {
     if (budgetExpenditurePercentage == 0) {
       return '아직 예산을 사용하지 않으셨군요! 대단합니다!';
-    } else if (budgetExpenditurePercentage < 40) {
+    } else if (budgetExpenditurePercentage < 0.4) {
       return '예산이 충분히 남아있어요!';
-    } else if (budgetExpenditurePercentage > 40 &&
-        budgetExpenditurePercentage < 70) {
+    } else if (budgetExpenditurePercentage > 0.4 &&
+        budgetExpenditurePercentage < 0.7) {
       return '예산을 절반정도 소진했어요!';
-    } else if (budgetExpenditurePercentage < 100) {
+    } else if (budgetExpenditurePercentage < 1) {
       return '예산을 대부분 사용했어요!\n예산을 초과하지 않도록 주의해주세요!';
     } else {
       // 100% ~ 그이상

@@ -96,7 +96,7 @@ List<AssetSummaryDecile> normalizeAssetSummaries(
       assetSummaries.map((e) => e.totalAssets).reduce((a, b) => a > b ? a : b);
 
   // 최소값과 최대값이 동일한 경우를 처리
-  if (minTotalAssets == maxTotalAssets) {
+  if (minTotalAssets == maxTotalAssets && minTotalAssets != 0) {
     return assetSummaries.map((asset) {
       return AssetSummaryDecile(
           assetSummary: asset, normalizedValue: 10.0); // 동일한 값이므로 10으로 설정
@@ -105,8 +105,10 @@ List<AssetSummaryDecile> normalizeAssetSummaries(
 
   // 각 AssetSummary의 totalAssets 값을 0에서 10 사이로 정규화
   return assetSummaries.map((asset) {
-    double normalizedValue =
-        asset.normalizeTotalAssets(minTotalAssets, maxTotalAssets);
+    double normalizedValue = asset.totalAssets == 0
+        ? 0.0
+        : asset.normalizeTotalAssets(minTotalAssets, maxTotalAssets);
+
     return AssetSummaryDecile(
         assetSummary: asset, normalizedValue: normalizedValue);
   }).toList();

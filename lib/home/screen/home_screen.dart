@@ -201,8 +201,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         const SizedBox(height: 4),
                         LinearPercentIndicator(
-                          percent:
-                              assetSummaryVM.budgetExpenditurePercentage / 100,
+                          percent: assetSummaryVM.budgetExpenditurePercentage,
                           progressColor: AppColors.primary,
                           lineHeight: 10,
                           alignment: MainAxisAlignment.start,
