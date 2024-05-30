@@ -86,14 +86,6 @@ class Asset {
     }
   }
 
-  // double get currentKrwPrice {
-  //   if (_isKrwAsset) {
-  //     return inputCurrentPrice;
-  //   }
-  //   // TODO: 현재환율 불러와서 * inputCurrentPrice
-  //   return 0;
-  // }
-
   /// 현재가(외화)
   double get currentPrice {
     if (_isKrwAsset) {

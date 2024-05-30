@@ -35,20 +35,19 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
   bool selectedCurrentYear = false;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // 리빌드를 위해 watch
+    // ignore: unused_local_variable
+    final transactions = ref.watch(transactionViewModelProvider);
     final transactionViewModel =
         ref.read(transactionViewModelProvider.notifier);
 
     String yearMonth = getMonth(_currentDate);
-    List<Map<String, dynamic>> transactions =
+    List<Map<String, dynamic>> monthTransactions =
         transactionViewModel.getMonthTransactions(yearMonth);
     Map<String, double>? currentMonthTotals =
         transactionViewModel.currentMonthTotal(_currentDate);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -70,7 +69,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
               DateTime date =
                   DateTime(_currentDate.year, (pageIndex % 12) + 1, 1);
 
-              return _buildTabBarView(transactions);
+              return _buildTabBarView(monthTransactions);
             },
           ),
         )

@@ -16,6 +16,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
     const Uuid uuid = Uuid();
+    final currentUser = ref.watch(authViewModelProvider);
 
     return DefaultLayout(
       title: '지출 카테고리 추가',
@@ -24,10 +25,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
         TextButton(
             onPressed: () {
               String docId = uuid.v4();
-              final currentUser = ref.watch(authViewModelProvider);
-
-              print(controller.value.text);
-              if (controller.value.text.toString() == '') {
+              if (controller.value.text == '') {
                 return;
               }
               final category = CategoryModel(
