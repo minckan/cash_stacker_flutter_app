@@ -47,8 +47,9 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
     final assetSummaryVm = _ref.read(assetSummaryProvider.notifier);
     final thisMonthAssetSummary =
         assetSummaryVm.getAssetSummaryByMonth(getMonth(DateTime.now()));
-    final updated = thisMonthAssetSummary!
-        .copyWith(totalAssets: getCurrentKrwTotalEvaluation(asset));
+    final updated = thisMonthAssetSummary!.copyWith(
+        totalAssets: thisMonthAssetSummary.totalAssets +
+            getCurrentKrwTotalEvaluation(asset));
     assetSummaryVm.updateAssetSummary(workspaceId, updated);
 
     state = [...state, asset];
@@ -125,5 +126,16 @@ class AssetViewModel extends StateNotifier<List<Asset>> {
     return totalPurchase > 0
         ? ((totalEval - totalPurchase) / totalPurchase) * 100
         : 0;
+  }
+
+// TODO: assets와 asset 뷰모델을 따로 관리해야겠음...
+  double getRatioValue(Asset asset) {
+    final totalValue = _ref
+        .read(assetSummaryProvider.notifier)
+        .getAssetSummaryByMonth(getMonth(DateTime.now()))!
+        .totalAssets;
+
+    print(totalValue);
+    return (getCurrentKrwTotalEvaluation(asset) / totalValue) * 100;
   }
 }

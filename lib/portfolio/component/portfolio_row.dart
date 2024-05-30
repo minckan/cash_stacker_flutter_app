@@ -144,7 +144,7 @@ class PortfolioRow extends ConsumerWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 child: Text(
-                  '10%',
+                  '${assetViewModel.getRatioValue(asset).toStringAsFixed(1)}%',
                   style: rowStyle.copyWith(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
