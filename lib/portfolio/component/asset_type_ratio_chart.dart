@@ -1,6 +1,4 @@
 import 'package:cash_stacker_flutter_app/common/component/lib/Indicator.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
-
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
@@ -121,7 +119,7 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
       final vm = AssetDetailViewModel(asset: asset, ref: ref);
 
       final category = widget.categories
-          .firstWhere((category) => category.name == asset.category.name);
+          .firstWhere((category) => category.id == asset.category.id);
 
       categorySums.update(category, (value) => value + vm.ratioValue,
           ifAbsent: () => vm.ratioValue);

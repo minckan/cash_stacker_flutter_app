@@ -3,7 +3,6 @@ import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dar
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 final transactionViewModelProvider =
     StateNotifierProvider<TransactionViewModel, List<TransactionModel>>(
@@ -80,6 +79,7 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
   List<Map<String, dynamic>> getMonthTransactions(String yearMonth) {
     List<TransactionModel> monthlyTransactions = state.where((transaction) {
       String monthKey = getMonth(transaction.date);
+
       return monthKey == yearMonth;
     }).toList();
 

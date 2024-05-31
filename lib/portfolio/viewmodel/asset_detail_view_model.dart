@@ -3,6 +3,8 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 위젯 내부에서만 사용가능
@@ -13,6 +15,13 @@ class AssetDetailViewModel {
     required this.asset,
     required this.ref,
   });
+
+  bool get isCashAsset {
+    final cashAssetId =
+        ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+
+    return cashAssetId == asset.category.id;
+  }
 
   /// 현재가(원화)/ 현재환율 필요.
   double get currentKrwPrice {
@@ -56,6 +65,9 @@ class AssetDetailViewModel {
         .getAssetSummaryByMonth(getMonth(DateTime.now()))!
         .totalAssets;
 
+    if (isCashAsset) {
+      return (asset.inputCurrentPrice / totalValue) * 100;
+    }
     return (currentKrwTotalEvaluation / totalValue) * 100;
   }
 }

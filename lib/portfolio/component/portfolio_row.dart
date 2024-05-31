@@ -1,9 +1,8 @@
-import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
@@ -21,6 +20,18 @@ class PortfolioRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
+    final row = TableRowAsset.fromAsset(asset, assetVM);
+    return _buildRows(
+      context: context,
+      row: row,
+    );
+  }
+
+  Column _buildRows({
+    required BuildContext context,
+    required TableRowAsset row,
+  }) {
     const TextStyle rowStyle = TextStyle(
         fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500);
     final smallColumnWidth =
@@ -30,7 +41,6 @@ class PortfolioRow extends ConsumerWidget {
       right: BorderSide(color: AppColors.tableBorderLight, width: 1),
     );
 
-    final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
     return Column(
       children: [
         Container(
@@ -41,10 +51,10 @@ class PortfolioRow extends ConsumerWidget {
               // 종목명
               Container(
                 width: maxColumnWidth,
-                alignment: Alignment.center,
+                alignment: Alignment.centerRight,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  asset.name,
+                  row.name,
                   style: rowStyle.copyWith(
                       decoration: TextDecoration.underline, letterSpacing: 0),
                   textAlign: TextAlign.left,
@@ -58,7 +68,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.averageKrwPrice),
+                    row.purchasePriceKrw,
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -70,7 +80,7 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  addComma.format(asset.averagePrice),
+                  row.purchasePriceForeign,
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -81,7 +91,7 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  addComma.format(asset.totalQuantity),
+                  row.amount,
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -95,7 +105,6 @@ class PortfolioRow extends ConsumerWidget {
         ),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          height: rowMinHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -107,7 +116,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(assetVM.currentKrwTotalEvaluation),
+                    row.totalEvaluationKrw,
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -121,7 +130,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(assetVM.currentKrwPrice),
+                    row.currentPriceKrw,
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -133,7 +142,7 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  addComma.format(asset.currentPrice),
+                  row.currentPriceForeign,
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -143,7 +152,7 @@ class PortfolioRow extends ConsumerWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 child: Text(
-                  '${assetVM.ratioValue.toStringAsFixed(1)}%',
+                  row.ratio,
                   style: rowStyle.copyWith(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
@@ -168,7 +177,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    addComma.format(asset.totalEvaluation),
+                    row.totalEvaluationForeign,
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -182,9 +191,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    asset.inputCurrentPrice == 0
-                        ? '-'
-                        : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%',
+                    row.profitLossRateKrw,
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -196,9 +203,7 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  asset.inputCurrentPrice == 0
-                      ? '-'
-                      : '${asset.profitLossRate.toStringAsFixed(2)}%',
+                  row.profitLossRateForeign,
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -208,7 +213,7 @@ class PortfolioRow extends ConsumerWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 child: Text(
-                  DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate),
+                  row.initialPurchaseDate,
                   style: rowStyle.copyWith(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),

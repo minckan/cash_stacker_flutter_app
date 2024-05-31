@@ -139,6 +139,7 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
   double get currentExpendableBudget {
     final currentAssetSummary =
         getAssetSummaryByMonth(getMonth(DateTime.now()));
+
     if (monthlyExpenditure > (currentAssetSummary?.monthlyBudget ?? 0)) {
       return 0;
     }

@@ -11,6 +11,10 @@ final categoryViewModelProvider =
 class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
   CategoryViewModel() : super([]);
 
+  CategoryModel get cashAsset {
+    return state.firstWhere((item) => item.name == '현금');
+  }
+
   List<CategoryModel> get expenseCategories {
     return state
         .where((category) => category.type == CategoryType.expense)

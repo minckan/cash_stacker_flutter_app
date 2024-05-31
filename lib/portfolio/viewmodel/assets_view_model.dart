@@ -1,11 +1,8 @@
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetViewModelProvider =
@@ -14,6 +11,7 @@ final assetViewModelProvider =
 
 class AssetsViewModel extends StateNotifier<List<Asset>> {
   final Ref _ref;
+
   AssetsViewModel(this._ref) : super([]);
 
   Future<void> loadAssets(String workspaceId) async {
@@ -23,7 +21,7 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
         .collection(Collection.assets)
         .get();
 
-    state = assetsQuery.docs.map((doc) {
+    List<Asset> assets = assetsQuery.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>?;
 
       if (data != null) {
@@ -32,6 +30,8 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
         throw Exception("Document data is null");
       }
     }).toList();
+
+    state = _sortAssets(assets);
   }
 
   Future<void> addAsset(Asset asset, String workspaceId) async {
@@ -44,7 +44,7 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
           asset.toJson(),
         );
 
-    state = [...state, asset];
+    state = _sortAssets([...state, asset]);
   }
 
   Future<void> updateAsset(Asset asset, String workspaceId) async {
@@ -55,7 +55,8 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
         .doc(asset.id)
         .set(asset.toJson());
 
-    state = state.map((e) => e.id == asset.id ? asset : e).toList();
+    state =
+        _sortAssets(state.map((e) => e.id == asset.id ? asset : e).toList());
   }
 
   Future<void> removeAsset(Asset asset, String workspaceId) async {
@@ -66,7 +67,8 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
         .doc(asset.id)
         .delete();
 
-    state = state.where((element) => element.id != asset.id).toList();
+    state =
+        _sortAssets(state.where((element) => element.id != asset.id).toList());
   }
 
   void clearAssets() {
@@ -75,9 +77,7 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   Asset getParticularAssets(String assetId) {
     final result = state.firstWhere((element) => element.id == assetId);
-
     result.transactions.sort((a, b) => b.date.compareTo(a.date));
-
     return result;
   }
 
@@ -85,5 +85,16 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     return state.fold<List<AssetTransaction>>([], (prev, elem) {
       return [...prev, ...elem.transactions];
     });
+  }
+
+  List<Asset> _sortAssets(List<Asset> assets) {
+    final cashCategoryId =
+        _ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+
+    List<Asset> nonCashAssets =
+        assets.where((asset) => asset.category.id != cashCategoryId).toList();
+    List<Asset> cashAssets =
+        assets.where((asset) => asset.category.id == cashCategoryId).toList();
+    return [...nonCashAssets, ...cashAssets];
   }
 }
