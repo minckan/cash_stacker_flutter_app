@@ -27,16 +27,16 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       if (workspacesQuery.docs.isNotEmpty) {
         state = Workspace.fromJson(
             workspacesQuery.docs.first.data() as Map<String, dynamic>);
-        await _ref.read(assetViewModelProvider.notifier).loadAssets(state!.id);
         await _ref
-            .read(assetSummaryProvider.notifier)
-            .loadAssetSummaries(state!.id);
+            .read(categoryViewModelProvider.notifier)
+            .loadCategory(workspaceId: state!.id);
         await _ref
             .read(transactionViewModelProvider.notifier)
             .loadTransactions(state!.id);
         await _ref
-            .read(categoryViewModelProvider.notifier)
-            .loadCategory(workspaceId: state!.id);
+            .read(assetSummaryProvider.notifier)
+            .loadAssetSummaries(state!.id);
+        await _ref.read(assetViewModelProvider.notifier).loadAssets(state!.id);
         await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
       }
     } catch (e) {

@@ -34,6 +34,7 @@ class AddAssetScreen extends ConsumerStatefulWidget {
 class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   Uuid uuid = const Uuid();
+  String? cashCategoryId;
 
   CategoryModel? selectedCategory;
   Currency? selectedCurrency;
@@ -47,14 +48,41 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController currencyController = TextEditingController();
 
+  TextEditingController cashExchangeRateController = TextEditingController();
+  TextEditingController cashAmtController = TextEditingController();
+
+  final InputDecoration _inputDecoration = const InputDecoration(
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 1,
+        // color: Color(0xffDFDFDF),
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 1.4,
+        color: AppColors.primary,
+      ),
+    ),
+  );
+  @override
+  void initState() {
+    super.initState();
+
+    cashCategoryId = ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final categoryVM = ref
+    final categories = ref
         .watch(categoryViewModelProvider)
         .where((category) => category.type == CategoryType.asset)
         .toList();
 
     final currencyVM = ref.watch(currencyViewModelProvider).toList();
+
+    final selectedCashCategory = selectedCategory?.id == cashCategoryId;
+
     return DefaultLayout(
       isFormView: true,
       title: '자산 추가',
@@ -76,93 +104,35 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             children: [
               FormBuilder(
                 key: _formKey,
-                child: Column(
-                  children: [
-                    WeeklyCalendar(
-                      selectedDate: selectedDate,
-                      handleChangeSelectDate: (value) {
-                        setState(() {
-                          selectedDate = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    buildCategoryFormField(
-                      context: context,
-                      categories: categoryVM,
-                      selectedCategory: selectedCategory,
-                      onSelect: (value) {
-                        setState(() {
-                          selectedCategory = value;
-                          categoryController.text = value!.name;
-                        });
-                        Navigator.pop(context);
-                      },
-                      controller: categoryController,
-                    ),
-                    const SizedBox(height: 10),
-                    buildTextAreaFormField(
-                      context: context,
-                      controller: nameController,
-                      formName: 'name',
-                      placeholder: '종목명 입력',
-                    ),
-                    const SizedBox(height: 10),
-                    buildCurrencyFormField(
-                      context: context,
-                      currencies: currencyVM,
-                      selectedCurrency: selectedCurrency,
-                      onSelect: (value) {
-                        setState(() {
-                          selectedCurrency = value;
-                          currencyController.text = value!.currencyName;
-                        });
-                        Navigator.pop(context);
-                      },
-                      controller: currencyController,
-                    ),
-                    const SizedBox(height: 10),
-                    buildNumberFormField(
-                      context: context,
-                      controller: buyingPriceController,
-                      formName: 'buyingPrice',
-                      placeholder: '매입가',
-                      disabled: currencyController.value.text == '',
-                      suffixText: selectedCurrency?.currencyCode,
-                    ),
-                    if (selectedCurrency != null &&
-                        selectedCurrency?.currencyCode != 'KRW') ...[
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      buildNumberFormField(
-                          context: context,
-                          controller: exchangeRateController,
-                          formName: 'exchangeRate',
-                          placeholder: '구매 환율(구매통화 1unit 당)',
-                          suffixText: '원'),
-                    ],
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    buildNumberFormField(
-                      context: context,
-                      controller: buyingAmtController,
-                      formName: 'amount',
-                      placeholder: '수량',
-                    ),
-                    const SizedBox(height: 10),
-                    buildNumberFormField(
-                      context: context,
-                      controller: currentPriceController,
-                      formName: 'currentPrice',
-                      placeholder: '현재가',
-                      isOptional: true,
-                      disabled: currencyController.value.text == '',
-                      suffixText: selectedCurrency?.currencyCode,
-                    ),
-                  ],
-                ),
+                child: Column(children: [
+                  WeeklyCalendar(
+                    selectedDate: selectedDate,
+                    handleChangeSelectDate: (value) {
+                      setState(() {
+                        selectedDate = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  buildCategoryFormField(
+                    context: context,
+                    categories: categories,
+                    selectedCategory: selectedCategory,
+                    onSelect: (value) {
+                      setState(() {
+                        selectedCategory = value;
+                        categoryController.text = value!.name;
+                      });
+                      Navigator.pop(context);
+                    },
+                    controller: categoryController,
+                  ),
+                  const SizedBox(height: 10),
+                  if (selectedCashCategory)
+                    ..._buildCashAssetForm(context, currencyVM)
+                  else
+                    ..._buildCommonAssetForm(context, currencyVM),
+                ]),
               ),
             ],
           ),
@@ -171,20 +141,113 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     );
   }
 
-  final InputDecoration _inputDecoration = const InputDecoration(
-    border: OutlineInputBorder(
-      borderSide: BorderSide(
-        width: 1,
-        // color: Color(0xffDFDFDF),
+  List<Widget> _buildCommonAssetForm(
+      BuildContext context, List<Currency> currencyVM) {
+    return [
+      buildTextAreaFormField(
+        context: context,
+        controller: nameController,
+        formName: 'name',
+        placeholder: '종목명 입력',
       ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        width: 1.4,
-        color: AppColors.primary,
+      const SizedBox(height: 10),
+      buildCurrencyFormField(
+        context: context,
+        currencies: currencyVM,
+        formName: 'currency',
+        selectedCurrency: selectedCurrency,
+        onSelect: (value) {
+          setState(() {
+            selectedCurrency = value;
+            currencyController.text = value!.currencyName;
+          });
+          Navigator.pop(context);
+        },
+        controller: currencyController,
       ),
-    ),
-  );
+      const SizedBox(height: 10),
+      buildNumberFormField(
+        context: context,
+        controller: buyingPriceController,
+        formName: 'buyingPrice',
+        placeholder: '매입가',
+        disabled: currencyController.value.text == '',
+        suffixText: selectedCurrency?.currencyCode,
+      ),
+      if (selectedCurrency != null &&
+          selectedCurrency?.currencyCode != 'KRW') ...[
+        const SizedBox(
+          width: 10,
+        ),
+        buildNumberFormField(
+            context: context,
+            controller: exchangeRateController,
+            formName: 'exchangeRate',
+            placeholder: '구매 환율(구매통화 1unit 당)',
+            suffixText: '원'),
+      ],
+      const SizedBox(
+        width: 10,
+      ),
+      buildNumberFormField(
+        context: context,
+        controller: buyingAmtController,
+        formName: 'amount',
+        placeholder: '수량',
+      ),
+      const SizedBox(height: 10),
+      buildNumberFormField(
+        context: context,
+        controller: currentPriceController,
+        formName: 'currentPrice',
+        placeholder: '현재가',
+        isOptional: true,
+        disabled: currencyController.value.text == '',
+        suffixText: selectedCurrency?.currencyCode,
+      ),
+    ];
+  }
+
+  List<Widget> _buildCashAssetForm(
+      BuildContext context, List<Currency> currencyVM) {
+    return [
+      buildCurrencyFormField(
+        context: context,
+        currencies: currencyVM,
+        formName: 'cashCurrency',
+        selectedCurrency: selectedCurrency,
+        onSelect: (value) {
+          setState(() {
+            selectedCurrency = value;
+            currencyController.text = value!.currencyName;
+          });
+          Navigator.pop(context);
+        },
+        controller: currencyController,
+      ),
+      if (selectedCurrency != null &&
+          selectedCurrency?.currencyCode != 'KRW') ...[
+        const SizedBox(
+          width: 10,
+        ),
+        buildNumberFormField(
+            context: context,
+            controller: cashExchangeRateController,
+            formName: 'cashExchangeRate',
+            placeholder: '외환 매입 환율(구매통화 1unit 당)',
+            suffixText: '원'),
+      ],
+      const SizedBox(height: 10),
+      buildNumberFormField(
+        context: context,
+        controller: cashAmtController,
+        formName: 'cashAmount',
+        placeholder: '금액',
+        disabled: currencyController.value.text == '',
+        suffixText: selectedCurrency?.currencyCode,
+      ),
+    ];
+  }
 
   handleSave() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
@@ -198,27 +261,51 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         logger.d(selectedCategory!.toJson());
         logger.d(selectedCurrency!.toJson());
 
-        final asset = Asset(
-          id: uuid.v4(),
-          name: value['name'],
-          category: selectedCategory!,
-          currency: selectedCurrency,
-          inputCurrentPrice: double.tryParse(value['currentPrice']) ?? 0,
-          initialPurchaseDate: selectedDate,
-          transactions: [
-            AssetTransaction(
-              id: uuid.v4(),
-              date: selectedDate,
-              exchangeRate: value['exchangeRate'] != null
-                  ? double.tryParse(value['exchangeRate'])
-                  : 0,
-              price: double.parse(value['buyingPrice']),
-              quantity: double.parse(value['amount']),
-              type: AssetTransactionType.buy,
-              currency: selectedCurrency!,
-            )
-          ],
-        );
+        final asset = selectedCategory?.id == cashCategoryId
+            ? Asset.asCashAsset({
+                'id': uuid.v4(),
+                'category': selectedCategory,
+                'currency': selectedCurrency,
+                'selectedDate': selectedDate,
+                'inputCurrentPrice': double.tryParse(value['cashAmount']) ?? 0,
+                'cashExchangeRate': value['cashExchangeRate'] != null
+                    ? double.tryParse(value['cashExchangeRate'])
+                    : 0,
+                'transaction': [
+                  AssetTransaction(
+                    id: uuid.v4(),
+                    date: selectedDate,
+                    quantity: 0,
+                    price: double.tryParse(value['cashAmount']) ?? 0,
+                    type: AssetTransactionType.buy,
+                    currency: selectedCurrency!,
+                    exchangeRate: value['cashExchangeRate'] != null
+                        ? double.tryParse(value['cashExchangeRate'])
+                        : 0,
+                  )
+                ]
+              })
+            : Asset(
+                id: uuid.v4(),
+                name: value['name'],
+                category: selectedCategory!,
+                currency: selectedCurrency,
+                inputCurrentPrice: double.tryParse(value['currentPrice']) ?? 0,
+                initialPurchaseDate: selectedDate,
+                transactions: [
+                  AssetTransaction(
+                    id: uuid.v4(),
+                    date: selectedDate,
+                    exchangeRate: value['exchangeRate'] != null
+                        ? double.tryParse(value['exchangeRate'])
+                        : 0,
+                    price: double.parse(value['buyingPrice']),
+                    quantity: double.parse(value['amount']),
+                    type: AssetTransactionType.buy,
+                    currency: selectedCurrency!,
+                  )
+                ],
+              );
         await ref
             .read(assetViewModelProvider.notifier)
             .addAsset(asset, workspaceId);
@@ -309,6 +396,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   buildCurrencyFormField({
     required BuildContext context,
     required List<Currency> currencies,
+    required String formName,
     required Currency? selectedCurrency,
     required Function(Currency?) onSelect,
     required TextEditingController controller,
@@ -316,7 +404,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     return FormFieldWithLabel(
       label: '구매통화',
       formField: FormBuilderTextField(
-        name: 'currency',
+        name: formName,
         controller: controller,
         decoration: _inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
@@ -363,6 +451,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     bool disabled = false,
     String? suffixText,
   }) {
+    print('formName : $formName');
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
@@ -382,17 +471,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               : null,
         ),
         textAlign: TextAlign.right,
-        validator: (value) {
-          if (isOptional == false) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            if (double.tryParse(value) == null) {
-              return 'Please enter a valid number';
-            }
-          }
-          return null;
-        },
       ),
     );
   }

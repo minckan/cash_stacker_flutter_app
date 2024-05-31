@@ -21,8 +21,11 @@ class Asset {
   /// 자산 거래 내역
   final List<AssetTransaction> transactions;
 
-  /// 자산 현재가 update 가능
+  /// 자산 현재가, update 가능
   final double inputCurrentPrice;
+
+  /// 현금 자산 환율
+  final double? cashAssetExchangeRate;
 
   Asset({
     required this.id,
@@ -32,6 +35,7 @@ class Asset {
     required this.initialPurchaseDate,
     required this.transactions,
     required this.inputCurrentPrice,
+    this.cashAssetExchangeRate,
   });
 
   bool get _isKrwAsset {
@@ -130,6 +134,19 @@ class Asset {
       initialPurchaseDate: initialPurchaseDate,
       transactions: transactions,
       inputCurrentPrice: inputCurrentPrice ?? this.inputCurrentPrice,
+    );
+  }
+
+  factory Asset.asCashAsset(Map<String, dynamic> json) {
+    return Asset(
+      id: json['id'],
+      category: json['category'],
+      currency: json['currency'],
+      initialPurchaseDate: json['selectedDate'],
+      inputCurrentPrice: json['inputCurrentPrice'],
+      name: '',
+      cashAssetExchangeRate: json['cashExchangeRate'],
+      transactions: json['transactions'],
     );
   }
 
