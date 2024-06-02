@@ -256,14 +256,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         if (widget.assetId == null) {
           final asset = Asset(
             id: newAssetId,
-            name: isKrwCash ? '현금' : value['name'],
+            name: isCashAsset ? '현금' : value['name'],
             category: selectedCategory!,
             currency: selectedCurrency,
-            inputCurrentPrice: (isKrwCash
-                    ? double.tryParse(removeComma(value['cashAmount']))
-                    : double.tryParse(
-                        removeComma(value['currentPrice']),
-                      )) ??
+            inputCurrentPrice: (double.tryParse(
+                  removeComma(value['cashAmount']),
+                )) ??
                 0,
             initialPurchaseDate: selectedDate,
           );
