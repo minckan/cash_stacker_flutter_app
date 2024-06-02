@@ -80,7 +80,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AddAssetScreen()));
+                        builder: (context) => AddAssetScreen()));
                   },
                   child: const Text('자산 추가'),
                 ),

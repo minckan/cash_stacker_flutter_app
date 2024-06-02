@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,6 +30,26 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
         return AssetSummary.fromJson(doc.data());
       }).toList();
 
+      // 현재 날짜 기준 이번 달 확인
+      final now = DateTime.now();
+      final currentMonth = getMonth(now);
+
+      // 이번 달 에셋 서머리가 있는지 체크
+      final hasCurrentMonthSummary = assetSummaries.any((summary) {
+        return summary.month == currentMonth;
+      });
+
+      AssetSummary newSummary;
+      // 만약 이번 달 에셋 서머리가 없다면 추가
+      if (!hasCurrentMonthSummary) {
+        final previousMonthSummary = assetSummaries.last;
+        newSummary = AssetSummary(
+          month: currentMonth,
+          totalAssets: previousMonthSummary.totalAssets,
+        );
+
+        addAssetSummary(workspaceId, newSummary);
+      }
       state = assetSummaries;
     } catch (e) {
       logger.e('Error loading asset summaries for workspace $workspaceId: $e');
@@ -91,7 +112,11 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
 
   AssetSummary? getAssetSummaryByMonth(String monthKey) {
     try {
-      return state.firstWhere((s) => s.month == monthKey);
+      final assetSummary = state.firstWhere(
+        (s) => s.month == monthKey,
+      );
+
+      return assetSummary;
     } catch (e) {
       logger.e('Error getting asset summary for month $monthKey: $e');
       return null;

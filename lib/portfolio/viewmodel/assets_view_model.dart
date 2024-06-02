@@ -1,6 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,14 +76,8 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   Asset getParticularAssets(String assetId) {
     final result = state.firstWhere((element) => element.id == assetId);
-    result.transactions.sort((a, b) => b.date.compareTo(a.date));
-    return result;
-  }
 
-  List<AssetTransaction> getAllAssetTransactions() {
-    return state.fold<List<AssetTransaction>>([], (prev, elem) {
-      return [...prev, ...elem.transactions];
-    });
+    return result;
   }
 
   List<Asset> _sortAssets(List<Asset> assets) {

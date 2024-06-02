@@ -47,34 +47,60 @@ class TableRowAsset {
     String initialPurchaseDate;
 
     if (assetVM.isCashAsset) {
-      name = '현금';
-      purchasePriceKrw = '';
-      purchasePriceForeign = '';
-      amount = '';
-      totalEvaluationKrw = '';
-      totalEvaluationForeign = '';
-      currentPriceKrw = '';
-      currentPriceForeign = '';
-      ratio = '';
-      profitLossRateKrw = '';
-      profitLossRateForeign = '';
-      initialPurchaseDate = '';
+      if (asset.currency?.currencyCode == 'KRW') {
+        name = '현금';
+        purchasePriceKrw = '';
+        purchasePriceForeign = '';
+        amount = '';
+        totalEvaluationKrw =
+            addComma.format(assetVM.currentCashKrwTotalEvaluation);
+        totalEvaluationForeign = '';
+        currentPriceKrw = '';
+        currentPriceForeign = '';
+        ratio = '${assetVM.ratioValue.toStringAsFixed(1)}%';
+        profitLossRateKrw = '';
+        profitLossRateForeign = '';
+        initialPurchaseDate = '';
+      } else {
+        String addSymbol(String value, String? symbol) {
+          return '$symbol $value';
+        }
+
+        name = '현금(${asset.currency?.currencyCode})';
+        purchasePriceKrw = '-';
+        purchasePriceForeign = addSymbol('${assetVM.averageForeignCashPrice}',
+            asset.currency?.currencySymbol);
+        amount = '-';
+        totalEvaluationKrw =
+            addComma.format(assetVM.currentCashKrwTotalEvaluation);
+        totalEvaluationForeign =
+            '${asset.currency?.currencySymbol} ${addComma.format(asset.inputCurrentPrice)}';
+        currentPriceKrw = '-';
+        currentPriceForeign = addSymbol(assetVM.exchangeRate.toStringAsFixed(2),
+            asset.currency?.currencySymbol);
+        ratio = '${assetVM.ratioValue.toStringAsFixed(1)}%';
+        profitLossRateKrw = '-';
+        profitLossRateForeign =
+            '${assetVM.foreignCashProfitLossRate.toStringAsFixed(1)}%';
+        initialPurchaseDate =
+            DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
+      }
     } else {
       name = asset.name;
-      purchasePriceKrw = addComma.format(asset.averageKrwPrice);
-      purchasePriceForeign = addComma.format(asset.averagePrice);
-      amount = addComma.format(asset.totalQuantity);
+      purchasePriceKrw = addComma.format(assetVM.averageKrwPrice);
+      purchasePriceForeign = addComma.format(assetVM.averagePrice);
+      amount = addComma.format(assetVM.totalQuantity);
       totalEvaluationKrw = addComma.format(assetVM.currentKrwTotalEvaluation);
-      totalEvaluationForeign = addComma.format(asset.totalEvaluation);
+      totalEvaluationForeign = addComma.format(assetVM.totalEvaluation);
       currentPriceKrw = addComma.format(assetVM.currentKrwPrice);
-      currentPriceForeign = addComma.format(asset.currentPrice);
+      currentPriceForeign = addComma.format(assetVM.currentPrice);
       ratio = '${assetVM.ratioValue.toStringAsFixed(1)}%';
       profitLossRateKrw = asset.inputCurrentPrice == 0
           ? '-'
           : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%';
       profitLossRateForeign = asset.inputCurrentPrice == 0
           ? '-'
-          : '${asset.profitLossRate.toStringAsFixed(2)}%';
+          : '${assetVM.profitLossRate.toStringAsFixed(2)}%';
       initialPurchaseDate =
           DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
     }

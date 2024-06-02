@@ -27,6 +27,7 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       if (workspacesQuery.docs.isNotEmpty) {
         state = Workspace.fromJson(
             workspacesQuery.docs.first.data() as Map<String, dynamic>);
+
         await _ref
             .read(categoryViewModelProvider.notifier)
             .loadCategory(workspaceId: state!.id);

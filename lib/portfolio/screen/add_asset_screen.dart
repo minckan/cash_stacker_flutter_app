@@ -6,11 +6,12 @@ import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
+import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
@@ -21,11 +22,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:intl/intl.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:uuid/uuid.dart';
 
 class AddAssetScreen extends ConsumerStatefulWidget {
-  const AddAssetScreen({super.key});
+  String? assetId;
+
+  AddAssetScreen({super.key, this.assetId});
 
   @override
   ConsumerState<AddAssetScreen> createState() => _AddAssetScreenState();
@@ -40,22 +44,13 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   Currency? selectedCurrency;
   DateTime selectedDate = DateTime.now();
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController buyingPriceController = TextEditingController();
-  TextEditingController buyingAmtController = TextEditingController();
-  TextEditingController currentPriceController = TextEditingController();
-  TextEditingController exchangeRateController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   TextEditingController currencyController = TextEditingController();
-
-  TextEditingController cashExchangeRateController = TextEditingController();
-  TextEditingController cashAmtController = TextEditingController();
 
   final InputDecoration _inputDecoration = const InputDecoration(
     border: OutlineInputBorder(
       borderSide: BorderSide(
         width: 1,
-        // color: Color(0xffDFDFDF),
       ),
     ),
     focusedBorder: OutlineInputBorder(
@@ -125,7 +120,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                       });
                       Navigator.pop(context);
                     },
-                    controller: categoryController,
                   ),
                   const SizedBox(height: 10),
                   if (selectedCashCategory)
@@ -146,7 +140,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     return [
       buildTextAreaFormField(
         context: context,
-        controller: nameController,
         formName: 'name',
         placeholder: '종목명 입력',
       ),
@@ -168,7 +161,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       const SizedBox(height: 10),
       buildNumberFormField(
         context: context,
-        controller: buyingPriceController,
         formName: 'buyingPrice',
         placeholder: '매입가',
         disabled: currencyController.value.text == '',
@@ -181,7 +173,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         ),
         buildNumberFormField(
             context: context,
-            controller: exchangeRateController,
             formName: 'exchangeRate',
             placeholder: '구매 환율(구매통화 1unit 당)',
             suffixText: '원'),
@@ -191,14 +182,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       ),
       buildNumberFormField(
         context: context,
-        controller: buyingAmtController,
         formName: 'amount',
         placeholder: '수량',
       ),
       const SizedBox(height: 10),
       buildNumberFormField(
         context: context,
-        controller: currentPriceController,
         formName: 'currentPrice',
         placeholder: '현재가',
         isOptional: true,
@@ -231,18 +220,17 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           width: 10,
         ),
         buildNumberFormField(
-            context: context,
-            controller: cashExchangeRateController,
-            formName: 'cashExchangeRate',
-            placeholder: '외환 매입 환율(구매통화 1unit 당)',
-            suffixText: '원'),
+          context: context,
+          formName: 'cashExchangeRate',
+          placeholder: '외환 매입 환율(구매통화 1unit 당)',
+          suffixText: '원',
+        ),
       ],
       const SizedBox(height: 10),
       buildNumberFormField(
         context: context,
-        controller: cashAmtController,
         formName: 'cashAmount',
-        placeholder: '금액',
+        placeholder: '금액1',
         disabled: currencyController.value.text == '',
         suffixText: selectedCurrency?.currencyCode,
       ),
@@ -250,75 +238,101 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }
 
   handleSave() async {
+    logger.d(_formKey.currentState?.value);
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       final value = _formKey.currentState?.value;
       if (value != null &&
           selectedCategory != null &&
           selectedCurrency != null) {
         final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
-
-        logger.d(value);
-        logger.d(selectedCategory!.toJson());
-        logger.d(selectedCurrency!.toJson());
-
-        final asset = selectedCategory?.id == cashCategoryId
-            ? Asset.asCashAsset({
-                'id': uuid.v4(),
-                'category': selectedCategory,
-                'currency': selectedCurrency,
-                'selectedDate': selectedDate,
-                'inputCurrentPrice': double.tryParse(value['cashAmount']) ?? 0,
-                'cashExchangeRate': value['cashExchangeRate'] != null
-                    ? double.tryParse(value['cashExchangeRate'])
-                    : 0,
-                'transaction': [
-                  AssetTransaction(
-                    id: uuid.v4(),
-                    date: selectedDate,
-                    quantity: 0,
-                    price: double.tryParse(value['cashAmount']) ?? 0,
-                    type: AssetTransactionType.buy,
-                    currency: selectedCurrency!,
-                    exchangeRate: value['cashExchangeRate'] != null
-                        ? double.tryParse(value['cashExchangeRate'])
-                        : 0,
-                  )
-                ]
-              })
-            : Asset(
-                id: uuid.v4(),
-                name: value['name'],
-                category: selectedCategory!,
-                currency: selectedCurrency,
-                inputCurrentPrice: double.tryParse(value['currentPrice']) ?? 0,
-                initialPurchaseDate: selectedDate,
-                transactions: [
-                  AssetTransaction(
-                    id: uuid.v4(),
-                    date: selectedDate,
-                    exchangeRate: value['exchangeRate'] != null
-                        ? double.tryParse(value['exchangeRate'])
-                        : 0,
-                    price: double.parse(value['buyingPrice']),
-                    quantity: double.parse(value['amount']),
-                    type: AssetTransactionType.buy,
-                    currency: selectedCurrency!,
-                  )
-                ],
-              );
-        await ref
-            .read(assetViewModelProvider.notifier)
-            .addAsset(asset, workspaceId);
-
-        final assetDetailVM = AssetDetailViewModel(asset: asset, ref: ref);
+        final newAssetId = uuid.v4();
+        final isKrwAsset = selectedCurrency?.currencyCode == 'KRW';
+        final isCashAsset = selectedCategory?.id == cashCategoryId;
+        final isKrwCash = isKrwAsset && isCashAsset;
         final thisMonthAssetSummary = ref
             .read(assetSummaryProvider.notifier)
             .getAssetSummaryByMonth(getMonth(DateTime.now()));
+        AssetSummary updatedSummary = AssetSummary.empty();
 
-        final updatedSummary = thisMonthAssetSummary!.copyWith(
-            totalAssets: thisMonthAssetSummary.totalAssets +
-                assetDetailVM.currentKrwTotalEvaluation);
+        if (widget.assetId == null) {
+          final asset = Asset(
+            id: newAssetId,
+            name: value['name'],
+            category: selectedCategory!,
+            currency: selectedCurrency,
+            inputCurrentPrice: (isKrwCash
+                    ? double.tryParse(value['cashAmount'])
+                    : double.tryParse(
+                        value['currentPrice'],
+                      )) ??
+                0,
+            initialPurchaseDate: selectedDate,
+          );
 
+          await ref
+              .read(assetViewModelProvider.notifier)
+              .addAsset(asset, workspaceId);
+        }
+        final AssetTransaction assetTr;
+
+        if (!isKrwCash) {
+          // 외환 거래
+          if (isCashAsset) {
+            assetTr = ForexTransaction(
+                name: value['name'],
+                id: uuid.v4(),
+                assetId: widget.assetId ?? newAssetId,
+                date: selectedDate,
+                type: AssetTransactionType.buy,
+                category: selectedCategory!,
+                currency: selectedCurrency!,
+                purchasePrice: value['cashAmount'],
+                inputExchangeRate: value['cashExchangeRate']);
+          }
+          // 국내 자산 거래
+          else if (isKrwAsset) {
+            assetTr = DomesticTransaction(
+              name: value['name'],
+              id: uuid.v4(),
+              assetId: widget.assetId ?? newAssetId,
+              date: selectedDate,
+              type: AssetTransactionType.buy,
+              category: selectedCategory!,
+              currency: selectedCurrency!,
+              shares: value['amount'],
+              pricePerShare: value['buyingPrice'],
+            );
+          }
+          // 해외 자산 거래
+          else {
+            assetTr = ForeignTransaction(
+                name: value['name'],
+                id: uuid.v4(),
+                assetId: widget.assetId ?? newAssetId,
+                date: selectedDate,
+                type: AssetTransactionType.buy,
+                category: selectedCategory!,
+                currency: selectedCurrency!,
+                shares: value['amount'],
+                pricePerShare: value['buyingPrice'],
+                inputExchangeRate: value['exchangeRate']);
+          }
+          updatedSummary = thisMonthAssetSummary!.copyWith(
+              totalAssets: thisMonthAssetSummary.totalAssets +
+                  assetTr.totalKrwTransactionPrice);
+
+          /// add transaction
+          await ref
+              .read(assetTransactionViewModelProvider.notifier)
+              .addAssetTransaction(assetTr, workspaceId);
+        } else {
+          print(value['cashAmount']);
+          updatedSummary = thisMonthAssetSummary!.copyWith(
+              totalAssets: thisMonthAssetSummary.totalAssets +
+                  double.parse(value['cashAmount']));
+        }
+
+        /// asset summary total assets amt update
         await ref
             .read(assetSummaryProvider.notifier)
             .updateAssetSummary(workspaceId, updatedSummary);
@@ -331,7 +345,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
   buildTextAreaFormField({
     required BuildContext context,
-    required TextEditingController controller,
     required String formName,
     required String placeholder,
   }) {
@@ -339,7 +352,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       label: placeholder,
       formField: FormBuilderTextField(
         name: formName,
-        controller: controller,
         decoration: _inputDecoration,
       ),
     );
@@ -350,14 +362,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required List<CategoryModel> categories,
     required CategoryModel? selectedCategory,
     required Function(CategoryModel?) onSelect,
-    required TextEditingController controller,
   }) {
     // TODO: 모달을 다시 띄웠을때 선택한 아이템이 선택되어 있도록 수정
     return FormFieldWithLabel(
       label: '자산분류',
       formField: FormBuilderTextField(
         name: 'category',
-        controller: controller,
         decoration: _inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
         ),
@@ -442,24 +452,20 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     );
   }
 
-  buildNumberFormField({
+  Widget buildNumberFormField({
     required BuildContext context,
-    required TextEditingController controller,
     required String formName,
     required String placeholder,
     bool isOptional = false,
     bool disabled = false,
     String? suffixText,
   }) {
-    print('formName : $formName');
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
         name: formName,
-        readOnly: disabled,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        inputFormatters: [decimalInputFormatter()],
-        controller: controller,
+        inputFormatters: [DecimalInputFormatter()],
         decoration: _inputDecoration.copyWith(
           suffixIcon: suffixText != null
               ? Container(
@@ -471,25 +477,38 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               : null,
         ),
         textAlign: TextAlign.right,
+        validator: FormBuilderValidators.compose([
+          if (!isOptional) FormBuilderValidators.required(),
+          FormBuilderValidators.numeric(),
+        ]),
       ),
     );
   }
 }
 
-TextInputFormatter decimalInputFormatter() {
-  return TextInputFormatter.withFunction((oldValue, newValue) {
-    final text = newValue.text;
+class DecimalInputFormatter extends TextInputFormatter {
+  final NumberFormat numberFormat = NumberFormat("#,##0.##");
 
-    if (text.isEmpty) {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
       return newValue;
     }
 
-    final regex = RegExp(r'^\d*\.?\d*');
-
-    if (regex.hasMatch(text)) {
-      return newValue;
+    final int selectionIndexFromTheRight =
+        newValue.text.length - newValue.selection.end;
+    final newText = newValue.text.replaceAll(',', '');
+    final double? value = double.tryParse(newText);
+    if (value != null) {
+      final formattedValue = numberFormat.format(value);
+      return TextEditingValue(
+        text: formattedValue,
+        selection: TextSelection.collapsed(
+            offset: formattedValue.length - selectionIndexFromTheRight),
+      );
     }
 
-    return oldValue;
-  });
+    return newValue;
+  }
 }

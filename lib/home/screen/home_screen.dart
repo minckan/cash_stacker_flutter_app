@@ -7,11 +7,18 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -27,11 +34,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(exchangeRateProvider.notifier).loadExchangeRates();
   }
 
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+  }
+
+  updateAssetSummary(List<Asset> assets) {
+    final thisMonthAssetSummary = ref
+        .read(assetSummaryProvider.notifier)
+        .getAssetSummaryByMonth(getMonth(DateTime.now()));
+    final cashCategoryId =
+        ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+
+    final double totalValue = assets.fold(0, (total, asset) {
+      final assetDetailVM = AssetDetailViewModel(asset: asset, ref: ref);
+      return asset.category.id == cashCategoryId
+          ? assetDetailVM.currentCashKrwTotalEvaluation
+          : assetDetailVM.currentKrwTotalEvaluation;
+    });
+
+    if (workspaceId != null) {
+      final updatedSummary = thisMonthAssetSummary!.copyWith(
+          totalAssets: thisMonthAssetSummary.totalAssets + totalValue);
+      ref
+          .read(assetSummaryProvider.notifier)
+          .updateAssetSummary(workspaceId, updatedSummary);
+    }
+  }
+
 // TODO: asset이 초기화 됨!
   @override
   Widget build(BuildContext context) {
     final currentMonthKey = getMonth(DateTime.now());
-    final assetSummaryVM = ref.read(assetSummaryProvider.notifier);
+    final assetSummaryVM = ref.watch(assetSummaryProvider.notifier);
 
     final currentAssetSummary =
         assetSummaryVM.getAssetSummaryByMonth(currentMonthKey);

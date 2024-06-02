@@ -53,9 +53,9 @@ class AssetSummary {
     } else if (totalAssets >= 100000000 && totalAssets <= 1000000000) {
       return '${(totalAssets / 100000000).toStringAsFixed(1)}억';
     } else if (totalAssets >= 10000000) {
-      return '${(totalAssets / 10000000).toStringAsFixed(1)}천만';
+      return '${(totalAssets / 10000000).toStringAsFixed(1)}천';
     } else if (totalAssets >= 1000000) {
-      return '${(totalAssets / 1000000).toStringAsFixed(1)}백만';
+      return '${(totalAssets / 1000000).toStringAsFixed(1)}백';
     } else if (totalAssets >= 10000) {
       return '${(totalAssets / 10000).toStringAsFixed(1)}만';
     } else {

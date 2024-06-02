@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
+
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +32,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (!mounted) return;
 
     try {
-      print(user);
       if (user != null) {
         await user.reload();
         user = FirebaseAuth.instance.currentUser;
@@ -39,7 +40,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           await ref
               .read(workspaceViewModelProvider.notifier)
               .loadWorkspace(user.uid);
+
           if (!mounted) return;
+
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const RootTab()),
               (route) => false);

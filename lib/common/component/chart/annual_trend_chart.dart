@@ -46,6 +46,7 @@ class _BarChart extends StatelessWidget {
               const TextStyle(
                 color: AppColors.bodyText,
                 fontWeight: FontWeight.bold,
+                fontSize: 10,
               ),
             );
           },
