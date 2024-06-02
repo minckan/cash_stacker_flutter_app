@@ -5,6 +5,7 @@ import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -43,9 +44,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   CategoryModel? selectedCategory;
   Currency? selectedCurrency;
   DateTime selectedDate = DateTime.now();
-
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController currencyController = TextEditingController();
 
   final InputDecoration _inputDecoration = const InputDecoration(
     border: OutlineInputBorder(
@@ -115,8 +113,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     selectedCategory: selectedCategory,
                     onSelect: (value) {
                       setState(() {
+                        _formKey.currentState?.fields['category']
+                            ?.didChange(value!.name);
                         selectedCategory = value;
-                        categoryController.text = value!.name;
                       });
                       Navigator.pop(context);
                     },
@@ -152,18 +151,18 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         onSelect: (value) {
           setState(() {
             selectedCurrency = value;
-            currencyController.text = value!.currencyName;
+            _formKey.currentState?.fields['currency']
+                ?.didChange(value!.currencyName);
           });
           Navigator.pop(context);
         },
-        controller: currencyController,
       ),
       const SizedBox(height: 10),
       buildNumberFormField(
         context: context,
         formName: 'buyingPrice',
         placeholder: '매입가',
-        disabled: currencyController.value.text == '',
+        disabled: selectedCurrency == null,
         suffixText: selectedCurrency?.currencyCode,
       ),
       if (selectedCurrency != null &&
@@ -191,7 +190,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         formName: 'currentPrice',
         placeholder: '현재가',
         isOptional: true,
-        disabled: currencyController.value.text == '',
+        disabled: selectedCurrency == null,
         suffixText: selectedCurrency?.currencyCode,
       ),
     ];
@@ -208,11 +207,11 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         onSelect: (value) {
           setState(() {
             selectedCurrency = value;
-            currencyController.text = value!.currencyName;
+            _formKey.currentState?.fields['cashCurrency']
+                ?.didChange(value!.currencyName);
           });
           Navigator.pop(context);
         },
-        controller: currencyController,
       ),
       if (selectedCurrency != null &&
           selectedCurrency?.currencyCode != 'KRW') ...[
@@ -230,8 +229,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       buildNumberFormField(
         context: context,
         formName: 'cashAmount',
-        placeholder: '금액1',
-        disabled: currencyController.value.text == '',
+        placeholder: '금액',
+        disabled: selectedCurrency == null,
         suffixText: selectedCurrency?.currencyCode,
       ),
     ];
@@ -257,13 +256,13 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         if (widget.assetId == null) {
           final asset = Asset(
             id: newAssetId,
-            name: value['name'],
+            name: isKrwCash ? '현금' : value['name'],
             category: selectedCategory!,
             currency: selectedCurrency,
             inputCurrentPrice: (isKrwCash
-                    ? double.tryParse(value['cashAmount'])
+                    ? double.tryParse(removeComma(value['cashAmount']))
                     : double.tryParse(
-                        value['currentPrice'],
+                        removeComma(value['currentPrice']),
                       )) ??
                 0,
             initialPurchaseDate: selectedDate,
@@ -279,15 +278,17 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           // 외환 거래
           if (isCashAsset) {
             assetTr = ForexTransaction(
-                name: value['name'],
+                name: '현금(${selectedCurrency!.currencyCode})',
                 id: uuid.v4(),
                 assetId: widget.assetId ?? newAssetId,
                 date: selectedDate,
                 type: AssetTransactionType.buy,
                 category: selectedCategory!,
                 currency: selectedCurrency!,
-                purchasePrice: value['cashAmount'],
-                inputExchangeRate: value['cashExchangeRate']);
+                purchasePrice:
+                    double.tryParse(removeComma(value['cashAmount'])) ?? 0,
+                inputExchangeRate:
+                    double.parse(removeComma(value['cashExchangeRate'])));
           }
           // 국내 자산 거래
           else if (isKrwAsset) {
@@ -299,8 +300,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               type: AssetTransactionType.buy,
               category: selectedCategory!,
               currency: selectedCurrency!,
-              shares: value['amount'],
-              pricePerShare: value['buyingPrice'],
+              shares: int.tryParse(removeComma(value['amount'])) ?? 0,
+              pricePerShare:
+                  double.tryParse(removeComma(value['buyingPrice'])) ?? 0,
             );
           }
           // 해외 자산 거래
@@ -313,9 +315,11 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 type: AssetTransactionType.buy,
                 category: selectedCategory!,
                 currency: selectedCurrency!,
-                shares: value['amount'],
-                pricePerShare: value['buyingPrice'],
-                inputExchangeRate: value['exchangeRate']);
+                shares: int.tryParse(removeComma(value['amount'])) ?? 0,
+                pricePerShare:
+                    double.tryParse(removeComma(value['buyingPrice'])) ?? 0,
+                inputExchangeRate:
+                    double.parse(removeComma(value['cashExchangeRate'])));
           }
           updatedSummary = thisMonthAssetSummary!.copyWith(
               totalAssets: thisMonthAssetSummary.totalAssets +
@@ -326,10 +330,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               .read(assetTransactionViewModelProvider.notifier)
               .addAssetTransaction(assetTr, workspaceId);
         } else {
-          print(value['cashAmount']);
           updatedSummary = thisMonthAssetSummary!.copyWith(
               totalAssets: thisMonthAssetSummary.totalAssets +
-                  double.parse(value['cashAmount']));
+                  double.parse(removeComma(value['cashAmount'])));
         }
 
         /// asset summary total assets amt update
@@ -351,6 +354,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
+        key: UniqueKey(),
         name: formName,
         decoration: _inputDecoration,
       ),
@@ -367,6 +371,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     return FormFieldWithLabel(
       label: '자산분류',
       formField: FormBuilderTextField(
+        key: UniqueKey(),
         name: 'category',
         decoration: _inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
@@ -409,13 +414,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required String formName,
     required Currency? selectedCurrency,
     required Function(Currency?) onSelect,
-    required TextEditingController controller,
   }) {
     return FormFieldWithLabel(
       label: '구매통화',
       formField: FormBuilderTextField(
+        key: UniqueKey(),
         name: formName,
-        controller: controller,
         decoration: _inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
         ),
@@ -463,7 +467,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
+        key: UniqueKey(),
         name: formName,
+        enabled: !disabled,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [DecimalInputFormatter()],
         decoration: _inputDecoration.copyWith(
@@ -479,7 +485,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         textAlign: TextAlign.right,
         validator: FormBuilderValidators.compose([
           if (!isOptional) FormBuilderValidators.required(),
-          FormBuilderValidators.numeric(),
         ]),
       ),
     );
