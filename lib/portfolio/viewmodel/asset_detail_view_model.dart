@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -48,6 +49,7 @@ class AssetDetailViewModel {
   List<AssetTransaction> get transactions {
     final allTR = ref.read(assetTransactionViewModelProvider);
     final assetId = asset.id;
+
     return allTR
         .where((transaction) => transaction.assetId == assetId)
         .toList();
@@ -164,14 +166,14 @@ class AssetDetailViewModel {
         .totalAssets;
 
     if (isCashAsset) {
-      return (currentCashKrwTotalEvaluation / totalValue) * 100;
+      return (purchaseCashKrwTotal / totalValue) * 100;
     }
 
     return (currentKrwTotalEvaluation / totalValue) * 100;
   }
 
   /// 현금 자산 계산식
-  ///
+  /// 현금 한화 평가액 (외환)
   double get currentCashKrwTotalEvaluation {
     if (asset.currency?.currencyCode == 'KRW') {
       return asset.inputCurrentPrice;
@@ -180,15 +182,26 @@ class AssetDetailViewModel {
     }
   }
 
-  /// 외환 매입가 평균
+  double get averageTotalKrwPurchasePrice {
+    final total = transactions.fold(0.0,
+        (total, transacrion) => total + transacrion.totalKrwTransactionPrice);
+    return total / transactions.length;
+  }
+
+  double get purchaseCashKrwTotal {
+    return averageTotalKrwPurchasePrice;
+  }
+
+  /// 외환 매입 환율 평균
   double get averageForeignCashPrice {
     if (isCashAsset == true && asset.currency?.currencyCode != 'KRW') {
       final transactionSize = transactions.length;
-      final value = transactions.fold(
-              0.0, (total, transaction) => total + (transaction.exchangeRate)) /
+      final value = transactions.fold(0.0, (total, transaction) {
+            return total + (transaction.exchangeRate);
+          }) /
           transactionSize;
 
-      return isJPYOrIDR ? value / 100 : value;
+      return value;
     }
     return 0.0;
   }

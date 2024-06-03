@@ -57,7 +57,7 @@ class TableRowAsset {
         totalEvaluationForeign = '';
         currentPriceKrw = '';
         currentPriceForeign = '';
-        ratio = '${assetVM.ratioValue.toStringAsFixed(1)}%';
+        ratio = '${assetVM.ratioValue}%';
         profitLossRateKrw = '';
         profitLossRateForeign = '';
         initialPurchaseDate = '';
@@ -78,7 +78,7 @@ class TableRowAsset {
         currentPriceKrw = '-';
         currentPriceForeign = addSymbol(assetVM.exchangeRate.toStringAsFixed(2),
             asset.currency?.currencySymbol);
-        ratio = '${assetVM.ratioValue.toStringAsFixed(1)}%';
+        ratio = '${assetVM.ratioValue}%';
         profitLossRateKrw = '-';
         profitLossRateForeign =
             '${assetVM.foreignCashProfitLossRate.toStringAsFixed(1)}%';
@@ -94,7 +94,7 @@ class TableRowAsset {
       totalEvaluationForeign = addComma.format(assetVM.totalEvaluation);
       currentPriceKrw = addComma.format(assetVM.currentKrwPrice);
       currentPriceForeign = addComma.format(assetVM.currentPrice);
-      ratio = '${assetVM.ratioValue.toStringAsFixed(1)}%';
+      ratio = '${assetVM.ratioValue}%';
       profitLossRateKrw = asset.inputCurrentPrice == 0
           ? '-'
           : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%';

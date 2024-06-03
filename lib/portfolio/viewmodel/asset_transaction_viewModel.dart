@@ -22,7 +22,8 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
     List<AssetTransaction> assetTransactions =
         assetTransactionsQuery.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
-      final type = data['type'];
+
+      final type = data['transactionType'];
       switch (type) {
         case 'DomesticTransaction':
           return DomesticTransaction.fromJson(data);
@@ -47,7 +48,7 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
         .doc(assetTransaction.id)
         .set(
           assetTransaction.toJson()
-            ..['type'] = assetTransaction.runtimeType.toString(),
+            ..['transactionType'] = assetTransaction.runtimeType.toString(),
         );
 
     state = [...state, assetTransaction];
@@ -62,7 +63,7 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
         .doc(assetTransaction.id)
         .set(
           assetTransaction.toJson()
-            ..['type'] = assetTransaction.runtimeType.toString(),
+            ..['transactionType'] = assetTransaction.runtimeType.toString(),
         );
 
     state = state

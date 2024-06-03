@@ -171,10 +171,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           width: 10,
         ),
         buildNumberFormField(
-            context: context,
-            formName: 'exchangeRate',
-            placeholder: '구매 환율(구매통화 1unit 당)',
-            suffixText: '원'),
+          context: context,
+          formName: 'exchangeRate',
+          placeholder: '구매 환율(구매통화 1unit 당)',
+          suffixText: '원',
+          addComma: false,
+        ),
       ],
       const SizedBox(
         width: 10,
@@ -223,6 +225,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           formName: 'cashExchangeRate',
           placeholder: '외환 매입 환율(구매통화 1unit 당)',
           suffixText: '원',
+          addComma: false,
         ),
       ],
       const SizedBox(height: 10),
@@ -276,17 +279,17 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           // 외환 거래
           if (isCashAsset) {
             assetTr = ForexTransaction(
-                name: '현금(${selectedCurrency!.currencyCode})',
-                id: uuid.v4(),
-                assetId: widget.assetId ?? newAssetId,
-                date: selectedDate,
-                type: AssetTransactionType.buy,
-                category: selectedCategory!,
-                currency: selectedCurrency!,
-                purchasePrice:
-                    double.tryParse(removeComma(value['cashAmount'])) ?? 0,
-                inputExchangeRate:
-                    double.parse(removeComma(value['cashExchangeRate'])));
+              name: '현금(${selectedCurrency!.currencyCode})',
+              id: uuid.v4(),
+              assetId: widget.assetId ?? newAssetId,
+              date: selectedDate,
+              type: AssetTransactionType.buy,
+              category: selectedCategory!,
+              currency: selectedCurrency!,
+              purchasePrice:
+                  double.tryParse(removeComma(value['cashAmount'])) ?? 0,
+              inputExchangeRate: double.parse(value['cashExchangeRate']),
+            );
           }
           // 국내 자산 거래
           else if (isKrwAsset) {
@@ -306,18 +309,18 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           // 해외 자산 거래
           else {
             assetTr = ForeignTransaction(
-                name: value['name'],
-                id: uuid.v4(),
-                assetId: widget.assetId ?? newAssetId,
-                date: selectedDate,
-                type: AssetTransactionType.buy,
-                category: selectedCategory!,
-                currency: selectedCurrency!,
-                shares: int.tryParse(removeComma(value['amount'])) ?? 0,
-                pricePerShare:
-                    double.tryParse(removeComma(value['buyingPrice'])) ?? 0,
-                inputExchangeRate:
-                    double.parse(removeComma(value['cashExchangeRate'])));
+              name: value['name'],
+              id: uuid.v4(),
+              assetId: widget.assetId ?? newAssetId,
+              date: selectedDate,
+              type: AssetTransactionType.buy,
+              category: selectedCategory!,
+              currency: selectedCurrency!,
+              shares: int.tryParse(removeComma(value['amount'])) ?? 0,
+              pricePerShare:
+                  double.tryParse(removeComma(value['buyingPrice'])) ?? 0,
+              inputExchangeRate: double.parse(value['exchangeRate']),
+            );
           }
           updatedSummary = thisMonthAssetSummary!.copyWith(
               totalAssets: thisMonthAssetSummary.totalAssets +
@@ -461,6 +464,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     bool isOptional = false,
     bool disabled = false,
     String? suffixText,
+    bool addComma = true,
   }) {
     return FormFieldWithLabel(
       label: placeholder,
@@ -469,7 +473,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         name: formName,
         enabled: !disabled,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        inputFormatters: [DecimalInputFormatter()],
+        inputFormatters: [if (addComma) DecimalInputFormatter()],
         decoration: _inputDecoration.copyWith(
           suffixIcon: suffixText != null
               ? Container(
