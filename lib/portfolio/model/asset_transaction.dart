@@ -145,7 +145,7 @@ class ForeignTransaction extends AssetTransaction {
   double get krwSinglePrice => pricePerShare * exchangeRate;
 
   @override
-  double get totalKrwTransactionPrice => totalTransactionPrice * krwSinglePrice;
+  double get totalKrwTransactionPrice => krwSinglePrice * shares;
 
   @override
   int get quantity => shares;

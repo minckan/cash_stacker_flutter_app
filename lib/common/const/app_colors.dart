@@ -44,6 +44,10 @@ class AppColors {
   static const income = Color(0xff0070F0);
   static const expense = Color(0xffEF4343);
 
+  // 매수 매도
+  static const buy = Color(0xffEF4343);
+  static const sell = Color(0xff0070F0);
+
   // 스위치
   static const switchOn = Color(0xffF8D7A0);
   static const switchOff = Color(0xff6865F8);

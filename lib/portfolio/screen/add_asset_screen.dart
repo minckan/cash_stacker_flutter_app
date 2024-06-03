@@ -262,10 +262,15 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             name: isCashAsset ? '현금' : value['name'],
             category: selectedCategory!,
             currency: selectedCurrency,
-            inputCurrentPrice: (double.tryParse(
-                  removeComma(value['cashAmount']),
-                )) ??
-                0,
+            inputCurrentPrice: isCashAsset
+                ? (double.tryParse(
+                      removeComma(value['cashAmount']),
+                    )) ??
+                    0
+                : (double.tryParse(
+                      removeComma(value['currentPrice']),
+                    )) ??
+                    0,
             initialPurchaseDate: selectedDate,
           );
 

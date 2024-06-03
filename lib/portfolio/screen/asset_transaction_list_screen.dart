@@ -2,21 +2,28 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 class AssetTransactionListScreen extends ConsumerWidget {
-  const AssetTransactionListScreen({super.key});
+  AssetTransactionListScreen({super.key, this.assetId});
+
+  String? assetId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final assetsTransactions = ref.watch(assetTransactionViewModelProvider);
+    final categoryVm = ref.read(categoryViewModelProvider.notifier);
+    List<AssetTransaction> assetsTransactions =
+        ref.watch(assetTransactionViewModelProvider);
     final assetTrVm = ref.read(assetTransactionViewModelProvider.notifier);
+    if (assetId != null) {
+      assetsTransactions = assetTrVm.getParticularAssetTransactions(assetId!);
+    }
+    double totalAmt = assetTrVm.getAllTransactionKrwAmt(assetsTransactions);
 
     return DefaultLayout(
       title: '거래내역',
@@ -51,7 +58,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
                     const Text('총 금액'),
                     const SizedBox(width: 10),
                     Text(
-                      addComma.format(assetTrVm.allTransactionKrwAmt),
+                      addComma.format(totalAmt),
                       style: const TextStyle(fontFamily: 'Roboto'),
                     ),
                     const SizedBox(width: 4),
@@ -64,6 +71,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
 
           if (index > 1) {
             final transaction = assetsTransactions[index - 2];
+            final cashTr = transaction.category.id == categoryVm.cashAsset.id;
 
             return buildListTile(
               context: context,
@@ -82,7 +90,9 @@ class AssetTransactionListScreen extends ConsumerWidget {
                       width: 20,
                     ),
                     Expanded(
-                      child: _buildCommonAssetCategoryTR(transaction),
+                      child: cashTr
+                          ? _buildCashAssetCategotyTR(transaction)
+                          : _buildCommonAssetCategoryTR(transaction),
                     )
                   ],
                 ),
@@ -96,6 +106,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
   }
 
   Column _buildCommonAssetCategoryTR(AssetTransaction transaction) {
+    final String type = transaction.typeToString() ?? '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -108,7 +119,13 @@ class AssetTransactionListScreen extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Text(transaction.typeToString() ?? ''),
+                Text(
+                  type,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: type == '매수' ? AppColors.buy : AppColors.sell),
+                ),
+                const SizedBox(width: 2),
                 Text(addComma.format(transaction.quantity)),
               ],
             ),
@@ -132,6 +149,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
   }
 
   Column _buildCashAssetCategotyTR(AssetTransaction transaction) {
+    final String type = transaction.typeToString() ?? '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -144,7 +162,12 @@ class AssetTransactionListScreen extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Text(transaction.typeToString() ?? ''),
+                Text(
+                  type,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: type == '매수' ? AppColors.buy : AppColors.sell),
+                ),
               ],
             ),
             Text('환율 ${transaction.exchangeRate}'),

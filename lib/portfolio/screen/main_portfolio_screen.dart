@@ -23,14 +23,11 @@ class MainPortfolioScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assets = ref.watch(assetViewModelProvider);
-    final assetSummary = ref.read(assetSummaryProvider.notifier);
+    final assetSummary = ref.watch(assetSummaryProvider.notifier);
     final currentAssetSummary =
         assetSummary.getAssetSummaryByMonth(getMonth(DateTime.now()));
     final assetCategories =
         ref.watch(categoryViewModelProvider.notifier).assetCategories;
-
-    logger.e(assets.toList());
-    logger.e(assetCategories.toList());
 
     return DefaultLayout(
       isSliverView: true,

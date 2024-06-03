@@ -88,6 +88,12 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
     state = [];
   }
 
-  double get allTransactionKrwAmt => state.fold(
-      0, (total, transaction) => total + transaction.totalKrwTransactionPrice);
+  double getAllTransactionKrwAmt(List<AssetTransaction> assetTransactions) {
+    return assetTransactions.fold(0,
+        (total, transaction) => total + transaction.totalKrwTransactionPrice);
+  }
+
+  List<AssetTransaction> getParticularAssetTransactions(String assetId) {
+    return state.where((item) => item.assetId == assetId).toList();
+  }
 }

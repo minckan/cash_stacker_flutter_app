@@ -51,18 +51,8 @@ class PortfolioColumn extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '매입가',
+                      '원화 매입가',
                       style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      '(원화)',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        height: 1,
-                        color: AppColors.tableColumnLightText,
-                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -76,18 +66,8 @@ class PortfolioColumn extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '매입가',
+                      '외화 매입가',
                       style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      '(외화)',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        height: 1,
-                        color: AppColors.tableColumnLightText,
-                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -122,26 +102,16 @@ class PortfolioColumn extends StatelessWidget {
                 alignment: Alignment.center,
                 width: maxColumnWidth,
                 decoration: const BoxDecoration(border: rightBorder),
-                child: const Text(
-                  '원화환산 평가액',
-                  style: columnStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '현재가',
+                      '원화 수익 평가액',
                       style: columnStyle,
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '(원화)',
+                      '(실 매수액)',
                       style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
@@ -160,17 +130,23 @@ class PortfolioColumn extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '현재가',
+                      '원화 현재가',
                       style: columnStyle,
                       textAlign: TextAlign.center,
                     ),
+                  ],
+                ),
+              ),
+              Container(
+                width: smallColumnWidth,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(border: rightBorder),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Text(
-                      '(외화)',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          height: 1,
-                          color: AppColors.tableColumnLightText),
+                      '외화 현재가',
+                      style: columnStyle,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -207,17 +183,32 @@ class PortfolioColumn extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '외화 평가액',
+                      '외화 수익 평가액',
                       style: columnStyle,
                       textAlign: TextAlign.center,
                     ),
+                    // Text(
+                    //   '(실 매수액)',
+                    //   style: TextStyle(
+                    //       fontSize: 10,
+                    //       fontWeight: FontWeight.w400,
+                    //       height: 1,
+                    //       color: AppColors.tableColumnLightText),
+                    //   textAlign: TextAlign.center,
+                    // ),
+                  ],
+                ),
+              ),
+              Container(
+                width: smallColumnWidth,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(border: rightBorder),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Text(
-                      '(해외 자산)',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          height: 1,
-                          color: AppColors.tableColumnLightText),
+                      '원화 수익률',
+                      style: columnStyle.copyWith(fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -231,41 +222,8 @@ class PortfolioColumn extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '평가 수익률',
+                      '외화 수익률',
                       style: columnStyle.copyWith(fontSize: 12),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Text(
-                      '(원화환산 수익률)',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          height: 1,
-                          color: AppColors.tableColumnLightText),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '평가 수익률',
-                      style: columnStyle.copyWith(fontSize: 12),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Text(
-                      '(외화 수익률)',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          height: 1,
-                          color: AppColors.tableColumnLightText),
                       textAlign: TextAlign.center,
                     ),
                   ],

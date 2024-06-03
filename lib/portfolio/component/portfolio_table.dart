@@ -64,7 +64,7 @@ class PortfolioTable extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const AssetTransactionListScreen(),
+                    builder: (context) => AssetTransactionListScreen(),
                   ),
                 );
               },

@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,15 +23,21 @@ class PortfolioRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
     final row = TableRowAsset.fromAsset(asset, assetVM);
+    final hasTransactions = assetVM.transactions;
+
     return _buildRows(
       context: context,
+      assetId: asset.id,
       row: row,
+      hasTransactions: hasTransactions.isNotEmpty,
     );
   }
 
   Column _buildRows({
+    required String assetId,
     required BuildContext context,
     required TableRowAsset row,
+    required bool hasTransactions,
   }) {
     const TextStyle rowStyle = TextStyle(
         fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500);
@@ -49,15 +56,49 @@ class PortfolioRow extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // 종목명
-              Container(
-                width: maxColumnWidth,
-                alignment: Alignment.centerRight,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Text(
-                  row.name,
-                  style: rowStyle.copyWith(
-                      decoration: TextDecoration.underline, letterSpacing: 0),
-                  textAlign: TextAlign.left,
+              GestureDetector(
+                onTap: () {
+                  if (hasTransactions) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          AssetTransactionListScreen(assetId: assetId),
+                    ));
+                  }
+                },
+                child: Container(
+                  width: maxColumnWidth,
+                  alignment: Alignment.centerRight,
+                  decoration: const BoxDecoration(border: rightBorder),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        row.name,
+                        style: rowStyle.copyWith(
+                            decoration: hasTransactions
+                                ? TextDecoration.underline
+                                : null,
+                            letterSpacing: 0),
+                        textAlign: TextAlign.left,
+                      ),
+                      if (hasTransactions) ...[
+                        const SizedBox(width: 1),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: AppColors.chipViolet,
+                          ),
+                          width: 12,
+                          height: 12,
+                          child: const Icon(
+                            Icons.add,
+                            size: 12,
+                            color: Colors.white,
+                          ),
+                        )
+                      ]
+                    ],
+                  ),
                 ),
               ),
               // 매입가(원화)
@@ -67,10 +108,20 @@ class PortfolioRow extends ConsumerWidget {
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text(
-                    row.purchasePriceKrw,
-                    style: rowStyle,
-                    textAlign: TextAlign.right,
+                  child: Column(
+                    children: [
+                      Text(
+                        row.purchasePriceKrw,
+                        style: rowStyle.copyWith(fontSize: 13),
+                        textAlign: TextAlign.right,
+                      ),
+                      if (row.purchaseExchangeRate != '')
+                        Text(
+                          '(${row.purchaseExchangeRate})',
+                          style: rowStyle.copyWith(fontSize: 11),
+                          textAlign: TextAlign.center,
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -114,13 +165,23 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.centerRight,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text(
-                    row.totalEvaluationKrw,
-                    style: rowStyle,
-                    textAlign: TextAlign.right,
-                  ),
-                ),
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          row.totalEvaluationKrw,
+                          style: rowStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                        if (row.totalKrwPurchaseAverageAmt != '')
+                          Text(
+                            '(${row.totalKrwPurchaseAverageAmt})',
+                            style: rowStyle.copyWith(fontSize: 12),
+                            textAlign: TextAlign.right,
+                          ),
+                      ],
+                    )),
               ),
               // 현재가 (원화)
               Container(
@@ -129,10 +190,20 @@ class PortfolioRow extends ConsumerWidget {
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text(
-                    row.currentPriceKrw,
-                    style: rowStyle,
-                    textAlign: TextAlign.right,
+                  child: Column(
+                    children: [
+                      Text(
+                        row.currentPriceKrw,
+                        style: rowStyle.copyWith(fontSize: 13),
+                        textAlign: TextAlign.right,
+                      ),
+                      if (row.currentExchangeRate != '')
+                        Text(
+                          '(${row.currentExchangeRate})',
+                          style: rowStyle.copyWith(fontSize: 11),
+                          textAlign: TextAlign.right,
+                        )
+                    ],
                   ),
                 ),
               ),
@@ -141,10 +212,14 @@ class PortfolioRow extends ConsumerWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
-                child: Text(
-                  row.currentPriceForeign,
-                  style: rowStyle,
-                  textAlign: TextAlign.center,
+                child: Column(
+                  children: [
+                    Text(
+                      row.currentPriceForeign,
+                      style: rowStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
               // 비중

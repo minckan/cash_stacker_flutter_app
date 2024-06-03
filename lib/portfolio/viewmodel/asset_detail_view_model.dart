@@ -1,5 +1,7 @@
+import 'dart:async';
+
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -69,16 +71,27 @@ class AssetDetailViewModel {
         .toList();
   }
 
-  /// 전체 투자 금액 (실제 투자 원금 총액)
+  /// 전체 투자 수량
+  double get totalQuantity {
+    return purchaseTransactions.fold(
+        0, (sum, transaction) => sum + transaction.quantity);
+  }
+
+  /// 외화 전체 투자 금액 (실제 투자 원금 총액)
   double get totalPurchaseAmount {
     return purchaseTransactions.fold(
         0, (sum, transaction) => sum + transaction.totalTransactionPrice);
   }
 
-  /// 전체 투자 수량
-  double get totalQuantity {
-    return purchaseTransactions.fold(
-        0, (sum, transaction) => sum + transaction.quantity);
+  /// 원화 전체 투자 금액 (실제 투자 원금 총액)
+  double get averageTotalKrwPurchasePrice {
+    if (_isKrwAsset && isCashAsset) {
+      return asset.inputCurrentPrice;
+    }
+
+    final total = transactions.fold(0.0,
+        (total, transaction) => total + transaction.totalKrwTransactionPrice);
+    return total / transactions.length;
   }
 
   /// 평균 매입가 (원화)
@@ -111,37 +124,22 @@ class AssetDetailViewModel {
 
   /// 현재 평가액(외화)
   double get totalEvaluation {
-    if (_isKrwAsset) {
-      return 0;
-    } else {
-      return currentPrice * totalQuantity;
-    }
+    return currentPrice * totalQuantity;
   }
 
   /// 외화 수익률
   double get profitLossRate {
-    if (_isKrwAsset) {
-      return 0;
-    } else {
-      final totalPurchase = totalPurchaseAmount;
-      final totalEval = totalEvaluation;
-      return totalPurchase > 0
-          ? ((totalEval - totalPurchase) / totalPurchase) * 100
-          : 0;
-    }
+    final totalPurchase = totalPurchaseAmount;
+    final totalEval = totalEvaluation;
+    return calculatePercentageIncrease(totalPurchase, totalEval);
   }
 
-  /// 현재가(원화)/ 현재환율 필요.
+  /// 현재가(원화)
   double get currentKrwPrice {
-    if (asset.currency?.currencyCode == 'KRW') {
-      return asset.inputCurrentPrice != 0
-          ? asset.inputCurrentPrice
-          : averageKrwPrice;
+    if (_isKrwAsset) {
+      return asset.inputCurrentPrice;
     } else {
-      return (asset.inputCurrentPrice != 0
-              ? asset.inputCurrentPrice
-              : averagePrice) *
-          exchangeRate;
+      return asset.inputCurrentPrice * exchangeRate;
     }
   }
 
@@ -152,13 +150,12 @@ class AssetDetailViewModel {
 
   /// 원화 환산 수익률
   double get krwProfitLossRate {
-    final totalPurchase = totalPurchaseAmount;
+    final totalPurchase = averageTotalKrwPurchasePrice;
     final totalEval = currentKrwTotalEvaluation;
-    return totalPurchase > 0
-        ? ((totalEval - totalPurchase) / totalPurchase) * 100
-        : 0;
+    return calculatePercentageIncrease(totalPurchase, totalEval);
   }
 
+  /// 매수금액 기준 자산 비율
   double get ratioValue {
     final totalValue = ref
         .read(assetSummaryProvider.notifier)
@@ -166,49 +163,35 @@ class AssetDetailViewModel {
         .totalAssets;
 
     if (isCashAsset) {
-      return (purchaseCashKrwTotal / totalValue) * 100;
+      return (averageTotalKrwPurchasePrice / totalValue) * 100;
     }
 
-    return (currentKrwTotalEvaluation / totalValue) * 100;
+    return (averageTotalKrwPurchasePrice / totalValue) * 100;
   }
 
-  /// 현금 자산 계산식
-  /// 현금 한화 평가액 (외환)
+  /// 현금 한화 평가액
   double get currentCashKrwTotalEvaluation {
-    if (asset.currency?.currencyCode == 'KRW') {
+    if (_isKrwAsset) {
       return asset.inputCurrentPrice;
     } else {
       return asset.inputCurrentPrice * exchangeRate;
     }
   }
 
-  double get averageTotalKrwPurchasePrice {
-    final total = transactions.fold(0.0,
-        (total, transacrion) => total + transacrion.totalKrwTransactionPrice);
-    return total / transactions.length;
+  /// 매입 환율 평균
+  double get averageExchangeRate {
+    final transactionSize = transactions.length;
+    final value = transactions.fold(0.0, (total, transaction) {
+          return total + (transaction.exchangeRate);
+        }) /
+        transactionSize;
+
+    return value;
   }
 
-  double get purchaseCashKrwTotal {
-    return averageTotalKrwPurchasePrice;
-  }
-
-  /// 외환 매입 환율 평균
-  double get averageForeignCashPrice {
-    if (isCashAsset == true && asset.currency?.currencyCode != 'KRW') {
-      final transactionSize = transactions.length;
-      final value = transactions.fold(0.0, (total, transaction) {
-            return total + (transaction.exchangeRate);
-          }) /
-          transactionSize;
-
-      return value;
-    }
-    return 0.0;
-  }
-
-  /// 외환 수익율
-  double get foreignCashProfitLossRate {
-    final previousPrice = averageForeignCashPrice;
+  /// 환차익율
+  double get foreignExchangeRateProfitLossRate {
+    final previousPrice = averageExchangeRate;
     final currentPrice = exchangeRate;
 
     return calculatePercentageIncrease(previousPrice, currentPrice);

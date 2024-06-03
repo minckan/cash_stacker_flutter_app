@@ -16,6 +16,9 @@ class TableRowAsset {
   final String profitLossRateKrw;
   final String profitLossRateForeign;
   final String initialPurchaseDate;
+  String? totalKrwPurchaseAverageAmt;
+  String? purchaseExchangeRate;
+  String? currentExchangeRate;
 
   TableRowAsset({
     required this.name,
@@ -30,6 +33,9 @@ class TableRowAsset {
     required this.profitLossRateKrw,
     required this.profitLossRateForeign,
     required this.initialPurchaseDate,
+    this.totalKrwPurchaseAverageAmt,
+    this.purchaseExchangeRate,
+    this.currentExchangeRate,
   });
 
   factory TableRowAsset.fromAsset(Asset asset, AssetDetailViewModel assetVM) {
@@ -45,64 +51,111 @@ class TableRowAsset {
     String profitLossRateKrw;
     String profitLossRateForeign;
     String initialPurchaseDate;
+    String totalKrwPurchaseAverageAmt = '';
+    String purchaseExchangeRate = '';
+    String currentExchangeRate = '';
 
+    /// =================================================================
+    /// [현금] 🇰🇷 한화
+    /// =================================================================
     if (assetVM.isCashAsset) {
       if (asset.currency?.currencyCode == 'KRW') {
         name = '현금';
-        purchasePriceKrw = '';
-        purchasePriceForeign = '';
-        amount = '';
-        totalEvaluationKrw =
-            addComma.format(assetVM.currentCashKrwTotalEvaluation);
-        totalEvaluationForeign = '';
-        currentPriceKrw = '';
-        currentPriceForeign = '';
-        ratio = '${assetVM.ratioValue}%';
-        profitLossRateKrw = '';
-        profitLossRateForeign = '';
-        initialPurchaseDate = '';
+        purchasePriceKrw = '-';
+        purchasePriceForeign = '-';
+        amount = '-';
+        totalEvaluationKrw = addSymbol(
+            addComma.format(assetVM.currentCashKrwTotalEvaluation),
+            asset.currency?.currencySymbol);
+        totalEvaluationForeign = '-';
+        currentPriceKrw = '-';
+        currentPriceForeign = '-';
+        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+        profitLossRateKrw = '-';
+        profitLossRateForeign = '-';
+        initialPurchaseDate = '-';
       } else {
-        String addSymbol(String value, String? symbol) {
-          return '$symbol $value';
-        }
-
+        /// =================================================================
+        /// [현금] 외환
+        /// =================================================================
         name = '현금(${asset.currency?.currencyCode})';
         purchasePriceKrw = '-';
-        purchasePriceForeign = addSymbol('${assetVM.averageForeignCashPrice}',
-            asset.currency?.currencySymbol);
+        purchasePriceForeign = addSymbol(
+            '${assetVM.averageExchangeRate}', asset.currency?.currencySymbol);
         amount = '-';
-        totalEvaluationKrw =
-            addComma.format(assetVM.currentCashKrwTotalEvaluation);
-        totalEvaluationForeign =
-            '${asset.currency?.currencySymbol} ${addComma.format(asset.inputCurrentPrice)}';
+        totalEvaluationKrw = addSymbol(
+            addComma.format(assetVM.currentCashKrwTotalEvaluation), '₩');
+        totalEvaluationForeign = addSymbol(
+            addComma.format(asset.inputCurrentPrice),
+            asset.currency?.currencySymbol);
         currentPriceKrw = '-';
         currentPriceForeign = addSymbol(assetVM.exchangeRate.toStringAsFixed(2),
             asset.currency?.currencySymbol);
-        ratio = '${assetVM.ratioValue}%';
+        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
         profitLossRateKrw = '-';
         profitLossRateForeign =
-            '${assetVM.foreignCashProfitLossRate.toStringAsFixed(1)}%';
+            '${assetVM.foreignExchangeRateProfitLossRate.toStringAsFixed(1)}%';
         initialPurchaseDate =
             DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
+        totalKrwPurchaseAverageAmt = addSymbol(
+            addComma.format(assetVM.averageTotalKrwPurchasePrice), '₩');
       }
     } else {
-      name = asset.name;
-      purchasePriceKrw = addComma.format(assetVM.averageKrwPrice);
-      purchasePriceForeign = addComma.format(assetVM.averagePrice);
-      amount = addComma.format(assetVM.totalQuantity);
-      totalEvaluationKrw = addComma.format(assetVM.currentKrwTotalEvaluation);
-      totalEvaluationForeign = addComma.format(assetVM.totalEvaluation);
-      currentPriceKrw = addComma.format(assetVM.currentKrwPrice);
-      currentPriceForeign = addComma.format(assetVM.currentPrice);
-      ratio = '${assetVM.ratioValue}%';
-      profitLossRateKrw = asset.inputCurrentPrice == 0
-          ? '-'
-          : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%';
-      profitLossRateForeign = asset.inputCurrentPrice == 0
-          ? '-'
-          : '${assetVM.profitLossRate.toStringAsFixed(2)}%';
-      initialPurchaseDate =
-          DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
+      /// =================================================================
+      /// [자산] 🇰🇷 국내
+      /// =================================================================
+      if (asset.currency?.currencyCode == 'KRW') {
+        name = asset.name;
+        purchasePriceKrw =
+            addSymbol(addComma.format(assetVM.averageKrwPrice), '₩');
+        purchasePriceForeign = '-';
+        amount = addComma.format(assetVM.totalQuantity);
+        totalEvaluationKrw =
+            addSymbol(addComma.format(assetVM.currentKrwTotalEvaluation), '₩');
+        totalEvaluationForeign = '-';
+        currentPriceKrw =
+            addSymbol(addComma.format(assetVM.currentKrwPrice), '₩');
+        currentPriceForeign = '-';
+        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+        profitLossRateKrw = asset.inputCurrentPrice == 0
+            ? '-'
+            : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%';
+        profitLossRateForeign = '-';
+        initialPurchaseDate =
+            DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
+      } else {
+        /// =================================================================
+        /// [자산] 해외
+        /// =================================================================
+        name = asset.name;
+        purchasePriceKrw =
+            addSymbol(addComma.format(assetVM.averageKrwPrice), '₩');
+        purchasePriceForeign = addSymbol(addComma.format(assetVM.averagePrice),
+            asset.currency?.currencySymbol);
+        amount = addComma.format(assetVM.totalQuantity);
+        totalEvaluationKrw =
+            addSymbol(addComma.format(assetVM.currentKrwTotalEvaluation), '₩');
+        totalEvaluationForeign = addSymbol(
+            addComma.format(assetVM.totalEvaluation),
+            asset.currency?.currencySymbol);
+        currentPriceKrw =
+            addSymbol(addComma.format(assetVM.currentKrwPrice), '₩');
+        currentPriceForeign = addSymbol(addComma.format(assetVM.currentPrice),
+            asset.currency?.currencySymbol);
+        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+        profitLossRateKrw = asset.inputCurrentPrice == 0
+            ? '-'
+            : '${assetVM.krwProfitLossRate.toStringAsFixed(2)}%';
+        profitLossRateForeign = asset.inputCurrentPrice == 0
+            ? '-'
+            : '${assetVM.profitLossRate.toStringAsFixed(2)}%';
+        initialPurchaseDate =
+            DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
+        purchaseExchangeRate = '${assetVM.averageExchangeRate}';
+        currentExchangeRate = assetVM.exchangeRate.toStringAsFixed(2);
+        totalKrwPurchaseAverageAmt = addSymbol(
+            addComma.format(assetVM.averageTotalKrwPurchasePrice), '₩');
+      }
     }
     return TableRowAsset(
       name: name,
@@ -117,6 +170,13 @@ class TableRowAsset {
       profitLossRateKrw: profitLossRateKrw,
       profitLossRateForeign: profitLossRateForeign,
       initialPurchaseDate: initialPurchaseDate,
+      totalKrwPurchaseAverageAmt: totalKrwPurchaseAverageAmt,
+      purchaseExchangeRate: purchaseExchangeRate,
+      currentExchangeRate: currentExchangeRate,
     );
   }
+}
+
+String addSymbol(String value, String? symbol) {
+  return '$symbol$value';
 }
