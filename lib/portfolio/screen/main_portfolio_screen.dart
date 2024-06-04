@@ -4,7 +4,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset_type_ratio_chart.dart';
@@ -23,9 +23,11 @@ class MainPortfolioScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assets = ref.watch(assetViewModelProvider);
-    final assetSummary = ref.watch(assetSummaryProvider.notifier);
+    // ignore: unused_local_variable
+    final assetSummaries = ref.watch(assetSummaryProvider);
+    final assetSummaryVM = ref.read(assetSummaryProvider.notifier);
     final currentAssetSummary =
-        assetSummary.getAssetSummaryByMonth(getMonth(DateTime.now()));
+        assetSummaryVM.getAssetSummaryByMonth(getMonth(DateTime.now()));
     final assetCategories =
         ref.watch(categoryViewModelProvider.notifier).assetCategories;
 

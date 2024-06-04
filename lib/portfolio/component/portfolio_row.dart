@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
@@ -22,6 +23,7 @@ class PortfolioRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    logger.d(asset.toJson());
     final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
     final row = TableRowAsset.fromAsset(asset, assetVM);
     final hasTransactions = assetVM.transactions;

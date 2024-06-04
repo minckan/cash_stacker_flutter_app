@@ -2,44 +2,71 @@ import 'package:cash_stacker_flutter_app/common/component/form/%08form_text_fiel
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/input-formatter/decimal.dart';
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
+import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
-class BudgetSettingScreen extends ConsumerWidget {
+class BudgetSettingScreen extends ConsumerStatefulWidget {
   const BudgetSettingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController controller = TextEditingController();
+  ConsumerState<BudgetSettingScreen> createState() =>
+      _BudgetSettingScreenState();
+}
 
+class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
+  AssetSummary? currentMonthSummary;
+  AssetSummaryViewModel? assetSummaryVM;
+  final formKey = GlobalKey<FormBuilderState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    assetSummaryVM = ref.read(assetSummaryProvider.notifier);
+    currentMonthSummary =
+        assetSummaryVM?.getAssetSummaryByMonth(getMonth(DateTime.now()));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      formKey.currentState?.patchValue(
+          {'budget': currentMonthSummary?.monthlyBudget.toString()});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return DefaultLayout(
       isFormView: true,
       title: '예산 설정 하기',
       actions: [
         TextButton(
           onPressed: () {
-            final assetSummaryVM = ref.read(assetSummaryProvider.notifier);
-            final currentMonthSummary =
-                assetSummaryVM.getAssetSummaryByMonth(getMonth(DateTime.now()));
+            if (formKey.currentState?.saveAndValidate() ?? false) {
+              final value = formKey.currentState?.value;
+              final budget = value?['budget'];
 
-            final workspaceId = ref.watch(workspaceViewModelProvider)?.id;
+              final workspaceId = ref.watch(workspaceViewModelProvider)?.id;
 
-            if (controller.value.text.toString() == '' ||
-                workspaceId == null ||
-                currentMonthSummary == null) {
-              return;
+              if (workspaceId == null ||
+                  currentMonthSummary == null ||
+                  budget == null) {
+                return;
+              }
+
+              final assetSummary = currentMonthSummary!.copyWith(
+                monthlyBudget: double.parse(removeComma(budget)),
+              );
+
+              Navigator.of(context).pop(assetSummary);
             }
-
-            final assetSummary = currentMonthSummary.copyWith(
-              monthlyBudget: double.parse(controller.value.text),
-            );
-
-            assetSummaryVM.updateAssetSummary(workspaceId, assetSummary);
-
-            Navigator.of(context).pop();
           },
           child: const Text(
             '저장',
@@ -54,10 +81,19 @@ class BudgetSettingScreen extends ConsumerWidget {
             const SizedBox(
               height: 20,
             ),
-            FormFieldWithLabel(
-              label: '이번 달 예산',
-              formField: FormTextField(
-                controller: controller,
+            FormBuilder(
+              key: formKey,
+              child: FormFieldWithLabel(
+                label: '월 예산',
+                formField: FormBuilderTextField(
+                  name: 'budget',
+                  key: UniqueKey(),
+                  decoration: inputDecoration,
+                  inputFormatters: [DecimalInputFormatter()],
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(errorText: '예산을 입력해 주세요'),
+                  ]),
+                ),
               ),
             ),
           ],

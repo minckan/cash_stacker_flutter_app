@@ -3,6 +3,7 @@ import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_l
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/input-formatter/decimal.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
@@ -20,10 +21,8 @@ import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:uuid/uuid.dart';
 
@@ -265,7 +264,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             .read(assetSummaryProvider.notifier)
             .getAssetSummaryByMonth(getMonth(DateTime.now()));
         AssetSummary updatedSummary = AssetSummary.empty();
-
         if (widget.assetId == null) {
           final asset = Asset(
             id: newAssetId,
@@ -273,14 +271,18 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             category: selectedCategory!,
             currency: selectedCurrency,
             inputCurrentPrice: isCashAsset
-                ? (double.tryParse(
-                      removeComma(value['cashAmount']),
-                    )) ??
-                    0
-                : (double.tryParse(
-                      removeComma(value['currentPrice']),
-                    )) ??
-                    0,
+                ? value['cashAmount'] != null
+                    ? (double.tryParse(
+                          removeComma(value['cashAmount']),
+                        )) ??
+                        0
+                    : 0
+                : value['currentPrice'] != null
+                    ? (double.tryParse(
+                          removeComma(value['currentPrice']),
+                        )) ??
+                        0
+                    : 0,
             initialPurchaseDate: selectedDate,
           );
 
@@ -511,32 +513,5 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         ]),
       ),
     );
-  }
-}
-
-class DecimalInputFormatter extends TextInputFormatter {
-  final NumberFormat numberFormat = NumberFormat("#,##0.##");
-
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.isEmpty) {
-      return newValue;
-    }
-
-    final int selectionIndexFromTheRight =
-        newValue.text.length - newValue.selection.end;
-    final newText = newValue.text.replaceAll(',', '');
-    final double? value = double.tryParse(newText);
-    if (value != null) {
-      final formattedValue = numberFormat.format(value);
-      return TextEditingValue(
-        text: formattedValue,
-        selection: TextSelection.collapsed(
-            offset: formattedValue.length - selectionIndexFromTheRight),
-      );
-    }
-
-    return newValue;
   }
 }

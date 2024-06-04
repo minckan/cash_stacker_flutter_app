@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_column.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_row.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
@@ -17,7 +18,7 @@ class PortfolioTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double maxColumnWidth = 130;
+    const double maxColumnWidth = 110;
     final safePadding = MediaQuery.of(context).padding.top;
 
     return StickyHeader(

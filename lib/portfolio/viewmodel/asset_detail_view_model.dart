@@ -47,6 +47,7 @@ class AssetDetailViewModel {
 
   /// 영업일 기준 1시간 단위로 업데이트 되는 환율 정보
   double get exchangeRate {
+    if (asset.currency!.currencyCode == 'BRL') return 0;
     final exchangeRate = ref.watch(exchangeRateProvider).firstWhere((rate) =>
         rate.cur_unit.contains(asset.currency?.currencyCode as Pattern));
 
