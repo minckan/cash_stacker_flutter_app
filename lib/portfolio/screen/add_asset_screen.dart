@@ -249,7 +249,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }
 
   handleSave() async {
-    logger.d(_formKey.currentState?.value);
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       final value = _formKey.currentState?.value;
       if (value != null &&

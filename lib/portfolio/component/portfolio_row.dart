@@ -23,7 +23,6 @@ class PortfolioRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    logger.d(asset.toJson());
     final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
     final row = TableRowAsset.fromAsset(asset, assetVM);
     final hasTransactions = assetVM.transactions;

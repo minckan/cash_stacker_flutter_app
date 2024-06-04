@@ -48,6 +48,7 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
                           touchedIndex = -1;
                           return;
                         }
+
                         touchedIndex = pieTouchResponse
                             .touchedSection!.touchedSectionIndex;
                       });
@@ -88,8 +89,16 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
 
   List<PieChartSectionData> showingSections(
       Map<CategoryModel, double> categoryRatios) {
+    final items = categoryRatios.entries.fold([], (categoryItems, ratios) {
+      for (var category in widget.categories) {
+        if (category == ratios.key) {
+          categoryItems.add(category);
+        }
+      }
+      return categoryItems;
+    });
     return categoryRatios.entries.map((entry) {
-      final isTouched = widget.categories.indexOf(entry.key) == touchedIndex;
+      final isTouched = items.indexOf(entry.key) == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
