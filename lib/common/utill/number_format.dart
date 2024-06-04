@@ -6,3 +6,8 @@ removeComma(String numberString) {
   String cleanedString = numberString.replaceAll(',', '');
   return cleanedString;
 }
+
+removePercent(String numberString) {
+  String cleanedString = numberString.replaceAll('%', '');
+  return cleanedString;
+}

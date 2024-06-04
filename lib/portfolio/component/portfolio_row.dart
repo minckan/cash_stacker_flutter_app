@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
@@ -118,7 +119,10 @@ class PortfolioRow extends ConsumerWidget {
                       if (row.purchaseExchangeRate != '')
                         Text(
                           '(${row.purchaseExchangeRate})',
-                          style: rowStyle.copyWith(fontSize: 11),
+                          style: rowStyle.copyWith(
+                            fontSize: 11,
+                            color: AppColors.tableColumnLightText,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                     ],
@@ -177,7 +181,10 @@ class PortfolioRow extends ConsumerWidget {
                         if (row.totalKrwPurchaseAverageAmt != '')
                           Text(
                             '(${row.totalKrwPurchaseAverageAmt})',
-                            style: rowStyle.copyWith(fontSize: 12),
+                            style: rowStyle.copyWith(
+                              fontSize: 12,
+                              color: AppColors.tableColumnLightText,
+                            ),
                             textAlign: TextAlign.right,
                           ),
                       ],
@@ -200,7 +207,10 @@ class PortfolioRow extends ConsumerWidget {
                       if (row.currentExchangeRate != '')
                         Text(
                           '(${row.currentExchangeRate})',
-                          style: rowStyle.copyWith(fontSize: 11),
+                          style: rowStyle.copyWith(
+                            fontSize: 11,
+                            color: AppColors.tableColumnLightText,
+                          ),
                           textAlign: TextAlign.right,
                         )
                     ],
@@ -265,11 +275,7 @@ class PortfolioRow extends ConsumerWidget {
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text(
-                    row.profitLossRateKrw,
-                    style: rowStyle,
-                    textAlign: TextAlign.right,
-                  ),
+                  child: _buildROIText(row, row.profitLossRateKrw),
                 ),
               ),
               // 평가 수익률 (외화)
@@ -277,11 +283,7 @@ class PortfolioRow extends ConsumerWidget {
                 width: smallColumnWidth,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
-                child: Text(
-                  row.profitLossRateForeign,
-                  style: rowStyle,
-                  textAlign: TextAlign.center,
-                ),
+                child: _buildROIText(row, row.profitLossRateForeign),
               ),
               // 최초 편입일
               Container(
@@ -295,6 +297,52 @@ class PortfolioRow extends ConsumerWidget {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildROIText(TableRowAsset row, String text) {
+    if (text == '-') {
+      return Text(
+        text,
+        style: const TextStyle(
+            fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500),
+        textAlign: TextAlign.right,
+      );
+    }
+    final condition = double.parse(removePercent(text));
+
+    final isIncrease = condition > 0;
+    final isStatic = condition == 0.0;
+
+    final textColor = isIncrease
+        ? AppColors.buy
+        : isStatic
+            ? AppColors.bodyText
+            : AppColors.sell;
+
+    const increaseIcon = Icons.arrow_drop_up;
+    const decreaseIcon = Icons.arrow_drop_down;
+
+    final icon = isIncrease
+        ? Icon(
+            increaseIcon,
+            color: textColor,
+          )
+        : isStatic
+            ? const Text('(-)')
+            : Icon(decreaseIcon, color: textColor);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        icon,
+        Text(
+          text,
+          style: TextStyle(
+              color: textColor, fontSize: 12, fontWeight: FontWeight.w600),
+          textAlign: TextAlign.right,
         ),
       ],
     );
