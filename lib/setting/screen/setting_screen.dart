@@ -3,6 +3,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/setting/component/menu_item.dart';
 import 'package:cash_stacker_flutter_app/setting/component/menu_section.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/all_management_screen.dart';
+import 'package:cash_stacker_flutter_app/setting/screen/invitation/invitation_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
@@ -80,7 +81,10 @@ class _SettingScreenState extends State<SettingScreen> {
                     subTitle: '가계부와 포트폴리오를 공유할 수 있어요',
                     leftNode: const Icon(Icons.shape_line_outlined),
                     rightNode: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const InvitationScreen()));
+                      },
                       icon: const Icon(
                         Icons.chevron_right,
                         color: AppColors.bodyText,

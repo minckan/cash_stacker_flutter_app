@@ -6,6 +6,7 @@ import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -45,19 +46,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   Currency? selectedCurrency;
   DateTime selectedDate = DateTime.now();
 
-  final InputDecoration _inputDecoration = const InputDecoration(
-    border: OutlineInputBorder(
-      borderSide: BorderSide(
-        width: 1,
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        width: 1.4,
-        color: AppColors.primary,
-      ),
-    ),
-  );
   @override
   void initState() {
     super.initState();
@@ -362,7 +350,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       formField: FormBuilderTextField(
         key: UniqueKey(),
         name: formName,
-        decoration: _inputDecoration,
+        decoration: inputDecoration,
       ),
     );
   }
@@ -379,7 +367,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       formField: FormBuilderTextField(
         key: UniqueKey(),
         name: 'category',
-        decoration: _inputDecoration.copyWith(
+        decoration: inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
         ),
         readOnly: true,
@@ -426,7 +414,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       formField: FormBuilderTextField(
         key: UniqueKey(),
         name: formName,
-        decoration: _inputDecoration.copyWith(
+        decoration: inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
         ),
         readOnly: true,
@@ -479,7 +467,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         enabled: !disabled,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [if (addComma) DecimalInputFormatter()],
-        decoration: _inputDecoration.copyWith(
+        decoration: inputDecoration.copyWith(
           suffixIcon: suffixText != null
               ? Container(
                   padding: const EdgeInsets.only(right: 16.0),
