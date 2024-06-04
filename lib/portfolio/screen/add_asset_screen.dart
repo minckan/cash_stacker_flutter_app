@@ -1,5 +1,4 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
-import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
@@ -51,6 +50,23 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     super.initState();
 
     cashCategoryId = ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+
+    if (widget.assetId != null) {
+      final thisAsset = ref
+          .read(assetViewModelProvider.notifier)
+          .getParticularAssets(widget.assetId!);
+
+      selectedCategory = thisAsset.category;
+      selectedCurrency = thisAsset.currency;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _formKey.currentState?.patchValue({
+          'category': thisAsset.category.name, // 초기 값 설정
+          'currency': thisAsset.currency?.currencyName,
+          'cashCurrency': thisAsset.currency?.currencyName,
+          'name': thisAsset.name,
+        });
+      });
+    }
   }
 
   @override
@@ -63,6 +79,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     final currencyVM = ref.watch(currencyViewModelProvider).toList();
 
     final selectedCashCategory = selectedCategory?.id == cashCategoryId;
+    final bool isDisabledField = widget.assetId != null;
 
     return DefaultLayout(
       isFormView: true,
@@ -99,6 +116,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     context: context,
                     categories: categories,
                     selectedCategory: selectedCategory,
+                    disabled: isDisabledField,
                     onSelect: (value) {
                       setState(() {
                         _formKey.currentState?.fields['category']
@@ -110,9 +128,10 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                   ),
                   const SizedBox(height: 10),
                   if (selectedCashCategory)
-                    ..._buildCashAssetForm(context, currencyVM)
+                    ..._buildCashAssetForm(context, currencyVM, isDisabledField)
                   else
-                    ..._buildCommonAssetForm(context, currencyVM),
+                    ..._buildCommonAssetForm(
+                        context, currencyVM, isDisabledField),
                 ]),
               ),
             ],
@@ -123,12 +142,13 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }
 
   List<Widget> _buildCommonAssetForm(
-      BuildContext context, List<Currency> currencyVM) {
+      BuildContext context, List<Currency> currencyVM, bool disabled) {
     return [
       buildTextAreaFormField(
         context: context,
         formName: 'name',
         placeholder: '종목명 입력',
+        disabled: disabled,
       ),
       const SizedBox(height: 10),
       buildCurrencyFormField(
@@ -136,6 +156,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         currencies: currencyVM,
         formName: 'currency',
         selectedCurrency: selectedCurrency,
+        disabled: disabled,
         onSelect: (value) {
           setState(() {
             selectedCurrency = value;
@@ -187,12 +208,13 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }
 
   List<Widget> _buildCashAssetForm(
-      BuildContext context, List<Currency> currencyVM) {
+      BuildContext context, List<Currency> currencyVM, bool disabled) {
     return [
       buildCurrencyFormField(
         context: context,
         currencies: currencyVM,
         formName: 'cashCurrency',
+        disabled: disabled,
         selectedCurrency: selectedCurrency,
         onSelect: (value) {
           setState(() {
@@ -344,12 +366,14 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required BuildContext context,
     required String formName,
     required String placeholder,
+    bool disabled = false,
   }) {
     return FormFieldWithLabel(
       label: placeholder,
       formField: FormBuilderTextField(
         key: UniqueKey(),
         name: formName,
+        enabled: !disabled,
         decoration: inputDecoration,
       ),
     );
@@ -360,6 +384,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required List<CategoryModel> categories,
     required CategoryModel? selectedCategory,
     required Function(CategoryModel?) onSelect,
+    bool disabled = false,
   }) {
     // TODO: 모달을 다시 띄웠을때 선택한 아이템이 선택되어 있도록 수정
     return FormFieldWithLabel(
@@ -371,6 +396,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           suffixIcon: const Icon(Icons.arrow_drop_down),
         ),
         readOnly: true,
+        enabled: !disabled,
         onTap: () {
           showCupertinoModalPopup(
             context: context,
@@ -408,12 +434,14 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     required String formName,
     required Currency? selectedCurrency,
     required Function(Currency?) onSelect,
+    bool disabled = false,
   }) {
     return FormFieldWithLabel(
       label: '구매통화',
       formField: FormBuilderTextField(
         key: UniqueKey(),
         name: formName,
+        enabled: !disabled,
         decoration: inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),
         ),

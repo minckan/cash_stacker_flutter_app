@@ -3,6 +3,7 @@ import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,17 @@ class AssetTransactionListScreen extends ConsumerWidget {
 
     return DefaultLayout(
       title: '거래내역',
+      actions: [
+        if (assetId != null)
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => AddAssetScreen(
+                          assetId: assetId,
+                        )));
+              },
+              icon: const Icon(Icons.add))
+      ],
       child: ListView.builder(
         itemCount: assetsTransactions.length + 2,
         itemBuilder: (context, index) {
