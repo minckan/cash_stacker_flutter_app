@@ -8,7 +8,8 @@ import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset_type_ratio_chart.dart';
-import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/new/portfolio_table.dart';
+// import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/current_exchange_rate_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
@@ -135,6 +136,9 @@ class MainPortfolioScreen extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
+                // child: PortfolioTable(
+                //   assets: assets,
+                // ),
                 child: PortfolioTable(
                   assets: assets,
                 ),
