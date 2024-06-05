@@ -5,7 +5,7 @@ import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
-class PortfolioTable extends StatelessWidget {
+class PortfolioTable extends StatefulWidget {
   final List<Asset> assets;
 
   const PortfolioTable({
@@ -13,6 +13,12 @@ class PortfolioTable extends StatelessWidget {
     required this.assets,
   });
 
+  @override
+  State<PortfolioTable> createState() => _PortfolioTableState();
+}
+
+class _PortfolioTableState extends State<PortfolioTable> {
+  String tappedKey = '';
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
@@ -23,15 +29,19 @@ class PortfolioTable extends StatelessWidget {
               height: safePadding,
               color: Colors.white,
             ),
-            const PortfolioColumn(),
+            PortfolioColumn(tappedKey: tappedKey),
           ],
         ),
         content: Column(
           children: [
-            ...assets.map(
+            ...widget.assets.map(
               (asset) => PortfolioRow(
-                asset: asset,
-              ),
+                  asset: asset,
+                  onTap: (String key) {
+                    setState(() {
+                      tappedKey = key;
+                    });
+                  }),
             ),
             Container(
               height: 100,

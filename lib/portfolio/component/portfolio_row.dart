@@ -112,13 +112,13 @@ class PortfolioRow extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(
-                        row.purchasePriceKrw,
+                        row.buyingSinglePriceKrw,
                         style: rowStyle.copyWith(fontSize: 13),
                         textAlign: TextAlign.right,
                       ),
-                      if (row.purchaseExchangeRate != '')
+                      if (row.buyingExchangeRate != '')
                         Text(
-                          '(${row.purchaseExchangeRate})',
+                          '(${row.buyingExchangeRate})',
                           style: rowStyle.copyWith(
                             fontSize: 11,
                             color: AppColors.tableColumnLightText,
@@ -135,7 +135,7 @@ class PortfolioRow extends ConsumerWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(border: rightBorder),
                 child: Text(
-                  row.purchasePriceForeign,
+                  row.buyingSinglePriceForeign,
                   style: rowStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -174,13 +174,13 @@ class PortfolioRow extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          row.totalEvaluationKrw,
+                          row.totalEvaluationAmountKrw,
                           style: rowStyle,
                           textAlign: TextAlign.right,
                         ),
-                        if (row.totalKrwPurchaseAverageAmt != '')
+                        if (row.totalBuyingAmountKrw != '')
                           Text(
-                            '(${row.totalKrwPurchaseAverageAmt})',
+                            '(${row.totalBuyingAmountKrw})',
                             style: rowStyle.copyWith(
                               fontSize: 12,
                               color: AppColors.tableColumnLightText,
@@ -200,7 +200,7 @@ class PortfolioRow extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(
-                        row.currentPriceKrw,
+                        row.currentSinglePriceKrw,
                         style: rowStyle.copyWith(fontSize: 13),
                         textAlign: TextAlign.right,
                       ),
@@ -225,7 +225,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      row.currentPriceForeign,
+                      row.currentSinglePriceForeign,
                       style: rowStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -262,7 +262,7 @@ class PortfolioRow extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
-                    row.totalEvaluationForeign,
+                    row.totalEvaluationAmountForeign,
                     style: rowStyle,
                     textAlign: TextAlign.right,
                   ),

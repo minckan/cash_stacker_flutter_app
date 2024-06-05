@@ -98,16 +98,16 @@ class AssetDetailViewModel {
         .totalAssets;
 
     if (isCashAsset) {
-      return (averageTotalKrwPurchasePrice / totalValue) * 100;
+      return (totalBuyingAmountKrw / totalValue) * 100;
     }
 
-    return (averageTotalKrwPurchasePrice / totalValue) * 100;
+    return (totalBuyingAmountKrw / totalValue) * 100;
   }
 
   //================================================================
 
   /// [원화] 실제 투자원금 총액
-  double get averageTotalKrwPurchasePrice {
+  double get totalBuyingAmountKrw {
     if (_isKrwAsset && isCashAsset) {
       return asset.inputCurrentPrice;
     }
@@ -118,14 +118,14 @@ class AssetDetailViewModel {
   }
 
   /// [원화] 평균 매입가
-  double get averageKrwPrice {
+  double get buyingSinglePriceKrw {
     final totalPurchasePrice = purchaseTransactions.fold(
         0.0, (sum, transaction) => sum + transaction.krwSinglePrice);
     return totalPurchasePrice / transactions.length;
   }
 
   /// [원화] 입력 받은 현재가
-  double get currentKrwPrice {
+  double get currentSinglePriceKrw {
     if (_isKrwAsset) {
       return asset.inputCurrentPrice;
     } else {
@@ -134,36 +134,32 @@ class AssetDetailViewModel {
   }
 
   /// [원화] 현재가 * 수량 = 현재가 총금액
-  double get currentKrwTotalEvaluation {
-    return currentKrwPrice * totalQuantity;
+  double get totalCurrentAmountKrw {
+    return currentSinglePriceKrw * totalQuantity;
   }
 
   /// [원화] 원화환산금액의 수익률
-  double get krwProfitLossRate {
-    final prev = averageTotalKrwPurchasePrice;
-    final current = currentKrwTotalEvaluation;
+  double get profitLossRateKrw {
+    final prev = totalBuyingAmountKrw;
+    final current = totalCurrentAmountKrw;
     return calculatePercentageIncrease(prev, current);
   }
 
-  /// [원화:현금] 현재 평가금액
-  double get currentCashKrwTotalEvaluation {
-    if (_isKrwAsset) {
-      return asset.inputCurrentPrice;
-    } else {
-      return asset.inputCurrentPrice * exchangeRate;
-    }
+  /// [원화] 현재 평가 수익금액
+  double get totalEvaluationAmountKrw {
+    return totalCurrentAmountKrw - totalBuyingAmountKrw;
   }
 
   //================================================================
 
   /// [외화] 실제 투자원금 총액
-  double get totalPurchaseAmount {
+  double get totalBuyingAmountForeign {
     return purchaseTransactions.fold(
         0, (sum, transaction) => sum + transaction.totalTransactionPrice);
   }
 
   /// [외화] 평균 매입가
-  double get averagePrice {
+  double get buyingSinglePriceForeign {
     final totalPurchasePrice = purchaseTransactions.fold(
         0.0, (sum, transaction) => sum + transaction.singlePrice);
 
@@ -171,20 +167,25 @@ class AssetDetailViewModel {
   }
 
   /// [외화] 입력받은 현재가
-  double get currentPrice {
+  double get currentSinglePriceForeign {
     return asset.inputCurrentPrice;
   }
 
   /// [외화] 현재가 * 수량 = 현재가 총금액
-  double get totalEvaluation {
-    return currentPrice * totalQuantity;
+  double get totalCurrentAmountForeign {
+    return currentSinglePriceForeign * totalQuantity;
   }
 
   /// [외화] 외화 수익률
-  double get profitLossRate {
-    final prev = totalPurchaseAmount;
-    final current = totalEvaluation;
+  double get profitLossRateForeign {
+    final prev = totalBuyingAmountForeign;
+    final current = totalCurrentAmountForeign;
     return calculatePercentageIncrease(prev, current);
+  }
+
+  /// [외화] 외화 예상 수익금
+  double get totalEvaluationAmountForeign {
+    return totalCurrentAmountForeign - totalBuyingAmountForeign;
   }
 
   //================================================================

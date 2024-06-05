@@ -2,16 +2,19 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PortfolioRow extends ConsumerWidget {
   final Asset asset;
+  final void Function(String) onTap;
 
   const PortfolioRow({
     super.key,
     required this.asset,
+    required this.onTap,
   });
 
   @override
@@ -32,7 +35,7 @@ class PortfolioRow extends ConsumerWidget {
         border: const TableBorder.symmetric(
             inside: BorderSide(color: AppColors.tableBorderLight, width: 1)),
         columnWidths: const {
-          0: FlexColumnWidth(1),
+          0: FlexColumnWidth(1.4),
           1: FlexColumnWidth(1),
           2: FlexColumnWidth(1),
           3: FlexColumnWidth(1),
@@ -46,14 +49,31 @@ class PortfolioRow extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildTableRowCell(name: row.name),
+                      // 종목명
                       _buildTableRowCell(
-                          name:
-                              '${row.purchasePriceKrw}\n(${row.purchasePriceForeign})'),
+                        key: 'name',
+                        child: _buildRowName(
+                          context: context,
+                          name: row.name,
+                          assetId: asset.id,
+                          hasTransactions: hasTransactions.isNotEmpty,
+                        ),
+                      ),
+                      // 매입가\n(외화)
                       _buildTableRowCell(
-                          name:
-                              '${row.currentPriceKrw}\n(${row.currentPriceForeign})',
-                          bottomBorder: false),
+                        key: 'buyingSinglePrice',
+                        child: _buildCommonText(
+                            name:
+                                '${row.buyingSinglePriceKrw}\n(${row.buyingSinglePriceForeign})'),
+                      ),
+                      // 현재가\n(외화)
+                      _buildTableRowCell(
+                        key: 'currentSinglePrice',
+                        child: _buildCommonText(
+                            name:
+                                '${row.currentSinglePriceKrw}\n(${row.currentSinglePriceForeign})'),
+                        bottomBorder: false,
+                      ),
                     ],
                   ),
                 ),
@@ -62,10 +82,27 @@ class PortfolioRow extends ConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildTableRowCell(name: '현재 수익금액\n(외화)'),
-                    _buildTableRowCell(name: row.amount),
+                    // 원화평가수익\n(수익률)
                     _buildTableRowCell(
-                        name: row.initialPurchaseDate, bottomBorder: false),
+                      key: 'totalEvaluationAmountKrw',
+                      child: Column(
+                        children: [
+                          _buildCommonText(name: row.totalEvaluationAmountKrw),
+                          _buildROIText(row, row.profitLossRateKrw)
+                        ],
+                      ),
+                    ),
+                    // 수량
+                    _buildTableRowCell(
+                      key: 'amount',
+                      child: _buildCommonText(name: row.amount),
+                    ),
+                    // 최초편입일
+                    _buildTableRowCell(
+                      key: 'initialPurchaseDate',
+                      child: _buildCommonText(name: row.initialPurchaseDate),
+                      bottomBorder: false,
+                    ),
                   ],
                 ),
               ),
@@ -74,15 +111,32 @@ class PortfolioRow extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // 외화평가수익\n(수익률)
                       _buildTableRowCell(
-                          name:
-                              '${row.profitLossRateKrw}\n(${row.profitLossRateForeign})'),
+                        key: 'totalEvaluationAmountForeign',
+                        child: Column(
+                          children: [
+                            _buildCommonText(
+                                name: row.totalEvaluationAmountForeign),
+                            _buildROIText(row, row.profitLossRateForeign),
+                          ],
+                        ),
+                      ),
+                      // 매입 총 금액\n(외화)
                       _buildTableRowCell(
-                          name: '${row.totalKrwPurchaseAverageAmt}\n(외화)'),
+                        key: 'totalBuyingAmount',
+                        child: _buildCommonText(
+                            name:
+                                '${row.totalBuyingAmountKrw}\n(${row.totalBuyingAmountForeign})'),
+                      ),
+                      // 현재가 총 금액\n(외화)
                       _buildTableRowCell(
-                          name:
-                              '${row.totalEvaluationKrw}\n(${row.totalEvaluationForeign})',
-                          bottomBorder: false),
+                        key: 'totalCurrentAmount',
+                        child: _buildCommonText(
+                            name:
+                                '${row.totalCurrentAmountKrw}\n(${row.totalCurrentAmountForeign})'),
+                        bottomBorder: false,
+                      ),
                     ],
                   ),
                 ),
@@ -92,11 +146,24 @@ class PortfolioRow extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildTableRowCell(name: row.ratio),
-                      _buildTableRowCell(name: row.purchaseExchangeRate ?? '-'),
+                      // 비중
                       _buildTableRowCell(
-                          name: row.currentExchangeRate ?? '-',
-                          bottomBorder: false),
+                        key: 'ratio',
+                        child: _buildCommonText(name: row.ratio),
+                      ),
+                      // 구매환율
+                      _buildTableRowCell(
+                        key: 'buyingExchangeRate',
+                        child: _buildCommonText(
+                            name: row.buyingExchangeRate ?? '-'),
+                      ),
+                      // 현재환율
+                      _buildTableRowCell(
+                        key: 'currentExchangeRate',
+                        child: _buildCommonText(
+                            name: row.currentExchangeRate ?? '-'),
+                        bottomBorder: false,
+                      ),
                     ],
                   ),
                 ),
@@ -108,30 +175,98 @@ class PortfolioRow extends ConsumerWidget {
     );
   }
 
-  Container _buildTableRowCell(
-      {required String name, bool bottomBorder = true}) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        border: bottomBorder
-            ? const Border(
-                bottom: BorderSide(color: AppColors.tableBorderLight, width: 1))
-            : null,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.tableColumnText,
-                    fontWeight: FontWeight.w500)),
+  Widget _buildTableRowCell({
+    required String key,
+    required Widget child,
+    bool bottomBorder = true,
+  }) {
+    return GestureDetector(
+      onTap: () => onTap(key),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        child: Container(
+          height: 50,
+          // padding: const EdgeInsets.symmetric(horizontal: 6),
+          decoration: BoxDecoration(
+            border: bottomBorder
+                ? const Border(
+                    bottom:
+                        BorderSide(color: AppColors.tableBorderLight, width: 1))
+                : null,
           ),
-        ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: child,
+              ),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  Widget _buildRowName(
+      {required BuildContext context,
+      required String name,
+      required String assetId,
+      required bool hasTransactions}) {
+    return GestureDetector(
+      onTap: () {
+        if (hasTransactions) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AssetTransactionListScreen(assetId: assetId),
+          ));
+        }
+      },
+      child: Container(
+        alignment: Alignment.centerRight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                decoration: hasTransactions ? TextDecoration.underline : null,
+                letterSpacing: 0,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            if (hasTransactions) ...[
+              const SizedBox(width: 1),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: AppColors.chipViolet,
+                ),
+                width: 12,
+                height: 12,
+                child: const Icon(
+                  Icons.add,
+                  size: 12,
+                  color: Colors.white,
+                ),
+              )
+            ]
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCommonText({
+    required String name,
+  }) {
+    return Text(name,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.tableColumnText,
+            fontWeight: FontWeight.w500));
   }
 
   Widget _buildROIText(TableRowAsset row, String text) {
