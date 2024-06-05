@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +43,8 @@ class DefaultLayout extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          backgroundColor: Colors.white,
+          floating: true,
+          backgroundColor: Colors.transparent,
           expandedHeight: 60.0,
           flexibleSpace: FlexibleSpaceBar(
             // 확장되는 영역
