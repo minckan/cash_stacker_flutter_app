@@ -45,10 +45,14 @@ class DefaultLayout extends StatelessWidget {
         SliverAppBar(
           floating: true,
           backgroundColor: Colors.transparent,
+          elevation: 0,
           expandedHeight: 60.0,
           flexibleSpace: FlexibleSpaceBar(
             // 확장되는 영역
             title: Text(title ?? ''),
+            background: Container(
+              color: Colors.white, // 필요한 경우 배경색을 투명하게 설정
+            ),
           ),
           actions: actions,
           leading: leading,
