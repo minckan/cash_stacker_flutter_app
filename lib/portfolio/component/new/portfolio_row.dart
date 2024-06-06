@@ -63,15 +63,21 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'buyingSinglePrice',
                         child: _buildCommonText(
-                            name:
-                                '${row.buyingSinglePriceKrw}\n(${row.buyingSinglePriceForeign})'),
+                          name: _buildString(
+                            row.buyingSinglePriceKrw,
+                            row.buyingSinglePriceForeign,
+                          ),
+                        ),
                       ),
                       // 현재가\n(외화)
                       _buildTableRowCell(
                         key: 'currentSinglePrice',
                         child: _buildCommonText(
-                            name:
-                                '${row.currentSinglePriceKrw}\n(${row.currentSinglePriceForeign})'),
+                          name: _buildString(
+                            row.currentSinglePriceKrw,
+                            row.currentSinglePriceForeign,
+                          ),
+                        ),
                         bottomBorder: false,
                       ),
                     ],
@@ -88,7 +94,8 @@ class PortfolioRow extends ConsumerWidget {
                       child: Column(
                         children: [
                           _buildCommonText(name: row.totalEvaluationAmountKrw),
-                          _buildROIText(row, row.profitLossRateKrw)
+                          if (row.profitLossRateKrw != '-')
+                            _buildROIText(row, row.profitLossRateKrw)
                         ],
                       ),
                     ),
@@ -118,7 +125,8 @@ class PortfolioRow extends ConsumerWidget {
                           children: [
                             _buildCommonText(
                                 name: row.totalEvaluationAmountForeign),
-                            _buildROIText(row, row.profitLossRateForeign),
+                            if (row.profitLossRateForeign != '-')
+                              _buildROIText(row, row.profitLossRateForeign),
                           ],
                         ),
                       ),
@@ -126,15 +134,21 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'totalBuyingAmount',
                         child: _buildCommonText(
-                            name:
-                                '${row.totalBuyingAmountKrw}\n(${row.totalBuyingAmountForeign})'),
+                          name: _buildString(
+                            row.totalBuyingAmountKrw,
+                            row.totalBuyingAmountForeign,
+                          ),
+                        ),
                       ),
                       // 현재가 총 금액\n(외화)
                       _buildTableRowCell(
                         key: 'totalCurrentAmount',
                         child: _buildCommonText(
-                            name:
-                                '${row.totalCurrentAmountKrw}\n(${row.totalCurrentAmountForeign})'),
+                          name: _buildString(
+                            row.totalCurrentAmountKrw,
+                            row.totalCurrentAmountForeign,
+                          ),
+                        ),
                         bottomBorder: false,
                       ),
                     ],
@@ -173,6 +187,21 @@ class PortfolioRow extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _buildString(
+    String? krw,
+    String? foreign,
+  ) {
+    // print(krw);
+    // print(foreign);
+    if (krw == null) {
+      return '-';
+    }
+    if (foreign == null || foreign == '-') {
+      return krw;
+    }
+    return '$krw\n($foreign)';
   }
 
   Widget _buildTableRowCell({
@@ -270,14 +299,6 @@ class PortfolioRow extends ConsumerWidget {
   }
 
   Widget _buildROIText(TableRowAsset row, String text) {
-    if (text == '-') {
-      return Text(
-        text,
-        style: const TextStyle(
-            fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500),
-        textAlign: TextAlign.right,
-      );
-    }
     final condition = double.parse(removePercent(text));
 
     final isIncrease = condition > 0;

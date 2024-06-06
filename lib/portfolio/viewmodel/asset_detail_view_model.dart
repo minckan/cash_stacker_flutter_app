@@ -147,6 +147,9 @@ class AssetDetailViewModel {
 
   /// [원화] 현재 평가 수익금액
   double get totalEvaluationAmountKrw {
+    if (totalCurrentAmountKrw == 0) {
+      return 0;
+    }
     return totalCurrentAmountKrw - totalBuyingAmountKrw;
   }
 
@@ -185,9 +188,33 @@ class AssetDetailViewModel {
 
   /// [외화] 외화 예상 수익금
   double get totalEvaluationAmountForeign {
+    if (totalCurrentAmountForeign == 0) {
+      return 0;
+    }
     return totalCurrentAmountForeign - totalBuyingAmountForeign;
   }
 
+  //================================================================
+  /// [외환] 현재환율 * 총 금액
+  double get totalCurrentCashAmountForeignKrw {
+    return exchangeRate * totalBuyingAmountForeign;
+  }
+
+  /// [외환] 원화 예상 수익금
+  double get totalCashEvaluationAmountForeign {
+    if (totalCurrentCashAmountForeignKrw == 0) {
+      return 0;
+    }
+    return totalCurrentCashAmountForeignKrw - totalBuyingAmountKrw;
+  }
+
+  /// 환차익율
+  double get foreignCashProfitLossRate {
+    final previousPrice = totalBuyingAmountKrw;
+    final currentPrice = totalCurrentCashAmountForeignKrw;
+
+    return calculatePercentageIncrease(previousPrice, currentPrice);
+  }
   //================================================================
 
   /// 매입 환율 평균
