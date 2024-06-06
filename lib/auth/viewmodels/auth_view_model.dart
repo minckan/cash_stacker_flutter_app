@@ -61,19 +61,20 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
   Future<void> _loginWithKakao(BuildContext context) async {
     try {
-      if (await kakao_user.isKakaoTalkInstalled()) {
+      final isKakaoInstalled = await kakao_user.isKakaoTalkInstalled();
+      if (isKakaoInstalled) {
         final user = await kakao_user.UserApi.instance.loginWithKakaoTalk();
-        await _loginToFIrebase(context, user);
+        await _loginToFirebase(context, user);
       } else {
         final user = await kakao_user.UserApi.instance.loginWithKakaoAccount();
-        await _loginToFIrebase(context, user);
+        await _loginToFirebase(context, user);
       }
     } catch (e) {
       logger.e('Kakao login error: $e');
     }
   }
 
-  Future<void> _loginToFIrebase(
+  Future<void> _loginToFirebase(
       BuildContext context, kakao_user.OAuthToken user) async {
     try {
       // oidc 인증

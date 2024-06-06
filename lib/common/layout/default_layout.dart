@@ -43,7 +43,6 @@ class DefaultLayout extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          floating: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
           expandedHeight: 60.0,
