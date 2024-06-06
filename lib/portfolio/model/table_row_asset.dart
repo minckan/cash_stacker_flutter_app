@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
@@ -67,6 +68,7 @@ class TableRowAsset {
     /// =================================================================
     /// [현금] 🇰🇷 한화
     /// =================================================================
+
     if (assetVM.isCashAsset) {
       if (asset.currency?.currencyCode == 'KRW') {
         name = '현금';
@@ -163,6 +165,7 @@ class TableRowAsset {
         /// =================================================================
         /// [자산] 해외
         /// =================================================================
+
         name = asset.name;
         amount = addComma.format(assetVM.totalQuantity);
         ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';

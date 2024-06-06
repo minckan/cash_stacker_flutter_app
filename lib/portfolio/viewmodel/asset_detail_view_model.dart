@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cash_stacker_flutter_app/common/utill/calculation_helpers.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
@@ -48,6 +49,7 @@ class AssetDetailViewModel {
   /// 영업일 기준 1시간 단위로 업데이트 되는 환율 정보
   double get exchangeRate {
     if (asset.currency!.currencyCode == 'BRL') return 0;
+
     final exchangeRate = ref.watch(exchangeRateProvider).firstWhere((rate) =>
         rate.cur_unit.contains(asset.currency?.currencyCode as Pattern));
 

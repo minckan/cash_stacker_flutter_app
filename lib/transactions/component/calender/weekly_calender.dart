@@ -56,7 +56,6 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     );
 
     if (picked != null && picked != widget.selectedDate) {
-      logger.d(picked);
       setState(() {
         widget.handleChangeSelectDate(picked);
         _startOfWeek = _findStartOfWeek(picked);

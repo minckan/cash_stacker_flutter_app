@@ -24,8 +24,6 @@ class ExchangeRateViewModel extends StateNotifier<List<ExchangeRateApiModel>> {
       final exchangeRates = await repository.getCurrentExchangeRates();
 
       state = exchangeRates;
-
-      // logger.d(state);
     } catch (e) {
       logger.e('Error fetching exchange rates: $e');
       state = [];
