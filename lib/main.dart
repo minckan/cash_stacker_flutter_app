@@ -3,6 +3,7 @@ import 'package:cash_stacker_flutter_app/common/screen/splash_screen.dart';
 import 'package:cash_stacker_flutter_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +21,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     const ProviderScope(child: MyApp()),
   );
@@ -34,6 +36,8 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         fontFamily: 'Notosans',
+        appBarTheme:
+            const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
       ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
