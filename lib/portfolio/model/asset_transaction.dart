@@ -158,7 +158,7 @@ class ForeignTransaction extends AssetTransaction {
 @JsonSerializable(explicitToJson: true)
 class ForexTransaction extends AssetTransaction {
   /// 외환 거래액
-  final double purchasePrice;
+  final double transactionAmt;
 
   /// 환율
   final double inputExchangeRate;
@@ -171,7 +171,7 @@ class ForexTransaction extends AssetTransaction {
     required super.type,
     required super.category,
     required super.currency,
-    required this.purchasePrice,
+    required this.transactionAmt,
     required this.inputExchangeRate,
   });
 
@@ -185,13 +185,13 @@ class ForexTransaction extends AssetTransaction {
   double get singlePrice => 0;
 
   @override
-  double get totalTransactionPrice => purchasePrice;
+  double get totalTransactionPrice => transactionAmt;
 
   @override
   double get krwSinglePrice => exchangeRate;
 
   @override
-  double get totalKrwTransactionPrice => purchasePrice * exchangeRate;
+  double get totalKrwTransactionPrice => transactionAmt * exchangeRate;
 
   @override
   int get quantity => 0;

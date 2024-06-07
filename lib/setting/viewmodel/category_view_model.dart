@@ -15,6 +15,10 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
     return state.firstWhere((item) => item.name == '현금');
   }
 
+  CategoryModel get foreignCashAsset {
+    return state.firstWhere((item) => item.name == '외환');
+  }
+
   List<CategoryModel> get expenseCategories {
     return state
         .where((category) => category.type == CategoryType.expense)

@@ -1,10 +1,10 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
+import 'package:cash_stacker_flutter_app/common/component/form/number_form_field.dart';
+import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
-import 'package:cash_stacker_flutter_app/common/utill/input-formatter/decimal.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
@@ -23,7 +23,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:uuid/uuid.dart';
 
 class AddAssetScreen extends ConsumerStatefulWidget {
@@ -38,7 +37,8 @@ class AddAssetScreen extends ConsumerStatefulWidget {
 class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   Uuid uuid = const Uuid();
-  String? cashCategoryId;
+  String? foreignCashCategoryId;
+  String? krwCashCategoryId;
 
   CategoryModel? selectedCategory;
   Currency? selectedCurrency;
@@ -48,7 +48,10 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   void initState() {
     super.initState();
 
-    cashCategoryId = ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+    foreignCashCategoryId =
+        ref.read(categoryViewModelProvider.notifier).foreignCashAsset.id;
+    krwCashCategoryId =
+        ref.read(categoryViewModelProvider.notifier).cashAsset.id;
 
     if (widget.assetId != null) {
       final thisAsset = ref
@@ -57,12 +60,17 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
       selectedCategory = thisAsset.category;
       selectedCurrency = thisAsset.currency;
+
+      final isForeignCash = foreignCashCategoryId == thisAsset.category.id;
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _formKey.currentState?.patchValue({
           'category': thisAsset.category.name, // 초기 값 설정
           'currency': thisAsset.currency?.currencyName,
           'cashCurrency': thisAsset.currency?.currencyName,
-          'name': thisAsset.name,
+          'name': isForeignCash
+              ? '${thisAsset.name}(${thisAsset.currency?.currencyCode})'
+              : thisAsset.name,
         });
       });
     }
@@ -77,7 +85,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
     final currencyVM = ref.watch(currencyViewModelProvider).toList();
 
-    final selectedCashCategory = selectedCategory?.id == cashCategoryId;
+    final selectedCashCategory = selectedCategory?.id == krwCashCategoryId ||
+        selectedCategory?.id == foreignCashCategoryId;
+
     final bool isDisabledField = widget.assetId != null;
 
     return DefaultLayout(
@@ -143,8 +153,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   List<Widget> _buildCommonAssetForm(
       BuildContext context, List<Currency> currencyVM, bool disabled) {
     return [
-      buildTextAreaFormField(
-        context: context,
+      CustomTextFormField(
         formName: 'name',
         placeholder: '종목명 입력',
         disabled: disabled,
@@ -166,8 +175,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         },
       ),
       const SizedBox(height: 10),
-      buildNumberFormField(
-        context: context,
+      NumberFormField(
         formName: 'buyingPrice',
         placeholder: '매입가',
         disabled: selectedCurrency == null,
@@ -178,25 +186,22 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         const SizedBox(
           width: 10,
         ),
-        buildNumberFormField(
-          context: context,
+        NumberFormField(
           formName: 'exchangeRate',
-          placeholder: '구매 환율(구매통화 1unit 당)',
-          suffixText: '원',
+          placeholder: '구매 환율',
+          suffixText: '/ ${selectedCurrency?.currencySymbol}1',
           addComma: false,
         ),
       ],
       const SizedBox(
         width: 10,
       ),
-      buildNumberFormField(
-        context: context,
+      const NumberFormField(
         formName: 'amount',
         placeholder: '수량',
       ),
       const SizedBox(height: 10),
-      buildNumberFormField(
-        context: context,
+      NumberFormField(
         formName: 'currentPrice',
         placeholder: '현재가',
         isOptional: true,
@@ -229,17 +234,15 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         const SizedBox(
           width: 10,
         ),
-        buildNumberFormField(
-          context: context,
+        NumberFormField(
           formName: 'cashExchangeRate',
-          placeholder: '외환 매입 환율(구매통화 1unit 당)',
-          suffixText: '원',
+          placeholder: '외환 매입 환율',
+          suffixText: '/ ${selectedCurrency?.currencySymbol}1',
           addComma: false,
         ),
       ],
       const SizedBox(height: 10),
-      buildNumberFormField(
-        context: context,
+      NumberFormField(
         formName: 'cashAmount',
         placeholder: '금액',
         disabled: selectedCurrency == null,
@@ -257,8 +260,10 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
         final newAssetId = uuid.v4();
         final isKrwAsset = selectedCurrency?.currencyCode == 'KRW';
-        final isCashAsset = selectedCategory?.id == cashCategoryId;
-        final isKrwCash = isKrwAsset && isCashAsset;
+        final isKrwCashAsset = selectedCategory?.id == krwCashCategoryId;
+        final isForeignCashAsset =
+            selectedCategory?.id == foreignCashCategoryId;
+
         final thisMonthAssetSummary = ref
             .read(assetSummaryProvider.notifier)
             .getAssetSummaryByMonth(getMonth(DateTime.now()));
@@ -266,10 +271,14 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         if (widget.assetId == null) {
           final asset = Asset(
             id: newAssetId,
-            name: isCashAsset ? '현금' : value['name'],
+            name: isKrwCashAsset
+                ? '현금'
+                : isForeignCashAsset
+                    ? '외환'
+                    : value['name'],
             category: selectedCategory!,
             currency: selectedCurrency,
-            inputCurrentPrice: isCashAsset
+            inputCurrentPrice: isKrwCashAsset
                 ? value['cashAmount'] != null
                     ? (double.tryParse(
                           removeComma(value['cashAmount']),
@@ -291,18 +300,18 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         }
         final AssetTransaction assetTr;
 
-        if (!isKrwCash) {
+        if (!isKrwCashAsset) {
           // 외환 거래
-          if (isCashAsset) {
+          if (isForeignCashAsset) {
             assetTr = ForexTransaction(
-              name: '현금(${selectedCurrency!.currencyCode})',
+              name: '외환(${selectedCurrency!.currencyCode})',
               id: uuid.v4(),
               assetId: widget.assetId ?? newAssetId,
               date: selectedDate,
               type: AssetTransactionType.buy,
               category: selectedCategory!,
               currency: selectedCurrency!,
-              purchasePrice:
+              transactionAmt:
                   double.tryParse(removeComma(value['cashAmount'])) ?? 0,
               inputExchangeRate: double.parse(value['cashExchangeRate']),
             );
@@ -361,23 +370,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         Navigator.of(context).pop();
       }
     }
-  }
-
-  buildTextAreaFormField({
-    required BuildContext context,
-    required String formName,
-    required String placeholder,
-    bool disabled = false,
-  }) {
-    return FormFieldWithLabel(
-      label: placeholder,
-      formField: FormBuilderTextField(
-        key: UniqueKey(),
-        name: formName,
-        enabled: !disabled,
-        decoration: inputDecoration,
-      ),
-    );
   }
 
   buildCategoryFormField({
@@ -475,41 +467,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget buildNumberFormField({
-    required BuildContext context,
-    required String formName,
-    required String placeholder,
-    bool isOptional = false,
-    bool disabled = false,
-    String? suffixText,
-    bool addComma = true,
-  }) {
-    return FormFieldWithLabel(
-      label: placeholder,
-      formField: FormBuilderTextField(
-        key: UniqueKey(),
-        name: formName,
-        enabled: !disabled,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        inputFormatters: [if (addComma) DecimalInputFormatter()],
-        decoration: inputDecoration.copyWith(
-          suffixIcon: suffixText != null
-              ? Container(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  alignment: Alignment.centerRight,
-                  width: 10,
-                  child: Text(suffixText),
-                )
-              : null,
-        ),
-        textAlign: TextAlign.right,
-        validator: FormBuilderValidators.compose([
-          if (!isOptional) FormBuilderValidators.required(),
-        ]),
       ),
     );
   }

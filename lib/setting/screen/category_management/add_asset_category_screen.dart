@@ -1,5 +1,5 @@
 import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
-import 'package:cash_stacker_flutter_app/common/component/form/%08form_text_field.dart';
+import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 

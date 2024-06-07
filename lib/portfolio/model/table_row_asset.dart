@@ -97,7 +97,7 @@ class TableRowAsset {
         /// =================================================================
         /// [현금] 외환
         /// =================================================================
-        name = '현금(${asset.currency?.currencyCode})';
+        name = '외환(${asset.currency?.currencyCode})';
         amount = '-';
         buyingSinglePriceKrw = '-';
         buyingSinglePriceForeign = '-';

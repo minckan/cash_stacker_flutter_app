@@ -15,6 +15,10 @@ class CurrencyViewModel extends StateNotifier<List<Currency>> {
   final CollectionReference _currenciesRef =
       FirebaseFirestore.instance.collection('currencies');
 
+  Currency get krwCurrency {
+    return state.firstWhere((currency) => currency.currencyCode == 'KRW');
+  }
+
   Future<void> loadCurrencies() async {
     try {
       QuerySnapshot snapshot = await _currenciesRef.get();

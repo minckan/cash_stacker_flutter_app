@@ -28,13 +28,22 @@ class AssetDetailViewModel {
   bool get _isKrwAsset => asset.currency?.currencyCode == 'KRW';
 
   bool get isCashAsset {
-    final cashAssetId =
-        ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+    final categoryVm = ref.read(categoryViewModelProvider.notifier);
+    final krwCashAssetId = categoryVm.cashAsset.id;
 
-    return cashAssetId == asset.category.id;
+    final foreignCashAssetId = categoryVm.foreignCashAsset.id;
+
+    return krwCashAssetId == asset.category.id ||
+        foreignCashAssetId == asset.category.id;
   }
 
-  bool get isKrwCashAsset => _isKrwAsset && isCashAsset;
+  bool get isKrwCashAsset =>
+      asset.category.id ==
+      ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+
+  bool get isForeignCashAsset =>
+      asset.category.id ==
+      ref.read(categoryViewModelProvider.notifier).foreignCashAsset.id;
 
   //================================================================
 
@@ -50,6 +59,7 @@ class AssetDetailViewModel {
   double get exchangeRate {
     if (asset.currency!.currencyCode == 'BRL') return 0;
 
+// TODO: Bad state: No element ERROR
     final exchangeRate = ref.watch(exchangeRateProvider).firstWhere((rate) =>
         rate.cur_unit.contains(asset.currency?.currencyCode as Pattern));
 
@@ -89,7 +99,9 @@ class AssetDetailViewModel {
   /// 전체 투자 수량
   double get totalQuantity {
     return purchaseTransactions.fold(
-        0, (sum, transaction) => sum + transaction.quantity);
+            0, (sum, transaction) => sum + transaction.quantity) -
+        sellingTransactions.fold(
+            0, (sum, transaction) => sum + transaction.quantity);
   }
 
   /// 매수금액 기준 자산 비율
@@ -110,20 +122,32 @@ class AssetDetailViewModel {
 
   /// [원화] 실제 투자원금 총액
   double get totalBuyingAmountKrw {
-    if (_isKrwAsset && isCashAsset) {
+    if (isKrwCashAsset) {
       return asset.inputCurrentPrice;
+    } else if (isForeignCashAsset) {
+      final totalBuying = purchaseTransactions.fold(0.0,
+          (total, transaction) => total + transaction.totalTransactionPrice);
+      final totalSelling = sellingTransactions.fold(0.0,
+          (total, transaction) => total + transaction.totalTransactionPrice);
+
+      return (totalBuying - totalSelling) * averageExchangeRate;
     }
 
-    final total = transactions.fold(0.0,
-        (total, transaction) => total + transaction.totalKrwTransactionPrice);
-    return total / transactions.length;
+    final totalBuying = purchaseTransactions.fold(
+        0.0, (total, transaction) => total + transaction.quantity);
+    final totalSelling = sellingTransactions.fold(
+        0.0, (total, transaction) => total + transaction.quantity);
+
+    final total = totalBuying - totalSelling;
+
+    return total * buyingSinglePriceKrw;
   }
 
   /// [원화] 평균 매입가
   double get buyingSinglePriceKrw {
     final totalPurchasePrice = purchaseTransactions.fold(
         0.0, (sum, transaction) => sum + transaction.krwSinglePrice);
-    return totalPurchasePrice / transactions.length;
+    return totalPurchasePrice / purchaseTransactions.length;
   }
 
   /// [원화] 입력 받은 현재가
@@ -159,8 +183,22 @@ class AssetDetailViewModel {
 
   /// [외화] 실제 투자원금 총액
   double get totalBuyingAmountForeign {
-    return purchaseTransactions.fold(
-        0, (sum, transaction) => sum + transaction.totalTransactionPrice);
+    if (isForeignCashAsset) {
+      final totalBuying = purchaseTransactions.fold(0.0,
+          (total, transaction) => total + transaction.totalTransactionPrice);
+      final totalSelling = sellingTransactions.fold(0.0,
+          (total, transaction) => total + transaction.totalTransactionPrice);
+
+      final total = totalBuying - totalSelling;
+      return total;
+    }
+    final totalBuying = purchaseTransactions.fold(
+        0.0, (total, transaction) => total + transaction.quantity);
+    final totalSelling = sellingTransactions.fold(
+        0.0, (total, transaction) => total + transaction.quantity);
+
+    final total = totalBuying - totalSelling;
+    return total * buyingSinglePriceForeign;
   }
 
   /// [외화] 평균 매입가
@@ -168,7 +206,7 @@ class AssetDetailViewModel {
     final totalPurchasePrice = purchaseTransactions.fold(
         0.0, (sum, transaction) => sum + transaction.singlePrice);
 
-    return totalPurchasePrice / transactions.length;
+    return totalPurchasePrice / purchaseTransactions.length;
   }
 
   /// [외화] 입력받은 현재가
@@ -221,8 +259,8 @@ class AssetDetailViewModel {
 
   /// 매입 환율 평균
   double get averageExchangeRate {
-    final transactionSize = transactions.length;
-    final value = transactions.fold(0.0, (total, transaction) {
+    final transactionSize = purchaseTransactions.length;
+    final value = purchaseTransactions.fold(0.0, (total, transaction) {
           return total + (transaction.exchangeRate);
         }) /
         transactionSize;

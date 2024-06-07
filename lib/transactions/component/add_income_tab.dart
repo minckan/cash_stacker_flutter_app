@@ -1,4 +1,4 @@
-import 'package:cash_stacker_flutter_app/common/component/form/%08form_text_field.dart';
+import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/text_radio_button_field.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';

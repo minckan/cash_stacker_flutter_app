@@ -13,6 +13,18 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   AssetsViewModel(this._ref) : super([]);
 
+  Asset? get krwCashAsset {
+    final krwCashCategoryId =
+        _ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+    try {
+      return state.firstWhere(
+        (asset) => asset.category.id == krwCashCategoryId,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> loadAssets(String workspaceId) async {
     final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
         .collection(Collection.workspaces)
