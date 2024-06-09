@@ -184,7 +184,11 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
           today: _currentDate,
           transactions: transactions,
         ),
-        const Analytics()
+        // const Analytics()
+        const Padding(
+          padding: EdgeInsets.all(30),
+          child: Text('준비중 입니다.'),
+        )
       ],
     );
   }

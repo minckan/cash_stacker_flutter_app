@@ -42,6 +42,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
       if (userDoc.exists) {
         state = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+
         _ref
             .read(workspaceViewModelProvider.notifier)
             .loadWorkspace(state!.uid);
@@ -67,6 +68,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
         await _loginToFirebase(context, user);
       } else {
         final user = await kakao_user.UserApi.instance.loginWithKakaoAccount();
+        logger.d(user.accessToken);
         await _loginToFirebase(context, user);
       }
     } catch (e) {

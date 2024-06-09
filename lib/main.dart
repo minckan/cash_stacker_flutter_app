@@ -1,7 +1,9 @@
 import 'package:cash_stacker_flutter_app/common/screen/splash_screen.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
 import 'package:cash_stacker_flutter_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,6 +23,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  logger.e(fcmToken);
 
   runApp(
     const ProviderScope(child: MyApp()),

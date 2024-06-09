@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
@@ -22,6 +23,17 @@ class PortfolioRow extends ConsumerWidget {
     final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
     final row = TableRowAsset.fromAsset(asset, assetVM);
     final hasTransactions = assetVM.transactions;
+
+    final exchanges = ref.watch(exchangeRateProvider);
+
+    if (exchanges.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return Container(
       decoration: const BoxDecoration(

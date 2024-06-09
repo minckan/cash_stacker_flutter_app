@@ -32,6 +32,10 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
         .collection(Collection.assets)
         .get();
 
+    if (assetsQuery.docs.isEmpty) {
+      state = [];
+      return;
+    }
     List<Asset> assets = assetsQuery.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>?;
 

@@ -28,21 +28,50 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       if (workspacesQuery.docs.isNotEmpty) {
         state = Workspace.fromJson(
             workspacesQuery.docs.first.data() as Map<String, dynamic>);
+        try {
+          await _ref
+              .read(categoryViewModelProvider.notifier)
+              .loadCategory(workspaceId: state!.id);
+        } catch (e) {
+          logger.e('ERROR : 카테고리 조회  $userId: $e');
+        }
+        try {
+          await _ref
+              .read(transactionViewModelProvider.notifier)
+              .loadTransactions(state!.id);
+        } catch (e) {
+          logger.e('ERROR : 가계부 거래내역 조회  $userId: $e');
+        }
 
-        await _ref
-            .read(categoryViewModelProvider.notifier)
-            .loadCategory(workspaceId: state!.id);
-        await _ref
-            .read(transactionViewModelProvider.notifier)
-            .loadTransactions(state!.id);
-        await _ref
-            .read(assetSummaryProvider.notifier)
-            .loadAssetSummaries(state!.id);
-        await _ref.read(assetViewModelProvider.notifier).loadAssets(state!.id);
-        await _ref
-            .read(assetTransactionViewModelProvider.notifier)
-            .loadAssetTransactions(state!.id);
-        await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
+        try {
+          await _ref
+              .read(assetSummaryProvider.notifier)
+              .loadAssetSummaries(state!.id);
+        } catch (e) {
+          logger.e('ERROR : 자산 요약 조회  $userId: $e');
+        }
+
+        try {
+          await _ref
+              .read(assetViewModelProvider.notifier)
+              .loadAssets(state!.id);
+        } catch (e) {
+          logger.e('ERROR : 자산 조회  $userId: $e');
+        }
+
+        try {
+          await _ref
+              .read(assetTransactionViewModelProvider.notifier)
+              .loadAssetTransactions(state!.id);
+        } catch (e) {
+          logger.e('ERROR : 자산 거래내역 조회  $userId: $e');
+        }
+
+        try {
+          await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
+        } catch (e) {
+          logger.e('ERROR : 통화 리스트 조회  $userId: $e');
+        }
       }
     } catch (e) {
       logger.e('Error loading workspace for user $userId: $e');
