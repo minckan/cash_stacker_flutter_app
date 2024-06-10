@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/setting/model/invitation_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/invitation_view_model.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class InvitationScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = GlobalKey<FormBuilderState>();
     final viewModel = ref.read(invitationViewModelProvider.notifier);
+    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
     Uuid uuid = const Uuid();
     return DefaultLayout(
       isFormView: true,
@@ -57,17 +59,19 @@ class InvitationScreen extends ConsumerWidget {
 
                               final email = value['email'];
 
-                              final invitation = Invitation(
-                                  id: id,
-                                  email: email,
-                                  workspaceId: '',
-                                  status: InvitationStatus.pending,
-                                  token: '',
-                                  expiryDate: DateTime.now()
-                                      .add(const Duration(days: 7)));
+                              if (workspaceId != null) {
+                                final invitation = Invitation(
+                                    id: id,
+                                    email: email,
+                                    workspaceId: workspaceId,
+                                    status: InvitationStatus.pending,
+                                    token: '',
+                                    expiryDate: DateTime.now()
+                                        .add(const Duration(days: 7)));
 
-                              await viewModel.sendInvitation(invitation);
-                              Navigator.pop(context);
+                                await viewModel.sendInvitation(invitation);
+                                Navigator.pop(context);
+                              }
                             },
                           ),
                         ],
