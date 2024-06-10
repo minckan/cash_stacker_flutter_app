@@ -104,7 +104,15 @@ List<AssetSummaryDecile> normalizeAssetSummaries(
   }
 
   // 각 AssetSummary의 totalAssets 값을 0에서 10 사이로 정규화
-  return assetSummaries.map((asset) {
+  // return assetSummaries.map((asset) {
+  //   double normalizedValue = asset.totalAssets == 0
+  //       ? 0.0
+  //       : asset.normalizeTotalAssets(minTotalAssets, maxTotalAssets);
+
+  //   return AssetSummaryDecile(
+  //       assetSummary: asset, normalizedValue: normalizedValue);
+  // }).toList();
+  return assetSummaries.where((asset) => asset.totalAssets > 0).map((asset) {
     double normalizedValue = asset.totalAssets == 0
         ? 0.0
         : asset.normalizeTotalAssets(minTotalAssets, maxTotalAssets);

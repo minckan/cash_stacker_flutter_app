@@ -30,7 +30,7 @@ class FormTextField extends StatelessWidget {
           ),
         ),
       ),
-      textAlign: TextAlign.right,
+      textAlign: TextAlign.left,
     );
   }
 }

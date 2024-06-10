@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -43,12 +44,25 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
         .doc(workspaceId)
         .collection(Collection.category)
         .get();
+    final defaultCategorySnapshot = await FirebaseFirestore.instance
+        .collection(Collection.globalSetting)
+        .doc(Collection.defaultCategory)
+        .get();
+
+    final defaultCategories =
+        defaultCategorySnapshot.data()?.entries.map((entry) {
+      return CategoryModel.fromJson(entry.value);
+    }).toList();
 
     if (categorySnapshot.docs.isNotEmpty) {
       state = categorySnapshot.docs
           .map((doc) =>
               CategoryModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
+    }
+
+    if (defaultCategories != null && defaultCategories.isNotEmpty) {
+      state = [...state, ...defaultCategories];
     }
   }
 
@@ -60,6 +74,7 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
         .doc(category.id)
         .set(category.toJson());
 
+    logger.d(state.length);
     state = [...state, category];
   }
 

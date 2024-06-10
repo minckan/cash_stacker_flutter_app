@@ -78,7 +78,7 @@ ForexTransaction _$ForexTransactionFromJson(Map<String, dynamic> json) =>
       category:
           CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
       currency: Currency.fromJson(json['currency'] as Map<String, dynamic>),
-      transactionAmt: (json['purchasePrice'] as num).toDouble(),
+      transactionAmt: (json['transactionAmt'] as num).toDouble(),
       inputExchangeRate: (json['inputExchangeRate'] as num).toDouble(),
     );
 
@@ -91,6 +91,6 @@ Map<String, dynamic> _$ForexTransactionToJson(ForexTransaction instance) =>
       'date': instance.date.toIso8601String(),
       'type': _$AssetTransactionTypeEnumMap[instance.type]!,
       'currency': instance.currency.toJson(),
-      'purchasePrice': instance.transactionAmt,
+      'transactionAmt': instance.transactionAmt,
       'inputExchangeRate': instance.inputExchangeRate,
     };

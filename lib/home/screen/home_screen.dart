@@ -61,7 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ],
       child: SizedBox(
-        height: MediaQuery.of(context).size.height,
+        // height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
@@ -245,9 +245,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(height: 50),
               const AnnualTrendChart(),
-              const SizedBox(
-                height: 120,
-              )
+              // const SizedBox(
+              //   height: 120,
+              // )
             ],
           ),
         ),

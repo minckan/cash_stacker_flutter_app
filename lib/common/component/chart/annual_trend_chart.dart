@@ -142,9 +142,15 @@ class AnnualTrendChartState extends ConsumerState<AnnualTrendChart> {
     final assetSummaries = ref.watch(assetSummaryProvider);
     final normalized = normalizeAssetSummaries(assetSummaries);
     normalizedSummaries = normalized;
-    return AspectRatio(
-      aspectRatio: 1.6,
-      child: _BarChart(assetSummaries: normalizedSummaries),
-    );
+    if (normalizedSummaries.isNotEmpty) {
+      return AspectRatio(
+        aspectRatio: 1.6,
+        child: _BarChart(assetSummaries: normalizedSummaries),
+      );
+    } else {
+      return const Center(
+        child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
+      );
+    }
   }
 }

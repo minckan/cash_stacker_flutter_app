@@ -131,6 +131,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                         _formKey.currentState?.fields['category']
                             ?.didChange(value!.name);
                         selectedCategory = value;
+
+                        if (value?.isForeignAsset == null ||
+                            value?.isForeignAsset == false) {
+                          selectedCurrency = currencyVM.firstWhere(
+                              (currency) => currency.currencyCode == 'KRW');
+                        }
                       });
                       Navigator.pop(context);
                     },
@@ -159,30 +165,33 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         disabled: disabled,
       ),
       const SizedBox(height: 10),
-      buildCurrencyFormField(
-        context: context,
-        currencies: currencyVM,
-        formName: 'currency',
-        selectedCurrency: selectedCurrency,
-        disabled: disabled,
-        onSelect: (value) {
-          setState(() {
-            selectedCurrency = value;
-            _formKey.currentState?.fields['currency']
-                ?.didChange(value!.currencyName);
-          });
-          Navigator.pop(context);
-        },
-      ),
-      const SizedBox(height: 10),
+      if (selectedCategory?.isForeignAsset == true) ...[
+        buildCurrencyFormField(
+          context: context,
+          currencies: currencyVM
+              .where(((currency) => currency.currencyCode != 'KRW'))
+              .toList(),
+          formName: 'currency',
+          selectedCurrency: selectedCurrency,
+          disabled: disabled,
+          onSelect: (value) {
+            setState(() {
+              selectedCurrency = value;
+              _formKey.currentState?.fields['currency']
+                  ?.didChange(value!.currencyName);
+            });
+            Navigator.pop(context);
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
       NumberFormField(
         formName: 'buyingPrice',
         placeholder: '매입가',
         disabled: selectedCurrency == null,
         suffixText: selectedCurrency?.currencyCode,
       ),
-      if (selectedCurrency != null &&
-          selectedCurrency?.currencyCode != 'KRW') ...[
+      if (selectedCategory?.isForeignAsset == true) ...[
         const SizedBox(
           width: 10,
         ),
@@ -214,23 +223,24 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   List<Widget> _buildCashAssetForm(
       BuildContext context, List<Currency> currencyVM, bool disabled) {
     return [
-      buildCurrencyFormField(
-        context: context,
-        currencies: currencyVM,
-        formName: 'cashCurrency',
-        disabled: disabled,
-        selectedCurrency: selectedCurrency,
-        onSelect: (value) {
-          setState(() {
-            selectedCurrency = value;
-            _formKey.currentState?.fields['cashCurrency']
-                ?.didChange(value!.currencyName);
-          });
-          Navigator.pop(context);
-        },
-      ),
-      if (selectedCurrency != null &&
-          selectedCurrency?.currencyCode != 'KRW') ...[
+      if (selectedCategory?.isForeignAsset == true) ...[
+        buildCurrencyFormField(
+          context: context,
+          currencies: currencyVM
+              .where(((currency) => currency.currencyCode != 'KRW'))
+              .toList(),
+          formName: 'cashCurrency',
+          disabled: disabled,
+          selectedCurrency: selectedCurrency,
+          onSelect: (value) {
+            setState(() {
+              selectedCurrency = value;
+              _formKey.currentState?.fields['cashCurrency']
+                  ?.didChange(value!.currencyName);
+            });
+            Navigator.pop(context);
+          },
+        ),
         const SizedBox(
           width: 10,
         ),
@@ -240,8 +250,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           suffixText: '/ ${selectedCurrency?.currencySymbol}1',
           addComma: false,
         ),
+        const SizedBox(height: 10),
       ],
-      const SizedBox(height: 10),
       NumberFormField(
         formName: 'cashAmount',
         placeholder: '금액',

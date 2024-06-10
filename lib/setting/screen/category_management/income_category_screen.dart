@@ -1,8 +1,9 @@
-import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/component/category_list_tile.dart';
 import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
-
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
+
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,8 @@ class IncomeCategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryViewModel = ref.watch(categoryViewModelProvider);
+    final categories = ref.watch(categoryViewModelProvider);
+    final assets = ref.watch(assetViewModelProvider);
 
     return DefaultLayout(
       title: '수입 카테고리 관리',
@@ -26,26 +28,21 @@ class IncomeCategoryScreen extends ConsumerWidget {
       ],
       child: ListView.builder(
         itemBuilder: (context, index) {
-          final category = categoryViewModel[index];
+          final category = categories[index];
 
           if (category.type == CategoryType.income) {
-            return Container(
-              decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide(color: AppColors.border))),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Text(category.name),
-                  ],
-                ),
-              ),
+            final hasCategoryAsset = assets.any(
+              (element) => element.category.id == category.id,
+            );
+            return CategoryListTile(
+              category: category,
+              hasCategoryAsset: hasCategoryAsset,
             );
           } else {
             return const SizedBox.shrink();
           }
         },
-        itemCount: categoryViewModel.length,
+        itemCount: categories.length,
       ),
     );
   }
