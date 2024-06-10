@@ -19,7 +19,7 @@ void showCustomAlertDialog(
               Navigator.of(context).pop(); // Dismiss the dialog
             },
           ),
-          if (isSingleButton == true)
+          if (isSingleButton != true)
             TextButton(
               child: const Text('확인'),
               onPressed: () {
