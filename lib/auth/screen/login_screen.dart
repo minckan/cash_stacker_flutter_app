@@ -30,7 +30,11 @@ class LoginScreen extends ConsumerWidget {
               ref: ref,
             ),
             // buildLoginButton(type: LoginType.naver, onPressed: () {}),
-            // buildLoginButton(type: LoginType.google, ),
+            buildLoginButton(
+              type: LoginType.google,
+              context: context,
+              ref: ref,
+            ),
             // buildLoginButton(type: LoginType.apple,),
             const SizedBox(
               height: 20,
@@ -68,7 +72,7 @@ class LoginScreen extends ConsumerWidget {
     return IconButton(
       onPressed: () => ref
           .read(authViewModelProvider.notifier)
-          .auth(context: context, loginType: LoginType.kakao),
+          .auth(context: context, loginType: type),
       icon: loginIcon[type] ?? const Text('No image'),
       iconSize: 160,
     );

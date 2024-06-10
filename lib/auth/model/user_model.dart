@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
@@ -17,6 +18,9 @@ class UserModel {
   final bool? pushEnables;
   final bool? darkMode;
   final String workspaceId;
+  final String platformType;
+  final String pushId;
+  final LoginType loginType;
 
   UserModel({
     required this.uid,
@@ -25,6 +29,9 @@ class UserModel {
     required this.profileImage,
     required this.displayName,
     required this.workspaceId,
+    required this.platformType,
+    required this.pushId,
+    required this.loginType,
     this.pushEnables,
     this.darkMode = false,
   });

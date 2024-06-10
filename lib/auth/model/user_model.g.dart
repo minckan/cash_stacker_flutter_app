@@ -13,6 +13,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       profileImage: json['profileImage'] as String,
       displayName: json['displayName'] as String,
       workspaceId: json['workspaceId'] as String,
+      platformType: json['platformType'] as String,
+      pushId: json['pushId'] as String,
+      loginType: $enumDecode(_$LoginTypeEnumMap, json['loginType']),
       pushEnables: json['pushEnables'] as bool?,
       darkMode: json['darkMode'] as bool? ?? false,
     );
@@ -26,9 +29,19 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'pushEnables': instance.pushEnables,
       'darkMode': instance.darkMode,
       'workspaceId': instance.workspaceId,
+      'platformType': instance.platformType,
+      'pushId': instance.pushId,
+      'loginType': _$LoginTypeEnumMap[instance.loginType]!,
     };
 
 const _$UserRoleEnumMap = {
   UserRole.keyUser: 'keyUser',
   UserRole.memberUser: 'memberUser',
+};
+
+const _$LoginTypeEnumMap = {
+  LoginType.kakao: 'kakao',
+  LoginType.apple: 'apple',
+  LoginType.google: 'google',
+  LoginType.naver: 'naver',
 };

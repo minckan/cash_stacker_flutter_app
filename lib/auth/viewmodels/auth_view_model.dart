@@ -1,9 +1,14 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -11,10 +16,11 @@ import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dar
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart'
     as kakao_user;
-import 'package:logger/logger.dart';
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, UserModel?>(
     (ref) => AuthViewModel(ref));
@@ -56,40 +62,104 @@ class AuthViewModel extends StateNotifier<UserModel?> {
       case LoginType.kakao:
         await _loginWithKakao(context);
         break;
+      case LoginType.google:
+        await _loginWithGoogle(context);
+        break;
       default:
     }
   }
 
-  Future<void> _loginWithKakao(BuildContext context) async {
+  Future<void> _loginWithGoogle(BuildContext context) async {
     try {
-      final isKakaoInstalled = await kakao_user.isKakaoTalkInstalled();
-      if (isKakaoInstalled) {
-        final user = await kakao_user.UserApi.instance.loginWithKakaoTalk();
-        await _loginToFirebase(context, user);
-      } else {
-        final user = await kakao_user.UserApi.instance.loginWithKakaoAccount();
-        logger.d(user.accessToken);
-        await _loginToFirebase(context, user);
-      }
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      await _loginToFirebase(context, userCredential, LoginType.google);
     } catch (e) {
-      logger.e('Kakao login error: $e');
+      logger.e('Google Sign in error: $e');
     }
   }
 
+  Future<void> _loginWithKakao(BuildContext context) async {
+    // 카카오톡 실행 가능 여부 확인
+    // 카카오톡 실행이 가능하면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+    if (await kakao_user.isKakaoTalkInstalled()) {
+      try {
+        final user = await kakao_user.UserApi.instance.loginWithKakaoTalk();
+        print('카카오톡으로 로그인 성공');
+        final UserCredential userCredential =
+            await makeKakaoUserCredential(user);
+        await _loginToFirebase(context, userCredential, LoginType.kakao);
+      } catch (error) {
+        print('카카오톡으로 로그인 실패 $error');
+
+        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+        if (error is PlatformException && error.code == 'CANCELED') {
+          return;
+        }
+        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+        try {
+          final user =
+              await kakao_user.UserApi.instance.loginWithKakaoAccount();
+          print('카카오계정으로 로그인 성공');
+          final UserCredential userCredential =
+              await makeKakaoUserCredential(user);
+          await _loginToFirebase(context, userCredential, LoginType.kakao);
+        } catch (error) {
+          print('카카오계정으로 로그인 실패 $error');
+        }
+      }
+    } else {
+      try {
+        final user = await kakao_user.UserApi.instance.loginWithKakaoAccount();
+        print('카카오계정으로 로그인 성공');
+        final UserCredential userCredential =
+            await makeKakaoUserCredential(user);
+        await _loginToFirebase(context, userCredential, LoginType.kakao);
+      } catch (error) {
+        print('카카오계정으로 로그인 실패 $error');
+      }
+    }
+  }
+
+  Future<UserCredential> makeKakaoUserCredential(
+      kakao_user.OAuthToken user) async {
+    // oidc 인증
+    var provider = OAuthProvider('oidc.cashstakcer');
+
+    // 크레덴셜 만들기
+    final AuthCredential credential = provider.credential(
+      accessToken: user.accessToken,
+      idToken: user.idToken,
+    );
+
+    final UserCredential userCredential =
+        await _auth.signInWithCredential(credential);
+
+    return userCredential;
+  }
+
   Future<void> _loginToFirebase(
-      BuildContext context, kakao_user.OAuthToken user) async {
+    BuildContext context,
+    UserCredential userCredential,
+    LoginType loginType,
+  ) async {
     try {
-      // oidc 인증
-      var provider = OAuthProvider('oidc.cashstakcer');
-
-      // 크레덴셜 만들기
-      final AuthCredential credential = provider.credential(
-        accessToken: user.accessToken,
-        idToken: user.idToken,
-      );
-
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
       final firebaseUser = userCredential.user;
 
       if (firebaseUser != null) {
@@ -100,7 +170,11 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
         if (!userDoc.exists) {
           final workspaceId = 'workspace_${firebaseUser.uid}';
+          final fcmToken = await SharedPreferencesUtil.getString(
+              SharedPreferencesUtil.fcmTokenKey);
+
           try {
+            if (fcmToken == null) {}
             // 유저가 존재하지 않으면
             _user = UserModel(
               uid: firebaseUser.uid,
@@ -109,6 +183,10 @@ class AuthViewModel extends StateNotifier<UserModel?> {
               profileImage: firebaseUser.photoURL ?? '',
               displayName: firebaseUser.displayName ?? '',
               workspaceId: workspaceId,
+              platformType: Platform.operatingSystem,
+              pushId: fcmToken ?? '',
+              loginType: loginType,
+              // pushEnables: false,
             );
             // 신규 유저 추가
             await FirebaseFirestore.instance
