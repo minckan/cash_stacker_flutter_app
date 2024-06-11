@@ -1,8 +1,10 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/extensions/color_extensions.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -139,18 +141,43 @@ class AnnualTrendChartState extends ConsumerState<AnnualTrendChart> {
 
   @override
   Widget build(BuildContext context) {
-    final assetSummaries = ref.watch(assetSummaryProvider);
-    final normalized = normalizeAssetSummaries(assetSummaries);
-    normalizedSummaries = normalized;
-    if (normalizedSummaries.isNotEmpty) {
-      return AspectRatio(
-        aspectRatio: 1.6,
-        child: _BarChart(assetSummaries: normalizedSummaries),
-      );
+    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+    if (workspaceId != null) {
+      return FutureBuilder(
+          future: ref
+              .read(assetTrendProvider.notifier)
+              .getMonthlyAssetTrends(workspaceId),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
+              );
+            }
+            return AspectRatio(
+              aspectRatio: 1.6,
+              child: _BarChart(assetSummaries: normalizedSummaries),
+            );
+          });
     } else {
       return const Center(
-        child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
+        child: Text('워크스페이스 아이디가 유효하지 않습니다.'),
       );
     }
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   final assetSummaries = ref.watch(assetSummaryProvider);
+  //   final normalized = normalizeAssetSummaries(assetSummaries);
+  //   normalizedSummaries = normalized;
+  //   if (normalizedSummaries.isNotEmpty) {
+  //     return AspectRatio(
+  //       aspectRatio: 1.6,
+  //       child: _BarChart(assetSummaries: normalizedSummaries),
+  //     );
+  //   } else {
+  // return const Center(
+  //   child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
+  // );
+  //   }
+  // }
 }

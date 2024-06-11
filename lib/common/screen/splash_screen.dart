@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
+import 'package:cash_stacker_flutter_app/common/providers/id_token.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
@@ -42,6 +43,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           await ref
               .read(workspaceViewModelProvider.notifier)
               .loadWorkspace(user.uid);
+
+          await updateIdToken(ref);
 
           if (!mounted) return;
 
