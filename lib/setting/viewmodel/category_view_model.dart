@@ -74,7 +74,6 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
         .doc(category.id)
         .set(category.toJson());
 
-    logger.d(state.length);
     state = [...state, category];
   }
 

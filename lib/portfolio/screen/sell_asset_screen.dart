@@ -163,7 +163,6 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
     if (formKey.currentState?.saveAndValidate() ?? false) {
       final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
       final value = formKey.currentState?.value;
-      logger.d(value);
 
       AssetSummary updatedSummary = AssetSummary.empty();
 

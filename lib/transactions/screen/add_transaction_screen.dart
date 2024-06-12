@@ -79,12 +79,11 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       final expensePaymentMethod =
           _addExpenseTabKey.currentState!.selectedPaymentMethod;
 
-      logger.d(selectedExpenseCategory!.toJson());
       transaction = TransactionModel(
         id: docId,
         date: selectedDate,
         amount: expensePrice,
-        category: selectedExpenseCategory,
+        category: selectedExpenseCategory!,
         transactionType: TransactionType.expense,
         paymentMethod: expensePaymentMethod,
       );
