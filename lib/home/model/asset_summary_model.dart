@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/common/model/monthly_asset_trend_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'asset_summary_model.g.dart';
@@ -71,7 +72,7 @@ class AssetSummary {
 }
 
 class AssetSummaryDecile {
-  final AssetSummary assetSummary;
+  final MonthlyAssetTrendModel assetSummary;
   final double normalizedValue;
 
   AssetSummaryDecile({
@@ -81,19 +82,19 @@ class AssetSummaryDecile {
 
   factory AssetSummaryDecile.empty() {
     return AssetSummaryDecile(
-        assetSummary: AssetSummary.empty(), normalizedValue: 0);
+        assetSummary: MonthlyAssetTrendModel.empty(), normalizedValue: 0);
   }
 }
 
 List<AssetSummaryDecile> normalizeAssetSummaries(
-    List<AssetSummary> assetSummaries) {
+    List<MonthlyAssetTrendModel> assetSummaries) {
   if (assetSummaries.isEmpty) return [];
 
   // totalAssets의 최대값과 최소값 구하기
   double minTotalAssets =
-      assetSummaries.map((e) => e.totalAssets).reduce((a, b) => a < b ? a : b);
+      assetSummaries.map((e) => e.totalValue).reduce((a, b) => a < b ? a : b);
   double maxTotalAssets =
-      assetSummaries.map((e) => e.totalAssets).reduce((a, b) => a > b ? a : b);
+      assetSummaries.map((e) => e.totalValue).reduce((a, b) => a > b ? a : b);
 
   // 최소값과 최대값이 동일한 경우를 처리
   if (minTotalAssets == maxTotalAssets && minTotalAssets != 0) {
@@ -112,8 +113,8 @@ List<AssetSummaryDecile> normalizeAssetSummaries(
   //   return AssetSummaryDecile(
   //       assetSummary: asset, normalizedValue: normalizedValue);
   // }).toList();
-  return assetSummaries.where((asset) => asset.totalAssets > 0).map((asset) {
-    double normalizedValue = asset.totalAssets == 0
+  return assetSummaries.where((asset) => asset.totalValue > 0).map((asset) {
+    double normalizedValue = asset.totalValue == 0
         ? 0.0
         : asset.normalizeTotalAssets(minTotalAssets, maxTotalAssets);
 

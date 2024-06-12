@@ -19,12 +19,12 @@ class _AssetRepository implements AssetRepository {
   String? baseUrl;
 
   @override
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(
-      String workspaceId) async {
+  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(dynamic body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = body;
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<MonthlyAssetTrendModel>>(Options(
       method: 'POST',

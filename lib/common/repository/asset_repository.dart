@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
 import 'package:cash_stacker_flutter_app/common/model/monthly_asset_trend_model.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
@@ -23,5 +23,8 @@ abstract class AssetRepository {
   factory AssetRepository(Dio dio, {String baseUrl}) = _AssetRepository;
 
   @POST('/monthlyTrend')
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(String workspaceId);
+  @Headers({'accessToken': 'true'})
+  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(
+    @Body() body,
+  );
 }

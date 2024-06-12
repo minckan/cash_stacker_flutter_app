@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';

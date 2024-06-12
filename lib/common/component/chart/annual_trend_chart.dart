@@ -1,9 +1,9 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:cash_stacker_flutter_app/common/model/monthly_asset_trend_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/extensions/color_extensions.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +123,7 @@ class _BarChart extends StatelessWidget {
   AssetSummaryDecile getAssetSummary(int index) {
     return assetSummaries.firstWhere(
       (decile) =>
-          getDateFromMonthKey(decile.assetSummary.month).month == index + 1,
+          getDateFromMonthKey(decile.assetSummary.yearMonth).month == index + 1,
       orElse: () => AssetSummaryDecile.empty(), // 조건을 만족하는 요소를 찾지 못하면 null 반환
     );
   }
@@ -142,6 +142,8 @@ class AnnualTrendChartState extends ConsumerState<AnnualTrendChart> {
   @override
   Widget build(BuildContext context) {
     final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+
+    // FutureBuilder하면 안될것 같고 저장된 데이터를 불러오는 방식으로 변경해야 할것 같음
     if (workspaceId != null) {
       return FutureBuilder(
           future: ref
@@ -153,6 +155,9 @@ class AnnualTrendChartState extends ConsumerState<AnnualTrendChart> {
                 child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
               );
             }
+
+            normalizedSummaries = normalizeAssetSummaries(
+                snapshot.data as List<MonthlyAssetTrendModel>);
             return AspectRatio(
               aspectRatio: 1.6,
               child: _BarChart(assetSummaries: normalizedSummaries),

@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/providers/id_token.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,10 +24,13 @@ class CustomInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
+    print('[REQ] [${options.method}] ${options.headers['accessToken']}');
 
     if (options.headers['accessToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('accessToken');
+
+      logger.d(token);
 
       // 실제 토큰으로 대체
       if (token != null) {
@@ -41,6 +45,7 @@ class CustomInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    print('ERROR: $err');
     return handler.reject(err);
   }
 }

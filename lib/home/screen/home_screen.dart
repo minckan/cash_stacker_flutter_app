@@ -2,9 +2,10 @@ import 'package:cash_stacker_flutter_app/common/component/chart/annual_trend_cha
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
+
 import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';

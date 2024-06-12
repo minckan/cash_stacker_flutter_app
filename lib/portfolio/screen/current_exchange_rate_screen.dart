@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/exchange_rate_view_model.dart';
+import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
