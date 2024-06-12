@@ -5,15 +5,10 @@ part 'asset_summary_model.g.dart';
 
 @JsonSerializable()
 class AssetSummary {
-  final double totalAssets;
   final double monthlyBudget;
-  // final double monthlyExpenditure;
-
-  /// yyyy-MM
   final String month;
 
   AssetSummary({
-    this.totalAssets = 0,
     this.monthlyBudget = 0,
     // this.monthlyExpenditure = 0,
     required this.month,
@@ -31,7 +26,6 @@ class AssetSummary {
   }) {
     return AssetSummary(
       month: month,
-      totalAssets: totalAssets ?? this.totalAssets,
       monthlyBudget: monthlyBudget ?? this.monthlyBudget,
       // monthlyExpenditure: monthlyExpenditure ?? this.monthlyExpenditure,
     );
@@ -40,34 +34,8 @@ class AssetSummary {
   factory AssetSummary.empty() {
     return AssetSummary(
       month: '',
-      totalAssets: 0.0,
       monthlyBudget: 0.0,
     );
-  }
-
-  String get formattedTotalAssets {
-    if (totalAssets == 0.0) {
-      return '';
-    }
-    if (totalAssets >= 1000000000) {
-      return '${(totalAssets / 1000000000).toStringAsFixed(1)}억';
-    } else if (totalAssets >= 100000000 && totalAssets <= 1000000000) {
-      return '${(totalAssets / 100000000).toStringAsFixed(1)}억';
-    } else if (totalAssets >= 10000000) {
-      return '${(totalAssets / 10000000).toStringAsFixed(1)}천';
-    } else if (totalAssets >= 1000000) {
-      return '${(totalAssets / 1000000).toStringAsFixed(1)}백';
-    } else if (totalAssets >= 10000) {
-      return '${(totalAssets / 10000).toStringAsFixed(1)}만';
-    } else {
-      return '${(totalAssets / 10000).toStringAsFixed(1)}만';
-    }
-  }
-
-  // totalAssets 값을 0에서 10 사이로 정규화하여 반환하는 getter
-  double normalizeTotalAssets(double min, double max) {
-    if (max == min) return 0.0; // 최대값과 최소값이 같으면 정규화할 수 없음
-    return ((totalAssets - min) / (max - min)) * 10;
   }
 }
 
@@ -104,15 +72,6 @@ List<AssetSummaryDecile> normalizeAssetSummaries(
     }).toList();
   }
 
-  // 각 AssetSummary의 totalAssets 값을 0에서 10 사이로 정규화
-  // return assetSummaries.map((asset) {
-  //   double normalizedValue = asset.totalAssets == 0
-  //       ? 0.0
-  //       : asset.normalizeTotalAssets(minTotalAssets, maxTotalAssets);
-
-  //   return AssetSummaryDecile(
-  //       assetSummary: asset, normalizedValue: normalizedValue);
-  // }).toList();
   return assetSummaries.where((asset) => asset.totalValue > 0).map((asset) {
     double normalizedValue = asset.totalValue == 0
         ? 0.0

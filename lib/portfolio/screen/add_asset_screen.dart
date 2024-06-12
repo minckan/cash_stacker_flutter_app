@@ -4,12 +4,10 @@ import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.d
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
-import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
+
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
@@ -274,10 +272,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         final isForeignCashAsset =
             selectedCategory?.id == foreignCashCategoryId;
 
-        final thisMonthAssetSummary = ref
-            .read(assetSummaryProvider.notifier)
-            .getAssetSummaryByMonth(getMonth(DateTime.now()));
-        AssetSummary updatedSummary = AssetSummary.empty();
         if (widget.assetId == null) {
           final asset = Asset(
             id: newAssetId,
@@ -357,24 +351,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               inputExchangeRate: double.parse(value['exchangeRate']),
             );
           }
-          updatedSummary = thisMonthAssetSummary!.copyWith(
-              totalAssets: thisMonthAssetSummary.totalAssets +
-                  assetTr.totalKrwTransactionPrice);
 
           /// add transaction
           await ref
               .read(assetTransactionViewModelProvider.notifier)
               .addAssetTransaction(assetTr, workspaceId);
-        } else {
-          updatedSummary = thisMonthAssetSummary!.copyWith(
-              totalAssets: thisMonthAssetSummary.totalAssets +
-                  double.parse(removeComma(value['cashAmount'])));
         }
-
-        /// asset summary total assets amt update
-        await ref
-            .read(assetSummaryProvider.notifier)
-            .updateAssetSummary(workspaceId, updatedSummary);
 
         if (!mounted) return;
         Navigator.of(context).pop();

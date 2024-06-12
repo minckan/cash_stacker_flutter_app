@@ -130,59 +130,33 @@ class _BarChart extends StatelessWidget {
 }
 
 class AnnualTrendChart extends ConsumerStatefulWidget {
-  const AnnualTrendChart({super.key});
+  const AnnualTrendChart({super.key, required this.monthlyAssetTrendList});
 
+  final List<MonthlyAssetTrendModel>? monthlyAssetTrendList;
   @override
   ConsumerState<AnnualTrendChart> createState() => AnnualTrendChartState();
 }
 
 class AnnualTrendChartState extends ConsumerState<AnnualTrendChart> {
-  List<AssetSummaryDecile> normalizedSummaries = [];
+  List<AssetSummaryDecile>? normalizedSummaries;
 
   @override
   Widget build(BuildContext context) {
-    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
-
-    // FutureBuilder하면 안될것 같고 저장된 데이터를 불러오는 방식으로 변경해야 할것 같음
-    if (workspaceId != null) {
-      return FutureBuilder(
-          future: ref
-              .read(assetTrendProvider.notifier)
-              .getMonthlyAssetTrends(workspaceId),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
-              );
-            }
-
-            normalizedSummaries = normalizeAssetSummaries(
-                snapshot.data as List<MonthlyAssetTrendModel>);
-            return AspectRatio(
-              aspectRatio: 1.6,
-              child: _BarChart(assetSummaries: normalizedSummaries),
-            );
-          });
-    } else {
-      return const Center(
-        child: Text('워크스페이스 아이디가 유효하지 않습니다.'),
+    if (widget.monthlyAssetTrendList != null) {
+      normalizedSummaries =
+          normalizeAssetSummaries(widget.monthlyAssetTrendList!);
+    }
+    if (normalizedSummaries != null && normalizedSummaries!.isNotEmpty) {
+      return AspectRatio(
+        aspectRatio: 1.6,
+        child: _BarChart(assetSummaries: normalizedSummaries!),
       );
+    } else if (normalizedSummaries != null && normalizedSummaries!.isEmpty) {
+      return const Center(
+        child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
+      );
+    } else {
+      return const Center(child: CircularProgressIndicator());
     }
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   final assetSummaries = ref.watch(assetSummaryProvider);
-  //   final normalized = normalizeAssetSummaries(assetSummaries);
-  //   normalizedSummaries = normalized;
-  //   if (normalizedSummaries.isNotEmpty) {
-  //     return AspectRatio(
-  //       aspectRatio: 1.6,
-  //       child: _BarChart(assetSummaries: normalizedSummaries),
-  //     );
-  //   } else {
-  // return const Center(
-  //   child: Text('월간 자산 규모 추이를 확인할 수 없습니다.'),
-  // );
-  //   }
-  // }
 }

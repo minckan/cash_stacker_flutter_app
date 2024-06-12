@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesUtil {
   static const String fcmTokenKey = 'fcm_token';
+  static const String workspaceId = 'workspace_id';
   // String 저장 함수
   static Future<void> saveString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

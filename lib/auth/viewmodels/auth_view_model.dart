@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
+import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
@@ -174,7 +175,6 @@ class AuthViewModel extends StateNotifier<UserModel?> {
               SharedPreferencesUtil.fcmTokenKey);
 
           try {
-            if (fcmToken == null) {}
             // 유저가 존재하지 않으면
             _user = UserModel(
               uid: firebaseUser.uid,
@@ -196,6 +196,11 @@ class AuthViewModel extends StateNotifier<UserModel?> {
                   _user!.toJson(),
                   SetOptions(merge: true),
                 );
+
+            final idToken = await firebaseUser.getIdToken();
+            await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
+            SharedPreferencesUtil.saveString(
+                SharedPreferencesUtil.workspaceId, workspaceId);
           } catch (e) {
             logger.e('[User create error]: $e');
             await _handleCreateUserError(firebaseUser);

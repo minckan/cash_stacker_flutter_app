@@ -1,23 +1,26 @@
-import 'package:cash_stacker_flutter_app/common/providers/id_token.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/common/const/storage.dart';
+import 'package:cash_stacker_flutter_app/common/secure_storage/secure_storage.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
 
-  final token = ref.watch(idTokenProvider);
+  final storage = ref.watch(secureStorageProvider);
 
-  dio.interceptors.add(CustomInterceptor(token: token));
+  dio.interceptors.add(CustomInterceptor(storage: storage));
 
   return dio;
 });
 
 class CustomInterceptor extends Interceptor {
-  final String? token;
+  final FlutterSecureStorage storage;
 
   CustomInterceptor({
-    required this.token,
+    required this.storage,
   });
 
   @override
@@ -28,6 +31,8 @@ class CustomInterceptor extends Interceptor {
     if (options.headers['accessToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('accessToken');
+
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
 
       // 실제 토큰으로 대체
       if (token != null) {

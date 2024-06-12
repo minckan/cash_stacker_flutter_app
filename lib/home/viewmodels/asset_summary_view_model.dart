@@ -1,4 +1,3 @@
-import 'package:cash_stacker_flutter_app/common/utill/calculation_helpers.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
@@ -42,10 +41,8 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
       AssetSummary newSummary;
       // 만약 이번 달 에셋 서머리가 없다면 추가
       if (!hasCurrentMonthSummary) {
-        final previousMonthSummary = assetSummaries.last;
         newSummary = AssetSummary(
           month: currentMonth,
-          totalAssets: previousMonthSummary.totalAssets,
         );
 
         addAssetSummary(workspaceId, newSummary);
@@ -120,39 +117,6 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
     } catch (e) {
       logger.e('Error getting asset summary for month $monthKey: $e');
       return null;
-    }
-  }
-
-  String compareToLastMonthState(String monthKey) {
-    final thisMonthIndex = state.indexWhere((s) => s.month == monthKey);
-    if (monthKey.length == 1 || thisMonthIndex == 0) {
-      return '오늘의 자산이 어제보다 늘어있기를!';
-    }
-
-    state.sort((a, b) => a.month.compareTo(b.month));
-
-    final thisMonthAssetSummary = state.firstWhere((s) => s.month == monthKey);
-    final lastMonthAssetSummary = state[thisMonthIndex - 1];
-
-    if (thisMonthAssetSummary.totalAssets ==
-        lastMonthAssetSummary.totalAssets) {
-      return '이전달 대비 자산변동이 없습니다!';
-    }
-
-    final previousPrice = lastMonthAssetSummary.totalAssets;
-    final currentPrice = thisMonthAssetSummary.totalAssets;
-
-    if (previousPrice == 0) {
-      return '자산이 열심히 증식되고 있어요!';
-    }
-    final percentage = calculatePercentageIncrease(previousPrice, currentPrice);
-
-    if (percentage > 0) {
-      return '자산이 이전달 대비 $percentage% 올랐어요!';
-    } else if (percentage < 0) {
-      return '자산이 이전달 대비 $percentage% 줄었네요..';
-    } else {
-      return '';
     }
   }
 

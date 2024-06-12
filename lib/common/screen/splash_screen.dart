@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
-import 'package:cash_stacker_flutter_app/common/providers/id_token.dart';
+import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,13 +38,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       if (user != null) {
         await user.reload();
         user = FirebaseAuth.instance.currentUser;
-
         if (user != null) {
+          final idToken = await user.getIdToken();
           await ref
               .read(workspaceViewModelProvider.notifier)
               .loadWorkspace(user.uid);
 
-          await updateIdToken(ref);
+          final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+          if (workspaceId != null) {
+            await SharedPreferencesUtil.saveString(
+                SharedPreferencesUtil.workspaceId, workspaceId);
+          }
+          await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
 
           if (!mounted) return;
 
@@ -57,7 +62,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
       }
     } catch (e) {
-      print('error: $e');
+      logger.e('error: $e');
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
     }

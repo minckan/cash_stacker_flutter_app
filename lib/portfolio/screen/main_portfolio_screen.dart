@@ -2,14 +2,13 @@ import 'dart:io';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset_type_ratio_chart.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/new/portfolio_table.dart';
-// import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/current_exchange_rate_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/asset_category_screen.dart';
@@ -25,13 +24,11 @@ class MainPortfolioScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assets = ref.watch(assetViewModelProvider);
-    // ignore: unused_local_variable
-    final assetSummaries = ref.watch(assetSummaryProvider);
-    final assetSummaryVM = ref.read(assetSummaryProvider.notifier);
-    final currentAssetSummary =
-        assetSummaryVM.getAssetSummaryByMonth(getMonth(DateTime.now()));
     final assetCategories =
         ref.watch(categoryViewModelProvider.notifier).assetCategories;
+    final monthKey = getMonth(DateTime.now());
+    final monthlyAsset =
+        ref.watch(thisMonthMonthlyAssetAmountProvider(monthKey));
 
     return DefaultLayout(
       isSliverView: true,
@@ -96,7 +93,7 @@ class MainPortfolioScreen extends ConsumerWidget {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(currentAssetSummary?.totalAssets),
+                            addComma.format(monthlyAsset!.totalValue),
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,

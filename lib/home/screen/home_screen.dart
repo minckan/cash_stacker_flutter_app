@@ -2,9 +2,11 @@ import 'package:cash_stacker_flutter_app/common/component/chart/annual_trend_cha
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 
 import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
@@ -27,26 +29,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     ref.read(exchangeRateProvider.notifier).loadExchangeRates();
+    _initState();
   }
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
+  Future<void> _initState() async {
+    final workspaceId = await SharedPreferencesUtil.getString(
+        SharedPreferencesUtil.workspaceId);
+    if (workspaceId != null) {
+      ref.read(assetTrendProvider.notifier).getMonthlyAssetTrends(workspaceId);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final currentMonthKey = getMonth(DateTime.now());
-    // ignore: unused_local_variable
-    final assetSummaries = ref.watch(assetSummaryProvider);
-    final assetSummaryVM = ref.read(assetSummaryProvider.notifier);
     final workspaceId = ref.read(workspaceViewModelProvider)?.id;
 
-    final currentAssetSummary =
-        assetSummaryVM.getAssetSummaryByMonth(currentMonthKey);
+    final monthlyAssetTrendList = ref.watch(assetTrendProvider);
 
-    if (currentAssetSummary == null) {
-      return Container();
+    final assetSummaryViewModel = ref.read(assetSummaryProvider.notifier);
+    final currentAssetSummary =
+        assetSummaryViewModel.getAssetSummaryByMonth(currentMonthKey);
+    final assetChangeMessage = ref
+        .read(assetTrendProvider.notifier)
+        .compareToLastMonthState(currentMonthKey);
+    final monthlyAsset =
+        ref.watch(thisMonthMonthlyAssetAmountProvider(currentMonthKey));
+
+    if (currentAssetSummary == null || monthlyAsset == null) {
+      return const Center(child: CircularProgressIndicator());
     }
     return DefaultLayout(
       isSliverView: true,
@@ -62,7 +73,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ],
       child: SizedBox(
-        // height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
@@ -100,7 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(currentAssetSummary.totalAssets),
+                            addComma.format(monthlyAsset.totalValue),
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,
@@ -114,7 +124,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         height: 27,
                       ),
                       Text(
-                        assetSummaryVM.compareToLastMonthState(currentMonthKey),
+                        assetChangeMessage,
                         style: const TextStyle(
                           fontFamily: 'Notosans',
                           color: Colors.white,
@@ -147,7 +157,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   const BudgetSettingScreen()));
 
                       if (workspaceId != null) {
-                        assetSummaryVM.updateAssetSummary(
+                        assetSummaryViewModel.updateAssetSummary(
                             workspaceId, newSummary);
                       }
                     },
@@ -200,8 +210,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   fontFamily: 'Roboto'),
                             ),
                             Text(
-                              addComma.format(
-                                  assetSummaryVM.currentExpendableBudget),
+                              addComma.format(assetSummaryViewModel
+                                  .currentExpendableBudget),
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 32,
@@ -211,14 +221,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ],
                         ),
                         Text(
-                          '${addComma.format(currentAssetSummary.monthlyBudget)}원 중 ${addComma.format(assetSummaryVM.monthlyExpenditure)}원을 사용했어요!',
+                          '${addComma.format(currentAssetSummary.monthlyBudget)}원 중 ${addComma.format(assetSummaryViewModel.monthlyExpenditure)}원을 사용했어요!',
                           style: const TextStyle(
                             fontSize: 12,
                           ),
                         ),
                         const SizedBox(height: 4),
                         LinearPercentIndicator(
-                          percent: assetSummaryVM.budgetExpenditurePercentage,
+                          percent:
+                              assetSummaryViewModel.budgetExpenditurePercentage,
                           progressColor: AppColors.primary,
                           lineHeight: 10,
                           alignment: MainAxisAlignment.start,
@@ -228,7 +239,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          assetSummaryVM.warningText,
+                          assetSummaryViewModel.warningText,
                           style: const TextStyle(
                               height: 1.1,
                               fontSize: 14,
@@ -245,7 +256,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 50),
-              const AnnualTrendChart(),
+              AnnualTrendChart(
+                monthlyAssetTrendList: monthlyAssetTrendList,
+              ),
               // const SizedBox(
               //   height: 120,
               // )

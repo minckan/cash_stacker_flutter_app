@@ -1,14 +1,8 @@
-import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/number_form_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
-import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
@@ -164,14 +158,8 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
       final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
       final value = formKey.currentState?.value;
 
-      AssetSummary updatedSummary = AssetSummary.empty();
-
-      final thisMonthAssetSummary = ref
-          .read(assetSummaryProvider.notifier)
-          .getAssetSummaryByMonth(getMonth(DateTime.now()));
       if (value != null) {
         final AssetTransaction assetTr;
-        double originalKrwCashAmt;
 
         if (isForeignCash == true) {
           assetTr = ForexTransaction(
@@ -186,9 +174,6 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
                 double.tryParse(removeComma(value['sell_amount'])) ?? 0,
             inputExchangeRate: double.parse(value['sell_exchange_rate']),
           );
-
-          originalKrwCashAmt = assetDetailVm!.averageExchangeRate *
-              double.parse(removeComma(value['sell_amount']));
         } else {
           if (isKrwAsset == true) {
             assetTr = DomesticTransaction(
@@ -218,19 +203,7 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
               inputExchangeRate: double.parse(value['sell_exchange_rate']),
             );
           }
-
-          originalKrwCashAmt = assetDetailVm!.buyingSinglePriceKrw *
-              (int.tryParse(removeComma(value['sell_amount'])) ?? 0);
         }
-
-        updatedSummary = thisMonthAssetSummary!.copyWith(
-          totalAssets: thisMonthAssetSummary.totalAssets -
-              originalKrwCashAmt +
-              assetTr.totalKrwTransactionPrice,
-        );
-
-        print(originalKrwCashAmt);
-        print(assetTr.totalKrwTransactionPrice);
 
         /// 현금자산 업데이트
         final assetVM = ref.read(assetViewModelProvider.notifier);
@@ -260,11 +233,6 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
         await ref
             .read(assetTransactionViewModelProvider.notifier)
             .addAssetTransaction(assetTr, workspaceId);
-
-        // /// 자산 요약 업데이트
-        await ref
-            .read(assetSummaryProvider.notifier)
-            .updateAssetSummary(workspaceId, updatedSummary);
 
         if (!mounted) return;
         Navigator.of(context).pop();
