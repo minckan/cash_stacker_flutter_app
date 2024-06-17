@@ -6,11 +6,16 @@ part 'workspace_model.g.dart';
 class Workspace {
   Workspace({
     required this.id,
-    required this.members,
+    required this.name,
+    required this.createdDate,
   });
 
+  @JsonKey(name: 'workspace_id')
   final String id;
-  final List<String> members;
+  @JsonKey(name: 'workspace_name')
+  final String name;
+  @JsonKey(name: 'created_at')
+  final DateTime? createdDate;
 
   factory Workspace.fromJson(Map<String, dynamic> json) =>
       _$WorkspaceFromJson(json);

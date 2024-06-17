@@ -7,23 +7,20 @@ part of 'asset_model.dart';
 // **************************************************************************
 
 Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      category:
-          CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      currency: json['currency'] == null
-          ? null
-          : Currency.fromJson(json['currency'] as Map<String, dynamic>),
+      id: json['asset_id'] as String,
+      name: json['asset_name'] as String,
+      categoryId: json['asset_type_id'] as String,
+      currencyCode: json['currency_code'] as String?,
       initialPurchaseDate:
-          DateTime.parse(json['initialPurchaseDate'] as String),
-      inputCurrentPrice: (json['inputCurrentPrice'] as num).toDouble(),
+          DateTime.parse(json['initial_purchase_date'] as String),
+      balance: (json['balance'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'category': instance.category.toJson(),
-      'currency': instance.currency?.toJson(),
-      'initialPurchaseDate': instance.initialPurchaseDate.toIso8601String(),
-      'inputCurrentPrice': instance.inputCurrentPrice,
+      'asset_id': instance.id,
+      'asset_name': instance.name,
+      'asset_type_id': instance.categoryId,
+      'currency_code': instance.currencyCode,
+      'initial_purchase_date': instance.initialPurchaseDate.toIso8601String(),
+      'balance': instance.balance,
     };

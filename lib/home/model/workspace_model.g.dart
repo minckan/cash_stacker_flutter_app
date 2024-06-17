@@ -7,12 +7,15 @@ part of 'workspace_model.dart';
 // **************************************************************************
 
 Workspace _$WorkspaceFromJson(Map<String, dynamic> json) => Workspace(
-      id: json['id'] as String,
-      members:
-          (json['members'] as List<dynamic>).map((e) => e as String).toList(),
+      id: json['workspace_id'] as String,
+      name: json['workspace_name'] as String,
+      createdDate: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$WorkspaceToJson(Workspace instance) => <String, dynamic>{
-      'id': instance.id,
-      'members': instance.members,
+      'workspace_id': instance.id,
+      'workspace_name': instance.name,
+      'created_at': instance.createdDate?.toIso8601String(),
     };

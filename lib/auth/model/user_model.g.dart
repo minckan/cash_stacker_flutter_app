@@ -7,31 +7,31 @@ part of 'user_model.dart';
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-      uid: json['uid'] as String,
+      uid: json['user_id'] as String,
       email: json['email'] as String,
       role: $enumDecode(_$UserRoleEnumMap, json['role']),
-      profileImage: json['profileImage'] as String,
-      displayName: json['displayName'] as String,
-      workspaceId: json['workspaceId'] as String,
-      platformType: json['platformType'] as String,
-      pushId: json['pushId'] as String,
-      loginType: $enumDecode(_$LoginTypeEnumMap, json['loginType']),
-      pushEnables: json['pushEnables'] as bool?,
-      darkMode: json['darkMode'] as bool? ?? false,
+      profileImage: json['profile_image'] as String,
+      displayName: json['username'] as String,
+      workspaceId: json['workspace_id'] as String,
+      platformType: json['platform_type'] as String,
+      pushId: json['push_id'] as String,
+      loginType: $enumDecode(_$LoginTypeEnumMap, json['login_type']),
+      pushEnables: json['push_enable'] as bool?,
+      darkMode: json['darkMode_enable'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'uid': instance.uid,
+      'user_id': instance.uid,
       'email': instance.email,
       'role': _$UserRoleEnumMap[instance.role]!,
-      'profileImage': instance.profileImage,
-      'displayName': instance.displayName,
-      'pushEnables': instance.pushEnables,
-      'darkMode': instance.darkMode,
-      'workspaceId': instance.workspaceId,
-      'platformType': instance.platformType,
-      'pushId': instance.pushId,
-      'loginType': _$LoginTypeEnumMap[instance.loginType]!,
+      'profile_image': instance.profileImage,
+      'username': instance.displayName,
+      'push_enable': instance.pushEnables,
+      'darkMode_enable': instance.darkMode,
+      'workspace_id': instance.workspaceId,
+      'platform_type': instance.platformType,
+      'push_id': instance.pushId,
+      'login_type': _$LoginTypeEnumMap[instance.loginType]!,
     };
 
 const _$UserRoleEnumMap = {

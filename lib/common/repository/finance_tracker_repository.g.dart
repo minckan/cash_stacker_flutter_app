@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'asset_repository.dart';
+part of 'finance_tracker_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'asset_repository.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _AssetRepository implements AssetRepository {
-  _AssetRepository(
+class _FinanceTrackerRepository implements FinanceTrackerRepository {
+  _FinanceTrackerRepository(
     this._dio, {
     this.baseUrl,
   });
@@ -19,7 +19,7 @@ class _AssetRepository implements AssetRepository {
   String? baseUrl;
 
   @override
-  Future<void> createAsset(
+  Future<void> createTransaction(
     dynamic path,
     dynamic body,
   ) async {
@@ -35,7 +35,7 @@ class _AssetRepository implements AssetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/assets',
+          '/:workspaceId/finance',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -47,21 +47,71 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<List<Asset>> getAllAssets(dynamic path) async {
+  Future<void> updateTransaction(dynamic path) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
-    final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<Asset>>(Options(
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/:workspaceId/finance/:id',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<void> deleteTransaction(dynamic path) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/:workspaceId/finance/:id',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<List<TransactionModel>> getAllMonthlyTransactions(dynamic path) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<TransactionModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/:workspaceId/assets',
+              '/:workspaceId/finance/monthly/:monthKey',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -71,161 +121,28 @@ class _AssetRepository implements AssetRepository {
               baseUrl,
             ))));
     var value = _result.data!
-        .map((dynamic i) => Asset.fromJson(i as Map<String, dynamic>))
+        .map(
+            (dynamic i) => TransactionModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<Asset> getOneAsset(dynamic path) async {
+  Future<List<TransactionModel>> getDailyTransactions(dynamic path) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
-    final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Asset>(Options(
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<TransactionModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/:workspaceId/assets/:id',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = Asset.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<void> updateAsset(
-    dynamic path,
-    dynamic body,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/:workspaceId/assets/:id',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<void> deleteAsset(dynamic path) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/:workspaceId/assets/:id',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<void> updateAssetTransaction(
-    dynamic path,
-    dynamic body,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/:workspaceId/assets/:assetId/transactions/:id',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<void> deleteAssetTransaction(dynamic path) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/:workspaceId/assets/:assetId/transactions/:id',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(dynamic body) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<MonthlyAssetTrendModel>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/:workspaceId/assets/monthlyTrend',
+              '/:workspaceId/finance/daily/:dateKey',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -235,8 +152,8 @@ class _AssetRepository implements AssetRepository {
               baseUrl,
             ))));
     var value = _result.data!
-        .map((dynamic i) =>
-            MonthlyAssetTrendModel.fromJson(i as Map<String, dynamic>))
+        .map(
+            (dynamic i) => TransactionModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

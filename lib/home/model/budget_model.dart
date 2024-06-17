@@ -3,14 +3,21 @@
 // 해당 월을 넘어서 설정은 불가능 하게 되어있음
 //
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'budget_model.g.dart';
+
+@JsonSerializable()
 class Budget {
+  @JsonKey(name: 'budget_id')
   final String id;
-  // 해당 기간 사용가능한 총 예산 금액
-  final double availableBudget;
-  // 해당 기간 실제로 사용한 금액
-  final double usedAmount;
-  // 예산이 적용되는 월 'yyyy-MM'
-  final String month;
+  final double amount;
+  @JsonKey(name: 'start_date')
+  final DateTime startDate;
+  @JsonKey(name: 'end_date')
+  final DateTime endDate;
+  @JsonKey(name: 'created_at')
+  final DateTime createDate;
 
 // 예산설정 기간
 // final DateTime budgetPeriod;
@@ -18,25 +25,13 @@ class Budget {
 
   Budget({
     required this.id,
-    required this.availableBudget,
-    required this.usedAmount,
-    required this.month,
+    required this.amount,
+    required this.startDate,
+    required this.endDate,
+    required this.createDate,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'availableBudget': availableBudget,
-      'usedAmount': usedAmount,
-      'month': month,
-    };
-  }
+  factory Budget.fromJson(Map<String, dynamic> json) => _$BudgetFromJson(json);
 
-  factory Budget.fromMap(Map<String, dynamic> map, String id) {
-    return Budget(
-      id: id,
-      availableBudget: map['availableBudget'],
-      usedAmount: map['usedAmount'],
-      month: map['month'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$BudgetToJson(this);
 }

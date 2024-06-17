@@ -69,7 +69,7 @@ class TableRowAsset {
     /// =================================================================
 
     if (assetVM.isCashAsset) {
-      if (asset.currency?.currencyCode == 'KRW') {
+      if (asset.currencyCode == 'KRW') {
         name = '현금';
         buyingSinglePriceKrw = '-';
         buyingSinglePriceForeign = '-';
@@ -83,9 +83,9 @@ class TableRowAsset {
         profitLossRateForeign = '-';
         initialPurchaseDate = '-';
         totalBuyingAmountKrw = addSymbol(
-          addComma.format(assetVM.totalBuyingAmountKrw),
-          asset.currency?.currencySymbol,
-        );
+            addComma.format(assetVM.totalBuyingAmountKrw),
+            // asset.currency?.currencySymbol,
+            '');
 
         totalBuyingAmountForeign = '-';
         totalCurrentAmountKrw = '-';
@@ -96,7 +96,7 @@ class TableRowAsset {
         /// =================================================================
         /// [현금] 외환
         /// =================================================================
-        name = '외환(${asset.currency?.currencyCode})';
+        name = '외환(${asset.currencyCode})';
         amount = '-';
         buyingSinglePriceKrw = '-';
         buyingSinglePriceForeign = '-';
@@ -114,26 +114,32 @@ class TableRowAsset {
             DateFormat('yyyy.MM.dd').format(asset.initialPurchaseDate);
 
         buyingExchangeRate = addSymbol(
-            '${assetVM.averageExchangeRate}', asset.currency?.currencySymbol);
-        currentExchangeRate = addSymbol(assetVM.exchangeRate.toStringAsFixed(2),
-            asset.currency?.currencySymbol);
+          '${assetVM.averageExchangeRate}',
+          // asset.currency?.currencySymbol
+        );
+        currentExchangeRate = addSymbol(
+          assetVM.exchangeRate.toStringAsFixed(2),
+          // asset.currency?.currencySymbol
+        );
 
         totalCurrentAmountKrw = addSymbol(
             addComma.format(assetVM.totalCurrentCashAmountForeignKrw), '₩');
         totalCurrentAmountForeign = addSymbol(
-            addComma.format(assetVM.totalBuyingAmountForeign),
-            asset.currency?.currencySymbol);
+          addComma.format(assetVM.totalBuyingAmountForeign),
+          // asset.currency?.currencySymbol,
+        );
         totalBuyingAmountKrw =
             addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
         totalBuyingAmountForeign = addSymbol(
-            addComma.format(assetVM.totalBuyingAmountForeign),
-            asset.currency?.currencySymbol);
+          addComma.format(assetVM.totalBuyingAmountForeign),
+          // asset.currency?.currencySymbol
+        );
       }
     } else {
       /// =================================================================
       /// [자산] 🇰🇷 국내
       /// =================================================================
-      if (asset.currency?.currencyCode == 'KRW') {
+      if (asset.currencyCode == 'KRW') {
         name = asset.name;
         ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
         amount = addComma.format(assetVM.totalQuantity);
@@ -152,7 +158,7 @@ class TableRowAsset {
             addSymbol(addComma.format(assetVM.currentSinglePriceKrw), '₩');
         currentSinglePriceForeign = '-';
         totalCurrentAmountForeign = '-';
-        profitLossRateKrw = asset.inputCurrentPrice == 0
+        profitLossRateKrw = asset.balance == 0
             ? '-'
             : '${assetVM.profitLossRateKrw.toStringAsFixed(2)}%';
         profitLossRateForeign = '-';
@@ -171,26 +177,31 @@ class TableRowAsset {
         buyingSinglePriceKrw =
             addSymbol(addComma.format(assetVM.buyingSinglePriceKrw), '₩');
         buyingSinglePriceForeign = addSymbol(
-            addComma.format(assetVM.buyingSinglePriceForeign),
-            asset.currency?.currencySymbol);
+          addComma.format(assetVM.buyingSinglePriceForeign),
+          // asset.currency?.currencySymbol,
+        );
         totalEvaluationAmountKrw = assetVM.totalEvaluationAmountKrw != 0
             ? addSymbol(addComma.format(assetVM.totalEvaluationAmountKrw), '₩')
             : '-';
         totalEvaluationAmountForeign = assetVM.totalEvaluationAmountForeign != 0
-            ? addSymbol(addComma.format(assetVM.totalEvaluationAmountForeign),
-                asset.currency?.currencySymbol)
+            ? addSymbol(
+                addComma.format(assetVM.totalEvaluationAmountForeign),
+                // asset.currency?.currencySymbol,
+              )
             : '-';
         currentSinglePriceKrw = assetVM.currentSinglePriceKrw != 0
             ? addSymbol(addComma.format(assetVM.currentSinglePriceKrw), '₩')
             : '-';
         currentSinglePriceForeign = assetVM.currentSinglePriceForeign != 0
-            ? addSymbol(addComma.format(assetVM.currentSinglePriceForeign),
-                asset.currency?.currencySymbol)
+            ? addSymbol(
+                addComma.format(assetVM.currentSinglePriceForeign),
+                // asset.currency?.currencySymbol,
+              )
             : '-';
-        profitLossRateKrw = asset.inputCurrentPrice == 0
+        profitLossRateKrw = asset.balance == 0
             ? '-'
             : '${assetVM.profitLossRateKrw.toStringAsFixed(2)}%';
-        profitLossRateForeign = asset.inputCurrentPrice == 0
+        profitLossRateForeign = asset.balance == 0
             ? '-'
             : '${assetVM.profitLossRateForeign.toStringAsFixed(2)}%';
         initialPurchaseDate =
@@ -201,14 +212,17 @@ class TableRowAsset {
             ? addSymbol(addComma.format(assetVM.totalCurrentAmountKrw), '₩')
             : '-';
         totalCurrentAmountForeign = assetVM.totalCurrentAmountForeign != 0
-            ? addSymbol(addComma.format(assetVM.totalCurrentAmountForeign),
-                asset.currency?.currencySymbol)
+            ? addSymbol(
+                addComma.format(assetVM.totalCurrentAmountForeign),
+                // asset.currency?.currencySymbol,
+              )
             : '-';
         totalBuyingAmountKrw =
             addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
         totalBuyingAmountForeign = addSymbol(
-            addComma.format(assetVM.totalBuyingAmountForeign),
-            asset.currency?.currencySymbol);
+          addComma.format(assetVM.totalBuyingAmountForeign),
+          // asset.currency?.currencySymbol,
+        );
       }
     }
     return TableRowAsset(

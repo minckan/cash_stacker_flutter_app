@@ -1,7 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/text_radio_button_field.dart';
-import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';

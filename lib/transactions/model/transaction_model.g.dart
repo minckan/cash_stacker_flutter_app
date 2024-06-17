@@ -8,29 +8,28 @@ part of 'transaction_model.dart';
 
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
-      id: json['id'] as String,
-      date: DateTime.parse(json['date'] as String),
+      id: json['transaction_id'] as String,
+      date: DateTime.parse(json['created_at'] as String),
       amount: json['amount'] as String,
       transactionType:
-          $enumDecode(_$TransactionTypeEnumMap, json['transactionType']),
-      category:
-          CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      paymentMethod: json['paymentMethod'] == null
+          $enumDecode(_$TransactionTypeEnumMap, json['transaction_type']),
+      categoryId: json['category_id'] as String,
+      paymentMethod: json['payment_method'] == null
           ? null
           : PaymentMethod.fromJson(
-              json['paymentMethod'] as Map<String, dynamic>),
-      memo: json['memo'] as String?,
+              json['payment_method'] as Map<String, dynamic>),
+      memo: json['description'] as String?,
     );
 
 Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'date': instance.date.toIso8601String(),
+      'transaction_id': instance.id,
+      'created_at': instance.date.toIso8601String(),
       'amount': instance.amount,
-      'transactionType': _$TransactionTypeEnumMap[instance.transactionType]!,
-      'category': instance.category.toJson(),
-      'paymentMethod': instance.paymentMethod?.toJson(),
-      'memo': instance.memo,
+      'transaction_type': _$TransactionTypeEnumMap[instance.transactionType]!,
+      'category_id': instance.categoryId,
+      'payment_method': instance.paymentMethod?.toJson(),
+      'description': instance.memo,
     };
 
 const _$TransactionTypeEnumMap = {

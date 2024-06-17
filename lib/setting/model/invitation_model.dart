@@ -14,6 +14,7 @@ class Invitation {
   final String email;
   final InvitationStatus status;
   final String token;
+  @JsonKey(name: 'expiry_date')
   final DateTime expiryDate;
 
   Invitation({

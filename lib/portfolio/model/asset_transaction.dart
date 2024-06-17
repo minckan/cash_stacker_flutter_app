@@ -1,5 +1,4 @@
-import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
-import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,34 +15,36 @@ enum AssetTransactionType {
 /// [❗️] 현금은 저장되지 않음
 abstract class AssetTransaction {
   /// 자산거래 건당 고유 아이디
+  @JsonKey(name: 'transaction_id')
   final String id;
 
   /// 자산거래 카테고리 (default: 현금, 외환, 국내주식, 해외주식)
-  final CategoryModel category;
+  @JsonKey(name: 'asset_type')
+  final AssetTypeModel category;
 
   /// 자산 아이디(상위개념)
+  @JsonKey(name: 'asset_id')
   final String assetId;
 
-  /// 자산 이름 (상위개념)
-  final String name;
-
   /// 자산 거래일자
+  @JsonKey(name: 'transaction_date')
   final DateTime date;
 
   /// 자산 거래 타입 (매도, 매수)
+  @JsonKey(name: 'transaction_type')
   final AssetTransactionType type;
 
   /// 구매 통화
-  final Currency currency;
+  @JsonKey(name: 'currency')
+  final String currencyCode;
 
   AssetTransaction({
-    required this.name,
     required this.id,
     required this.assetId,
     required this.date,
     required this.type,
     required this.category,
-    required this.currency,
+    required this.currencyCode,
   });
 
   String? typeToString() => _$AssetTransactionTypeEnumMap[type];
@@ -65,16 +66,16 @@ class DomesticTransaction extends AssetTransaction {
   final int shares;
 
   /// 주당 가격 (원화)
+  @JsonKey(name: 'price_per_share')
   final double pricePerShare;
 
   DomesticTransaction({
-    required super.name,
     required super.id,
     required super.assetId,
     required super.date,
     required super.type,
     required super.category,
-    required super.currency,
+    required super.currencyCode,
     required this.shares,
     required this.pricePerShare,
   });
@@ -111,19 +112,20 @@ class ForeignTransaction extends AssetTransaction {
   final int shares;
 
   /// 주당 가격 (외화)
+  @JsonKey(name: 'price_per_share')
   final double pricePerShare;
 
   /// 환율
+  @JsonKey(name: 'exchange_rate')
   final double inputExchangeRate;
 
   ForeignTransaction({
-    required super.name,
     required super.id,
     required super.assetId,
     required super.date,
     required super.type,
     required super.category,
-    required super.currency,
+    required super.currencyCode,
     required this.shares,
     required this.pricePerShare,
     required this.inputExchangeRate,
@@ -158,19 +160,20 @@ class ForeignTransaction extends AssetTransaction {
 @JsonSerializable(explicitToJson: true)
 class ForexTransaction extends AssetTransaction {
   /// 외환 거래액
+  @JsonKey(name: 'amount')
   final double transactionAmt;
 
   /// 환율
+  @JsonKey(name: 'exchange_rate')
   final double inputExchangeRate;
 
   ForexTransaction({
-    required super.name,
     required super.id,
     required super.assetId,
     required super.date,
     required super.type,
     required super.category,
-    required super.currency,
+    required super.currencyCode,
     required this.transactionAmt,
     required this.inputExchangeRate,
   });

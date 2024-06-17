@@ -13,7 +13,7 @@ import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +38,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   String? foreignCashCategoryId;
   String? krwCashCategoryId;
 
-  CategoryModel? selectedCategory;
+  AssetTypeModel? selectedCategory;
   Currency? selectedCurrency;
   DateTime selectedDate = DateTime.now();
 

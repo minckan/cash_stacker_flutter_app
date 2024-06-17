@@ -12,7 +12,7 @@ Invitation _$InvitationFromJson(Map<String, dynamic> json) => Invitation(
       email: json['email'] as String,
       status: $enumDecode(_$InvitationStatusEnumMap, json['status']),
       token: json['token'] as String,
-      expiryDate: DateTime.parse(json['expiryDate'] as String),
+      expiryDate: DateTime.parse(json['expiry_date'] as String),
     );
 
 Map<String, dynamic> _$InvitationToJson(Invitation instance) =>
@@ -22,7 +22,7 @@ Map<String, dynamic> _$InvitationToJson(Invitation instance) =>
       'email': instance.email,
       'status': _$InvitationStatusEnumMap[instance.status]!,
       'token': instance.token,
-      'expiryDate': instance.expiryDate.toIso8601String(),
+      'expiry_date': instance.expiryDate.toIso8601String(),
     };
 
 const _$InvitationStatusEnumMap = {

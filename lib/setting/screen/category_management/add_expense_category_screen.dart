@@ -3,7 +3,7 @@ import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.d
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
-import 'package:cash_stacker_flutter_app/setting/model/category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

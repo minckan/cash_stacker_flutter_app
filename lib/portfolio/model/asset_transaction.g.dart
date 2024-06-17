@@ -8,30 +8,29 @@ part of 'asset_transaction.dart';
 
 DomesticTransaction _$DomesticTransactionFromJson(Map<String, dynamic> json) =>
     DomesticTransaction(
-      name: json['name'] as String,
-      id: json['id'] as String,
-      assetId: json['assetId'] as String,
-      date: DateTime.parse(json['date'] as String),
-      type: $enumDecode(_$AssetTransactionTypeEnumMap, json['type']),
+      id: json['transaction_id'] as String,
+      assetId: json['asset_id'] as String,
+      date: DateTime.parse(json['transaction_date'] as String),
+      type:
+          $enumDecode(_$AssetTransactionTypeEnumMap, json['transaction_type']),
       category:
-          CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      currency: Currency.fromJson(json['currency'] as Map<String, dynamic>),
+          AssetTypeModel.fromJson(json['asset_type'] as Map<String, dynamic>),
+      currencyCode: json['currency'] as String,
       shares: (json['shares'] as num).toInt(),
-      pricePerShare: (json['pricePerShare'] as num).toDouble(),
+      pricePerShare: (json['price_per_share'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$DomesticTransactionToJson(
         DomesticTransaction instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'category': instance.category.toJson(),
-      'assetId': instance.assetId,
-      'name': instance.name,
-      'date': instance.date.toIso8601String(),
-      'type': _$AssetTransactionTypeEnumMap[instance.type]!,
-      'currency': instance.currency.toJson(),
+      'transaction_id': instance.id,
+      'asset_type': instance.category.toJson(),
+      'asset_id': instance.assetId,
+      'transaction_date': instance.date.toIso8601String(),
+      'transaction_type': _$AssetTransactionTypeEnumMap[instance.type]!,
+      'currency': instance.currencyCode,
       'shares': instance.shares,
-      'pricePerShare': instance.pricePerShare,
+      'price_per_share': instance.pricePerShare,
     };
 
 const _$AssetTransactionTypeEnumMap = {
@@ -41,56 +40,54 @@ const _$AssetTransactionTypeEnumMap = {
 
 ForeignTransaction _$ForeignTransactionFromJson(Map<String, dynamic> json) =>
     ForeignTransaction(
-      name: json['name'] as String,
-      id: json['id'] as String,
-      assetId: json['assetId'] as String,
-      date: DateTime.parse(json['date'] as String),
-      type: $enumDecode(_$AssetTransactionTypeEnumMap, json['type']),
+      id: json['transaction_id'] as String,
+      assetId: json['asset_id'] as String,
+      date: DateTime.parse(json['transaction_date'] as String),
+      type:
+          $enumDecode(_$AssetTransactionTypeEnumMap, json['transaction_type']),
       category:
-          CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      currency: Currency.fromJson(json['currency'] as Map<String, dynamic>),
+          AssetTypeModel.fromJson(json['asset_type'] as Map<String, dynamic>),
+      currencyCode: json['currency'] as String,
       shares: (json['shares'] as num).toInt(),
-      pricePerShare: (json['pricePerShare'] as num).toDouble(),
-      inputExchangeRate: (json['inputExchangeRate'] as num).toDouble(),
+      pricePerShare: (json['price_per_share'] as num).toDouble(),
+      inputExchangeRate: (json['exchange_rate'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$ForeignTransactionToJson(ForeignTransaction instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'category': instance.category.toJson(),
-      'assetId': instance.assetId,
-      'name': instance.name,
-      'date': instance.date.toIso8601String(),
-      'type': _$AssetTransactionTypeEnumMap[instance.type]!,
-      'currency': instance.currency.toJson(),
+      'transaction_id': instance.id,
+      'asset_type': instance.category.toJson(),
+      'asset_id': instance.assetId,
+      'transaction_date': instance.date.toIso8601String(),
+      'transaction_type': _$AssetTransactionTypeEnumMap[instance.type]!,
+      'currency': instance.currencyCode,
       'shares': instance.shares,
-      'pricePerShare': instance.pricePerShare,
-      'inputExchangeRate': instance.inputExchangeRate,
+      'price_per_share': instance.pricePerShare,
+      'exchange_rate': instance.inputExchangeRate,
     };
 
 ForexTransaction _$ForexTransactionFromJson(Map<String, dynamic> json) =>
     ForexTransaction(
-      name: json['name'] as String,
-      id: json['id'] as String,
-      assetId: json['assetId'] as String,
-      date: DateTime.parse(json['date'] as String),
-      type: $enumDecode(_$AssetTransactionTypeEnumMap, json['type']),
+      id: json['transaction_id'] as String,
+      assetId: json['asset_id'] as String,
+      date: DateTime.parse(json['transaction_date'] as String),
+      type:
+          $enumDecode(_$AssetTransactionTypeEnumMap, json['transaction_type']),
       category:
-          CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      currency: Currency.fromJson(json['currency'] as Map<String, dynamic>),
-      transactionAmt: (json['transactionAmt'] as num).toDouble(),
-      inputExchangeRate: (json['inputExchangeRate'] as num).toDouble(),
+          AssetTypeModel.fromJson(json['asset_type'] as Map<String, dynamic>),
+      currencyCode: json['currency'] as String,
+      transactionAmt: (json['amount'] as num).toDouble(),
+      inputExchangeRate: (json['exchange_rate'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$ForexTransactionToJson(ForexTransaction instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'category': instance.category.toJson(),
-      'assetId': instance.assetId,
-      'name': instance.name,
-      'date': instance.date.toIso8601String(),
-      'type': _$AssetTransactionTypeEnumMap[instance.type]!,
-      'currency': instance.currency.toJson(),
-      'transactionAmt': instance.transactionAmt,
-      'inputExchangeRate': instance.inputExchangeRate,
+      'transaction_id': instance.id,
+      'asset_type': instance.category.toJson(),
+      'asset_id': instance.assetId,
+      'transaction_date': instance.date.toIso8601String(),
+      'transaction_type': _$AssetTransactionTypeEnumMap[instance.type]!,
+      'currency': instance.currencyCode,
+      'amount': instance.transactionAmt,
+      'exchange_rate': instance.inputExchangeRate,
     };
