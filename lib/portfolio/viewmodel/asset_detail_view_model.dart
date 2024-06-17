@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/calculation_helpers.dart';
@@ -7,7 +5,6 @@ import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';

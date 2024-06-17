@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';

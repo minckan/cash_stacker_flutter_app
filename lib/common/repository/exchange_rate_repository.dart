@@ -23,7 +23,6 @@ abstract class ExchangeRateRepository {
   factory ExchangeRateRepository(Dio dio, {String baseUrl}) =
       _ExchangeRateRepository;
 
-  @GET('/exchange-rates')
-  @Headers({'accessToken': 'true'})
+  @GET('/api/exchange-rates')
   Future<List<ExchangeRateApiModel>> getCurrentExchangeRates();
 }

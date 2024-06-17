@@ -1,10 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/model/monthly_asset_trend_model.dart';
-import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/extensions/color_extensions.dart';
 import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
