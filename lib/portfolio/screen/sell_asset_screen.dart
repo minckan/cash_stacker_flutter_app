@@ -9,7 +9,7 @@ import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart'
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

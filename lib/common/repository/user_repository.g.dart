@@ -19,6 +19,34 @@ class _UserRepository implements UserRepository {
   String? baseUrl;
 
   @override
+  Future<UserModel?> getUser(dynamic path) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>?>(_setStreamType<UserModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/:id',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value =
+        _result.data == null ? null : UserModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<void> createUser(dynamic body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

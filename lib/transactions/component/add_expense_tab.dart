@@ -4,7 +4,7 @@ import 'package:cash_stacker_flutter_app/common/component/form/text_radio_button
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_expense_category_screen.dart';
 
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/payment_method.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class AddExpenseTab extends ConsumerStatefulWidget {
 
 class AddExpenseTabState extends ConsumerState<AddExpenseTab> {
   final priceController = TextEditingController();
-  CategoryModel? selectedCategory;
+  TransactionCategoryModel? selectedCategory;
   PaymentMethod? selectedPaymentMethod;
   DateTime selectedDate = DateTime.now();
   @override

@@ -1,9 +1,9 @@
 import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -38,16 +38,14 @@ class _AssetAddCategoryScreenState
                 final value = _formKey.currentState?.value;
 
                 if (value != null) {
-                  final category = CategoryModel(
+                  final category = AssetTypeModel(
                     id: docId,
                     name: value['category_name'],
-                    type: CategoryType.asset,
-                    isForeignAsset: value['is_foreign_asset'],
-                    isCustomCategory: true,
+                    isDefault: false,
                   );
 
                   if (currentUser != null) {
-                    ref.read(categoryViewModelProvider.notifier).addCategory(
+                    ref.read(assetTypeViewModelProvider.notifier).addCategory(
                           category,
                           currentUser.workspaceId,
                         );

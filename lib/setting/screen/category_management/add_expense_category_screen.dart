@@ -4,7 +4,7 @@ import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_l
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -28,14 +28,16 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
               if (controller.value.text == '') {
                 return;
               }
-              final category = CategoryModel(
+              final category = TransactionCategoryModel(
                 id: docId,
                 name: controller.value.text.toString(),
                 type: CategoryType.expense,
               );
 
               if (currentUser != null) {
-                ref.read(categoryViewModelProvider.notifier).addCategory(
+                ref
+                    .read(transactionCategoryViewModelProvider.notifier)
+                    .addCategory(
                       category,
                       currentUser.workspaceId,
                     );

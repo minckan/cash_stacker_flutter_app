@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

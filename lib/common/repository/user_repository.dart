@@ -1,3 +1,4 @@
+import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,6 +19,11 @@ final userRepositoryProvider = Provider<UserRepository>((ref) {
 @RestApi()
 abstract class UserRepository {
   factory UserRepository(Dio dio, {String baseUrl}) = _UserRepository;
+
+  @GET('/:id')
+  Future<UserModel?> getUser(
+    @Path() path,
+  );
 
   @POST('/')
   Future<void> createUser(

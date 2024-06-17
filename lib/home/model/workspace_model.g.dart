@@ -8,10 +8,10 @@ part of 'workspace_model.dart';
 
 Workspace _$WorkspaceFromJson(Map<String, dynamic> json) => Workspace(
       id: json['workspace_id'] as String,
-      name: json['workspace_name'] as String,
       createdDate: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
+      name: json['workspace_name'] as String?,
     );
 
 Map<String, dynamic> _$WorkspaceToJson(Workspace instance) => <String, dynamic>{

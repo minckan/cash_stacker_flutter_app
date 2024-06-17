@@ -7,7 +7,7 @@ import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart'
 import 'package:cash_stacker_flutter_app/portfolio/screen/edit_asset_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/sell_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

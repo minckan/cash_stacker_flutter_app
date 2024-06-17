@@ -6,14 +6,14 @@ part 'workspace_model.g.dart';
 class Workspace {
   Workspace({
     required this.id,
-    required this.name,
-    required this.createdDate,
+    this.createdDate,
+    this.name,
   });
 
   @JsonKey(name: 'workspace_id')
   final String id;
   @JsonKey(name: 'workspace_name')
-  final String name;
+  final String? name;
   @JsonKey(name: 'created_at')
   final DateTime? createdDate;
 

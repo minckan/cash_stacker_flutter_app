@@ -1,40 +1,23 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final categoryViewModelProvider =
-    StateNotifierProvider<CategoryViewModel, List<CategoryModel>>(
+final assetTypeViewModelProvider =
+    StateNotifierProvider<CategoryViewModel, List<AssetTypeModel>>(
         (ref) => CategoryViewModel());
 
-class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
+class CategoryViewModel extends StateNotifier<List<AssetTypeModel>> {
   CategoryViewModel() : super([]);
 
-  CategoryModel get cashAsset {
+  AssetTypeModel get cashAsset {
     return state.firstWhere((item) => item.name == '현금');
   }
 
-  CategoryModel get foreignCashAsset {
+  AssetTypeModel get foreignCashAsset {
     return state.firstWhere((item) => item.name == '외환');
-  }
-
-  List<CategoryModel> get expenseCategories {
-    return state
-        .where((category) => category.type == CategoryType.expense)
-        .toList();
-  }
-
-  List<CategoryModel> get incomeCategories {
-    return state
-        .where((category) => category.type == CategoryType.income)
-        .toList();
-  }
-
-  List<CategoryModel> get assetCategories {
-    return state
-        .where((category) => category.type == CategoryType.asset)
-        .toList();
   }
 
   Future<void> loadCategory({required String workspaceId}) async {
@@ -50,13 +33,13 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
 
     final defaultCategories =
         defaultCategorySnapshot.data()?.entries.map((entry) {
-      return CategoryModel.fromJson(entry.value);
+      return AssetTypeModel.fromJson(entry.value);
     }).toList();
 
     if (categorySnapshot.docs.isNotEmpty) {
       state = categorySnapshot.docs
           .map((doc) =>
-              CategoryModel.fromJson(doc.data() as Map<String, dynamic>))
+              AssetTypeModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
     }
 
@@ -65,7 +48,7 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
     }
   }
 
-  Future<void> addCategory(CategoryModel category, String workspaceId) async {
+  Future<void> addCategory(AssetTypeModel category, String workspaceId) async {
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
@@ -77,7 +60,7 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
   }
 
   Future<void> updateCategory(
-      CategoryModel category, String workspaceId) async {
+      AssetTypeModel category, String workspaceId) async {
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)
@@ -89,7 +72,7 @@ class CategoryViewModel extends StateNotifier<List<CategoryModel>> {
   }
 
   Future<void> removeCategory(
-      CategoryModel category, String workspaceId) async {
+      AssetTypeModel category, String workspaceId) async {
     await FirebaseFirestore.instance
         .collection(Collection.workspaces)
         .doc(workspaceId)

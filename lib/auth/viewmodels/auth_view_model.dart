@@ -6,6 +6,7 @@ import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
+import 'package:cash_stacker_flutter_app/common/repository/user_repository.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
@@ -42,18 +43,15 @@ class AuthViewModel extends StateNotifier<UserModel?> {
   Future<void> loadUser() async {
     final firebaseUser = _auth.currentUser;
     if (firebaseUser != null) {
-      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(firebaseUser.uid)
-          .get();
-
-      if (userDoc.exists) {
-        state = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
-
-        _ref
-            .read(workspaceViewModelProvider.notifier)
-            .loadWorkspace(state!.uid);
+      final user =
+          await _ref.read(userRepositoryProvider).getUser(firebaseUser.uid);
+      if (user != null) {
+        state = user;
       }
+
+      // _ref
+      //     .read(workspaceViewModelProvider.notifier)
+      //     .loadWorkspace(state!.uid);
     }
   }
 
@@ -211,7 +209,6 @@ class AuthViewModel extends StateNotifier<UserModel?> {
           try {
             final workspace = Workspace(
               id: workspaceId,
-              members: [firebaseUser.uid],
             );
 
             await FirebaseFirestore.instance

@@ -9,7 +9,6 @@ import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 
-import 'package:cash_stacker_flutter_app/setting/viewmodel/category_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 위젯 테이블용 데이터 계산
@@ -23,7 +22,7 @@ class AssetDetailViewModel {
   });
   //================================================================
 
-  bool get _isKrwAsset => asset.currency?.currencyCode == 'KRW';
+  bool get _isKrwAsset => asset.currencyCode == 'KRW';
 
   bool get isCashAsset {
     final categoryVm = ref.read(categoryViewModelProvider.notifier);
@@ -47,24 +46,22 @@ class AssetDetailViewModel {
 
   /// 환율 정보가 각 통화 1unit 당 한화로 내려오지 않고 엔화와 인도네시아 루피아는 100unit당 한화로 내려오기 때문에 구분이 필요.
   bool get isJPYOrIDR {
-    return asset.currency!.currencyCode == 'JPY' ||
-        asset.currency!.currencyCode == 'IDR';
+    return asset.currencyCode == 'JPY' || asset.currencyCode == 'IDR';
   }
 
   //================================================================
 
   /// 영업일 기준 1시간 단위로 업데이트 되는 환율 정보
   double get exchangeRate {
-    if (asset.currency!.currencyCode == 'BRL') return 0;
+    if (asset.currencyCode == 'BRL') return 0;
 
 // TODO: Bad state: No element ERROR
-    final exchangeRate = ref.watch(exchangeRateProvider).firstWhere((rate) =>
-        rate.cur_unit.contains(asset.currency?.currencyCode as Pattern));
+    final exchangeRate = ref.watch(exchangeRateProvider).firstWhere(
+        (rate) => rate.cur_unit.contains(asset.currencyCode as Pattern));
 
     final parseDouble = double.parse(removeComma(exchangeRate.deal_bas_r));
-    final valueTransformed = asset.currency!.currencyCode == 'JPY'
-        ? (parseDouble / 100)
-        : parseDouble; // IDR
+    final valueTransformed =
+        asset.currencyCode == 'JPY' ? (parseDouble / 100) : parseDouble; // IDR
 
     return valueTransformed;
   }
@@ -120,7 +117,7 @@ class AssetDetailViewModel {
   /// [원화] 실제 투자원금 총액
   double get totalBuyingAmountKrw {
     if (isKrwCashAsset) {
-      return asset.inputCurrentPrice;
+      return asset.balance;
     } else if (isForeignCashAsset) {
       final totalBuying = purchaseTransactions.fold(0.0,
           (total, transaction) => total + transaction.totalTransactionPrice);
@@ -150,9 +147,9 @@ class AssetDetailViewModel {
   /// [원화] 입력 받은 현재가
   double get currentSinglePriceKrw {
     if (_isKrwAsset) {
-      return asset.inputCurrentPrice;
+      return asset.balance;
     } else {
-      return asset.inputCurrentPrice * exchangeRate;
+      return asset.balance * exchangeRate;
     }
   }
 
@@ -208,7 +205,7 @@ class AssetDetailViewModel {
 
   /// [외화] 입력받은 현재가
   double get currentSinglePriceForeign {
-    return asset.inputCurrentPrice;
+    return asset.balance;
   }
 
   /// [외화] 현재가 * 수량 = 현재가 총금액

@@ -44,7 +44,7 @@ class _WorkspaceRepository implements WorkspaceRepository {
   }
 
   @override
-  Future<List<Workspace>> getAllWorkspaces(dynamic path) async {
+  Future<List<Workspace>?> getAllWorkspaces(dynamic path) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -67,21 +67,21 @@ class _WorkspaceRepository implements WorkspaceRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => Workspace.fromJson(i as Map<String, dynamic>))
+    var value = _result.data
+        ?.map((dynamic i) => Workspace.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<Workspace> getOneWorkspace(dynamic path) async {
+  Future<Workspace?> getOneWorkspace(dynamic path) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<Workspace>(Options(
+        .fetch<Map<String, dynamic>?>(_setStreamType<Workspace>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -97,7 +97,8 @@ class _WorkspaceRepository implements WorkspaceRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = Workspace.fromJson(_result.data!);
+    final value =
+        _result.data == null ? null : Workspace.fromJson(_result.data!);
     return value;
   }
 
