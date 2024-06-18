@@ -32,7 +32,7 @@ class AddExpenseTabState extends ConsumerState<AddExpenseTab> {
   @override
   Widget build(BuildContext context) {
     final categories = ref
-        .watch(categoryViewModelProvider)
+        .watch(transactionCategoryViewModelProvider)
         .where((category) => category.type == CategoryType.expense)
         .toList();
     return Padding(

@@ -15,6 +15,7 @@ import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_v
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,32 +48,32 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   void initState() {
     super.initState();
 
-    foreignCashCategoryId =
-        ref.read(categoryViewModelProvider.notifier).foreignCashAsset.id;
-    krwCashCategoryId =
-        ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+    // foreignCashCategoryId =
+    //     ref.read(assetTypeViewModelProvider.notifier).foreignCashAsset.id;
+    // krwCashCategoryId =
+    //     ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
 
-    if (widget.assetId != null) {
-      final thisAsset = ref
-          .read(assetViewModelProvider.notifier)
-          .getParticularAssets(widget.assetId!);
+    // if (widget.assetId != null) {
+    //   final thisAsset = ref
+    //       .read(assetViewModelProvider.notifier)
+    //       .getParticularAssets(widget.assetId!);
 
-      selectedCategory = thisAsset.category;
-      selectedCurrency = thisAsset.currency;
+    //   selectedCategory = thisAsset.categoryId;
+    //   selectedCurrency = thisAsset.currency;
 
-      final isForeignCash = foreignCashCategoryId == thisAsset.category.id;
+    //   final isForeignCash = foreignCashCategoryId == thisAsset.category.id;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _formKey.currentState?.patchValue({
-          'category': thisAsset.category.name, // 초기 값 설정
-          'currency': thisAsset.currency?.currencyName,
-          'cashCurrency': thisAsset.currency?.currencyName,
-          'name': isForeignCash
-              ? '${thisAsset.name}(${thisAsset.currency?.currencyCode})'
-              : thisAsset.name,
-        });
-      });
-    }
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     _formKey.currentState?.patchValue({
+    //       'category': thisAsset.category.name, // 초기 값 설정
+    //       'currency': thisAsset.currency?.currencyName,
+    //       'cashCurrency': thisAsset.currency?.currencyName,
+    //       'name': isForeignCash
+    //           ? '${thisAsset.name}(${thisAsset.currency?.currencyCode})'
+    //           : thisAsset.name,
+    //     });
+    //   });
+    // }
   }
 
   @override

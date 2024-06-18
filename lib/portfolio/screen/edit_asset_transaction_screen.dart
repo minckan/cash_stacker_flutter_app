@@ -11,11 +11,13 @@ class EditAssetTransactionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
+    return const DefaultLayout(
       isFormView: true,
       title: '자산 거래내역 수정',
       child: Center(
-        child: Text(assetTransaction.name),
+        child: Text(''
+            // assetTransaction,
+            ),
       ),
     );
   }

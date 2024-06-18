@@ -13,13 +13,13 @@ class CategoryListTile extends ConsumerWidget {
     required this.hasCategoryAsset,
   });
 
-  final CategoryModel category;
+  final dynamic category;
   final bool hasCategoryAsset;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final workspaceId = ref.read(workspaceViewModelProvider)?.id;
-    final categoryVM = ref.read(categoryViewModelProvider.notifier);
+    final categoryVM = ref.read(transactionCategoryViewModelProvider.notifier);
     return Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: AppColors.border))),
@@ -28,7 +28,7 @@ class CategoryListTile extends ConsumerWidget {
           category.name,
           style: const TextStyle(fontSize: 14),
         ),
-        trailing: category.isCustomCategory == true
+        trailing: true
             ? GestureDetector(
                 onTap: () {
                   if (hasCategoryAsset) {

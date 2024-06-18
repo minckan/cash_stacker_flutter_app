@@ -7,6 +7,7 @@ import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart'
 import 'package:cash_stacker_flutter_app/portfolio/screen/edit_asset_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/sell_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryVm = ref.read(categoryViewModelProvider.notifier);
+    final categoryVm = ref.read(assetTypeViewModelProvider.notifier);
     List<AssetTransaction> assetsTransactions =
         ref.watch(assetTransactionViewModelProvider);
     final assetTrVm = ref.read(assetTransactionViewModelProvider.notifier);
@@ -205,8 +206,9 @@ class AssetTransactionListScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          transaction.name,
+        const Text(
+          '',
+          // transaction.name,
           overflow: TextOverflow.clip,
         ),
         const SizedBox(height: 4),
@@ -259,7 +261,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
                 Text(addComma.format(transaction.totalTransactionPrice),
                     style: const TextStyle(fontFamily: 'Roboto')),
                 const SizedBox(width: 4),
-                Text(transaction.currency.currencyCode,
+                Text(transaction.currencyCode,
                     style: const TextStyle(fontFamily: 'Roboto'))
               ],
             ),
@@ -274,8 +276,9 @@ class AssetTransactionListScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          transaction.name,
+        const Text(
+          // transaction.name,
+          '',
           overflow: TextOverflow.clip,
         ),
         const SizedBox(height: 4),
@@ -307,7 +310,7 @@ class AssetTransactionListScreen extends ConsumerWidget {
                 Text(addComma.format(transaction.totalTransactionPrice),
                     style: const TextStyle(fontFamily: 'Roboto')),
                 const SizedBox(width: 4),
-                Text(transaction.currency.currencyCode,
+                Text(transaction.currencyCode,
                     style: const TextStyle(fontFamily: 'Roboto'))
               ],
             ),

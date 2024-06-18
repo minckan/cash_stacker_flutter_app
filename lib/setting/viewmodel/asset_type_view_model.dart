@@ -6,11 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetTypeViewModelProvider =
-    StateNotifierProvider<CategoryViewModel, List<AssetTypeModel>>(
-        (ref) => CategoryViewModel());
+    StateNotifierProvider<AssetTypeViewModel, List<AssetTypeModel>>(
+        (ref) => AssetTypeViewModel());
 
-class CategoryViewModel extends StateNotifier<List<AssetTypeModel>> {
-  CategoryViewModel() : super([]);
+class AssetTypeViewModel extends StateNotifier<List<AssetTypeModel>> {
+  AssetTypeViewModel() : super([]);
 
   AssetTypeModel get cashAsset {
     return state.firstWhere((item) => item.name == '현금');

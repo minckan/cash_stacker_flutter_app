@@ -25,12 +25,12 @@ class AddIncomeTab extends ConsumerStatefulWidget {
 
 class AddIncomeTabState extends ConsumerState<AddIncomeTab> {
   final priceController = TextEditingController();
-  CategoryModel? selectedCategory;
+  TransactionCategoryModel? selectedCategory;
 
   @override
   Widget build(BuildContext context) {
     final categories = ref
-        .watch(categoryViewModelProvider)
+        .watch(transactionCategoryViewModelProvider)
         .where((category) => category.type == CategoryType.income)
         .toList();
     return Padding(

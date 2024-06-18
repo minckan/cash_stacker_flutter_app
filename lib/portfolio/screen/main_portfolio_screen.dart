@@ -12,6 +12,7 @@ import 'package:cash_stacker_flutter_app/portfolio/component/new/portfolio_table
 import 'package:cash_stacker_flutter_app/portfolio/screen/current_exchange_rate_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/asset_category_screen.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 
 import 'package:flutter/material.dart';
@@ -24,8 +25,7 @@ class MainPortfolioScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assets = ref.watch(assetViewModelProvider);
-    final assetCategories =
-        ref.watch(categoryViewModelProvider.notifier).assetCategories;
+    final assetCategories = ref.watch(assetTypeViewModelProvider);
     final monthKey = getMonth(DateTime.now());
     final monthlyAsset =
         ref.watch(thisMonthMonthlyAssetAmountProvider(monthKey));

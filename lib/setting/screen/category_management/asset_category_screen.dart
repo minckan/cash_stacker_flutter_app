@@ -12,7 +12,7 @@ class AssetCategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoryViewModelProvider);
+    final categories = ref.watch(assetViewModelProvider);
     final assets = ref.watch(assetViewModelProvider);
 
     return DefaultLayout(
@@ -29,16 +29,14 @@ class AssetCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categories[index];
 
-          if (category.type == CategoryType.asset) {
-            final hasCategoryAsset = assets.any(
-              (element) => element.category.id == category.id,
-            );
-            return CategoryListTile(
-              category: category,
-              hasCategoryAsset: hasCategoryAsset,
-            );
-          }
-          return const SizedBox.shrink();
+          const hasCategoryAsset = false;
+          //  assets.any(
+          //   (element) => element.category.id == category.id,
+          // );
+          return CategoryListTile(
+            category: category,
+            hasCategoryAsset: hasCategoryAsset,
+          );
         },
         itemCount: categories.length,
       ),

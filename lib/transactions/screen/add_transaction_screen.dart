@@ -61,7 +61,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
         id: docId,
         date: selectedDate,
         amount: incomePrice,
-        category: selectedIncomeCategory!,
+        categoryId: selectedIncomeCategory!.id,
         transactionType: TransactionType.income,
       );
 
@@ -82,7 +82,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
         id: docId,
         date: selectedDate,
         amount: expensePrice,
-        category: selectedExpenseCategory!,
+        categoryId: selectedExpenseCategory!.id,
         transactionType: TransactionType.expense,
         paymentMethod: expensePaymentMethod,
       );

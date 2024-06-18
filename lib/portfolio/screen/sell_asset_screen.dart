@@ -9,6 +9,7 @@ import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart'
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/material.dart';
@@ -40,35 +41,35 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
     super.initState();
 
     foreignCashCategoryId =
-        ref.read(categoryViewModelProvider.notifier).foreignCashAsset.id;
+        ref.read(assetTypeViewModelProvider.notifier).foreignCashAsset.id;
     asset = ref
         .read(assetViewModelProvider.notifier)
         .getParticularAssets(widget.assetId);
 
-    if (asset != null) {
-      assetDetailVm = AssetDetailViewModel(asset: asset!, ref: ref);
-      isForeignCash = foreignCashCategoryId == asset!.category.id;
-      isKrwAsset = asset!.currency?.currencyCode == 'KRW';
-      if (assetDetailVm == null) return;
-      if (isForeignCash == true) {
-        sellableAmount =
-            '${asset!.currency?.currencySymbol}${addComma.format(assetDetailVm!.totalBuyingAmountForeign)}';
-      } else {
-        sellableAmount =
-            '${addComma.format(assetDetailVm!.totalQuantity)} unit';
-      }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (isForeignCash == true) {
-          formKey.currentState?.patchValue({
-            'name': '${asset!.name}(${asset!.currency?.currencyCode})',
-          });
-        } else {
-          formKey.currentState?.patchValue({
-            'name': asset!.name,
-          });
-        }
-      });
-    }
+    // if (asset != null) {
+    //   assetDetailVm = AssetDetailViewModel(asset: asset!, ref: ref);
+    //   isForeignCash = foreignCashCategoryId == asset!.category.id;
+    //   isKrwAsset = asset!.currencyCode == 'KRW';
+    //   if (assetDetailVm == null) return;
+    //   if (isForeignCash == true) {
+    //     sellableAmount =
+    //         '${asset!.currency?.currencySymbol}${addComma.format(assetDetailVm!.totalBuyingAmountForeign)}';
+    //   } else {
+    //     sellableAmount =
+    //         '${addComma.format(assetDetailVm!.totalQuantity)} unit';
+    //   }
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     if (isForeignCash == true) {
+    //       formKey.currentState?.patchValue({
+    //         'name': '${asset!.name}(${asset!.currency?.currencyCode})',
+    //       });
+    //     } else {
+    //       formKey.currentState?.patchValue({
+    //         'name': asset!.name,
+    //       });
+    //     }
+    //   });
+    // }
   }
 
   @override
@@ -130,16 +131,16 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
                         NumberFormField(
                           formName: 'selling_price',
                           placeholder: '매도단가',
-                          suffixText: asset!.currency?.currencyCode,
+                          suffixText: asset!.currencyCode,
                           isOptional: true,
                         )
                       ],
                       if (isKrwAsset == false) ...[
                         const SizedBox(height: 10),
-                        NumberFormField(
+                        const NumberFormField(
                           formName: 'sell_exchange_rate',
                           placeholder: '매도환율',
-                          suffixText: '/ ${asset!.currency?.currencySymbol}1',
+                          // suffixText: '/ ${asset!.currency?.currencySymbol}1',
                           addComma: false,
                         )
                       ],
@@ -158,85 +159,85 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
       final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
       final value = formKey.currentState?.value;
 
-      if (value != null) {
-        final AssetTransaction assetTr;
+      // if (value != null) {
+      //   final AssetTransaction assetTr;
 
-        if (isForeignCash == true) {
-          assetTr = ForexTransaction(
-            name: '현금(${asset!.currency?.currencyCode})',
-            id: uuid.v4(),
-            assetId: asset!.id,
-            date: selectedDate,
-            type: AssetTransactionType.sell,
-            category: asset!.category,
-            currency: asset!.currency!,
-            transactionAmt:
-                double.tryParse(removeComma(value['sell_amount'])) ?? 0,
-            inputExchangeRate: double.parse(value['sell_exchange_rate']),
-          );
-        } else {
-          if (isKrwAsset == true) {
-            assetTr = DomesticTransaction(
-              name: asset!.name,
-              id: uuid.v4(),
-              assetId: asset!.id,
-              date: selectedDate,
-              type: AssetTransactionType.sell,
-              category: asset!.category,
-              currency: asset!.currency!,
-              pricePerShare:
-                  double.tryParse(removeComma(value['selling_price'])) ?? 0,
-              shares: int.tryParse(removeComma(value['sell_amount'])) ?? 0,
-            );
-          } else {
-            assetTr = ForeignTransaction(
-              name: asset!.name,
-              id: uuid.v4(),
-              assetId: asset!.id,
-              date: selectedDate,
-              type: AssetTransactionType.sell,
-              category: asset!.category,
-              currency: asset!.currency!,
-              pricePerShare:
-                  double.tryParse(removeComma(value['selling_price'])) ?? 0,
-              shares: int.tryParse(removeComma(value['sell_amount'])) ?? 0,
-              inputExchangeRate: double.parse(value['sell_exchange_rate']),
-            );
-          }
-        }
+      //   if (isForeignCash == true) {
+      //     assetTr = ForexTransaction(
+      //       name: '현금(${asset!.currency?.currencyCode})',
+      //       id: uuid.v4(),
+      //       assetId: asset!.id,
+      //       date: selectedDate,
+      //       type: AssetTransactionType.sell,
+      //       category: asset!.category,
+      //       currency: asset!.currency!,
+      //       transactionAmt:
+      //           double.tryParse(removeComma(value['sell_amount'])) ?? 0,
+      //       inputExchangeRate: double.parse(value['sell_exchange_rate']),
+      //     );
+      //   } else {
+      //     if (isKrwAsset == true) {
+      //       assetTr = DomesticTransaction(
+      //         name: asset!.name,
+      //         id: uuid.v4(),
+      //         assetId: asset!.id,
+      //         date: selectedDate,
+      //         type: AssetTransactionType.sell,
+      //         category: asset!.category,
+      //         currency: asset!.currency!,
+      //         pricePerShare:
+      //             double.tryParse(removeComma(value['selling_price'])) ?? 0,
+      //         shares: int.tryParse(removeComma(value['sell_amount'])) ?? 0,
+      //       );
+      //     } else {
+      //       assetTr = ForeignTransaction(
+      //         name: asset!.name,
+      //         id: uuid.v4(),
+      //         assetId: asset!.id,
+      //         date: selectedDate,
+      //         type: AssetTransactionType.sell,
+      //         category: asset!.category,
+      //         currency: asset!.currency!,
+      //         pricePerShare:
+      //             double.tryParse(removeComma(value['selling_price'])) ?? 0,
+      //         shares: int.tryParse(removeComma(value['sell_amount'])) ?? 0,
+      //         inputExchangeRate: double.parse(value['sell_exchange_rate']),
+      //       );
+      //     }
+      //   }
 
-        /// 현금자산 업데이트
-        final assetVM = ref.read(assetViewModelProvider.notifier);
+      //   /// 현금자산 업데이트
+      //   final assetVM = ref.read(assetViewModelProvider.notifier);
 
-        Asset? krwCashAsset = assetVM.krwCashAsset;
+      //   Asset? krwCashAsset = assetVM.krwCashAsset;
 
-        if (krwCashAsset != null) {
-          krwCashAsset = krwCashAsset.copyWith(
-              inputCurrentPrice: krwCashAsset.inputCurrentPrice +
-                  assetTr.totalKrwTransactionPrice);
+      //   if (krwCashAsset != null) {
+      //     krwCashAsset = krwCashAsset.copyWith(
+      //         inputCurrentPrice: krwCashAsset.inputCurrentPrice +
+      //             assetTr.totalKrwTransactionPrice);
 
-          assetVM.updateAsset(krwCashAsset, workspaceId);
-        } else {
-          final asset = Asset(
-            id: uuid.v4(),
-            name: '현금',
-            category: ref.read(categoryViewModelProvider.notifier).cashAsset,
-            currency: ref.read(currencyViewModelProvider.notifier).krwCurrency,
-            initialPurchaseDate: selectedDate,
-            inputCurrentPrice: assetTr.totalKrwTransactionPrice,
-          );
+      //     assetVM.updateAsset(krwCashAsset, workspaceId);
+      //   } else {
+      //     final asset = Asset(
+      //       id: uuid.v4(),
+      //       name: '현금',
+      //       category: ref.read(categoryViewModelProvider.notifier).cashAsset,
+      //       currency: ref.read(currencyViewModelProvider.notifier).krwCurrency,
+      //       initialPurchaseDate: selectedDate,
+      //       inputCurrentPrice: assetTr.totalKrwTransactionPrice,
+      //     );
 
-          assetVM.addAsset(asset, workspaceId);
-        }
+      //     assetVM.addAsset(asset, workspaceId);
+      //   }
 
-        /// 자산 거래 내역에 추가
-        await ref
-            .read(assetTransactionViewModelProvider.notifier)
-            .addAssetTransaction(assetTr, workspaceId);
+      //   /// 자산 거래 내역에 추가
+      //   await ref
+      //       .read(assetTransactionViewModelProvider.notifier)
+      //       .addAssetTransaction(assetTr, workspaceId);
 
-        if (!mounted) return;
-        Navigator.of(context).pop();
-      }
+      //   if (!mounted) return;
+      //   Navigator.of(context).pop();
+      // }
     }
   }
 }

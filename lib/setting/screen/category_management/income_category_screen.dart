@@ -13,7 +13,7 @@ class IncomeCategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoryViewModelProvider);
+    final categories = ref.watch(transactionCategoryViewModelProvider);
     final assets = ref.watch(assetViewModelProvider);
 
     return DefaultLayout(
@@ -31,9 +31,10 @@ class IncomeCategoryScreen extends ConsumerWidget {
           final category = categories[index];
 
           if (category.type == CategoryType.income) {
-            final hasCategoryAsset = assets.any(
-              (element) => element.category.id == category.id,
-            );
+            const hasCategoryAsset = false;
+            // assets.any(
+            //   (element) => element.category.id == category.id,
+            // );
             return CategoryListTile(
               category: category,
               hasCategoryAsset: hasCategoryAsset,
