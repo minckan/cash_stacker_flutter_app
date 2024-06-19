@@ -35,9 +35,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _initState() async {
     final workspaceId = await SharedPreferencesUtil.getString(
         SharedPreferencesUtil.workspaceId);
-    if (workspaceId != null) {
-      ref.read(assetTrendProvider.notifier).getMonthlyAssetTrends(workspaceId);
-    }
+    // if (workspaceId != null) {
+    //   ref.read(assetTrendProvider.notifier).getMonthlyAssetTrends(workspaceId);
+    // }
   }
 
   @override
@@ -45,7 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final currentMonthKey = getMonth(DateTime.now());
     final workspaceId = ref.read(workspaceViewModelProvider)?.id;
 
-    final monthlyAssetTrendList = ref.watch(assetTrendProvider);
+    // final monthlyAssetTrendList = ref.watch(assetTrendProvider);
 
     final assetSummaryViewModel = ref.read(assetSummaryProvider.notifier);
     final currentAssetSummary =
@@ -56,9 +56,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final monthlyAsset =
         ref.watch(thisMonthMonthlyAssetAmountProvider(currentMonthKey));
 
-    if (currentAssetSummary == null || monthlyAsset == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    // if (currentAssetSummary == null || monthlyAsset == null) {
+    //   return const Center(child: CircularProgressIndicator());
+    // }
     return DefaultLayout(
       isSliverView: true,
       actions: [
@@ -110,7 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(monthlyAsset.totalValue),
+                            addComma.format(monthlyAsset?.totalValue ?? 0),
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,
@@ -174,7 +174,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (currentAssetSummary.monthlyBudget == 0)
+                      if (currentAssetSummary == null ||
+                          currentAssetSummary.monthlyBudget == 0)
                         const Center(
                             child: Text(
                           '아직 이번달 예산을 설정하지 않았어요!\n예산을 설정해주세요!',
@@ -251,14 +252,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                '월간 자산 규모 추이',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 50),
-              AnnualTrendChart(
-                monthlyAssetTrendList: monthlyAssetTrendList,
-              ),
+              // const Text(
+              //   '월간 자산 규모 추이',
+              //   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+              // ),
+              // const SizedBox(height: 50),
+              // AnnualTrendChart(
+              //   monthlyAssetTrendList: monthlyAssetTrendList,
+              // ),
               // const SizedBox(
               //   height: 120,
               // )

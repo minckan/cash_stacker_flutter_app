@@ -210,7 +210,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
             );
 
             final workspaceRepository = _ref.read(workspaceRepositoryProvider);
-            await workspaceRepository.createWorkspace(workspace);
+            await workspaceRepository.createWorkspace(workspace.toJson());
 
             _ref
                 .read(workspaceViewModelProvider.notifier)
