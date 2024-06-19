@@ -23,7 +23,9 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
     try {
       final workspace = await _ref
           .read(workspaceRepositoryProvider)
-          .getOneWorkspace('workspace_$userId');
+          .getOneWorkspace(id: 'workspace_$userId');
+
+      logger.d(workspace);
 
       if (workspace != null) {
         state = workspace;
@@ -80,10 +82,10 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
   void setWorkspace(Workspace workspace) {
     state = workspace;
     try {
-      _ref.read(assetViewModelProvider.notifier).loadAssets(workspace.id);
-      _ref
-          .read(transactionViewModelProvider.notifier)
-          .loadTransactions(workspace.id);
+      // _ref.read(assetViewModelProvider.notifier).loadAssets(workspace.id);
+      // _ref
+      //     .read(transactionViewModelProvider.notifier)
+      //     .loadTransactions(workspace.id);
     } catch (e) {
       logger.e('Error setting workspace: $e');
     }

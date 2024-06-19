@@ -20,8 +20,10 @@ class _FinanceTrackerCategoryRepository
   String? baseUrl;
 
   @override
-  Future<List<TransactionCategoryModel>> getAllTransactionCategoryByType(
-      dynamic path) async {
+  Future<List<TransactionCategoryModel>> getAllTransactionCategoryByType({
+    required String workspaceId,
+    required String type,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -35,7 +37,7 @@ class _FinanceTrackerCategoryRepository
     )
             .compose(
               _dio.options,
-              '/:workspaceId/finance/category/:type',
+              '/${workspaceId}/finance/category/${type}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -52,10 +54,10 @@ class _FinanceTrackerCategoryRepository
   }
 
   @override
-  Future<void> createTransactionCategory(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> createTransactionCategory({
+    required String workspaceId,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -68,7 +70,7 @@ class _FinanceTrackerCategoryRepository
     )
         .compose(
           _dio.options,
-          '/:workspaceId/finance/category',
+          '/${workspaceId}/finance/category',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -80,7 +82,10 @@ class _FinanceTrackerCategoryRepository
   }
 
   @override
-  Future<void> updateTransactionCategory(dynamic path) async {
+  Future<void> updateTransactionCategory({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -93,7 +98,7 @@ class _FinanceTrackerCategoryRepository
     )
         .compose(
           _dio.options,
-          '/:workspaceId/finance/category/:id',
+          '/${workspaceId}/finance/category/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -105,7 +110,10 @@ class _FinanceTrackerCategoryRepository
   }
 
   @override
-  Future<void> deleteTransactionCategory(dynamic path) async {
+  Future<void> deleteTransactionCategory({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -118,7 +126,7 @@ class _FinanceTrackerCategoryRepository
     )
         .compose(
           _dio.options,
-          '/:workspaceId/finance/category/:id',
+          '/${workspaceId}/finance/category/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

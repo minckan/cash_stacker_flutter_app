@@ -32,13 +32,11 @@ abstract class WorkspaceRepository {
 
   @GET('/')
   @Headers({'accessToken': 'true'})
-  Future<List<Workspace>?> getAllWorkspaces(
-    @Path() path,
-  );
+  Future<List<Workspace>?> getAllWorkspaces();
 
-  @GET('/:id')
+  @GET('/{id}')
   @Headers({'accessToken': 'true'})
-  Future<Workspace?> getOneWorkspace(
-    @Path() path,
-  );
+  Future<Workspace?> getOneWorkspace({
+    @Path() required String id,
+  });
 }

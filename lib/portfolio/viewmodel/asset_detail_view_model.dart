@@ -8,6 +8,7 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,22 +26,22 @@ class AssetDetailViewModel {
   bool get _isKrwAsset => asset.currencyCode == 'KRW';
 
   bool get isCashAsset {
-    final categoryVm = ref.read(categoryViewModelProvider.notifier);
+    final categoryVm = ref.read(assetTypeViewModelProvider.notifier);
     final krwCashAssetId = categoryVm.cashAsset.id;
 
     final foreignCashAssetId = categoryVm.foreignCashAsset.id;
 
-    return krwCashAssetId == asset.category.id ||
-        foreignCashAssetId == asset.category.id;
+    return krwCashAssetId == asset.categoryId ||
+        foreignCashAssetId == asset.categoryId;
   }
 
   bool get isKrwCashAsset =>
-      asset.category.id ==
-      ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+      asset.categoryId ==
+      ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
 
   bool get isForeignCashAsset =>
-      asset.category.id ==
-      ref.read(categoryViewModelProvider.notifier).foreignCashAsset.id;
+      asset.categoryId ==
+      ref.read(assetTypeViewModelProvider.notifier).foreignCashAsset.id;
 
   //================================================================
 

@@ -25,28 +25,32 @@ abstract class FinanceTrackerRepository {
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createTransaction(
-    @Path() path,
-    @Body() body,
-  );
-  @PUT('$basePath/:id')
+  Future<void> createTransaction({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
+  @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateTransaction(
-    @Path() path,
-  );
-  @DELETE('$basePath/:id')
+  Future<void> updateTransaction({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
+  @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteTransaction(
-    @Path() path,
-  );
-  @GET('$basePath/monthly/:monthKey')
+  Future<void> deleteTransaction({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
+  @GET('$basePath/monthly/{monthKey}')
   @Headers({'accessToken': 'true'})
-  Future<List<TransactionModel>> getAllMonthlyTransactions(
-    @Path() path,
-  );
-  @GET('$basePath/daily/:dateKey')
+  Future<List<TransactionModel>> getAllMonthlyTransactions({
+    @Path() required String workspaceId,
+    @Path() required String monthKey,
+  });
+  @GET('$basePath/daily/{dateKey}')
   @Headers({'accessToken': 'true'})
-  Future<List<TransactionModel>> getDailyTransactions(
-    @Path() path,
-  );
+  Future<List<TransactionModel>> getDailyTransactions({
+    @Path() required String workspaceId,
+    @Path() required String dateKey,
+  });
 }

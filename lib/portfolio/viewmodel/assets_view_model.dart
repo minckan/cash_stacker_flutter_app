@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,10 +15,10 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   Asset? get krwCashAsset {
     final krwCashCategoryId =
-        _ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+        _ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
     try {
       return state.firstWhere(
-        (asset) => asset.category.id == krwCashCategoryId,
+        (asset) => asset.categoryId == krwCashCategoryId,
       );
     } catch (e) {
       return null;
@@ -98,12 +98,12 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   List<Asset> _sortAssets(List<Asset> assets) {
     final cashCategoryId =
-        _ref.read(categoryViewModelProvider.notifier).cashAsset.id;
+        _ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
 
     List<Asset> nonCashAssets =
-        assets.where((asset) => asset.category.id != cashCategoryId).toList();
+        assets.where((asset) => asset.categoryId != cashCategoryId).toList();
     List<Asset> cashAssets =
-        assets.where((asset) => asset.category.id == cashCategoryId).toList();
+        assets.where((asset) => asset.categoryId == cashCategoryId).toList();
     return [...nonCashAssets, ...cashAssets];
   }
 }

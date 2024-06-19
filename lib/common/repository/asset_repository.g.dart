@@ -19,10 +19,10 @@ class _AssetRepository implements AssetRepository {
   String? baseUrl;
 
   @override
-  Future<void> createAsset(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> createAsset({
+    required String workspaceId,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -35,7 +35,7 @@ class _AssetRepository implements AssetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/assets',
+          '/${workspaceId}/assets',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -47,7 +47,7 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<List<Asset>> getAllAssets(dynamic path) async {
+  Future<List<Asset>> getAllAssets({required String workspaceId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -61,7 +61,7 @@ class _AssetRepository implements AssetRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/assets',
+              '/${workspaceId}/assets',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -77,7 +77,10 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<Asset> getOneAsset(dynamic path) async {
+  Future<Asset> getOneAsset({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -91,7 +94,7 @@ class _AssetRepository implements AssetRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/assets/:id',
+              '/${workspaceId}/assets/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -105,10 +108,11 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<void> updateAsset(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> updateAsset({
+    required String workspaceId,
+    required String id,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -121,7 +125,7 @@ class _AssetRepository implements AssetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/assets/:id',
+          '/${workspaceId}/assets/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -133,7 +137,10 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<void> deleteAsset(dynamic path) async {
+  Future<void> deleteAsset({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -146,7 +153,7 @@ class _AssetRepository implements AssetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/assets/:id',
+          '/${workspaceId}/assets/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -158,10 +165,12 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<void> updateAssetTransaction(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> updateAssetTransaction({
+    required String workspaceId,
+    required String assetId,
+    required String id,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -174,7 +183,7 @@ class _AssetRepository implements AssetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/assets/:assetId/transactions/:id',
+          '/${workspaceId}/assets/${assetId}/transactions/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -186,7 +195,11 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<void> deleteAssetTransaction(dynamic path) async {
+  Future<void> deleteAssetTransaction({
+    required String workspaceId,
+    required String assetId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -199,7 +212,7 @@ class _AssetRepository implements AssetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/assets/:assetId/transactions/:id',
+          '/${workspaceId}/assets/${assetId}/transactions/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -211,7 +224,10 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(dynamic body) async {
+  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends({
+    required String workspaceId,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -225,7 +241,7 @@ class _AssetRepository implements AssetRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/assets/monthlyTrend',
+              '/${workspaceId}/assets/monthlyTrend',
               queryParameters: queryParameters,
               data: _data,
             )

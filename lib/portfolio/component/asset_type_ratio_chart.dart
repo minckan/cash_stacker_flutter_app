@@ -128,7 +128,7 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
       final vm = AssetDetailViewModel(asset: asset, ref: ref);
 
       final category = widget.categories
-          .firstWhere((category) => category.id == asset.category.id);
+          .firstWhere((category) => category.id == asset.categoryId);
 
       categorySums.update(category, (value) => value + vm.ratioValue,
           ifAbsent: () => vm.ratioValue);

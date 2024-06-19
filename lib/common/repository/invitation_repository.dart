@@ -23,31 +23,33 @@ abstract class InvitationRepository {
   factory InvitationRepository(Dio dio, {String baseUrl}) =
       _InvitationRepository;
 
-  static const basePath = '/:workspaceId/invitation';
+  static const basePath = '/{workspaceId}/invitation';
 
   @GET(basePath)
   @Headers({'accessToken': 'true'})
-  Future<List<Invitation>> getAllInvitations(
-    @Path() path,
-  );
+  Future<List<Invitation>> getAllInvitations({
+    @Path() required String workspaceId,
+  });
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createInvitation(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> createInvitation({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
 
-  @PUT('$basePath/:id')
+  @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateInvitation(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> updateInvitation({
+    @Path() required String workspaceId,
+    @Path() required String id,
+    @Body() required body,
+  });
 
-  @DELETE('$basePath/:id')
+  @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteInvitation(
-    @Path() path,
-  );
+  Future<void> deleteInvitation({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
 }

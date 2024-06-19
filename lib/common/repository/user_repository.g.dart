@@ -19,7 +19,7 @@ class _UserRepository implements UserRepository {
   String? baseUrl;
 
   @override
-  Future<UserModel?> getUser(dynamic path) async {
+  Future<UserModel?> getUser({required String id}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -32,7 +32,7 @@ class _UserRepository implements UserRepository {
     )
             .compose(
               _dio.options,
-              '/:id',
+              '/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -47,7 +47,7 @@ class _UserRepository implements UserRepository {
   }
 
   @override
-  Future<void> createUser(dynamic body) async {
+  Future<void> createUser({required dynamic body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -71,10 +71,10 @@ class _UserRepository implements UserRepository {
   }
 
   @override
-  Future<void> updateUser(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> updateUser({
+    required String id,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -87,7 +87,7 @@ class _UserRepository implements UserRepository {
     )
         .compose(
           _dio.options,
-          '/:id',
+          '/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

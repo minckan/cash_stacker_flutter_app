@@ -23,56 +23,64 @@ final assetRepositoryProvider = Provider<AssetRepository>(
 abstract class AssetRepository {
   factory AssetRepository(Dio dio, {String baseUrl}) = _AssetRepository;
 
-  static const basePath = '/:workspaceId/assets';
+  static const basePath = '/{workspaceId}/assets';
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createAsset(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> createAsset({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
 
   @GET(basePath)
   @Headers({'accessToken': 'true'})
-  Future<List<Asset>> getAllAssets(
-    @Path() path,
-  );
+  Future<List<Asset>> getAllAssets({
+    @Path() required String workspaceId,
+  });
 
-  @GET('$basePath/:id')
+  @GET('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<Asset> getOneAsset(
-    @Path() path,
-  );
+  Future<Asset> getOneAsset({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
 
-  @PUT('$basePath/:id')
+  @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateAsset(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> updateAsset({
+    @Path() required String workspaceId,
+    @Path() required String id,
+    @Body() required body,
+  });
 
-  @DELETE('$basePath/:id')
+  @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteAsset(
-    @Path() path,
-  );
+  Future<void> deleteAsset({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
 
-  @PUT('$basePath/:assetId/transactions/:id')
+  @PUT('$basePath/{assetId}/transactions/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateAssetTransaction(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> updateAssetTransaction({
+    @Path() required String workspaceId,
+    @Path() required String assetId,
+    @Path() required String id,
+    @Body() required body,
+  });
 
-  @DELETE('$basePath/:assetId/transactions/:id')
+  @DELETE('$basePath/{assetId}/transactions/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteAssetTransaction(
-    @Path() path,
-  );
+  Future<void> deleteAssetTransaction({
+    @Path() required String workspaceId,
+    @Path() required String assetId,
+    @Path() required String id,
+  });
 
   @POST('$basePath/monthlyTrend')
   @Headers({'accessToken': 'true'})
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends(
-    @Body() body,
-  );
+  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
 }

@@ -20,20 +20,20 @@ final userRepositoryProvider = Provider<UserRepository>((ref) {
 abstract class UserRepository {
   factory UserRepository(Dio dio, {String baseUrl}) = _UserRepository;
 
-  @GET('/:id')
-  Future<UserModel?> getUser(
-    @Path() path,
-  );
+  @GET('/{id}')
+  Future<UserModel?> getUser({
+    @Path() required String id,
+  });
 
   @POST('/')
-  Future<void> createUser(
-    @Body() body,
-  );
+  Future<void> createUser({
+    @Body() required body,
+  });
 
-  @PUT('/:id')
+  @PUT('/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateUser(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> updateUser({
+    @Path() required String id,
+    @Body() required body,
+  });
 }

@@ -7,6 +7,7 @@ import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/repository/user_repository.dart';
+import 'package:cash_stacker_flutter_app/common/repository/workspace_repository.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
@@ -44,7 +45,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
     final firebaseUser = _auth.currentUser;
     if (firebaseUser != null) {
       final user =
-          await _ref.read(userRepositoryProvider).getUser(firebaseUser.uid);
+          await _ref.read(userRepositoryProvider).getUser(id: firebaseUser.uid);
       if (user != null) {
         state = user;
       }
@@ -162,12 +163,13 @@ class AuthViewModel extends StateNotifier<UserModel?> {
       final firebaseUser = userCredential.user;
 
       if (firebaseUser != null) {
-        final DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(firebaseUser.uid)
-            .get();
+        logger.d(await firebaseUser.getIdToken());
 
-        if (!userDoc.exists) {
+        final userRepository = _ref.read(userRepositoryProvider);
+
+        final user = await userRepository.getUser(id: firebaseUser.uid);
+
+        if (user == null) {
           final workspaceId = 'workspace_${firebaseUser.uid}';
           final fcmToken = await SharedPreferencesUtil.getString(
               SharedPreferencesUtil.fcmTokenKey);
@@ -184,16 +186,12 @@ class AuthViewModel extends StateNotifier<UserModel?> {
               platformType: Platform.operatingSystem,
               pushId: fcmToken ?? '',
               loginType: loginType,
-              // pushEnables: false,
+              pushEnables: false,
+              darkMode: false,
             );
             // 신규 유저 추가
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(_user!.uid)
-                .set(
-                  _user!.toJson(),
-                  SetOptions(merge: true),
-                );
+
+            await userRepository.createUser(body: _user!.toJson());
 
             final idToken = await firebaseUser.getIdToken();
             await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
@@ -211,30 +209,20 @@ class AuthViewModel extends StateNotifier<UserModel?> {
               id: workspaceId,
             );
 
-            await FirebaseFirestore.instance
-                .collection('workspaces')
-                .doc(workspaceId)
-                .set(workspace.toJson());
+            final workspaceRepository = _ref.read(workspaceRepositoryProvider);
+            await workspaceRepository.createWorkspace(workspace);
+
             _ref
                 .read(workspaceViewModelProvider.notifier)
                 .setWorkspace(workspace);
-
-            final assetSummary = AssetSummary(month: getMonth(DateTime.now()));
-
-            _ref
-                .read(assetSummaryProvider.notifier)
-                .addAssetSummary(workspaceId, assetSummary);
           } catch (e) {
             logger.e('[Workspace create error]: $e');
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(_user!.uid)
-                .delete();
+
             await _handleCreateUserError(firebaseUser);
             return;
           }
         } else {
-          state = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+          state = user;
           _ref
               .read(workspaceViewModelProvider.notifier)
               .loadWorkspace(state!.uid);

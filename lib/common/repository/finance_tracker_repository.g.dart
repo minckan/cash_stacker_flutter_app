@@ -19,10 +19,10 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
   String? baseUrl;
 
   @override
-  Future<void> createTransaction(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> createTransaction({
+    required String workspaceId,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -47,7 +47,10 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
   }
 
   @override
-  Future<void> updateTransaction(dynamic path) async {
+  Future<void> updateTransaction({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -60,7 +63,7 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/finance/:id',
+          '/:workspaceId/finance/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -72,7 +75,10 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
   }
 
   @override
-  Future<void> deleteTransaction(dynamic path) async {
+  Future<void> deleteTransaction({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -85,7 +91,7 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/finance/:id',
+          '/:workspaceId/finance/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -97,7 +103,10 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
   }
 
   @override
-  Future<List<TransactionModel>> getAllMonthlyTransactions(dynamic path) async {
+  Future<List<TransactionModel>> getAllMonthlyTransactions({
+    required String workspaceId,
+    required String monthKey,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -111,7 +120,7 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/finance/monthly/:monthKey',
+              '/:workspaceId/finance/monthly/${monthKey}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -128,7 +137,10 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
   }
 
   @override
-  Future<List<TransactionModel>> getDailyTransactions(dynamic path) async {
+  Future<List<TransactionModel>> getDailyTransactions({
+    required String workspaceId,
+    required String dateKey,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -142,7 +154,7 @@ class _FinanceTrackerRepository implements FinanceTrackerRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/finance/daily/:dateKey',
+              '/:workspaceId/finance/daily/${dateKey}',
               queryParameters: queryParameters,
               data: _data,
             )

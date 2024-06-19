@@ -19,7 +19,8 @@ class _InvitationRepository implements InvitationRepository {
   String? baseUrl;
 
   @override
-  Future<List<Invitation>> getAllInvitations(dynamic path) async {
+  Future<List<Invitation>> getAllInvitations(
+      {required String workspaceId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -33,7 +34,7 @@ class _InvitationRepository implements InvitationRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/invitation',
+              '/${workspaceId}/invitation',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -49,10 +50,10 @@ class _InvitationRepository implements InvitationRepository {
   }
 
   @override
-  Future<void> createInvitation(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> createInvitation({
+    required String workspaceId,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -65,7 +66,7 @@ class _InvitationRepository implements InvitationRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/invitation',
+          '/${workspaceId}/invitation',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -77,10 +78,11 @@ class _InvitationRepository implements InvitationRepository {
   }
 
   @override
-  Future<void> updateInvitation(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> updateInvitation({
+    required String workspaceId,
+    required String id,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -93,7 +95,7 @@ class _InvitationRepository implements InvitationRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/invitation/:id',
+          '/${workspaceId}/invitation/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -105,7 +107,10 @@ class _InvitationRepository implements InvitationRepository {
   }
 
   @override
-  Future<void> deleteInvitation(dynamic path) async {
+  Future<void> deleteInvitation({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -118,7 +123,7 @@ class _InvitationRepository implements InvitationRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/invitation/:id',
+          '/${workspaceId}/invitation/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

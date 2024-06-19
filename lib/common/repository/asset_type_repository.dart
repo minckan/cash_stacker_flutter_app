@@ -22,31 +22,33 @@ final assetTypeRepositoryProvider = Provider<AssetTypeRepository>(
 abstract class AssetTypeRepository {
   factory AssetTypeRepository(Dio dio, {String baseUrl}) = _AssetTypeRepository;
 
-  static const basePath = '/:workspaceId/asset/type';
+  static const basePath = '/{workspaceId}/asset/type';
 
   @GET(basePath)
   @Headers({'accessToken': 'true'})
-  Future<List<AssetTypeModel>> getAllAssetTypes(
-    @Path() path,
-  );
+  Future<List<AssetTypeModel>> getAllAssetTypes({
+    @Path() required String workspaceId,
+  });
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createAssetType(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> createAssetType({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
 
-  @PUT('$basePath/:id')
+  @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateAssetType(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> updateAssetType({
+    @Path() required String workspaceId,
+    @Path() required String id,
+    @Body() required body,
+  });
 
-  @DELETE('$basePath/:id')
+  @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteAssetType(
-    @Path() path,
-  );
+  Future<void> deleteAssetType({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
 }

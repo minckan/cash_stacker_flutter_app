@@ -19,7 +19,7 @@ class _BudgetRepository implements BudgetRepository {
   String? baseUrl;
 
   @override
-  Future<List<Budget>> getActiveBudget(dynamic path) async {
+  Future<List<Budget>> getActiveBudget({required String workspaceId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -33,7 +33,7 @@ class _BudgetRepository implements BudgetRepository {
     )
             .compose(
               _dio.options,
-              '/:workspaceId/budget',
+              '/${workspaceId}/budget',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -49,10 +49,10 @@ class _BudgetRepository implements BudgetRepository {
   }
 
   @override
-  Future<void> createBudget(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> createBudget({
+    required String workspaceId,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -65,7 +65,7 @@ class _BudgetRepository implements BudgetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/budget',
+          '/${workspaceId}/budget',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -77,10 +77,11 @@ class _BudgetRepository implements BudgetRepository {
   }
 
   @override
-  Future<void> updateBudget(
-    dynamic path,
-    dynamic body,
-  ) async {
+  Future<void> updateBudget({
+    required String workspaceId,
+    required String id,
+    required dynamic body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -93,7 +94,7 @@ class _BudgetRepository implements BudgetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/budget/:id',
+          '/${workspaceId}/budget/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -105,7 +106,10 @@ class _BudgetRepository implements BudgetRepository {
   }
 
   @override
-  Future<void> deleteBudget(dynamic path) async {
+  Future<void> deleteBudget({
+    required String workspaceId,
+    required String id,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -118,7 +122,7 @@ class _BudgetRepository implements BudgetRepository {
     )
         .compose(
           _dio.options,
-          '/:workspaceId/budget/:id',
+          '/${workspaceId}/budget/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

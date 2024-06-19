@@ -21,28 +21,31 @@ abstract class FinanceTrackerCategoryRepository {
   factory FinanceTrackerCategoryRepository(Dio dio, {String baseUrl}) =
       _FinanceTrackerCategoryRepository;
 
-  static const basePath = '/:workspaceId/finance/category';
+  static const basePath = '/{workspaceId}/finance/category';
 
-  @GET('$basePath/:type')
+  @GET('$basePath/{type}')
   @Headers({'accessToken': 'true'})
-  Future<List<TransactionCategoryModel>> getAllTransactionCategoryByType(
-    @Path() path,
-  );
+  Future<List<TransactionCategoryModel>> getAllTransactionCategoryByType({
+    @Path() required String workspaceId,
+    @Path() required String type,
+  });
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createTransactionCategory(
-    @Path() path,
-    @Body() body,
-  );
-  @PUT('$basePath/:id')
+  Future<void> createTransactionCategory({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
+  @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateTransactionCategory(
-    @Path() path,
-  );
-  @DELETE('$basePath/:id')
+  Future<void> updateTransactionCategory({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
+  @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteTransactionCategory(
-    @Path() path,
-  );
+  Future<void> deleteTransactionCategory({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
 }

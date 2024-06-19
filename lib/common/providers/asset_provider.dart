@@ -35,11 +35,14 @@ class AssetStateNotifier extends StateNotifier<List<MonthlyAssetTrendModel>> {
   Future<List<MonthlyAssetTrendModel>?> getMonthlyAssetTrends(
       String workspaceId) async {
     try {
-      final repo =
-          await repository.getMonthlyTrends({"workspaceId": workspaceId});
+      final repo = await repository.getMonthlyTrends(
+        workspaceId: workspaceId,
+        body: {"workspaceId": workspaceId},
+      );
 
       state = repo;
 
+      logger.d(state);
       return state;
     } catch (e) {
       logger.e('Error: get asset trends => $e');

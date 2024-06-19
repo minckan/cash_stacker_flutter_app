@@ -22,31 +22,33 @@ final budgetRepositoryProvider = Provider<BudgetRepository>(
 abstract class BudgetRepository {
   factory BudgetRepository(Dio dio, {String baseUrl}) = _BudgetRepository;
 
-  static const basePath = '/:workspaceId/budget';
+  static const basePath = '/{workspaceId}/budget';
 
   @GET(basePath)
   @Headers({'accessToken': 'true'})
-  Future<List<Budget>> getActiveBudget(
-    @Path() path,
-  );
+  Future<List<Budget>> getActiveBudget({
+    @Path() required String workspaceId,
+  });
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createBudget(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> createBudget({
+    @Path() required String workspaceId,
+    @Body() required body,
+  });
 
-  @PUT('$basePath/:id')
+  @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateBudget(
-    @Path() path,
-    @Body() body,
-  );
+  Future<void> updateBudget({
+    @Path() required String workspaceId,
+    @Path() required String id,
+    @Body() required body,
+  });
 
-  @DELETE('$basePath/:id')
+  @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> deleteBudget(
-    @Path() path,
-  );
+  Future<void> deleteBudget({
+    @Path() required String workspaceId,
+    @Path() required String id,
+  });
 }

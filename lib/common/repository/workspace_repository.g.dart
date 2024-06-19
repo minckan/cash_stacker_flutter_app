@@ -44,7 +44,7 @@ class _WorkspaceRepository implements WorkspaceRepository {
   }
 
   @override
-  Future<List<Workspace>?> getAllWorkspaces(dynamic path) async {
+  Future<List<Workspace>?> getAllWorkspaces() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -74,7 +74,7 @@ class _WorkspaceRepository implements WorkspaceRepository {
   }
 
   @override
-  Future<Workspace?> getOneWorkspace(dynamic path) async {
+  Future<Workspace?> getOneWorkspace({required String id}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -88,7 +88,7 @@ class _WorkspaceRepository implements WorkspaceRepository {
     )
             .compose(
               _dio.options,
-              '/:id',
+              '/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
