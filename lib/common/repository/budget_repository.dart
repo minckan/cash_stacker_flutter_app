@@ -26,7 +26,7 @@ abstract class BudgetRepository {
 
   @GET(basePath)
   @Headers({'accessToken': 'true'})
-  Future<List<Budget>> getActiveBudget({
+  Future<List<Budget>?> getActiveBudget({
     @Path() required String workspaceId,
   });
 

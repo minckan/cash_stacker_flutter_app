@@ -10,6 +10,7 @@ import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 
 import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/budget_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:flutter/material.dart';
@@ -28,16 +29,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(exchangeRateProvider.notifier).loadExchangeRates();
+    // ref.read(exchangeRateProvider.notifier).loadExchangeRates();
     _initState();
   }
 
   Future<void> _initState() async {
     final workspaceId = await SharedPreferencesUtil.getString(
         SharedPreferencesUtil.workspaceId);
-    // if (workspaceId != null) {
-    //   ref.read(assetTrendProvider.notifier).getMonthlyAssetTrends(workspaceId);
-    // }
+    if (workspaceId != null) {
+      await ref.read(budgetViewModelProvider.notifier).loadBudgets(workspaceId);
+    }
   }
 
   @override
@@ -48,8 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // final monthlyAssetTrendList = ref.watch(assetTrendProvider);
 
     final assetSummaryViewModel = ref.read(assetSummaryProvider.notifier);
-    final currentAssetSummary =
-        assetSummaryViewModel.getAssetSummaryByMonth(currentMonthKey);
+    final currentAssetSummary = ref.watch(budgetViewModelProvider);
     final assetChangeMessage = ref
         .read(assetTrendProvider.notifier)
         .compareToLastMonthState(currentMonthKey);
@@ -140,10 +140,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '[${getMonth(DateTime.now())}] 목표 지출 및 잔여 예산',
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w700),
+                  const Text(
+                    '목표 지출 및 잔여 예산',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   IconButton(
                     icon: const Icon(
@@ -174,8 +173,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (currentAssetSummary == null ||
-                          currentAssetSummary.monthlyBudget == 0)
+                      if (currentAssetSummary == null)
                         const Center(
                             child: Text(
                           '아직 이번달 예산을 설정하지 않았어요!\n예산을 설정해주세요!',
@@ -222,7 +220,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ],
                         ),
                         Text(
-                          '${addComma.format(currentAssetSummary.monthlyBudget)}원 중 ${addComma.format(assetSummaryViewModel.monthlyExpenditure)}원을 사용했어요!',
+                          '${addComma.format(currentAssetSummary.amount)}원 중 ${addComma.format(assetSummaryViewModel.monthlyExpenditure)}원을 사용했어요!',
                           style: const TextStyle(
                             fontSize: 12,
                           ),

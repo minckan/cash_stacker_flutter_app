@@ -34,6 +34,7 @@ abstract class FinanceTrackerRepository {
   Future<void> updateTransaction({
     @Path() required String workspaceId,
     @Path() required String id,
+    @Body() required body,
   });
   @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})

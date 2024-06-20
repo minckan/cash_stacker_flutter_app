@@ -19,7 +19,7 @@ class _BudgetRepository implements BudgetRepository {
   String? baseUrl;
 
   @override
-  Future<List<Budget>> getActiveBudget({required String workspaceId}) async {
+  Future<List<Budget>?> getActiveBudget({required String workspaceId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -42,8 +42,8 @@ class _BudgetRepository implements BudgetRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => Budget.fromJson(i as Map<String, dynamic>))
+    var value = _result.data
+        ?.map((dynamic i) => Budget.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

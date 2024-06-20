@@ -1,16 +1,21 @@
+import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_category_repository.dart';
+import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final transactionViewModelProvider =
     StateNotifierProvider<TransactionViewModel, List<TransactionModel>>(
-  (ref) => TransactionViewModel(),
+  (ref) => TransactionViewModel(ref),
 );
 
 class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
-  TransactionViewModel() : super([]);
+  final Ref _ref;
+
+  TransactionViewModel(this._ref) : super([]);
 
   Map<String, Map<String, double>> monthlyTotals = {};
   currentMonthTotal(DateTime current) {
@@ -19,28 +24,18 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
   }
 
   Future<void> loadTransactions(String workspaceId) async {
-    final QuerySnapshot transactionsQuery = await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.transactions)
-        .get();
-
-    List<TransactionModel> transactions = transactionsQuery.docs
-        .map((doc) =>
-            TransactionModel.fromJson(doc.data() as Map<String, dynamic>))
-        .toList();
+    final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
+    final transactions = await financialTrackerRep.getAllMonthlyTransactions(
+        workspaceId: workspaceId, monthKey: getMonth(DateTime.now()));
     state = transactions;
     _calculateMonthlyTotals(transactions);
   }
 
   Future<void> addTransaction(
       TransactionModel transaction, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.transactions)
-        .doc(transaction.id)
-        .set(transaction.toJson());
+    final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
+    final response = await financialTrackerRep.createTransaction(
+        workspaceId: workspaceId, body: transaction.toJson());
 
     state = [...state, transaction];
     _calculateMonthlyTotals(state);
@@ -48,13 +43,10 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
 
   Future<void> updateTransaction(
       TransactionModel transaction, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.transactions)
-        .doc(transaction.id)
-        .update(transaction.toJson());
 
+ final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
+
+ final response = await financialTrackerRep.updateTransaction(workspaceId: workspaceId, id: id)
     state = state.map((t) => t.id == transaction.id ? transaction : t).toList();
     _calculateMonthlyTotals(state);
   }
@@ -130,24 +122,24 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
   void _calculateMonthlyTotals(List<TransactionModel> transactions) {
     Map<String, Map<String, double>> totals = {};
 
-    for (var transaction in transactions) {
-      String monthKey = getMonth(transaction.date);
+    // for (var transaction in transactions) {
+    //   String monthKey = getMonth(transaction.date);
 
-      if (!totals.containsKey(monthKey)) {
-        totals[monthKey] = {'income': 0, 'expanse': 0, 'netIncome': 0};
-      }
+    //   if (!totals.containsKey(monthKey)) {
+    //     totals[monthKey] = {'income': 0, 'expanse': 0, 'netIncome': 0};
+    //   }
 
-      double amount = double.parse(transaction.amount);
+    //   double amount = double.parse(transaction.amount);
 
-      if (transaction.transactionType == TransactionType.income) {
-        totals[monthKey]!['income'] = (totals[monthKey]!['income']! + amount);
-      } else if (transaction.transactionType == TransactionType.expense) {
-        totals[monthKey]!['expanse'] = (totals[monthKey]!['expanse']! + amount);
-      }
+    //   if (transaction.transactionType == TransactionType.income) {
+    //     totals[monthKey]!['income'] = (totals[monthKey]!['income']! + amount);
+    //   } else if (transaction.transactionType == TransactionType.expense) {
+    //     totals[monthKey]!['expanse'] = (totals[monthKey]!['expanse']! + amount);
+    //   }
 
-      totals[monthKey]!['netIncome'] =
-          totals[monthKey]!['income']! - totals[monthKey]!['expanse']!;
-    }
+    //   totals[monthKey]!['netIncome'] =
+    //       totals[monthKey]!['income']! - totals[monthKey]!['expanse']!;
+    // }
 
     monthlyTotals = totals;
   }
