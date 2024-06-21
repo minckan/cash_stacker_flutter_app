@@ -12,7 +12,9 @@ class ExpenseCategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(transactionCategoryViewModelProvider);
+    final categories = ref
+        .watch(transactionCategoryViewModelProvider.notifier)
+        .getCategoriesByType('expense');
 
     return DefaultLayout(
       title: '지출 카테고리 관리',
@@ -28,13 +30,10 @@ class ExpenseCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categories[index];
 
-          if (category.type == CategoryType.expense) {
-            return CategoryListTile(
-              category: category,
-              hasCategoryAsset: true,
-            );
-          }
-          return const SizedBox.shrink();
+          return CategoryListTile(
+            category: category,
+            hasCategoryAsset: true,
+          );
         },
         itemCount: categories.length,
       ),

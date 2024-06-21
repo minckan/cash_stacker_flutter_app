@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
 import 'package:cash_stacker_flutter_app/common/model/monthly_asset_trend_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,7 +30,7 @@ abstract class AssetRepository {
   @Headers({'accessToken': 'true'})
   Future<void> createAsset({
     @Path() required String workspaceId,
-    @Body() required body,
+    @Body() required Asset body,
   });
 
   @GET(basePath)
@@ -47,7 +48,7 @@ abstract class AssetRepository {
 
   @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateAsset({
+  Future<Asset> updateAsset({
     @Path() required String workspaceId,
     @Path() required String id,
     @Body() required body,
@@ -60,14 +61,14 @@ abstract class AssetRepository {
     @Path() required String id,
   });
 
-  @PUT('$basePath/{assetId}/transactions/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<void> updateAssetTransaction({
-    @Path() required String workspaceId,
-    @Path() required String assetId,
-    @Path() required String id,
-    @Body() required body,
-  });
+  // @PUT('$basePath/{assetId}/transactions/{id}')
+  // @Headers({'accessToken': 'true'})
+  // Future<AssetTransaction> updateAssetTransaction({
+  //   @Path() required String workspaceId,
+  //   @Path() required String assetId,
+  //   @Path() required String id,
+  //   @Body() required List<AssetTransaction> body,
+  // });
 
   @DELETE('$basePath/{assetId}/transactions/{id}')
   @Headers({'accessToken': 'true'})
@@ -79,8 +80,7 @@ abstract class AssetRepository {
 
   @POST('$basePath/monthlyTrend')
   @Headers({'accessToken': 'true'})
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends({
+  Future<List<MonthlyAssetTrendModel>?> getMonthlyTrends({
     @Path() required String workspaceId,
-    @Body() required body,
   });
 }

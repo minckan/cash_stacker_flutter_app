@@ -29,13 +29,13 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
 
       if (workspace != null) {
         state = workspace;
-        // try {
-        //   await _ref
-        //       .read(categoryViewModelProvider.notifier)
-        //       .loadCategory(workspaceId: state!.id);
-        // } catch (e) {
-        //   logger.e('ERROR : 카테고리 조회  $userId: $e');
-        // }
+        try {
+          await _ref
+              .read(transactionCategoryViewModelProvider.notifier)
+              .loadCategory(workspaceId: state!.id);
+        } catch (e) {
+          logger.e('ERROR : 카테고리 조회  $userId: $e');
+        }
         // try {
         //   await _ref
         //       .read(transactionViewModelProvider.notifier)

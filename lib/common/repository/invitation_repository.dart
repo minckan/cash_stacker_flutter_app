@@ -33,14 +33,14 @@ abstract class InvitationRepository {
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createInvitation({
+  Future<Invitation> createInvitation({
     @Path() required String workspaceId,
-    @Body() required body,
+    @Body() required Invitation body,
   });
 
   @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateInvitation({
+  Future<Invitation> updateInvitation({
     @Path() required String workspaceId,
     @Path() required String id,
     @Body() required body,

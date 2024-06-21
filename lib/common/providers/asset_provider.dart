@@ -37,10 +37,9 @@ class AssetStateNotifier extends StateNotifier<List<MonthlyAssetTrendModel>> {
     try {
       final repo = await repository.getMonthlyTrends(
         workspaceId: workspaceId,
-        body: {"workspaceId": workspaceId},
       );
 
-      state = repo;
+      // state = repo;
 
       logger.d(state);
       return state;

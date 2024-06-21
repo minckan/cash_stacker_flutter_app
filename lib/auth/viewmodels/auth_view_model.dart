@@ -191,7 +191,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
             );
             // 신규 유저 추가
 
-            await userRepository.createUser(body: _user!.toJson());
+            await userRepository.createUser(body: _user!);
 
             final idToken = await firebaseUser.getIdToken();
             await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
@@ -210,7 +210,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
             );
 
             final workspaceRepository = _ref.read(workspaceRepositoryProvider);
-            await workspaceRepository.createWorkspace(workspace.toJson());
+            await workspaceRepository.createWorkspace(workspace);
 
             _ref
                 .read(workspaceViewModelProvider.notifier)

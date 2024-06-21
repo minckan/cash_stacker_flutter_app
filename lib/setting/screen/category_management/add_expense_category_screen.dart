@@ -7,7 +7,6 @@ import 'package:cash_stacker_flutter_app/setting/model/transaction_category_mode
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 class ExpenseAddCategoryScreen extends ConsumerWidget {
   const ExpenseAddCategoryScreen({super.key});
@@ -15,7 +14,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
-    const Uuid uuid = Uuid();
+
     final currentUser = ref.watch(authViewModelProvider);
 
     return DefaultLayout(
@@ -23,19 +22,17 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
       isFormView: true,
       actions: [
         TextButton(
-            onPressed: () {
-              String docId = uuid.v4();
+            onPressed: () async {
               if (controller.value.text == '') {
                 return;
               }
               final category = TransactionCategoryModel(
-                id: docId,
                 name: controller.value.text.toString(),
                 type: CategoryType.expense,
               );
 
               if (currentUser != null) {
-                ref
+                await ref
                     .read(transactionCategoryViewModelProvider.notifier)
                     .addCategory(
                       category,
@@ -68,10 +65,4 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
       ),
     );
   }
-
-  // Future<void> saveCategory() {
-
-  // }
 }
-
-// 

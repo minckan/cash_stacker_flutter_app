@@ -32,17 +32,17 @@ abstract class BudgetRepository {
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createBudget({
+  Future<Budget> createBudget({
     @Path() required String workspaceId,
-    @Body() required body,
+    @Body() required Budget body,
   });
 
   @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateBudget({
+  Future<Budget> updateBudget({
     @Path() required String workspaceId,
     @Path() required String id,
-    @Body() required body,
+    @Body() required Budget body,
   });
 
   @DELETE('$basePath/{id}')

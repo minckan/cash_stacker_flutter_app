@@ -35,7 +35,7 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
       TransactionModel transaction, String workspaceId) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
     final response = await financialTrackerRep.createTransaction(
-        workspaceId: workspaceId, body: transaction.toJson());
+        workspaceId: workspaceId, body: transaction);
 
     state = [...state, transaction];
     _calculateMonthlyTotals(state);
@@ -43,10 +43,10 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
 
   Future<void> updateTransaction(
       TransactionModel transaction, String workspaceId) async {
+    final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
 
- final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-
- final response = await financialTrackerRep.updateTransaction(workspaceId: workspaceId, id: id)
+    // final response = await financialTrackerRep.updateTransaction(
+    //     workspaceId: workspaceId, id: id);
     state = state.map((t) => t.id == transaction.id ? transaction : t).toList();
     _calculateMonthlyTotals(state);
   }

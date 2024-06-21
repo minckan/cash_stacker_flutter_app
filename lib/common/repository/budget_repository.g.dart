@@ -49,60 +49,68 @@ class _BudgetRepository implements BudgetRepository {
   }
 
   @override
-  Future<void> createBudget({
+  Future<Budget> createBudget({
     required String workspaceId,
-    required dynamic body,
+    required Budget body,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Budget>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/${workspaceId}/budget',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              '/${workspaceId}/budget',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = Budget.fromJson(_result.data!);
+    return value;
   }
 
   @override
-  Future<void> updateBudget({
+  Future<Budget> updateBudget({
     required String workspaceId,
     required String id,
-    required dynamic body,
+    required Budget body,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Budget>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/${workspaceId}/budget/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              '/${workspaceId}/budget/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = Budget.fromJson(_result.data!);
+    return value;
   }
 
   @override

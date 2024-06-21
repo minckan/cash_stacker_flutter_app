@@ -25,13 +25,13 @@ abstract class FinanceTrackerRepository {
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createTransaction({
+  Future<TransactionModel> createTransaction({
     @Path() required String workspaceId,
-    @Body() required body,
+    @Body() required TransactionModel body,
   });
   @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateTransaction({
+  Future<TransactionModel> updateTransaction({
     @Path() required String workspaceId,
     @Path() required String id,
     @Body() required body,

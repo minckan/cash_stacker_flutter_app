@@ -30,9 +30,8 @@ class AddIncomeTabState extends ConsumerState<AddIncomeTab> {
   @override
   Widget build(BuildContext context) {
     final categories = ref
-        .watch(transactionCategoryViewModelProvider)
-        .where((category) => category.type == CategoryType.income)
-        .toList();
+        .watch(transactionCategoryViewModelProvider.notifier)
+        .getCategoriesByType('income');
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,

@@ -47,11 +47,12 @@ class _UserRepository implements UserRepository {
   }
 
   @override
-  Future<void> createUser({required dynamic body}) async {
+  Future<void> createUser({required UserModel body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = body;
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,

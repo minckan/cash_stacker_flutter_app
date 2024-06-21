@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,15 +33,16 @@ abstract class FinanceTrackerCategoryRepository {
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createTransactionCategory({
+  Future<TransactionCategoryModel> createTransactionCategory({
     @Path() required String workspaceId,
-    @Body() required body,
+    @Body() required TransactionCategoryModel body,
   });
   @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateTransactionCategory({
+  Future<TransactionCategoryModel> updateTransactionCategory({
     @Path() required String workspaceId,
     @Path() required String id,
+    @Body() required body,
   });
   @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})

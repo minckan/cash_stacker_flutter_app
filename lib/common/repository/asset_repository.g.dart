@@ -21,13 +21,14 @@ class _AssetRepository implements AssetRepository {
   @override
   Future<void> createAsset({
     required String workspaceId,
-    required dynamic body,
+    required Asset body,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = body;
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
@@ -108,7 +109,7 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<void> updateAsset({
+  Future<Asset> updateAsset({
     required String workspaceId,
     required String id,
     required dynamic body,
@@ -118,22 +119,25 @@ class _AssetRepository implements AssetRepository {
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Asset>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/${workspaceId}/assets/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              '/${workspaceId}/assets/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = Asset.fromJson(_result.data!);
+    return value;
   }
 
   @override
@@ -154,36 +158,6 @@ class _AssetRepository implements AssetRepository {
         .compose(
           _dio.options,
           '/${workspaceId}/assets/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<void> updateAssetTransaction({
-    required String workspaceId,
-    required String assetId,
-    required String id,
-    required dynamic body,
-  }) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/${workspaceId}/assets/${assetId}/transactions/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -224,15 +198,13 @@ class _AssetRepository implements AssetRepository {
   }
 
   @override
-  Future<List<MonthlyAssetTrendModel>> getMonthlyTrends({
-    required String workspaceId,
-    required dynamic body,
-  }) async {
+  Future<List<MonthlyAssetTrendModel>?> getMonthlyTrends(
+      {required String workspaceId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = body;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<MonthlyAssetTrendModel>>(Options(
       method: 'POST',
@@ -250,8 +222,8 @@ class _AssetRepository implements AssetRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) =>
+    var value = _result.data
+        ?.map((dynamic i) =>
             MonthlyAssetTrendModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;

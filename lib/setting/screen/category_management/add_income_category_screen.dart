@@ -22,21 +22,18 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
       title: '수입 카테고리 추가',
       actions: [
         TextButton(
-            onPressed: () {
-              String docId = uuid.v4();
-
+            onPressed: () async {
               if (controller.value.text.toString() == '') {
                 return;
               }
 
               final category = TransactionCategoryModel(
-                id: docId,
                 name: controller.value.text.toString(),
                 type: CategoryType.income,
               );
 
               if (currentUser != null) {
-                ref
+                await ref
                     .read(transactionCategoryViewModelProvider.notifier)
                     .addCategory(
                       category,

@@ -26,8 +26,8 @@ abstract class WorkspaceRepository {
 
   @POST('/')
   @Headers({'accessToken': 'true'})
-  Future<void> createWorkspace(
-    @Body() body,
+  Future<Map<String, String>> createWorkspace(
+    @Body() Workspace body,
   );
 
   @GET('/')

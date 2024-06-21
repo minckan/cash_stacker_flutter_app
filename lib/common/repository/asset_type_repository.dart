@@ -32,14 +32,14 @@ abstract class AssetTypeRepository {
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})
-  Future<void> createAssetType({
+  Future<AssetTypeModel> createAssetType({
     @Path() required String workspaceId,
-    @Body() required body,
+    @Body() required AssetTypeModel body,
   });
 
   @PUT('$basePath/{id}')
   @Headers({'accessToken': 'true'})
-  Future<void> updateAssetType({
+  Future<AssetTypeModel> updateAssetType({
     @Path() required String workspaceId,
     @Path() required String id,
     @Body() required body,

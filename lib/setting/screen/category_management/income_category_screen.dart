@@ -13,7 +13,9 @@ class IncomeCategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(transactionCategoryViewModelProvider);
+    final categories = ref
+        .watch(transactionCategoryViewModelProvider.notifier)
+        .getCategoriesByType('income');
     final assets = ref.watch(assetViewModelProvider);
 
     return DefaultLayout(
@@ -30,18 +32,14 @@ class IncomeCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categories[index];
 
-          if (category.type == CategoryType.income) {
-            const hasCategoryAsset = false;
-            // assets.any(
-            //   (element) => element.category.id == category.id,
-            // );
-            return CategoryListTile(
-              category: category,
-              hasCategoryAsset: hasCategoryAsset,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
+          const hasCategoryAsset = false;
+          // assets.any(
+          //   (element) => element.category.id == category.id,
+          // );
+          return CategoryListTile(
+            category: category,
+            hasCategoryAsset: hasCategoryAsset,
+          );
         },
         itemCount: categories.length,
       ),

@@ -27,7 +27,7 @@ abstract class UserRepository {
 
   @POST('/')
   Future<void> createUser({
-    @Body() required body,
+    @Body() required UserModel body,
   });
 
   @PUT('/{id}')

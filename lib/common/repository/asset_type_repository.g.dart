@@ -50,35 +50,39 @@ class _AssetTypeRepository implements AssetTypeRepository {
   }
 
   @override
-  Future<void> createAssetType({
+  Future<AssetTypeModel> createAssetType({
     required String workspaceId,
-    required dynamic body,
+    required AssetTypeModel body,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetTypeModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/${workspaceId}/asset/type',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              '/${workspaceId}/asset/type',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = AssetTypeModel.fromJson(_result.data!);
+    return value;
   }
 
   @override
-  Future<void> updateAssetType({
+  Future<AssetTypeModel> updateAssetType({
     required String workspaceId,
     required String id,
     required dynamic body,
@@ -88,22 +92,25 @@ class _AssetTypeRepository implements AssetTypeRepository {
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetTypeModel>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/${workspaceId}/asset/type/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              '/${workspaceId}/asset/type/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = AssetTypeModel.fromJson(_result.data!);
+    return value;
   }
 
   @override
