@@ -41,13 +41,13 @@ abstract class FinanceTrackerCategoryRepository {
   @Headers({'accessToken': 'true'})
   Future<TransactionCategoryModel> updateTransactionCategory({
     @Path() required String workspaceId,
-    @Path() required String id,
+    @Path() required int id,
     @Body() required body,
   });
   @DELETE('$basePath/{id}')
   @Headers({'accessToken': 'true'})
   Future<void> deleteTransactionCategory({
     @Path() required String workspaceId,
-    @Path() required String id,
+    @Path() required int id,
   });
 }

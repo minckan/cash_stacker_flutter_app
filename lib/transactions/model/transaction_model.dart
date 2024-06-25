@@ -27,7 +27,7 @@ class TransactionModel {
   @JsonKey(name: 'transaction_type')
   final TransactionType transactionType;
   @JsonKey(name: 'category_id')
-  final String categoryId;
+  final int categoryId;
   @JsonKey(name: 'payment_method')
   final PaymentMethod? paymentMethod;
   @JsonKey(name: 'description')

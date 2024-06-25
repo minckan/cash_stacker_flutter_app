@@ -2,6 +2,7 @@ import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
@@ -16,7 +17,7 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
     const Uuid uuid = Uuid();
-    final currentUser = ref.watch(authViewModelProvider);
+    final workspace = ref.watch(workspaceViewModelProvider);
 
     return DefaultLayout(
       title: '수입 카테고리 추가',
@@ -32,12 +33,12 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
                 type: CategoryType.income,
               );
 
-              if (currentUser != null) {
+              if (workspace != null) {
                 await ref
                     .read(transactionCategoryViewModelProvider.notifier)
                     .addCategory(
                       category,
-                      currentUser.workspaceId,
+                      workspace.id,
                     );
 
                 Navigator.of(context).pop();

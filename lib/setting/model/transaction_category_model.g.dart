@@ -9,7 +9,7 @@ part of 'transaction_category_model.dart';
 TransactionCategoryModel _$TransactionCategoryModelFromJson(
         Map<String, dynamic> json) =>
     TransactionCategoryModel(
-      id: json['category_id'] as String,
+      id: (json['category_id'] as num?)?.toInt(),
       name: json['category_name'] as String,
       type: $enumDecode(_$CategoryTypeEnumMap, json['category_type']),
     );

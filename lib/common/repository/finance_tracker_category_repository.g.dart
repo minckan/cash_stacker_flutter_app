@@ -88,7 +88,7 @@ class _FinanceTrackerCategoryRepository
   @override
   Future<TransactionCategoryModel> updateTransactionCategory({
     required String workspaceId,
-    required String id,
+    required int id,
     required dynamic body,
   }) async {
     const _extra = <String, dynamic>{};
@@ -120,7 +120,7 @@ class _FinanceTrackerCategoryRepository
   @override
   Future<void> deleteTransactionCategory({
     required String workspaceId,
-    required String id,
+    required int id,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

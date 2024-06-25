@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
+import 'package:cash_stacker_flutter_app/auth/util/id_token.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
@@ -39,7 +40,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         await user.reload();
         user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-          final idToken = await user.getIdToken();
+          final idToken = await getIdToken();
           await ref
               .read(workspaceViewModelProvider.notifier)
               .loadWorkspace(user.uid);

@@ -1,8 +1,6 @@
-import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_category_repository.dart';
 import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

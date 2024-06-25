@@ -1,0 +1,1525 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Cash Stacker API
+  description: Cash Stacker의 API 문서입니다
+  license:
+    name: MIT
+servers:
+  - url: "http://localhost:8080/"
+paths:
+  /users:
+    post:
+      tags:
+        - user
+      summary: Create a new user
+      description: Create a new user with the provided information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workspace_id:
+                  type: string
+                  description: The ID of the workspace.
+                username:
+                  type: string
+                  description: The username of the user.
+                email:
+                  type: string
+                  description: The email of the user.
+                login_type:
+                  type: string
+                  description: The login type of the user.
+                role:
+                  type: string
+                  description: The role of the user.
+                push_enable:
+                  type: boolean
+                  description: Whether push notifications are enabled.
+                darkMode_enable:
+                  type: boolean
+                  description: Whether dark mode is enabled.
+                profile_image:
+                  type: string
+                  description: The profile image of the user.
+                push_id:
+                  type: string
+                  description: The push ID of the user.
+                joined_at:
+                  type: string
+                  format: date-time
+                  description: The date the user joined.
+                created_at:
+                  type: string
+                  format: date-time
+                  description: The date the user was created.
+                user_id:
+                  type: string
+                  description: The ID of the user.
+                platform_type:
+                  type: string
+                  description: The platform type of the user.
+      responses:
+        "201":
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    description: The ID of the newly created user.
+        "400":
+          description: Required fields are missing.
+        "500":
+          description: Failed to create user.
+  "/users/{id}":
+    get:
+      tags:
+        - user
+      summary: Retrieve a user by ID
+      description: Retrieve a user by their user ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user ID.
+      responses:
+        "200":
+          description: A user object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: User ID is required.
+        "500":
+          description: Invalid user ID.
+    put:
+      tags:
+        - user
+      summary: Update user status
+      description: Update the status of a user by their user ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                push_enable:
+                  type: boolean
+                  description: Whether push notifications are enabled.
+                darkMode_enable:
+                  type: boolean
+                  description: Whether dark mode is enabled.
+                role:
+                  type: string
+                  description: The role of the user.
+      responses:
+        "201":
+          description: User status updated successfully.
+        "500":
+          description: Failed to update user status.
+  /workspaces:
+    post:
+      tags:
+        - workspace
+      summary: Create a new workspace
+      description: Create a new workspace with the provided information.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workspace_name:
+                  type: string
+                  description: The name of the workspace.
+                workspace_id:
+                  type: string
+                  description: The ID of the workspace.
+      responses:
+        "201":
+          description: Workspace created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workspace_id:
+                    type: string
+                    description: The ID of the newly created workspace.
+        "400":
+          description: Workspace ID is required.
+        "500":
+          description: Failed to create workspace.
+    get:
+      tags:
+        - workspace
+      summary: Get all workspaces
+      description: Retrieve all workspaces.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A list of workspaces.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Workspace"
+        "500":
+          description: Failed to retrieve workspaces.
+  "/workspaces/{id}":
+    get:
+      tags:
+        - workspace
+      summary: Get a workspace by ID
+      description: Retrieve a specific workspace by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace.
+      responses:
+        "200":
+          description: A workspace object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+        "404":
+          description: Workspace not found.
+        "500":
+          description: Failed to retrieve workspace.
+  "/{workspaceId}/assets":
+    post:
+      tags:
+        - asset
+      summary: Create a new asset
+      description: Create a new asset for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset_type_id:
+                  type: integer
+                asset_name:
+                  type: string
+                balance:
+                  type: number
+                  format: float
+                transactions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AssetTransaction"
+                currency_code:
+                  type: string
+      responses:
+        "201":
+          description: Asset created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Asset"
+        "500":
+          description: Failed to create asset.
+    get:
+      tags:
+        - asset
+      summary: Get all assets
+      description: Retrieve all assets for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      responses:
+        "200":
+          description: A list of assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Asset"
+        "500":
+          description: Failed to retrieve assets.
+  "/{workspaceId}/assets/{id}":
+    get:
+      tags:
+        - asset
+      summary: Get an asset by ID
+      description: Retrieve a specific asset by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset
+      responses:
+        "200":
+          description: An asset object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Asset"
+        "500":
+          description: Failed to retrieve asset.
+    put:
+      tags:
+        - asset
+      summary: Update an asset name
+      description: Update the name of a specific asset by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset_name:
+                  type: string
+      responses:
+        "201":
+          description: Asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Asset"
+        "500":
+          description: Failed to update asset.
+    delete:
+      tags:
+        - asset
+      summary: Delete an asset by ID
+      description: Delete a specific asset by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset
+      responses:
+        "201":
+          description: Asset deleted successfully.
+        "500":
+          description: Failed to delete asset.
+  "/{workspaceId}/assets/{assetId}/transactions/{id}":
+    get:
+      tags:
+        - asset
+      summary: Get an asset transaction by ID
+      description: Retrieve a specific asset transaction by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: assetId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset transaction
+      responses:
+        "200":
+          description: An asset transaction object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetTransaction"
+        "500":
+          description: Failed to retrieve asset transaction.
+    delete:
+      tags:
+        - asset
+      summary: Delete an asset transaction by ID
+      description: Delete a specific asset transaction by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: assetId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset transaction
+      responses:
+        "201":
+          description: Successfully deleted the asset transaction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: deleted successfully
+        "500":
+          description: Failed to delete asset transaction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Failed to delete asset transaction
+  "/{workspaceId}/assets/monthlyTrend":
+    get:
+      tags:
+        - asset
+      summary: Get monthly asset trend
+      description: Retrieve the monthly trend of assets for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      responses:
+        "200":
+          description: A list of asset trends.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    month:
+                      type: string
+                      format: date
+                    total_balance:
+                      type: number
+                      format: float
+        "500":
+          description: Failed to retrieve monthly asset trend.
+  "/{workspaceId}/finance":
+    post:
+      tags:
+        - financial tracker
+      summary: Create a new transaction
+      description: Create a new financial transaction for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: integer
+                amount:
+                  type: number
+                  format: float
+                transaction_type:
+                  type: string
+                description:
+                  type: string
+                transaction_date:
+                  type: string
+                  format: date-time
+                payment_method:
+                  type: string
+      responses:
+        "201":
+          description: Transaction created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "500":
+          description: Failed to create transaction.
+  "/{workspaceId}/finance/{id}":
+    put:
+      tags:
+        - financial tracker
+      summary: Update a transaction
+      description: Update an existing financial transaction by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: integer
+                amount:
+                  type: number
+                  format: float
+                transaction_type:
+                  type: string
+                description:
+                  type: string
+                transaction_date:
+                  type: string
+                  format: date-time
+      responses:
+        "200":
+          description: Transaction updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "500":
+          description: Failed to update transaction.
+    delete:
+      tags:
+        - financial tracker
+      summary: Delete a transaction
+      description: Delete an existing financial transaction by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the transaction
+      responses:
+        "204":
+          description: Transaction deleted successfully.
+        "500":
+          description: Failed to delete transaction.
+  "/{workspaceId}/finance/monthly/{monthKey}":
+    get:
+      tags:
+        - financial tracker
+      summary: Get monthly transactions
+      description: Retrieve all financial transactions for the specified month.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: monthKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The month key in YYYY-MM format
+      responses:
+        "200":
+          description: A list of transactions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "500":
+          description: Failed to fetch monthly transactions.
+  "/{workspaceId}/finance/daily/{dateKey}":
+    get:
+      tags:
+        - financial tracker
+      summary: Get daily transactions
+      description: Retrieve all financial transactions for the specified date.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: dateKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The date key in YYYY-MM-DD format
+      responses:
+        "200":
+          description: A list of transactions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "500":
+          description: Failed to fetch daily transactions.
+  "/{workspaceId}/asset/type":
+    get:
+      tags:
+        - asset type
+      summary: Get all asset types
+      description: Retrieve all asset types for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      responses:
+        "200":
+          description: A list of asset types.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AssetType"
+        "500":
+          description: Failed to fetch asset types.
+    post:
+      tags:
+        - asset type
+      summary: Create a new asset type
+      description: Create a new asset type for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset_type_name:
+                  type: string
+                  description: The name of the asset type
+      responses:
+        "201":
+          description: Asset type created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetType"
+        "500":
+          description: Failed to create asset type.
+  "/{workspaceId}/asset/type/{id}":
+    put:
+      tags:
+        - asset type
+      summary: Update an asset type
+      description: Update an existing asset type by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset_type_name:
+                  type: string
+                  description: The name of the asset type
+      responses:
+        "200":
+          description: Asset type updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetType"
+        "500":
+          description: Failed to update asset type.
+    delete:
+      tags:
+        - asset type
+      summary: Delete an asset type
+      description: Delete an existing asset type by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the asset type
+      responses:
+        "204":
+          description: Asset type deleted successfully.
+        "500":
+          description: Failed to delete asset type.
+  "/{workspaceId}/finance/category":
+    post:
+      tags:
+        - financial category
+      summary: Create a new financial category
+      description: Create a new financial category for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_name:
+                  type: string
+                  description: The name of the category
+                category_type:
+                  type: string
+                  description: The type of the category (income or expense)
+      responses:
+        "201":
+          description: Category created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionCategory"
+        "500":
+          description: Failed to create category.
+  "/{workspaceId}/finance/category/{id}":
+    put:
+      tags:
+        - financial category
+      summary: Update a financial category
+      description: Update an existing financial category by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_name:
+                  type: string
+                  description: The name of the category
+      responses:
+        "200":
+          description: Category updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionCategory"
+        "500":
+          description: Failed to update category.
+    delete:
+      tags:
+        - financial category
+      summary: Delete a financial category
+      description: Delete an existing financial category by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the category
+      responses:
+        "204":
+          description: Category deleted successfully.
+        "500":
+          description: Failed to delete category.
+  "/{workspaceId}/finance/category/{type}":
+    get:
+      tags:
+        - financial category
+      summary: Get financial categories by type
+      description: Retrieve all financial categories of a specified type for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - income
+              - expense
+          description: The type of the categories (income or expense)
+      responses:
+        "200":
+          description: A list of categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TransactionCategory"
+        "500":
+          description: Failed to fetch categories.
+  "/{workspaceId}/budget":
+    get:
+      tags:
+        - budget
+      summary: Get all active budgets
+      description: Retrieve all active budgets for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      responses:
+        "200":
+          description: A list of active budgets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Budget"
+        "500":
+          description: Failed to fetch budgets.
+    post:
+      tags:
+        - budget
+      summary: Create a new budget
+      description: Create a new budget for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date-time
+                  description: The start date of the budget
+                end_date:
+                  type: string
+                  format: date-time
+                  description: The end date of the budget
+                amount:
+                  type: number
+                  format: float
+                  description: The amount of the budget
+                isActive:
+                  type: boolean
+                  description: Whether the budget is active
+      responses:
+        "201":
+          description: Budget created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+        "500":
+          description: Failed to create budget.
+  "/{workspaceId}/budget/{id}":
+    put:
+      tags:
+        - budget
+      summary: Update a budget
+      description: Update an existing budget by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the budget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date-time
+                  description: The start date of the budget
+                end_date:
+                  type: string
+                  format: date-time
+                  description: The end date of the budget
+                amount:
+                  type: number
+                  format: float
+                  description: The amount of the budget
+                isActive:
+                  type: boolean
+                  description: Whether the budget is active
+      responses:
+        "200":
+          description: Budget updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+        "500":
+          description: Failed to update budget.
+    delete:
+      tags:
+        - budget
+      summary: Delete a budget
+      description: Delete an existing budget by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the budget
+      responses:
+        "204":
+          description: Budget deleted successfully.
+        "500":
+          description: Failed to delete budget.
+  "/{workspaceId}/invitation":
+    get:
+      tags:
+        - invitation
+      summary: Get all invitations
+      description: Retrieve all invitations sent from the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      responses:
+        "200":
+          description: A list of invitations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Invitation"
+        "500":
+          description: Failed to fetch invitations.
+    post:
+      tags:
+        - invitation
+      summary: Create a new invitation
+      description: Create a new invitation for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The email address to send the invitation to
+                status:
+                  type: string
+                  description: The status of the invitation
+                token:
+                  type: string
+                  description: The invitation token
+                expiry_date:
+                  type: string
+                  format: date-time
+                  description: The expiry date of the invitation
+      responses:
+        "201":
+          description: Invitation created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+        "500":
+          description: Failed to create invitation.
+  "/{workspaceId}/invitation/{id}":
+    put:
+      tags:
+        - invitation
+      summary: Update an invitation
+      description: Update the status of an existing invitation by its ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the invitation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: The new status of the invitation
+      responses:
+        "200":
+          description: Invitation updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+        "500":
+          description: Failed to update invitation.
+    delete:
+      tags:
+        - invitation
+      summary: Delete an invitation
+      description: Delete an existing invitation by its ID.
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the invitation
+      responses:
+        "204":
+          description: Invitation deleted successfully.
+        "500":
+          description: Failed to delete invitation.
+  /api/exchange-rates:
+    get:
+      tags:
+        - exchange-rate
+      summary: Fetch exchange rates
+      description: Retrieve the latest exchange rates.
+      responses:
+        "200":
+          description: Successfully fetched exchange rates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rates:
+                    type: object
+                    additionalProperties:
+                      type: number
+                    description: Exchange rates with currency codes as keys and rates as values.
+                  base:
+                    type: string
+                    description: Base currency for the exchange rates.
+                  date:
+                    type: string
+                    format: date
+                    description: The date when the exchange rates were last updated.
+        "500":
+          description: Failed to fetch exchange rates.
+components:
+  parameters:
+    userId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The user ID
+    workspaceId:
+      name: workspaceId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The workspace ID
+    assetId:
+      name: assetId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The asset ID
+    transactionId:
+      name: transactionId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The transaction ID
+    monthKey:
+      name: monthKey
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The month key in YYYY-MM format
+    dateKey:
+      name: dateKey
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The date key in YYYY-MM-DD format
+  schemas:
+    User:
+      type: object
+      properties:
+        user_id:
+          type: string
+        workspace_id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        created_at:
+          type: string
+          format: date-time
+        login_type:
+          type: string
+        role:
+          type: string
+        joined_at:
+          type: string
+          format: date-time
+        push_enable:
+          type: boolean
+        darkMode_enable:
+          type: boolean
+        profile_image:
+          type: string
+        push_id:
+          type: string
+        platform_type:
+          type: string
+    Workspace:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+        workspace_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Transaction:
+      type: object
+      properties:
+        transaction_id:
+          type: integer
+        category_id:
+          type: integer
+        workspace_id:
+          type: string
+        amount:
+          type: number
+          format: float
+        transaction_type:
+          type: string
+        payment_method:
+          type: string
+        description:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    TransactionCategory:
+      type: object
+      properties:
+        category_id:
+          type: integer
+        workspace_id:
+          type: string
+        category_name:
+          type: string
+        category_type:
+          type: string
+    AssetType:
+      type: object
+      properties:
+        asset_type_id:
+          type: integer
+        workspace_id:
+          type: string
+        asset_type_name:
+          type: string
+        is_default:
+          type: boolean
+    Asset:
+      type: object
+      properties:
+        asset_id:
+          type: integer
+        workspace_id:
+          type: string
+        asset_type_id:
+          type: integer
+        asset_name:
+          type: string
+        balance:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date-time
+        currency_code:
+          type: string
+    AssetTransaction:
+      type: object
+      properties:
+        transaction_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        asset_id:
+          type: integer
+        transaction_type:
+          type: string
+        description:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        currency:
+          type: string
+        amount:
+          type: number
+          format: float
+        exchange_rate:
+          type: number
+          format: float
+        shares:
+          type: integer
+        price_per_share:
+          type: number
+          format: float
+        assets:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetToTransaction"
+    AssetToTransaction:
+      type: object
+      properties:
+        asset_id:
+          type: integer
+        transaction_id:
+          type: integer
+    Invitation:
+      type: object
+      properties:
+        id:
+          type: string
+        workspace_id:
+          type: string
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+        token:
+          type: string
+        expiry_date:
+          type: string
+          format: date-time
+    Budget:
+      type: object
+      properties:
+        budget_id:
+          type: integer
+        workspace_id:
+          type: string
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date-time
+        isActive:
+          type: boolean
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad request
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

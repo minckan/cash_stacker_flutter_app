@@ -10,7 +10,7 @@ part 'budget_model.g.dart';
 @JsonSerializable()
 class Budget {
   @JsonKey(name: 'budget_id')
-  final String id;
+  final int id;
   final double amount;
   @JsonKey(name: 'start_date')
   final DateTime startDate;

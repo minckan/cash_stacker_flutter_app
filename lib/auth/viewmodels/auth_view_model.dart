@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
+import 'package:cash_stacker_flutter_app/auth/util/id_token.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/repository/user_repository.dart';
 import 'package:cash_stacker_flutter_app/common/repository/workspace_repository.dart';
@@ -163,8 +164,6 @@ class AuthViewModel extends StateNotifier<UserModel?> {
       final firebaseUser = userCredential.user;
 
       if (firebaseUser != null) {
-        logger.d(await firebaseUser.getIdToken());
-
         final userRepository = _ref.read(userRepositoryProvider);
 
         final user = await userRepository.getUser(id: firebaseUser.uid);
@@ -193,7 +192,7 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
             await userRepository.createUser(body: _user!);
 
-            final idToken = await firebaseUser.getIdToken();
+            final idToken = await getIdToken();
             await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
             SharedPreferencesUtil.saveString(
                 SharedPreferencesUtil.workspaceId, workspaceId);

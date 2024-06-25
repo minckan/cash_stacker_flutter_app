@@ -17,7 +17,7 @@ class TransactionCategoryModel {
   });
 
   @JsonKey(name: 'category_id')
-  final String? id;
+  final int? id;
 
   @JsonKey(name: 'category_name')
   final String name;

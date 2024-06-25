@@ -13,7 +13,7 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
       amount: json['amount'] as String,
       transactionType:
           $enumDecode(_$TransactionTypeEnumMap, json['transaction_type']),
-      categoryId: json['category_id'] as String,
+      categoryId: (json['category_id'] as num).toInt(),
       paymentMethod: json['payment_method'] == null
           ? null
           : PaymentMethod.fromJson(
