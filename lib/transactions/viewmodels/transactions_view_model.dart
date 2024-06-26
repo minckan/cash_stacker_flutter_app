@@ -24,29 +24,36 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
   Future<void> loadTransactions(String workspaceId) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
     final transactions = await financialTrackerRep.getAllMonthlyTransactions(
-        workspaceId: workspaceId, monthKey: getMonth(DateTime.now()));
+      workspaceId: workspaceId,
+      monthKey: getMonth(DateTime.now()),
+    );
     state = transactions;
-    _calculateMonthlyTotals(transactions);
   }
 
   Future<void> addTransaction(
       TransactionModel transaction, String workspaceId) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-    final response = await financialTrackerRep.createTransaction(
-        workspaceId: workspaceId, body: transaction);
+    await financialTrackerRep.createTransaction(
+      workspaceId: workspaceId,
+      body: transaction,
+    );
 
     state = [...state, transaction];
-    _calculateMonthlyTotals(state);
   }
 
   Future<void> updateTransaction(
-      TransactionModel transaction, String workspaceId) async {
+    TransactionModel transaction,
+    String workspaceId,
+    dynamic modifiedData,
+  ) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
 
-    // final response = await financialTrackerRep.updateTransaction(
-    //     workspaceId: workspaceId, id: id);
+    await financialTrackerRep.updateTransaction(
+      workspaceId: workspaceId,
+      id: transaction.id,
+      body: modifiedData,
+    );
     state = state.map((t) => t.id == transaction.id ? transaction : t).toList();
-    _calculateMonthlyTotals(state);
   }
 
   Future<void> deleteTransaction(
@@ -59,7 +66,6 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
         .delete();
 
     state = state.where((t) => t.id != transactionId).toList();
-    _calculateMonthlyTotals(state);
   }
 
   void clearTransactions() {
@@ -115,30 +121,5 @@ class TransactionViewModel extends StateNotifier<List<TransactionModel>> {
       });
     });
     return result;
-  }
-
-  void _calculateMonthlyTotals(List<TransactionModel> transactions) {
-    Map<String, Map<String, double>> totals = {};
-
-    // for (var transaction in transactions) {
-    //   String monthKey = getMonth(transaction.date);
-
-    //   if (!totals.containsKey(monthKey)) {
-    //     totals[monthKey] = {'income': 0, 'expanse': 0, 'netIncome': 0};
-    //   }
-
-    //   double amount = double.parse(transaction.amount);
-
-    //   if (transaction.transactionType == TransactionType.income) {
-    //     totals[monthKey]!['income'] = (totals[monthKey]!['income']! + amount);
-    //   } else if (transaction.transactionType == TransactionType.expense) {
-    //     totals[monthKey]!['expanse'] = (totals[monthKey]!['expanse']! + amount);
-    //   }
-
-    //   totals[monthKey]!['netIncome'] =
-    //       totals[monthKey]!['income']! - totals[monthKey]!['expanse']!;
-    // }
-
-    monthlyTotals = totals;
   }
 }

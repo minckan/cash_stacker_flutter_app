@@ -33,7 +33,8 @@ class AddExpenseTabState extends ConsumerState<AddExpenseTab> {
   Widget build(BuildContext context) {
     final categories = ref
         .watch(transactionCategoryViewModelProvider.notifier)
-        .getCategoriesByType('income');
+        .getCategoriesByType('expense');
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,

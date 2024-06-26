@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/id_token.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
+import 'package:cash_stacker_flutter_app/common/providers/global/connectivity_provider.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
+import 'package:cash_stacker_flutter_app/common/utill/custom_alert.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 
@@ -49,37 +51,55 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           if (workspaceId != null) {
             await SharedPreferencesUtil.saveString(
                 SharedPreferencesUtil.workspaceId, workspaceId);
+            await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
+
+            if (!mounted) return;
+
+            _navigateToHome();
           }
-          await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
-
-          if (!mounted) return;
-
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const RootTab()),
-              (route) => false);
         }
       } else {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
+        _navigateToLogin();
       }
     } catch (e) {
       logger.e('error: $e');
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
+      _navigateToLogin();
     }
+  }
+
+  void _navigateToHome() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const RootTab()), (route) => false);
+  }
+
+  void _navigateToLogin() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Container(
+    return Consumer(builder: (context, ref, child) {
+      final isOnline = ref.watch(connectivityProvider);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!isOnline && context.mounted) {
+          showCustomAlertDialog(
+            context: context,
+            title: 'Network Error',
+            content: '인터넷 연결을 확인해주세요.',
+            isSingleButton: true,
+            onConfirmed: () {},
+          );
+        }
+      });
+      return Container(
         color: Colors.white,
         alignment: Alignment.center,
         child: const Text(
           'cash stacker',
           style: TextStyle(fontSize: 32),
         ),
-      ),
-    );
+      );
+    });
   }
 }

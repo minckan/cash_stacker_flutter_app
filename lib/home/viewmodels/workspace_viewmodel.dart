@@ -25,8 +25,6 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
           .read(workspaceRepositoryProvider)
           .getOneWorkspace(id: 'workspace_$userId');
 
-      logger.d(workspace);
-
       if (workspace != null) {
         state = workspace;
         try {
@@ -76,6 +74,7 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
       }
     } catch (e) {
       logger.e('Error loading workspace for user $userId: $e');
+      throw Exception(['[Error] loading workspace for user']);
     }
   }
 

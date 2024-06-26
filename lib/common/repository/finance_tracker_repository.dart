@@ -21,7 +21,7 @@ abstract class FinanceTrackerRepository {
   factory FinanceTrackerRepository(Dio dio, {String baseUrl}) =
       _FinanceTrackerRepository;
 
-  static const basePath = '/:workspaceId/finance';
+  static const basePath = '/{workspaceId}/finance';
 
   @POST(basePath)
   @Headers({'accessToken': 'true'})

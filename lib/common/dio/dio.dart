@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:cash_stacker_flutter_app/auth/util/id_token.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
+import 'package:cash_stacker_flutter_app/common/providers/global/connectivity_provider.dart';
 import 'package:cash_stacker_flutter_app/common/secure_storage/secure_storage.dart';
+import 'package:cash_stacker_flutter_app/common/utill/custom_alert.dart';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,16 +17,18 @@ final dioProvider = Provider<Dio>((ref) {
 
   final storage = ref.watch(secureStorageProvider);
 
-  dio.interceptors.add(CustomInterceptor(storage: storage));
+  dio.interceptors.add(CustomInterceptor(storage: storage, ref: ref));
 
   return dio;
 });
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
     required this.storage,
+    required this.ref,
   });
 
   @override
@@ -49,6 +56,13 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     print('ERROR: $err');
+
+    // 인터넷 연결 오류 감지
+    if (err.type == DioExceptionType.connectionError &&
+        err.error != null &&
+        err.error is SocketException) {
+      ref.read(connectivityProvider.notifier).state = false;
+    }
 
     if (err.response?.statusCode == 401) {
       try {

@@ -130,26 +130,30 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
   }
 
   double get currentExpendableBudget {
-    final currentAssetSummary =
-        getAssetSummaryByMonth(getMonth(DateTime.now()));
+    // final currentAssetSummary =
+    //     getAssetSummaryByMonth(getMonth(DateTime.now()));
 
-    if (monthlyExpenditure > (currentAssetSummary?.monthlyBudget ?? 0)) {
-      return 0;
-    }
-    return (currentAssetSummary?.monthlyBudget ?? 0) - monthlyExpenditure;
+    // if (monthlyExpenditure > (currentAssetSummary?.monthlyBudget ?? 0)) {
+    //   return 0;
+    // }
+    // return (currentAssetSummary?.monthlyBudget ?? 0) - monthlyExpenditure;
+
+    return 0.0;
   }
 
   double get budgetExpenditurePercentage {
-    final currentAssetSummary =
-        getAssetSummaryByMonth(getMonth(DateTime.now()));
-    final monthlyBudget = currentAssetSummary?.monthlyBudget ?? 0;
+    // final currentAssetSummary =
+    //     getAssetSummaryByMonth(getMonth(DateTime.now()));
+    // final monthlyBudget = currentAssetSummary?.monthlyBudget ?? 0;
 
-    if (monthlyBudget == 0) {
-      return 0.0; // 예산이 0일 경우, 0%로 처리
-    }
+    // if (monthlyBudget == 0) {
+    //   return 0.0; // 예산이 0일 경우, 0%로 처리
+    // }
 
-    final percentage = (monthlyExpenditure / monthlyBudget).clamp(0.0, 1.0);
-    return percentage;
+    // final percentage = (monthlyExpenditure / monthlyBudget).clamp(0.0, 1.0);
+    // return percentage;
+
+    return 0.0;
   }
 
   String get warningText {

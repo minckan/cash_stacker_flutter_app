@@ -30,6 +30,7 @@ class TransactionCategoryViewModel
   }
 
   List<TransactionCategoryModel> getCategoriesByType(String type) {
+    print(state[type]);
     return state[type] ?? [];
   }
 
