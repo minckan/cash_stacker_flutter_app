@@ -34,13 +34,13 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
         } catch (e) {
           logger.e('ERROR : 카테고리 조회  $userId: $e');
         }
-        // try {
-        //   await _ref
-        //       .read(transactionViewModelProvider.notifier)
-        //       .loadTransactions(state!.id);
-        // } catch (e) {
-        //   logger.e('ERROR : 가계부 거래내역 조회  $userId: $e');
-        // }
+        try {
+          await _ref
+              .read(transactionViewModelProvider.notifier)
+              .loadTransactions(state!.id);
+        } catch (e) {
+          logger.e('ERROR : 가계부 거래내역 조회  $userId: $e');
+        }
 
         // try {
         //   await _ref

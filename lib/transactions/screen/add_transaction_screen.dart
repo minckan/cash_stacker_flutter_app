@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+import 'package:cash_stacker_flutter_app/openapi.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/add_expense_tab.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/add_income_tab.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
@@ -48,26 +49,27 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
   }
 
   void handleSubmit() async {
-    TransactionModel transaction;
+    WorkspaceIdFinancePostRequest transaction;
     final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
-    String docId = uuid.v4();
+
     if (_addIncomeTabKey.currentState != null &&
         _addIncomeTabKey.currentState!.selectedCategory != null) {
       final incomePrice = _addIncomeTabKey.currentState!.priceController.text;
       final selectedIncomeCategory =
           _addIncomeTabKey.currentState!.selectedCategory;
 
-      transaction = TransactionModel(
-        id: docId,
-        date: selectedDate,
-        amount: incomePrice,
-        categoryId: selectedIncomeCategory!.id!,
-        transactionType: TransactionType.income,
+      transaction = WorkspaceIdFinancePostRequest(
+        (b) => b
+          ..categoryId = selectedIncomeCategory!.id!
+          ..amount = double.parse(incomePrice)
+          ..transactionType = 'income'
+          ..description = ''
+          ..transactionDate = selectedDate,
       );
 
       await ref
           .read(transactionViewModelProvider.notifier)
-          .addTransaction(transaction, workspaceId);
+          .addTransaction(workspaceId: workspaceId, transaction: transaction);
     }
 
     if (_addExpenseTabKey.currentState != null &&
@@ -78,18 +80,19 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       final expensePaymentMethod =
           _addExpenseTabKey.currentState!.selectedPaymentMethod;
 
-      transaction = TransactionModel(
-        id: docId,
-        date: selectedDate,
-        amount: expensePrice,
-        categoryId: selectedExpenseCategory!.id!,
-        transactionType: TransactionType.expense,
-        paymentMethod: expensePaymentMethod,
+      transaction = WorkspaceIdFinancePostRequest(
+        (b) => b
+          ..categoryId = selectedExpenseCategory!.id!
+          ..amount = double.parse(expensePrice)
+          ..transactionType = 'expense'
+          ..description = ''
+          ..transactionDate = selectedDate
+          ..transactionType = expensePaymentMethod!.type.name,
       );
 
       await ref
           .read(transactionViewModelProvider.notifier)
-          .addTransaction(transaction, workspaceId);
+          .addTransaction(workspaceId: workspaceId, transaction: transaction);
     }
 
     if (!mounted) return;

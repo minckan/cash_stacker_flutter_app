@@ -10,7 +10,7 @@ enum TransactionType {
 @JsonSerializable(explicitToJson: true)
 class TransactionModel {
   TransactionModel({
-    required this.id,
+    this.id,
     required this.date,
     required this.amount,
     required this.transactionType,
@@ -20,15 +20,17 @@ class TransactionModel {
   });
 
   @JsonKey(name: 'transaction_id')
-  final String id;
-  @JsonKey(name: 'created_at')
+  final int? id;
+  @JsonKey(name: 'transaction_date')
   final DateTime date;
   final String amount;
   @JsonKey(name: 'transaction_type')
   final TransactionType transactionType;
   @JsonKey(name: 'category_id')
   final int categoryId;
-  @JsonKey(name: 'payment_method')
+  @JsonKey(
+    name: 'payment_method',
+  )
   final PaymentMethod? paymentMethod;
   @JsonKey(name: 'description')
   final String? memo;
