@@ -84,7 +84,7 @@ dev_dependencies:
 
 #rps generate_api
 scripts:
-  generate_api: openapi-generator-cli generate -i lib/swaggers/openapi.yaml -g dart-dio -o lib/generated_code & flutter pub run build_runner build
+  generate_api: openapi-generator-cli generate -i lib/swaggers/openapi.yaml -g dart-dio -o lib/generated_code
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

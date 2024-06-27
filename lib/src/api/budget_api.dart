@@ -13,6 +13,7 @@ import '../model/budget.dart';
 import '../model/workspace_id_budget_post_request.dart';
 
 class BudgetApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -33,7 +34,7 @@ class BudgetApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<Budget>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<Budget>>> workspaceIdBudgetGet({
+  Future<Response<BuiltList<Budget>>> workspaceIdBudgetGet({ 
     required String workspaceId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -42,11 +43,8 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget'.replaceAll(
-        '{' r'workspaceId' '}',
-        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
-            .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/budget'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -64,28 +62,27 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<Budget>? responseData;
+    BuiltList<Budget>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(BuiltList, [FullType(Budget)]),
-            ) as BuiltList<Budget>;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(BuiltList, [FullType(Budget)]),
+      ) as BuiltList<Budget>;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -93,14 +90,14 @@ class BudgetApi {
     }
 
     return Response<BuiltList<Budget>>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -119,7 +116,7 @@ class BudgetApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> workspaceIdBudgetIdDelete({
+  Future<Response<void>> workspaceIdBudgetIdDelete({ 
     required String workspaceId,
     required int id,
     CancelToken? cancelToken,
@@ -129,17 +126,8 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(int))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/budget/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(int)).toString());
+    final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -157,15 +145,15 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return response;
+    return _response;
   }
 
   /// Update a budget
@@ -174,7 +162,7 @@ class BudgetApi {
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [id] - The ID of the budget
-  /// * [workspaceIdBudgetPostRequest]
+  /// * [workspaceIdBudgetPostRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -184,7 +172,7 @@ class BudgetApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Budget] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Budget>> workspaceIdBudgetIdPut({
+  Future<Response<Budget>> workspaceIdBudgetIdPut({ 
     required String workspaceId,
     required int id,
     required WorkspaceIdBudgetPostRequest workspaceIdBudgetPostRequest,
@@ -195,17 +183,8 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(int))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/budget/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(int)).toString());
+    final _options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -224,17 +203,17 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdBudgetPostRequest);
-      bodyData = _serializers.serialize(workspaceIdBudgetPostRequest,
-          specifiedType: type);
-    } catch (error, stackTrace) {
+      const _type = FullType(WorkspaceIdBudgetPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdBudgetPostRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+         requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -242,29 +221,28 @@ class BudgetApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Budget? responseData;
+    Budget? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(Budget),
-            ) as Budget;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(Budget),
+      ) as Budget;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -272,14 +250,14 @@ class BudgetApi {
     }
 
     return Response<Budget>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -288,7 +266,7 @@ class BudgetApi {
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
-  /// * [workspaceIdBudgetPostRequest]
+  /// * [workspaceIdBudgetPostRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -298,7 +276,7 @@ class BudgetApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Budget] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Budget>> workspaceIdBudgetPost({
+  Future<Response<Budget>> workspaceIdBudgetPost({ 
     required String workspaceId,
     required WorkspaceIdBudgetPostRequest workspaceIdBudgetPostRequest,
     CancelToken? cancelToken,
@@ -308,11 +286,8 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget'.replaceAll(
-        '{' r'workspaceId' '}',
-        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
-            .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/budget'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
+    final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -331,17 +306,17 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdBudgetPostRequest);
-      bodyData = _serializers.serialize(workspaceIdBudgetPostRequest,
-          specifiedType: type);
-    } catch (error, stackTrace) {
+      const _type = FullType(WorkspaceIdBudgetPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdBudgetPostRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+         requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -349,29 +324,28 @@ class BudgetApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Budget? responseData;
+    Budget? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(Budget),
-            ) as Budget;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(Budget),
+      ) as Budget;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -379,14 +353,15 @@ class BudgetApi {
     }
 
     return Response<Budget>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
+
 }

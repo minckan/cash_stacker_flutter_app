@@ -14,6 +14,7 @@ import '../model/workspace_id_invitation_id_put_request.dart';
 import '../model/workspace_id_invitation_post_request.dart';
 
 class InvitationApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -34,7 +35,7 @@ class InvitationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<Invitation>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<Invitation>>> workspaceIdInvitationGet({
+  Future<Response<BuiltList<Invitation>>> workspaceIdInvitationGet({ 
     required String workspaceId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,11 +44,8 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/invitation'.replaceAll(
-        '{' r'workspaceId' '}',
-        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
-            .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/invitation'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -65,28 +63,27 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<Invitation>? responseData;
+    BuiltList<Invitation>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(BuiltList, [FullType(Invitation)]),
-            ) as BuiltList<Invitation>;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(BuiltList, [FullType(Invitation)]),
+      ) as BuiltList<Invitation>;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -94,14 +91,14 @@ class InvitationApi {
     }
 
     return Response<BuiltList<Invitation>>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -120,7 +117,7 @@ class InvitationApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> workspaceIdInvitationIdDelete({
+  Future<Response<void>> workspaceIdInvitationIdDelete({ 
     required String workspaceId,
     required String id,
     CancelToken? cancelToken,
@@ -130,17 +127,8 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/invitation/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(String))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/invitation/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(String)).toString());
+    final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -158,15 +146,15 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return response;
+    return _response;
   }
 
   /// Update an invitation
@@ -175,7 +163,7 @@ class InvitationApi {
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [id] - The ID of the invitation
-  /// * [workspaceIdInvitationIdPutRequest]
+  /// * [workspaceIdInvitationIdPutRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -185,11 +173,10 @@ class InvitationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Invitation] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Invitation>> workspaceIdInvitationIdPut({
+  Future<Response<Invitation>> workspaceIdInvitationIdPut({ 
     required String workspaceId,
     required String id,
-    required WorkspaceIdInvitationIdPutRequest
-        workspaceIdInvitationIdPutRequest,
+    required WorkspaceIdInvitationIdPutRequest workspaceIdInvitationIdPutRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -197,17 +184,8 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/invitation/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(String))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/invitation/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(String)).toString());
+    final _options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -226,17 +204,17 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdInvitationIdPutRequest);
-      bodyData = _serializers.serialize(workspaceIdInvitationIdPutRequest,
-          specifiedType: type);
-    } catch (error, stackTrace) {
+      const _type = FullType(WorkspaceIdInvitationIdPutRequest);
+      _bodyData = _serializers.serialize(workspaceIdInvitationIdPutRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+         requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -244,29 +222,28 @@ class InvitationApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Invitation? responseData;
+    Invitation? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(Invitation),
-            ) as Invitation;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(Invitation),
+      ) as Invitation;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -274,14 +251,14 @@ class InvitationApi {
     }
 
     return Response<Invitation>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -290,7 +267,7 @@ class InvitationApi {
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
-  /// * [workspaceIdInvitationPostRequest]
+  /// * [workspaceIdInvitationPostRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -300,7 +277,7 @@ class InvitationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Invitation] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Invitation>> workspaceIdInvitationPost({
+  Future<Response<Invitation>> workspaceIdInvitationPost({ 
     required String workspaceId,
     required WorkspaceIdInvitationPostRequest workspaceIdInvitationPostRequest,
     CancelToken? cancelToken,
@@ -310,11 +287,8 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/invitation'.replaceAll(
-        '{' r'workspaceId' '}',
-        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
-            .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/invitation'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
+    final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -333,17 +307,17 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdInvitationPostRequest);
-      bodyData = _serializers.serialize(workspaceIdInvitationPostRequest,
-          specifiedType: type);
-    } catch (error, stackTrace) {
+      const _type = FullType(WorkspaceIdInvitationPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdInvitationPostRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+         requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -351,29 +325,28 @@ class InvitationApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Invitation? responseData;
+    Invitation? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(Invitation),
-            ) as Invitation;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(Invitation),
+      ) as Invitation;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -381,14 +354,15 @@ class InvitationApi {
     }
 
     return Response<Invitation>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
+
 }

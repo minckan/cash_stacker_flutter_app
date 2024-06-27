@@ -14,6 +14,7 @@ import '../model/workspace_id_finance_category_id_put_request.dart';
 import '../model/workspace_id_finance_category_post_request.dart';
 
 class FinancialCategoryApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -35,7 +36,7 @@ class FinancialCategoryApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> workspaceIdFinanceCategoryIdDelete({
+  Future<Response<void>> workspaceIdFinanceCategoryIdDelete({ 
     required String workspaceId,
     required int id,
     CancelToken? cancelToken,
@@ -45,17 +46,8 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(int))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/finance/category/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(int)).toString());
+    final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -73,15 +65,15 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return response;
+    return _response;
   }
 
   /// Update a financial category
@@ -90,7 +82,7 @@ class FinancialCategoryApi {
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [id] - The ID of the category
-  /// * [workspaceIdFinanceCategoryIdPutRequest]
+  /// * [workspaceIdFinanceCategoryIdPutRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -100,11 +92,10 @@ class FinancialCategoryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [TransactionCategory] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TransactionCategory>> workspaceIdFinanceCategoryIdPut({
+  Future<Response<TransactionCategory>> workspaceIdFinanceCategoryIdPut({ 
     required String workspaceId,
     required int id,
-    required WorkspaceIdFinanceCategoryIdPutRequest
-        workspaceIdFinanceCategoryIdPutRequest,
+    required WorkspaceIdFinanceCategoryIdPutRequest workspaceIdFinanceCategoryIdPutRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -112,17 +103,8 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(int))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/finance/category/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(int)).toString());
+    final _options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -141,17 +123,17 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdFinanceCategoryIdPutRequest);
-      bodyData = _serializers.serialize(workspaceIdFinanceCategoryIdPutRequest,
-          specifiedType: type);
-    } catch (error, stackTrace) {
+      const _type = FullType(WorkspaceIdFinanceCategoryIdPutRequest);
+      _bodyData = _serializers.serialize(workspaceIdFinanceCategoryIdPutRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+         requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -159,29 +141,28 @@ class FinancialCategoryApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    TransactionCategory? responseData;
+    TransactionCategory? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(TransactionCategory),
-            ) as TransactionCategory;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(TransactionCategory),
+      ) as TransactionCategory;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -189,14 +170,14 @@ class FinancialCategoryApi {
     }
 
     return Response<TransactionCategory>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -205,7 +186,7 @@ class FinancialCategoryApi {
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
-  /// * [workspaceIdFinanceCategoryPostRequest]
+  /// * [workspaceIdFinanceCategoryPostRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -215,10 +196,9 @@ class FinancialCategoryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [TransactionCategory] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TransactionCategory>> workspaceIdFinanceCategoryPost({
+  Future<Response<TransactionCategory>> workspaceIdFinanceCategoryPost({ 
     required String workspaceId,
-    required WorkspaceIdFinanceCategoryPostRequest
-        workspaceIdFinanceCategoryPostRequest,
+    required WorkspaceIdFinanceCategoryPostRequest workspaceIdFinanceCategoryPostRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -226,11 +206,8 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category'.replaceAll(
-        '{' r'workspaceId' '}',
-        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
-            .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/finance/category'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
+    final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -249,17 +226,17 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdFinanceCategoryPostRequest);
-      bodyData = _serializers.serialize(workspaceIdFinanceCategoryPostRequest,
-          specifiedType: type);
-    } catch (error, stackTrace) {
+      const _type = FullType(WorkspaceIdFinanceCategoryPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdFinanceCategoryPostRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+         requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -267,29 +244,28 @@ class FinancialCategoryApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    TransactionCategory? responseData;
+    TransactionCategory? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(TransactionCategory),
-            ) as TransactionCategory;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(TransactionCategory),
+      ) as TransactionCategory;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -297,14 +273,14 @@ class FinancialCategoryApi {
     }
 
     return Response<TransactionCategory>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -323,8 +299,7 @@ class FinancialCategoryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<TransactionCategory>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<TransactionCategory>>>
-      workspaceIdFinanceCategoryTypeGet({
+  Future<Response<BuiltList<TransactionCategory>>> workspaceIdFinanceCategoryTypeGet({ 
     required String workspaceId,
     required String type,
     CancelToken? cancelToken,
@@ -334,17 +309,8 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category/{type}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'type' '}',
-            encodeQueryParameter(_serializers, type, const FullType(String))
-                .toString());
-    final options = Options(
+    final _path = r'/{workspaceId}/finance/category/{type}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'type' '}', encodeQueryParameter(_serializers, type, const FullType(String)).toString());
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -362,29 +328,27 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<TransactionCategory>? responseData;
+    BuiltList<TransactionCategory>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType:
-                  const FullType(BuiltList, [FullType(TransactionCategory)]),
-            ) as BuiltList<TransactionCategory>;
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(BuiltList, [FullType(TransactionCategory)]),
+      ) as BuiltList<TransactionCategory>;
+
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -392,14 +356,15 @@ class FinancialCategoryApi {
     }
 
     return Response<BuiltList<TransactionCategory>>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
+
 }

@@ -1322,8 +1322,8 @@ components:
       properties:
         transaction_id:
           type: integer
-        # category:
-        #   $ref: '#/components/schemas/TransactionCategory'
+        category:
+          $ref: "#/components/schemas/TransactionCategory"
         workspace_id:
           type: string
         amount:

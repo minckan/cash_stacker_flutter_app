@@ -13,16 +13,13 @@ part 'workspace_id_assets_post_request.g.dart';
 /// WorkspaceIdAssetsPostRequest
 ///
 /// Properties:
-/// * [assetTypeId]
-/// * [assetName]
-/// * [balance]
-/// * [transactions]
-/// * [currencyCode]
+/// * [assetTypeId] 
+/// * [assetName] 
+/// * [balance] 
+/// * [transactions] 
+/// * [currencyCode] 
 @BuiltValue()
-abstract class WorkspaceIdAssetsPostRequest
-    implements
-        Built<WorkspaceIdAssetsPostRequest,
-            WorkspaceIdAssetsPostRequestBuilder> {
+abstract class WorkspaceIdAssetsPostRequest implements Built<WorkspaceIdAssetsPostRequest, WorkspaceIdAssetsPostRequestBuilder> {
   @BuiltValueField(wireName: r'asset_type_id')
   int? get assetTypeId;
 
@@ -40,25 +37,18 @@ abstract class WorkspaceIdAssetsPostRequest
 
   WorkspaceIdAssetsPostRequest._();
 
-  factory WorkspaceIdAssetsPostRequest(
-          [void Function(WorkspaceIdAssetsPostRequestBuilder b) updates]) =
-      _$WorkspaceIdAssetsPostRequest;
+  factory WorkspaceIdAssetsPostRequest([void updates(WorkspaceIdAssetsPostRequestBuilder b)]) = _$WorkspaceIdAssetsPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdAssetsPostRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdAssetsPostRequest> get serializer =>
-      _$WorkspaceIdAssetsPostRequestSerializer();
+  static Serializer<WorkspaceIdAssetsPostRequest> get serializer => _$WorkspaceIdAssetsPostRequestSerializer();
 }
 
-class _$WorkspaceIdAssetsPostRequestSerializer
-    implements PrimitiveSerializer<WorkspaceIdAssetsPostRequest> {
+class _$WorkspaceIdAssetsPostRequestSerializer implements PrimitiveSerializer<WorkspaceIdAssetsPostRequest> {
   @override
-  final Iterable<Type> types = const [
-    WorkspaceIdAssetsPostRequest,
-    _$WorkspaceIdAssetsPostRequest
-  ];
+  final Iterable<Type> types = const [WorkspaceIdAssetsPostRequest, _$WorkspaceIdAssetsPostRequest];
 
   @override
   final String wireName = r'WorkspaceIdAssetsPostRequest';
@@ -111,9 +101,7 @@ class _$WorkspaceIdAssetsPostRequestSerializer
     WorkspaceIdAssetsPostRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -152,8 +140,7 @@ class _$WorkspaceIdAssetsPostRequestSerializer
         case r'transactions':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(AssetTransaction)]),
+            specifiedType: const FullType(BuiltList, [FullType(AssetTransaction)]),
           ) as BuiltList<AssetTransaction>;
           result.transactions.replace(valueDes);
           break;
@@ -192,3 +179,4 @@ class _$WorkspaceIdAssetsPostRequestSerializer
     return result.build();
   }
 }
+

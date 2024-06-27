@@ -111,10 +111,6 @@ Serializers serializers = (_$serializers.toBuilder()
         const FullType(BuiltList, [FullType(Asset)]),
         () => ListBuilder<Asset>(),
       )
-      ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(AssetTransaction)]),
-        () => ListBuilder<AssetTransaction>(),
-      )
       ..add(const OneOfSerializer())
       ..add(const AnyOfSerializer())
       ..add(const DateSerializer())

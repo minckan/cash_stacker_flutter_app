@@ -10,6 +10,8 @@ class _$Transaction extends Transaction {
   @override
   final int? transactionId;
   @override
+  final TransactionCategory? category;
+  @override
   final String? workspaceId;
   @override
   final double? amount;
@@ -29,6 +31,7 @@ class _$Transaction extends Transaction {
 
   _$Transaction._(
       {this.transactionId,
+      this.category,
       this.workspaceId,
       this.amount,
       this.transactionType,
@@ -50,6 +53,7 @@ class _$Transaction extends Transaction {
     if (identical(other, this)) return true;
     return other is Transaction &&
         transactionId == other.transactionId &&
+        category == other.category &&
         workspaceId == other.workspaceId &&
         amount == other.amount &&
         transactionType == other.transactionType &&
@@ -63,6 +67,7 @@ class _$Transaction extends Transaction {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, transactionId.hashCode);
+    _$hash = $jc(_$hash, category.hashCode);
     _$hash = $jc(_$hash, workspaceId.hashCode);
     _$hash = $jc(_$hash, amount.hashCode);
     _$hash = $jc(_$hash, transactionType.hashCode);
@@ -78,6 +83,7 @@ class _$Transaction extends Transaction {
   String toString() {
     return (newBuiltValueToStringHelper(r'Transaction')
           ..add('transactionId', transactionId)
+          ..add('category', category)
           ..add('workspaceId', workspaceId)
           ..add('amount', amount)
           ..add('transactionType', transactionType)
@@ -96,6 +102,12 @@ class TransactionBuilder implements Builder<Transaction, TransactionBuilder> {
   int? get transactionId => _$this._transactionId;
   set transactionId(int? transactionId) =>
       _$this._transactionId = transactionId;
+
+  TransactionCategoryBuilder? _category;
+  TransactionCategoryBuilder get category =>
+      _$this._category ??= new TransactionCategoryBuilder();
+  set category(TransactionCategoryBuilder? category) =>
+      _$this._category = category;
 
   String? _workspaceId;
   String? get workspaceId => _$this._workspaceId;
@@ -136,6 +148,7 @@ class TransactionBuilder implements Builder<Transaction, TransactionBuilder> {
     final $v = _$v;
     if ($v != null) {
       _transactionId = $v.transactionId;
+      _category = $v.category?.toBuilder();
       _workspaceId = $v.workspaceId;
       _amount = $v.amount;
       _transactionType = $v.transactionType;
@@ -163,16 +176,30 @@ class TransactionBuilder implements Builder<Transaction, TransactionBuilder> {
   Transaction build() => _build();
 
   _$Transaction _build() {
-    final _$result = _$v ??
-        new _$Transaction._(
-            transactionId: transactionId,
-            workspaceId: workspaceId,
-            amount: amount,
-            transactionType: transactionType,
-            paymentMethod: paymentMethod,
-            description: description,
-            transactionDate: transactionDate,
-            createdAt: createdAt);
+    _$Transaction _$result;
+    try {
+      _$result = _$v ??
+          new _$Transaction._(
+              transactionId: transactionId,
+              category: _category?.build(),
+              workspaceId: workspaceId,
+              amount: amount,
+              transactionType: transactionType,
+              paymentMethod: paymentMethod,
+              description: description,
+              transactionDate: transactionDate,
+              createdAt: createdAt);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'category';
+        _category?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'Transaction', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
