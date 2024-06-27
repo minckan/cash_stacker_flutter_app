@@ -23,7 +23,7 @@ packages:
     source: sdk
     version: "0.3.2"
   analyzer:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: analyzer
       sha256: b652861553cd3990d8ed361f7979dc6d7053a9ac8843fa73820ab68ce5410139
@@ -223,7 +223,7 @@ packages:
     source: hosted
     version: "1.0.8"
   dart_style:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dart_style
       sha256: "99e066ce75c89d6b29903d788a7bb9369cf754f7b24bf70bf4b6d6d6b26853b9"
