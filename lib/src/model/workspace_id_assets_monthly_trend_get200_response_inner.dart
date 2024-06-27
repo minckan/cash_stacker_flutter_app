@@ -3,7 +3,6 @@
 //
 
 // ignore_for_file: unused_element
-import 'date.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -12,44 +11,30 @@ part 'workspace_id_assets_monthly_trend_get200_response_inner.g.dart';
 /// WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
 ///
 /// Properties:
-/// * [month]
-/// * [totalBalance]
+/// * [month] 
+/// * [totalBalance] 
 @BuiltValue()
-abstract class WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
-    implements
-        Built<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
-            WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder> {
+abstract class WorkspaceIdAssetsMonthlyTrendGet200ResponseInner implements Built<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner, WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder> {
   @BuiltValueField(wireName: r'month')
-  Date? get month;
+  String? get month;
 
   @BuiltValueField(wireName: r'total_balance')
   double? get totalBalance;
 
   WorkspaceIdAssetsMonthlyTrendGet200ResponseInner._();
 
-  factory WorkspaceIdAssetsMonthlyTrendGet200ResponseInner(
-      [void Function(WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b)
-          updates]) = _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner;
+  factory WorkspaceIdAssetsMonthlyTrendGet200ResponseInner([void updates(WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b)]) = _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(
-          WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b) =>
-      b;
+  static void _defaults(WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner>
-      get serializer =>
-          _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer();
+  static Serializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner> get serializer => _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer();
 }
 
-class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer
-    implements
-        PrimitiveSerializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner> {
+class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer implements PrimitiveSerializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner> {
   @override
-  final Iterable<Type> types = const [
-    WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
-    _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
-  ];
+  final Iterable<Type> types = const [WorkspaceIdAssetsMonthlyTrendGet200ResponseInner, _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner];
 
   @override
   final String wireName = r'WorkspaceIdAssetsMonthlyTrendGet200ResponseInner';
@@ -63,7 +48,7 @@ class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer
       yield r'month';
       yield serializers.serialize(
         object.month,
-        specifiedType: const FullType(Date),
+        specifiedType: const FullType(String),
       );
     }
     if (object.totalBalance != null) {
@@ -81,9 +66,7 @@ class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer
     WorkspaceIdAssetsMonthlyTrendGet200ResponseInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -101,8 +84,8 @@ class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer
         case r'month':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(Date),
-          ) as Date;
+            specifiedType: const FullType(String),
+          ) as String;
           result.month = valueDes;
           break;
         case r'total_balance':
@@ -140,3 +123,4 @@ class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer
     return result.build();
   }
 }
+

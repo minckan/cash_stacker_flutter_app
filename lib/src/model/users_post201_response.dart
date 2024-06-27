@@ -13,33 +13,25 @@ part 'users_post201_response.g.dart';
 /// Properties:
 /// * [userId] - The ID of the newly created user.
 @BuiltValue()
-abstract class UsersPost201Response
-    implements Built<UsersPost201Response, UsersPost201ResponseBuilder> {
+abstract class UsersPost201Response implements Built<UsersPost201Response, UsersPost201ResponseBuilder> {
   /// The ID of the newly created user.
   @BuiltValueField(wireName: r'user_id')
   String? get userId;
 
   UsersPost201Response._();
 
-  factory UsersPost201Response(
-          [void Function(UsersPost201ResponseBuilder b) updates]) =
-      _$UsersPost201Response;
+  factory UsersPost201Response([void updates(UsersPost201ResponseBuilder b)]) = _$UsersPost201Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UsersPost201ResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UsersPost201Response> get serializer =>
-      _$UsersPost201ResponseSerializer();
+  static Serializer<UsersPost201Response> get serializer => _$UsersPost201ResponseSerializer();
 }
 
-class _$UsersPost201ResponseSerializer
-    implements PrimitiveSerializer<UsersPost201Response> {
+class _$UsersPost201ResponseSerializer implements PrimitiveSerializer<UsersPost201Response> {
   @override
-  final Iterable<Type> types = const [
-    UsersPost201Response,
-    _$UsersPost201Response
-  ];
+  final Iterable<Type> types = const [UsersPost201Response, _$UsersPost201Response];
 
   @override
   final String wireName = r'UsersPost201Response';
@@ -64,9 +56,7 @@ class _$UsersPost201ResponseSerializer
     UsersPost201Response object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -116,3 +106,4 @@ class _$UsersPost201ResponseSerializer
     return result.build();
   }
 }
+

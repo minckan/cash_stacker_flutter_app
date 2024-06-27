@@ -19,12 +19,12 @@ export 'src/api/invitation_api.dart';
 export 'src/api/user_api.dart';
 export 'src/api/workspace_api.dart';
 
-export 'src/model/api_exchange_rates_get200_response.dart';
 export 'src/model/asset.dart';
 export 'src/model/asset_to_transaction.dart';
 export 'src/model/asset_transaction.dart';
 export 'src/model/asset_type.dart';
 export 'src/model/budget.dart';
+export 'src/model/exchange_rate_response.dart';
 export 'src/model/invitation.dart';
 export 'src/model/transaction.dart';
 export 'src/model/transaction_category.dart';

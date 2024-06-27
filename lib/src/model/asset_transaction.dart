@@ -3,8 +3,6 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_collection/built_collection.dart';
-import 'asset_to_transaction.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -13,21 +11,19 @@ part 'asset_transaction.g.dart';
 /// AssetTransaction
 ///
 /// Properties:
-/// * [transactionId]
-/// * [createdAt]
-/// * [assetId]
-/// * [transactionType]
-/// * [description]
-/// * [transactionDate]
-/// * [currency]
-/// * [amount]
-/// * [exchangeRate]
-/// * [shares]
-/// * [pricePerShare]
-/// * [assets]
+/// * [transactionId] 
+/// * [createdAt] 
+/// * [assetId] 
+/// * [transactionType] 
+/// * [description] 
+/// * [transactionDate] 
+/// * [currency] 
+/// * [amount] 
+/// * [exchangeRate] 
+/// * [shares] 
+/// * [pricePerShare] 
 @BuiltValue()
-abstract class AssetTransaction
-    implements Built<AssetTransaction, AssetTransactionBuilder> {
+abstract class AssetTransaction implements Built<AssetTransaction, AssetTransactionBuilder> {
   @BuiltValueField(wireName: r'transaction_id')
   int? get transactionId;
 
@@ -61,24 +57,18 @@ abstract class AssetTransaction
   @BuiltValueField(wireName: r'price_per_share')
   double? get pricePerShare;
 
-  @BuiltValueField(wireName: r'assets')
-  BuiltList<AssetToTransaction>? get assets;
-
   AssetTransaction._();
 
-  factory AssetTransaction([void Function(AssetTransactionBuilder b) updates]) =
-      _$AssetTransaction;
+  factory AssetTransaction([void updates(AssetTransactionBuilder b)]) = _$AssetTransaction;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetTransactionBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AssetTransaction> get serializer =>
-      _$AssetTransactionSerializer();
+  static Serializer<AssetTransaction> get serializer => _$AssetTransactionSerializer();
 }
 
-class _$AssetTransactionSerializer
-    implements PrimitiveSerializer<AssetTransaction> {
+class _$AssetTransactionSerializer implements PrimitiveSerializer<AssetTransaction> {
   @override
   final Iterable<Type> types = const [AssetTransaction, _$AssetTransaction];
 
@@ -167,14 +157,6 @@ class _$AssetTransactionSerializer
         specifiedType: const FullType(double),
       );
     }
-    if (object.assets != null) {
-      yield r'assets';
-      yield serializers.serialize(
-        object.assets,
-        specifiedType:
-            const FullType(BuiltList, [FullType(AssetToTransaction)]),
-      );
-    }
   }
 
   @override
@@ -183,9 +165,7 @@ class _$AssetTransactionSerializer
     AssetTransaction object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -277,14 +257,6 @@ class _$AssetTransactionSerializer
           ) as double;
           result.pricePerShare = valueDes;
           break;
-        case r'assets':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(AssetToTransaction)]),
-          ) as BuiltList<AssetToTransaction>;
-          result.assets.replace(valueDes);
-          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -313,3 +285,4 @@ class _$AssetTransactionSerializer
     return result.build();
   }
 }
+

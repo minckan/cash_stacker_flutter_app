@@ -25,8 +25,7 @@ part 'users_post_request.g.dart';
 /// * [userId] - The ID of the user.
 /// * [platformType] - The platform type of the user.
 @BuiltValue()
-abstract class UsersPostRequest
-    implements Built<UsersPostRequest, UsersPostRequestBuilder> {
+abstract class UsersPostRequest implements Built<UsersPostRequest, UsersPostRequestBuilder> {
   /// The ID of the workspace.
   @BuiltValueField(wireName: r'workspace_id')
   String? get workspaceId;
@@ -81,19 +80,16 @@ abstract class UsersPostRequest
 
   UsersPostRequest._();
 
-  factory UsersPostRequest([void Function(UsersPostRequestBuilder b) updates]) =
-      _$UsersPostRequest;
+  factory UsersPostRequest([void updates(UsersPostRequestBuilder b)]) = _$UsersPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UsersPostRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UsersPostRequest> get serializer =>
-      _$UsersPostRequestSerializer();
+  static Serializer<UsersPostRequest> get serializer => _$UsersPostRequestSerializer();
 }
 
-class _$UsersPostRequestSerializer
-    implements PrimitiveSerializer<UsersPostRequest> {
+class _$UsersPostRequestSerializer implements PrimitiveSerializer<UsersPostRequest> {
   @override
   final Iterable<Type> types = const [UsersPostRequest, _$UsersPostRequest];
 
@@ -204,9 +200,7 @@ class _$UsersPostRequestSerializer
     UsersPostRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -340,3 +334,4 @@ class _$UsersPostRequestSerializer
     return result.build();
   }
 }
+

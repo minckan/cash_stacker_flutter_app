@@ -11,12 +11,12 @@ part 'invitation.g.dart';
 /// Invitation
 ///
 /// Properties:
-/// * [id]
-/// * [workspaceId]
-/// * [email]
-/// * [status]
-/// * [token]
-/// * [expiryDate]
+/// * [id] 
+/// * [workspaceId] 
+/// * [email] 
+/// * [status] 
+/// * [token] 
+/// * [expiryDate] 
 @BuiltValue()
 abstract class Invitation implements Built<Invitation, InvitationBuilder> {
   @BuiltValueField(wireName: r'id')
@@ -39,8 +39,7 @@ abstract class Invitation implements Built<Invitation, InvitationBuilder> {
 
   Invitation._();
 
-  factory Invitation([void Function(InvitationBuilder b) updates]) =
-      _$Invitation;
+  factory Invitation([void updates(InvitationBuilder b)]) = _$Invitation;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvitationBuilder b) => b;
@@ -111,9 +110,7 @@ class _$InvitationSerializer implements PrimitiveSerializer<Invitation> {
     Invitation object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -198,3 +195,4 @@ class _$InvitationSerializer implements PrimitiveSerializer<Invitation> {
     return result.build();
   }
 }
+

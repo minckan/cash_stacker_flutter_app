@@ -486,7 +486,6 @@ paths:
                   properties:
                     month:
                       type: string
-                      format: date
                     total_balance:
                       type: number
                       format: float
@@ -1228,20 +1227,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  rates:
-                    type: object
-                    additionalProperties:
-                      type: number
-                    description: Exchange rates with currency codes as keys and rates as values.
-                  base:
-                    type: string
-                    description: Base currency for the exchange rates.
-                  date:
-                    type: string
-                    format: date
-                    description: The date when the exchange rates were last updated.
+                $ref: "#/components/schemas/ExchangeRateResponse"
         "500":
           description: Failed to fetch exchange rates.
 components:
@@ -1336,8 +1322,8 @@ components:
       properties:
         transaction_id:
           type: integer
-        category_id:
-          type: integer
+        # category:
+        #   $ref: '#/components/schemas/TransactionCategory'
         workspace_id:
           type: string
         amount:
@@ -1426,10 +1412,6 @@ components:
         price_per_share:
           type: number
           format: float
-        assets:
-          type: array
-          items:
-            $ref: "#/components/schemas/AssetToTransaction"
     AssetToTransaction:
       type: object
       properties:
@@ -1475,6 +1457,58 @@ components:
           format: date-time
         isActive:
           type: boolean
+    ExchangeRateResponse:
+      type: object
+      properties:
+        RESULT:
+          type: integer
+          description: 조회 결과
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          example: 1
+        CUR_UNIT:
+          type: string
+          description: 통화코드
+          example: USD
+        CUR_NM:
+          type: string
+          description: 국가/통화명
+          example: United States Dollar
+        TTB:
+          type: string
+          description: 전신환(송금) 받으실때
+          example: 1110.5
+        TTS:
+          type: string
+          description: 전신환(송금) 보내실때
+          example: 1120.5
+        DEAL_BAS_R:
+          type: string
+          description: 매매 기준율
+          example: 1115.5
+        BKPR:
+          type: string
+          description: 장부가격
+          example: 1113
+        YY_EFEE_R:
+          type: string
+          description: 년환가료율
+          example: 1114.5
+        TEN_DD_EFEE_R:
+          type: string
+          description: 10일환가료율
+          example: 1115
+        KFTC_DEAL_BAS_R:
+          type: string
+          description: 서울외국환중개 매매기준율
+          example: 1115.2
+        KFTC_BKPR:
+          type: string
+          description: 서울외국환중개 장부가격
+          example: 1113.2
   responses:
     NotFound:
       description: Resource not found

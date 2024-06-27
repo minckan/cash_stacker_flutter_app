@@ -10,8 +10,6 @@ class _$Transaction extends Transaction {
   @override
   final int? transactionId;
   @override
-  final int? categoryId;
-  @override
   final String? workspaceId;
   @override
   final double? amount;
@@ -31,7 +29,6 @@ class _$Transaction extends Transaction {
 
   _$Transaction._(
       {this.transactionId,
-      this.categoryId,
       this.workspaceId,
       this.amount,
       this.transactionType,
@@ -53,7 +50,6 @@ class _$Transaction extends Transaction {
     if (identical(other, this)) return true;
     return other is Transaction &&
         transactionId == other.transactionId &&
-        categoryId == other.categoryId &&
         workspaceId == other.workspaceId &&
         amount == other.amount &&
         transactionType == other.transactionType &&
@@ -67,7 +63,6 @@ class _$Transaction extends Transaction {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, transactionId.hashCode);
-    _$hash = $jc(_$hash, categoryId.hashCode);
     _$hash = $jc(_$hash, workspaceId.hashCode);
     _$hash = $jc(_$hash, amount.hashCode);
     _$hash = $jc(_$hash, transactionType.hashCode);
@@ -83,7 +78,6 @@ class _$Transaction extends Transaction {
   String toString() {
     return (newBuiltValueToStringHelper(r'Transaction')
           ..add('transactionId', transactionId)
-          ..add('categoryId', categoryId)
           ..add('workspaceId', workspaceId)
           ..add('amount', amount)
           ..add('transactionType', transactionType)
@@ -102,10 +96,6 @@ class TransactionBuilder implements Builder<Transaction, TransactionBuilder> {
   int? get transactionId => _$this._transactionId;
   set transactionId(int? transactionId) =>
       _$this._transactionId = transactionId;
-
-  int? _categoryId;
-  int? get categoryId => _$this._categoryId;
-  set categoryId(int? categoryId) => _$this._categoryId = categoryId;
 
   String? _workspaceId;
   String? get workspaceId => _$this._workspaceId;
@@ -146,7 +136,6 @@ class TransactionBuilder implements Builder<Transaction, TransactionBuilder> {
     final $v = _$v;
     if ($v != null) {
       _transactionId = $v.transactionId;
-      _categoryId = $v.categoryId;
       _workspaceId = $v.workspaceId;
       _amount = $v.amount;
       _transactionType = $v.transactionType;
@@ -177,7 +166,6 @@ class TransactionBuilder implements Builder<Transaction, TransactionBuilder> {
     final _$result = _$v ??
         new _$Transaction._(
             transactionId: transactionId,
-            categoryId: categoryId,
             workspaceId: workspaceId,
             amount: amount,
             transactionType: transactionType,

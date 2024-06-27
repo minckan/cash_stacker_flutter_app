@@ -11,22 +11,18 @@ part 'transaction.g.dart';
 /// Transaction
 ///
 /// Properties:
-/// * [transactionId]
-/// * [categoryId]
-/// * [workspaceId]
-/// * [amount]
-/// * [transactionType]
-/// * [paymentMethod]
-/// * [description]
-/// * [transactionDate]
-/// * [createdAt]
+/// * [transactionId] 
+/// * [workspaceId] 
+/// * [amount] 
+/// * [transactionType] 
+/// * [paymentMethod] 
+/// * [description] 
+/// * [transactionDate] 
+/// * [createdAt] 
 @BuiltValue()
 abstract class Transaction implements Built<Transaction, TransactionBuilder> {
   @BuiltValueField(wireName: r'transaction_id')
   int? get transactionId;
-
-  @BuiltValueField(wireName: r'category_id')
-  int? get categoryId;
 
   @BuiltValueField(wireName: r'workspace_id')
   String? get workspaceId;
@@ -51,8 +47,7 @@ abstract class Transaction implements Built<Transaction, TransactionBuilder> {
 
   Transaction._();
 
-  factory Transaction([void Function(TransactionBuilder b) updates]) =
-      _$Transaction;
+  factory Transaction([void updates(TransactionBuilder b)]) = _$Transaction;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TransactionBuilder b) => b;
@@ -77,13 +72,6 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
       yield r'transaction_id';
       yield serializers.serialize(
         object.transactionId,
-        specifiedType: const FullType(int),
-      );
-    }
-    if (object.categoryId != null) {
-      yield r'category_id';
-      yield serializers.serialize(
-        object.categoryId,
         specifiedType: const FullType(int),
       );
     }
@@ -144,9 +132,7 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
     Transaction object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -167,13 +153,6 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
             specifiedType: const FullType(int),
           ) as int;
           result.transactionId = valueDes;
-          break;
-        case r'category_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
-          result.categoryId = valueDes;
           break;
         case r'workspace_id':
           final valueDes = serializers.deserialize(
@@ -252,3 +231,4 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
     return result.build();
   }
 }
+

@@ -11,11 +11,10 @@ part 'asset_to_transaction.g.dart';
 /// AssetToTransaction
 ///
 /// Properties:
-/// * [assetId]
-/// * [transactionId]
+/// * [assetId] 
+/// * [transactionId] 
 @BuiltValue()
-abstract class AssetToTransaction
-    implements Built<AssetToTransaction, AssetToTransactionBuilder> {
+abstract class AssetToTransaction implements Built<AssetToTransaction, AssetToTransactionBuilder> {
   @BuiltValueField(wireName: r'asset_id')
   int? get assetId;
 
@@ -24,20 +23,16 @@ abstract class AssetToTransaction
 
   AssetToTransaction._();
 
-  factory AssetToTransaction(
-          [void Function(AssetToTransactionBuilder b) updates]) =
-      _$AssetToTransaction;
+  factory AssetToTransaction([void updates(AssetToTransactionBuilder b)]) = _$AssetToTransaction;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetToTransactionBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AssetToTransaction> get serializer =>
-      _$AssetToTransactionSerializer();
+  static Serializer<AssetToTransaction> get serializer => _$AssetToTransactionSerializer();
 }
 
-class _$AssetToTransactionSerializer
-    implements PrimitiveSerializer<AssetToTransaction> {
+class _$AssetToTransactionSerializer implements PrimitiveSerializer<AssetToTransaction> {
   @override
   final Iterable<Type> types = const [AssetToTransaction, _$AssetToTransaction];
 
@@ -71,9 +66,7 @@ class _$AssetToTransactionSerializer
     AssetToTransaction object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -130,3 +123,4 @@ class _$AssetToTransactionSerializer
     return result.build();
   }
 }
+

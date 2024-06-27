@@ -16,10 +16,7 @@ part 'workspace_id_invitation_post_request.g.dart';
 /// * [token] - The invitation token
 /// * [expiryDate] - The expiry date of the invitation
 @BuiltValue()
-abstract class WorkspaceIdInvitationPostRequest
-    implements
-        Built<WorkspaceIdInvitationPostRequest,
-            WorkspaceIdInvitationPostRequestBuilder> {
+abstract class WorkspaceIdInvitationPostRequest implements Built<WorkspaceIdInvitationPostRequest, WorkspaceIdInvitationPostRequestBuilder> {
   /// The email address to send the invitation to
   @BuiltValueField(wireName: r'email')
   String? get email;
@@ -38,25 +35,18 @@ abstract class WorkspaceIdInvitationPostRequest
 
   WorkspaceIdInvitationPostRequest._();
 
-  factory WorkspaceIdInvitationPostRequest(
-          [void Function(WorkspaceIdInvitationPostRequestBuilder b) updates]) =
-      _$WorkspaceIdInvitationPostRequest;
+  factory WorkspaceIdInvitationPostRequest([void updates(WorkspaceIdInvitationPostRequestBuilder b)]) = _$WorkspaceIdInvitationPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdInvitationPostRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdInvitationPostRequest> get serializer =>
-      _$WorkspaceIdInvitationPostRequestSerializer();
+  static Serializer<WorkspaceIdInvitationPostRequest> get serializer => _$WorkspaceIdInvitationPostRequestSerializer();
 }
 
-class _$WorkspaceIdInvitationPostRequestSerializer
-    implements PrimitiveSerializer<WorkspaceIdInvitationPostRequest> {
+class _$WorkspaceIdInvitationPostRequestSerializer implements PrimitiveSerializer<WorkspaceIdInvitationPostRequest> {
   @override
-  final Iterable<Type> types = const [
-    WorkspaceIdInvitationPostRequest,
-    _$WorkspaceIdInvitationPostRequest
-  ];
+  final Iterable<Type> types = const [WorkspaceIdInvitationPostRequest, _$WorkspaceIdInvitationPostRequest];
 
   @override
   final String wireName = r'WorkspaceIdInvitationPostRequest';
@@ -102,9 +92,7 @@ class _$WorkspaceIdInvitationPostRequestSerializer
     WorkspaceIdInvitationPostRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -175,3 +163,4 @@ class _$WorkspaceIdInvitationPostRequestSerializer
     return result.build();
   }
 }
+

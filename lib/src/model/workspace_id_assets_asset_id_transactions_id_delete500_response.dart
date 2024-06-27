@@ -11,46 +11,29 @@ part 'workspace_id_assets_asset_id_transactions_id_delete500_response.g.dart';
 /// WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response
 ///
 /// Properties:
-/// * [error]
+/// * [error] 
 @BuiltValue()
-abstract class WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response
-    implements
-        Built<WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response,
-            WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder> {
+abstract class WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response implements Built<WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response, WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder> {
   @BuiltValueField(wireName: r'error')
   String? get error;
 
   WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response._();
 
-  factory WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response(
-      [void Function(
-              WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder b)
-          updates]) = _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response;
+  factory WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response([void updates(WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder b)]) = _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(
-          WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder b) =>
-      b;
+  static void _defaults(WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response>
-      get serializer =>
-          _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer();
+  static Serializer<WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response> get serializer => _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer();
 }
 
-class _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer
-    implements
-        PrimitiveSerializer<
-            WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response> {
+class _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer implements PrimitiveSerializer<WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response> {
   @override
-  final Iterable<Type> types = const [
-    WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response,
-    _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response
-  ];
+  final Iterable<Type> types = const [WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response, _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response];
 
   @override
-  final String wireName =
-      r'WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response';
+  final String wireName = r'WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
@@ -72,9 +55,7 @@ class _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer
     WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -82,8 +63,7 @@ class _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder
-        result,
+    required WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -111,8 +91,7 @@ class _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result =
-        WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder();
+    final result = WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
@@ -126,3 +105,4 @@ class _$WorkspaceIdAssetsAssetIdTransactionsIdDelete500ResponseSerializer
     return result.build();
   }
 }
+

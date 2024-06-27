@@ -55,7 +55,7 @@ dependencies:
   uuid: ^3.0.4
   flutter_form_builder: ^9.2.1
   form_builder_validators: ^10.0.1
-  json_annotation: ^4.8.0
+  json_annotation: ^4.9.0
   retrofit: ">=4.0.0 <5.0.0"
   logger: ^2.3.0
   shared_preferences: ^2.2.3
@@ -64,6 +64,8 @@ dependencies:
   built_collection: ^5.0.0
   one_of: ">=1.5.0 <2.0.0"
   one_of_serializer: ">=1.5.0 <2.0.0"
+  analyzer: ^6.7.0
+  dart_style: ^2.3.6
 
 dev_dependencies:
   flutter_test:
@@ -82,7 +84,7 @@ dev_dependencies:
 
 #rps generate_api
 scripts:
-  generate_api: openapi-generator-cli generate -i lib/swaggers/openapi.yaml -g dart-dio -o lib/generated_code
+  generate_api: openapi-generator-cli generate -i lib/swaggers/openapi.yaml -g dart-dio -o lib/generated_code & flutter pub run build_runner build
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

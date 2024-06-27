@@ -11,9 +11,9 @@ part 'workspace.g.dart';
 /// Workspace
 ///
 /// Properties:
-/// * [workspaceId]
-/// * [workspaceName]
-/// * [createdAt]
+/// * [workspaceId] 
+/// * [workspaceName] 
+/// * [createdAt] 
 @BuiltValue()
 abstract class Workspace implements Built<Workspace, WorkspaceBuilder> {
   @BuiltValueField(wireName: r'workspace_id')
@@ -27,7 +27,7 @@ abstract class Workspace implements Built<Workspace, WorkspaceBuilder> {
 
   Workspace._();
 
-  factory Workspace([void Function(WorkspaceBuilder b) updates]) = _$Workspace;
+  factory Workspace([void updates(WorkspaceBuilder b)]) = _$Workspace;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceBuilder b) => b;
@@ -77,9 +77,7 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
     Workspace object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -143,3 +141,4 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
     return result.build();
   }
 }
+

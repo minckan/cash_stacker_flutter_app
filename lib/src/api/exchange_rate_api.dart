@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import '../model/api_exchange_rates_get200_response.dart';
+import '../model/exchange_rate_response.dart';
 
 class ExchangeRateApi {
   final Dio _dio;
@@ -27,9 +27,9 @@ class ExchangeRateApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [ApiExchangeRatesGet200Response] as data
+  /// Returns a [Future] containing a [Response] with a [ExchangeRateResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ApiExchangeRatesGet200Response>> apiExchangeRatesGet({
+  Future<Response<ExchangeRateResponse>> apiExchangeRatesGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -64,7 +64,7 @@ class ExchangeRateApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    ApiExchangeRatesGet200Response? responseData;
+    ExchangeRateResponse? responseData;
 
     try {
       final rawResponse = response.data;
@@ -72,8 +72,8 @@ class ExchangeRateApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(ApiExchangeRatesGet200Response),
-            ) as ApiExchangeRatesGet200Response;
+              specifiedType: const FullType(ExchangeRateResponse),
+            ) as ExchangeRateResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -84,7 +84,7 @@ class ExchangeRateApi {
       );
     }
 
-    return Response<ApiExchangeRatesGet200Response>(
+    return Response<ExchangeRateResponse>(
       data: responseData,
       headers: response.headers,
       isRedirect: response.isRedirect,

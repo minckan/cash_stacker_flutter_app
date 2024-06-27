@@ -9,7 +9,7 @@ part of 'workspace_id_assets_monthly_trend_get200_response_inner.dart';
 class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
     extends WorkspaceIdAssetsMonthlyTrendGet200ResponseInner {
   @override
-  final Date? month;
+  final String? month;
   @override
   final double? totalBalance;
 
@@ -69,9 +69,9 @@ class WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder
             WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder> {
   _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner? _$v;
 
-  Date? _month;
-  Date? get month => _$this._month;
-  set month(Date? month) => _$this._month = month;
+  String? _month;
+  String? get month => _$this._month;
+  set month(String? month) => _$this._month = month;
 
   double? _totalBalance;
   double? get totalBalance => _$this._totalBalance;

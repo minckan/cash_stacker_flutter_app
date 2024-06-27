@@ -13,35 +13,25 @@ part 'workspace_id_invitation_id_put_request.g.dart';
 /// Properties:
 /// * [status] - The new status of the invitation
 @BuiltValue()
-abstract class WorkspaceIdInvitationIdPutRequest
-    implements
-        Built<WorkspaceIdInvitationIdPutRequest,
-            WorkspaceIdInvitationIdPutRequestBuilder> {
+abstract class WorkspaceIdInvitationIdPutRequest implements Built<WorkspaceIdInvitationIdPutRequest, WorkspaceIdInvitationIdPutRequestBuilder> {
   /// The new status of the invitation
   @BuiltValueField(wireName: r'status')
   String? get status;
 
   WorkspaceIdInvitationIdPutRequest._();
 
-  factory WorkspaceIdInvitationIdPutRequest(
-          [void Function(WorkspaceIdInvitationIdPutRequestBuilder b) updates]) =
-      _$WorkspaceIdInvitationIdPutRequest;
+  factory WorkspaceIdInvitationIdPutRequest([void updates(WorkspaceIdInvitationIdPutRequestBuilder b)]) = _$WorkspaceIdInvitationIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdInvitationIdPutRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdInvitationIdPutRequest> get serializer =>
-      _$WorkspaceIdInvitationIdPutRequestSerializer();
+  static Serializer<WorkspaceIdInvitationIdPutRequest> get serializer => _$WorkspaceIdInvitationIdPutRequestSerializer();
 }
 
-class _$WorkspaceIdInvitationIdPutRequestSerializer
-    implements PrimitiveSerializer<WorkspaceIdInvitationIdPutRequest> {
+class _$WorkspaceIdInvitationIdPutRequestSerializer implements PrimitiveSerializer<WorkspaceIdInvitationIdPutRequest> {
   @override
-  final Iterable<Type> types = const [
-    WorkspaceIdInvitationIdPutRequest,
-    _$WorkspaceIdInvitationIdPutRequest
-  ];
+  final Iterable<Type> types = const [WorkspaceIdInvitationIdPutRequest, _$WorkspaceIdInvitationIdPutRequest];
 
   @override
   final String wireName = r'WorkspaceIdInvitationIdPutRequest';
@@ -66,9 +56,7 @@ class _$WorkspaceIdInvitationIdPutRequestSerializer
     WorkspaceIdInvitationIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -118,3 +106,4 @@ class _$WorkspaceIdInvitationIdPutRequestSerializer
     return result.build();
   }
 }
+

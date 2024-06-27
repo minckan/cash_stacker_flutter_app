@@ -11,10 +11,10 @@ part 'asset_type.g.dart';
 /// AssetType
 ///
 /// Properties:
-/// * [assetTypeId]
-/// * [workspaceId]
-/// * [assetTypeName]
-/// * [isDefault]
+/// * [assetTypeId] 
+/// * [workspaceId] 
+/// * [assetTypeName] 
+/// * [isDefault] 
 @BuiltValue()
 abstract class AssetType implements Built<AssetType, AssetTypeBuilder> {
   @BuiltValueField(wireName: r'asset_type_id')
@@ -31,7 +31,7 @@ abstract class AssetType implements Built<AssetType, AssetTypeBuilder> {
 
   AssetType._();
 
-  factory AssetType([void Function(AssetTypeBuilder b) updates]) = _$AssetType;
+  factory AssetType([void updates(AssetTypeBuilder b)]) = _$AssetType;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetTypeBuilder b) => b;
@@ -88,9 +88,7 @@ class _$AssetTypeSerializer implements PrimitiveSerializer<AssetType> {
     AssetType object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -161,3 +159,4 @@ class _$AssetTypeSerializer implements PrimitiveSerializer<AssetType> {
     return result.build();
   }
 }
+

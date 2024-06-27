@@ -14,12 +14,12 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'date_serializer.dart';
 import 'model/date.dart';
 
-import 'model/api_exchange_rates_get200_response.dart';
 import 'model/asset.dart';
 import 'model/asset_to_transaction.dart';
 import 'model/asset_transaction.dart';
 import 'model/asset_type.dart';
 import 'model/budget.dart';
+import 'model/exchange_rate_response.dart';
 import 'model/invitation.dart';
 import 'model/transaction.dart';
 import 'model/transaction_category.dart';
@@ -47,12 +47,12 @@ import 'model/workspaces_post_request.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
-  ApiExchangeRatesGet200Response,
   Asset,
   AssetToTransaction,
   AssetTransaction,
   AssetType,
   Budget,
+  ExchangeRateResponse,
   Invitation,
   Transaction,
   TransactionCategory,
@@ -110,6 +110,10 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Asset)]),
         () => ListBuilder<Asset>(),
+      )
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(AssetTransaction)]),
+        () => ListBuilder<AssetTransaction>(),
       )
       ..add(const OneOfSerializer())
       ..add(const AnyOfSerializer())

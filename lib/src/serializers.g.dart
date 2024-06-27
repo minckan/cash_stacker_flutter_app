@@ -7,12 +7,13 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
-      ..add(ApiExchangeRatesGet200Response.serializer)
       ..add(Asset.serializer)
       ..add(AssetToTransaction.serializer)
       ..add(AssetTransaction.serializer)
       ..add(AssetType.serializer)
       ..add(Budget.serializer)
+      ..add(ExchangeRateResponse.serializer)
+      ..add(ExchangeRateResponseRESULTEnum.serializer)
       ..add(Invitation.serializer)
       ..add(Transaction.serializer)
       ..add(TransactionCategory.serializer)
@@ -37,15 +38,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(WorkspacesPost201Response.serializer)
       ..add(WorkspacesPostRequest.serializer)
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(AssetToTransaction)]),
-          () => new ListBuilder<AssetToTransaction>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(AssetTransaction)]),
-          () => new ListBuilder<AssetTransaction>())
-      ..addBuilderFactory(
-          const FullType(
-              BuiltMap, const [const FullType(String), const FullType(num)]),
-          () => new MapBuilder<String, num>()))
+          () => new ListBuilder<AssetTransaction>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

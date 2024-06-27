@@ -29,8 +29,6 @@ class _$AssetTransaction extends AssetTransaction {
   final int? shares;
   @override
   final double? pricePerShare;
-  @override
-  final BuiltList<AssetToTransaction>? assets;
 
   factory _$AssetTransaction(
           [void Function(AssetTransactionBuilder)? updates]) =>
@@ -47,8 +45,7 @@ class _$AssetTransaction extends AssetTransaction {
       this.amount,
       this.exchangeRate,
       this.shares,
-      this.pricePerShare,
-      this.assets})
+      this.pricePerShare})
       : super._();
 
   @override
@@ -73,8 +70,7 @@ class _$AssetTransaction extends AssetTransaction {
         amount == other.amount &&
         exchangeRate == other.exchangeRate &&
         shares == other.shares &&
-        pricePerShare == other.pricePerShare &&
-        assets == other.assets;
+        pricePerShare == other.pricePerShare;
   }
 
   @override
@@ -91,7 +87,6 @@ class _$AssetTransaction extends AssetTransaction {
     _$hash = $jc(_$hash, exchangeRate.hashCode);
     _$hash = $jc(_$hash, shares.hashCode);
     _$hash = $jc(_$hash, pricePerShare.hashCode);
-    _$hash = $jc(_$hash, assets.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -109,8 +104,7 @@ class _$AssetTransaction extends AssetTransaction {
           ..add('amount', amount)
           ..add('exchangeRate', exchangeRate)
           ..add('shares', shares)
-          ..add('pricePerShare', pricePerShare)
-          ..add('assets', assets))
+          ..add('pricePerShare', pricePerShare))
         .toString();
   }
 }
@@ -167,12 +161,6 @@ class AssetTransactionBuilder
   set pricePerShare(double? pricePerShare) =>
       _$this._pricePerShare = pricePerShare;
 
-  ListBuilder<AssetToTransaction>? _assets;
-  ListBuilder<AssetToTransaction> get assets =>
-      _$this._assets ??= new ListBuilder<AssetToTransaction>();
-  set assets(ListBuilder<AssetToTransaction>? assets) =>
-      _$this._assets = assets;
-
   AssetTransactionBuilder() {
     AssetTransaction._defaults(this);
   }
@@ -191,7 +179,6 @@ class AssetTransactionBuilder
       _exchangeRate = $v.exchangeRate;
       _shares = $v.shares;
       _pricePerShare = $v.pricePerShare;
-      _assets = $v.assets?.toBuilder();
       _$v = null;
     }
     return this;
@@ -212,33 +199,19 @@ class AssetTransactionBuilder
   AssetTransaction build() => _build();
 
   _$AssetTransaction _build() {
-    _$AssetTransaction _$result;
-    try {
-      _$result = _$v ??
-          new _$AssetTransaction._(
-              transactionId: transactionId,
-              createdAt: createdAt,
-              assetId: assetId,
-              transactionType: transactionType,
-              description: description,
-              transactionDate: transactionDate,
-              currency: currency,
-              amount: amount,
-              exchangeRate: exchangeRate,
-              shares: shares,
-              pricePerShare: pricePerShare,
-              assets: _assets?.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'assets';
-        _assets?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'AssetTransaction', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$AssetTransaction._(
+            transactionId: transactionId,
+            createdAt: createdAt,
+            assetId: assetId,
+            transactionType: transactionType,
+            description: description,
+            transactionDate: transactionDate,
+            currency: currency,
+            amount: amount,
+            exchangeRate: exchangeRate,
+            shares: shares,
+            pricePerShare: pricePerShare);
     replace(_$result);
     return _$result;
   }

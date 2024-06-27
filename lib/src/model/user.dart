@@ -11,19 +11,19 @@ part 'user.g.dart';
 /// User
 ///
 /// Properties:
-/// * [userId]
-/// * [workspaceId]
-/// * [username]
-/// * [email]
-/// * [createdAt]
-/// * [loginType]
-/// * [role]
-/// * [joinedAt]
-/// * [pushEnable]
-/// * [darkModeEnable]
-/// * [profileImage]
-/// * [pushId]
-/// * [platformType]
+/// * [userId] 
+/// * [workspaceId] 
+/// * [username] 
+/// * [email] 
+/// * [createdAt] 
+/// * [loginType] 
+/// * [role] 
+/// * [joinedAt] 
+/// * [pushEnable] 
+/// * [darkModeEnable] 
+/// * [profileImage] 
+/// * [pushId] 
+/// * [platformType] 
 @BuiltValue()
 abstract class User implements Built<User, UserBuilder> {
   @BuiltValueField(wireName: r'user_id')
@@ -67,7 +67,7 @@ abstract class User implements Built<User, UserBuilder> {
 
   User._();
 
-  factory User([void Function(UserBuilder b) updates]) = _$User;
+  factory User([void updates(UserBuilder b)]) = _$User;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UserBuilder b) => b;
@@ -187,9 +187,7 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
     User object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -323,3 +321,4 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
     return result.build();
   }
 }
+
