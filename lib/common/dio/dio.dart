@@ -4,16 +4,15 @@ import 'package:cash_stacker_flutter_app/auth/util/id_token.dart';
 import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/providers/global/connectivity_provider.dart';
 import 'package:cash_stacker_flutter_app/common/secure_storage/secure_storage.dart';
-import 'package:cash_stacker_flutter_app/common/utill/custom_alert.dart';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final dioProvider = Provider<Dio>((ref) {
-  final dio = Dio();
+  final dio = Dio(BaseOptions(baseUrl: dotenv.get('API_BASE_URL')));
 
   final storage = ref.watch(secureStorageProvider);
 
@@ -36,7 +35,8 @@ class CustomInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
 
-    if (options.headers['accessToken'] == 'true') {
+    if (options.extra['secure'] != null ||
+        options.headers['accessToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('accessToken');
 
@@ -55,7 +55,9 @@ class CustomInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print('ERROR: $err');
+    print('[ERROR: requestOptions.uri] ${err.requestOptions.uri}');
+    print('[ERROR: requestOptions.headers] ${err.requestOptions.headers}');
+    print('[ERROR: message] ${err.response!.statusCode.toString()}');
 
     // 인터넷 연결 오류 감지
     if (err.type == DioExceptionType.connectionError &&
@@ -80,6 +82,7 @@ class CustomInterceptor extends Interceptor {
 
         // 새로운 요청으로 재시도
         final newResponse = await Dio().fetch(options);
+        print('[NEW REQ] [${options.method}] ${options.uri}');
         return handler.resolve(newResponse);
       } catch (e) {
         print('Error while refreshing token: $e');

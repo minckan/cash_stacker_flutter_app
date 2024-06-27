@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/openapi.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,7 @@ class DailyTransaction extends ConsumerWidget {
     double totalIncome = transactionByDay['totalIncome'];
     double totalExpense = transactionByDay['totalExpense'];
     // double netIncome = transactionByDay['netIncome'];
-    List<TransactionModel> transactions = transactionByDay['transactions'];
+    List<Transaction> transactions = transactionByDay['transactions'];
     return Column(
       children: [
         Container(
@@ -126,7 +127,7 @@ class DailyTransaction extends ConsumerWidget {
                             const SizedBox(width: 20),
                             Text(
                               transaction.paymentMethod != null
-                                  ? transaction.paymentMethod!.name
+                                  ? transaction.paymentMethod!
                                   : '',
                               style: normalStyle.copyWith(
                                   color: AppColors.bodyTextDark),
@@ -137,12 +138,13 @@ class DailyTransaction extends ConsumerWidget {
                       Row(
                         children: [
                           Text(
-                            addComma.format(double.parse(transaction.amount)),
+                            addComma.format(transaction.amount),
                             style: normalStyle.copyWith(
-                                color: transaction.transactionType ==
-                                        TransactionType.expense
-                                    ? AppColors.expense
-                                    : AppColors.income),
+                              color: transaction.transactionType ==
+                                      TransactionType.expense.name
+                                  ? AppColors.expense
+                                  : AppColors.income,
+                            ),
                           ),
                         ],
                       )

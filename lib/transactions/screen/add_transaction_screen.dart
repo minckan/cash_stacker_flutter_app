@@ -86,8 +86,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
           ..amount = double.parse(expensePrice)
           ..transactionType = 'expense'
           ..description = ''
-          ..transactionDate = selectedDate
-          ..transactionType = expensePaymentMethod!.type.name,
+          ..transactionDate = selectedDate.toUtc()
+          ..paymentMethod = expensePaymentMethod!.type.name,
       );
 
       await ref
