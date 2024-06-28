@@ -13,7 +13,6 @@ import '../model/asset_type.dart';
 import '../model/workspace_id_asset_type_post_request.dart';
 
 class AssetTypeApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -34,7 +33,7 @@ class AssetTypeApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<AssetType>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<AssetType>>> workspaceIdAssetTypeGet({ 
+  Future<Response<BuiltList<AssetType>>> workspaceIdAssetTypeGet({
     required String workspaceId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,8 +42,11 @@ class AssetTypeApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/asset/type'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
-    final _options = Options(
+    final path = r'/{workspaceId}/asset/type'.replaceAll(
+        '{' r'workspaceId' '}',
+        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
+            .toString());
+    final options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -62,27 +64,28 @@ class AssetTypeApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<AssetType>? _responseData;
+    BuiltList<AssetType>? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(BuiltList, [FullType(AssetType)]),
-      ) as BuiltList<AssetType>;
-
+      final rawResponse = response.data;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(BuiltList, [FullType(AssetType)]),
+            ) as BuiltList<AssetType>;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -90,14 +93,14 @@ class AssetTypeApi {
     }
 
     return Response<BuiltList<AssetType>>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -116,7 +119,7 @@ class AssetTypeApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> workspaceIdAssetTypeIdDelete({ 
+  Future<Response<void>> workspaceIdAssetTypeIdDelete({
     required String workspaceId,
     required int id,
     CancelToken? cancelToken,
@@ -126,8 +129,17 @@ class AssetTypeApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/asset/type/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(int)).toString());
-    final _options = Options(
+    final path = r'/{workspaceId}/asset/type/{id}'
+        .replaceAll(
+            '{' r'workspaceId' '}',
+            encodeQueryParameter(
+                    _serializers, workspaceId, const FullType(String))
+                .toString())
+        .replaceAll(
+            '{' r'id' '}',
+            encodeQueryParameter(_serializers, id, const FullType(int))
+                .toString());
+    final options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -145,15 +157,15 @@ class AssetTypeApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return response;
   }
 
   /// Update an asset type
@@ -162,7 +174,7 @@ class AssetTypeApi {
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [id] - The ID of the asset type
-  /// * [workspaceIdAssetTypePostRequest] 
+  /// * [workspaceIdAssetTypePostRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -172,7 +184,7 @@ class AssetTypeApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AssetType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AssetType>> workspaceIdAssetTypeIdPut({ 
+  Future<Response<AssetType>> workspaceIdAssetTypeIdPut({
     required String workspaceId,
     required int id,
     required WorkspaceIdAssetTypePostRequest workspaceIdAssetTypePostRequest,
@@ -183,8 +195,17 @@ class AssetTypeApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/asset/type/{id}'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString()).replaceAll('{' r'id' '}', encodeQueryParameter(_serializers, id, const FullType(int)).toString());
-    final _options = Options(
+    final path = r'/{workspaceId}/asset/type/{id}'
+        .replaceAll(
+            '{' r'workspaceId' '}',
+            encodeQueryParameter(
+                    _serializers, workspaceId, const FullType(String))
+                .toString())
+        .replaceAll(
+            '{' r'id' '}',
+            encodeQueryParameter(_serializers, id, const FullType(int))
+                .toString());
+    final options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -203,17 +224,17 @@ class AssetTypeApi {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-      const _type = FullType(WorkspaceIdAssetTypePostRequest);
-      _bodyData = _serializers.serialize(workspaceIdAssetTypePostRequest, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      const type = FullType(WorkspaceIdAssetTypePostRequest);
+      bodyData = _serializers.serialize(workspaceIdAssetTypePostRequest,
+          specifiedType: type);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -221,28 +242,29 @@ class AssetTypeApi {
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    AssetType? _responseData;
+    AssetType? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(AssetType),
-      ) as AssetType;
-
+      final rawResponse = response.data;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(AssetType),
+            ) as AssetType;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -250,14 +272,14 @@ class AssetTypeApi {
     }
 
     return Response<AssetType>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -266,7 +288,7 @@ class AssetTypeApi {
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
-  /// * [workspaceIdAssetTypePostRequest] 
+  /// * [workspaceIdAssetTypePostRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -276,7 +298,7 @@ class AssetTypeApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AssetType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AssetType>> workspaceIdAssetTypePost({ 
+  Future<Response<AssetType>> workspaceIdAssetTypePost({
     required String workspaceId,
     required WorkspaceIdAssetTypePostRequest workspaceIdAssetTypePostRequest,
     CancelToken? cancelToken,
@@ -286,8 +308,11 @@ class AssetTypeApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/asset/type'.replaceAll('{' r'workspaceId' '}', encodeQueryParameter(_serializers, workspaceId, const FullType(String)).toString());
-    final _options = Options(
+    final path = r'/{workspaceId}/asset/type'.replaceAll(
+        '{' r'workspaceId' '}',
+        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
+            .toString());
+    final options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -306,17 +331,17 @@ class AssetTypeApi {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-      const _type = FullType(WorkspaceIdAssetTypePostRequest);
-      _bodyData = _serializers.serialize(workspaceIdAssetTypePostRequest, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      const type = FullType(WorkspaceIdAssetTypePostRequest);
+      bodyData = _serializers.serialize(workspaceIdAssetTypePostRequest,
+          specifiedType: type);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -324,28 +349,29 @@ class AssetTypeApi {
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    AssetType? _responseData;
+    AssetType? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(AssetType),
-      ) as AssetType;
-
+      final rawResponse = response.data;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(AssetType),
+            ) as AssetType;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -353,15 +379,14 @@ class AssetTypeApi {
     }
 
     return Response<AssetType>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
-
 }

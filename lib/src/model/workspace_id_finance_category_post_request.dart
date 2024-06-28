@@ -14,7 +14,10 @@ part 'workspace_id_finance_category_post_request.g.dart';
 /// * [categoryName] - The name of the category
 /// * [categoryType] - The type of the category (income or expense)
 @BuiltValue()
-abstract class WorkspaceIdFinanceCategoryPostRequest implements Built<WorkspaceIdFinanceCategoryPostRequest, WorkspaceIdFinanceCategoryPostRequestBuilder> {
+abstract class WorkspaceIdFinanceCategoryPostRequest
+    implements
+        Built<WorkspaceIdFinanceCategoryPostRequest,
+            WorkspaceIdFinanceCategoryPostRequestBuilder> {
   /// The name of the category
   @BuiltValueField(wireName: r'category_name')
   String? get categoryName;
@@ -25,18 +28,25 @@ abstract class WorkspaceIdFinanceCategoryPostRequest implements Built<WorkspaceI
 
   WorkspaceIdFinanceCategoryPostRequest._();
 
-  factory WorkspaceIdFinanceCategoryPostRequest([void updates(WorkspaceIdFinanceCategoryPostRequestBuilder b)]) = _$WorkspaceIdFinanceCategoryPostRequest;
+  factory WorkspaceIdFinanceCategoryPostRequest(
+          [void updates(WorkspaceIdFinanceCategoryPostRequestBuilder b)]) =
+      _$WorkspaceIdFinanceCategoryPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdFinanceCategoryPostRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdFinanceCategoryPostRequest> get serializer => _$WorkspaceIdFinanceCategoryPostRequestSerializer();
+  static Serializer<WorkspaceIdFinanceCategoryPostRequest> get serializer =>
+      _$WorkspaceIdFinanceCategoryPostRequestSerializer();
 }
 
-class _$WorkspaceIdFinanceCategoryPostRequestSerializer implements PrimitiveSerializer<WorkspaceIdFinanceCategoryPostRequest> {
+class _$WorkspaceIdFinanceCategoryPostRequestSerializer
+    implements PrimitiveSerializer<WorkspaceIdFinanceCategoryPostRequest> {
   @override
-  final Iterable<Type> types = const [WorkspaceIdFinanceCategoryPostRequest, _$WorkspaceIdFinanceCategoryPostRequest];
+  final Iterable<Type> types = const [
+    WorkspaceIdFinanceCategoryPostRequest,
+    _$WorkspaceIdFinanceCategoryPostRequest
+  ];
 
   @override
   final String wireName = r'WorkspaceIdFinanceCategoryPostRequest';
@@ -68,7 +78,9 @@ class _$WorkspaceIdFinanceCategoryPostRequestSerializer implements PrimitiveSeri
     WorkspaceIdFinanceCategoryPostRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -125,4 +137,3 @@ class _$WorkspaceIdFinanceCategoryPostRequestSerializer implements PrimitiveSeri
     return result.build();
   }
 }
-

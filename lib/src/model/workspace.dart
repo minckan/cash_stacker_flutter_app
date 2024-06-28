@@ -11,9 +11,9 @@ part 'workspace.g.dart';
 /// Workspace
 ///
 /// Properties:
-/// * [workspaceId] 
-/// * [workspaceName] 
-/// * [createdAt] 
+/// * [workspaceId]
+/// * [workspaceName]
+/// * [createdAt]
 @BuiltValue()
 abstract class Workspace implements Built<Workspace, WorkspaceBuilder> {
   @BuiltValueField(wireName: r'workspace_id')
@@ -77,7 +77,9 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
     Workspace object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -141,4 +143,3 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
     return result.build();
   }
 }
-

@@ -38,6 +38,7 @@ import 'model/workspace_id_budget_post_request.dart';
 import 'model/workspace_id_finance_category_id_put_request.dart';
 import 'model/workspace_id_finance_category_post_request.dart';
 import 'model/workspace_id_finance_id_put_request.dart';
+import 'model/workspace_id_finance_monthly_month_key_get200_response.dart';
 import 'model/workspace_id_finance_post_request.dart';
 import 'model/workspace_id_invitation_id_put_request.dart';
 import 'model/workspace_id_invitation_post_request.dart';
@@ -71,6 +72,7 @@ part 'serializers.g.dart';
   WorkspaceIdFinanceCategoryIdPutRequest,
   WorkspaceIdFinanceCategoryPostRequest,
   WorkspaceIdFinanceIdPutRequest,
+  WorkspaceIdFinanceMonthlyMonthKeyGet200Response,
   WorkspaceIdFinancePostRequest,
   WorkspaceIdInvitationIdPutRequest,
   WorkspaceIdInvitationPostRequest,
@@ -78,10 +80,6 @@ part 'serializers.g.dart';
   WorkspacesPostRequest,
 ])
 Serializers serializers = (_$serializers.toBuilder()
-      ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(Transaction)]),
-        () => ListBuilder<Transaction>(),
-      )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(TransactionCategory)]),
         () => ListBuilder<TransactionCategory>(),

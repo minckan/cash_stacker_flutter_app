@@ -11,10 +11,13 @@ part 'workspace_id_assets_monthly_trend_get200_response_inner.g.dart';
 /// WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
 ///
 /// Properties:
-/// * [month] 
-/// * [totalBalance] 
+/// * [month]
+/// * [totalBalance]
 @BuiltValue()
-abstract class WorkspaceIdAssetsMonthlyTrendGet200ResponseInner implements Built<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner, WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder> {
+abstract class WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
+    implements
+        Built<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
+            WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder> {
   @BuiltValueField(wireName: r'month')
   String? get month;
 
@@ -23,18 +26,30 @@ abstract class WorkspaceIdAssetsMonthlyTrendGet200ResponseInner implements Built
 
   WorkspaceIdAssetsMonthlyTrendGet200ResponseInner._();
 
-  factory WorkspaceIdAssetsMonthlyTrendGet200ResponseInner([void updates(WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b)]) = _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner;
+  factory WorkspaceIdAssetsMonthlyTrendGet200ResponseInner(
+          [void updates(
+              WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b)]) =
+      _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b) => b;
+  static void _defaults(
+          WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b) =>
+      b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner> get serializer => _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer();
+  static Serializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner>
+      get serializer =>
+          _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer();
 }
 
-class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer implements PrimitiveSerializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner> {
+class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer
+    implements
+        PrimitiveSerializer<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner> {
   @override
-  final Iterable<Type> types = const [WorkspaceIdAssetsMonthlyTrendGet200ResponseInner, _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner];
+  final Iterable<Type> types = const [
+    WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
+    _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
+  ];
 
   @override
   final String wireName = r'WorkspaceIdAssetsMonthlyTrendGet200ResponseInner';
@@ -66,7 +81,9 @@ class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer implements Pr
     WorkspaceIdAssetsMonthlyTrendGet200ResponseInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -123,4 +140,3 @@ class _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerSerializer implements Pr
     return result.build();
   }
 }
-

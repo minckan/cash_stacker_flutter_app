@@ -11,13 +11,16 @@ part 'workspace_id_finance_id_put_request.g.dart';
 /// WorkspaceIdFinanceIdPutRequest
 ///
 /// Properties:
-/// * [categoryId] 
-/// * [amount] 
-/// * [transactionType] 
-/// * [description] 
-/// * [transactionDate] 
+/// * [categoryId]
+/// * [amount]
+/// * [transactionType]
+/// * [description]
+/// * [transactionDate]
 @BuiltValue()
-abstract class WorkspaceIdFinanceIdPutRequest implements Built<WorkspaceIdFinanceIdPutRequest, WorkspaceIdFinanceIdPutRequestBuilder> {
+abstract class WorkspaceIdFinanceIdPutRequest
+    implements
+        Built<WorkspaceIdFinanceIdPutRequest,
+            WorkspaceIdFinanceIdPutRequestBuilder> {
   @BuiltValueField(wireName: r'category_id')
   int? get categoryId;
 
@@ -35,18 +38,25 @@ abstract class WorkspaceIdFinanceIdPutRequest implements Built<WorkspaceIdFinanc
 
   WorkspaceIdFinanceIdPutRequest._();
 
-  factory WorkspaceIdFinanceIdPutRequest([void updates(WorkspaceIdFinanceIdPutRequestBuilder b)]) = _$WorkspaceIdFinanceIdPutRequest;
+  factory WorkspaceIdFinanceIdPutRequest(
+          [void updates(WorkspaceIdFinanceIdPutRequestBuilder b)]) =
+      _$WorkspaceIdFinanceIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdFinanceIdPutRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdFinanceIdPutRequest> get serializer => _$WorkspaceIdFinanceIdPutRequestSerializer();
+  static Serializer<WorkspaceIdFinanceIdPutRequest> get serializer =>
+      _$WorkspaceIdFinanceIdPutRequestSerializer();
 }
 
-class _$WorkspaceIdFinanceIdPutRequestSerializer implements PrimitiveSerializer<WorkspaceIdFinanceIdPutRequest> {
+class _$WorkspaceIdFinanceIdPutRequestSerializer
+    implements PrimitiveSerializer<WorkspaceIdFinanceIdPutRequest> {
   @override
-  final Iterable<Type> types = const [WorkspaceIdFinanceIdPutRequest, _$WorkspaceIdFinanceIdPutRequest];
+  final Iterable<Type> types = const [
+    WorkspaceIdFinanceIdPutRequest,
+    _$WorkspaceIdFinanceIdPutRequest
+  ];
 
   @override
   final String wireName = r'WorkspaceIdFinanceIdPutRequest';
@@ -99,7 +109,9 @@ class _$WorkspaceIdFinanceIdPutRequestSerializer implements PrimitiveSerializer<
     WorkspaceIdFinanceIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +189,3 @@ class _$WorkspaceIdFinanceIdPutRequestSerializer implements PrimitiveSerializer<
     return result.build();
   }
 }
-

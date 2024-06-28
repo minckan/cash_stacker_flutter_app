@@ -1,14 +1,15 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class Calender extends StatefulWidget {
   final DateTime today;
-  final List<Map<String, dynamic>> transactions;
+  final List<TransactionSummary> transactionSummaries;
   const Calender({
     super.key,
     required this.today,
-    required this.transactions,
+    required this.transactionSummaries,
   });
 
   @override
@@ -23,7 +24,7 @@ class _CalenderState extends State<Calender> {
         _buildWeek(),
         _buildCalendar(
           date: widget.today,
-          transactions: widget.transactions,
+          transactionSummaries: widget.transactionSummaries,
         ),
       ],
     );
@@ -60,7 +61,7 @@ class _CalenderState extends State<Calender> {
 
   Widget _buildCalendar({
     required DateTime date,
-    required List<Map<String, dynamic>> transactions,
+    required List<TransactionSummary> transactionSummaries,
   }) {
     // 월별 화면의 디테일을 계산
     int daysInMonth = DateTime(date.year, date.month + 1, 0).day;
@@ -109,9 +110,16 @@ class _CalenderState extends State<Calender> {
               DateTime dateTime = DateTime(
                   date.year, date.month, index - weekdayOfFirstDay + 1);
               String day = dateTime.day.toString();
-              Map<String, dynamic> transaction = transactions.firstWhere(
-                  (t) => (t['date'] as DateTime).day == dateTime.day,
-                  orElse: () => {});
+              TransactionSummary? transaction = transactionSummaries.firstWhere(
+                (t) => (t.date).day == dateTime.day,
+                orElse: () => TransactionSummary(
+                  date: dateTime,
+                  total: 0,
+                  income: 0,
+                  expense: 0,
+                  transactions: [],
+                ),
+              );
 
               return InkWell(
                 onTap: () {},
@@ -134,15 +142,15 @@ class _CalenderState extends State<Calender> {
                           const SizedBox(
                             height: 10,
                           ),
-                          if (transaction.isNotEmpty)
+                          if (transaction.income > 0)
                             Text(
-                              addComma.format(transaction['totalIncome']),
+                              addComma.format(transaction.income),
                               style: const TextStyle(
                                   fontSize: 9, color: AppColors.income),
                             ),
-                          if (transaction.isNotEmpty)
+                          if (transaction.expense > 0)
                             Text(
-                              addComma.format(transaction['totalExpense']),
+                              addComma.format(transaction.expense),
                               style: const TextStyle(
                                   fontSize: 9, color: AppColors.expense),
                             ),

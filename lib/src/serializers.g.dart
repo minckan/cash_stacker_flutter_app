@@ -32,6 +32,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(WorkspaceIdFinanceCategoryIdPutRequest.serializer)
       ..add(WorkspaceIdFinanceCategoryPostRequest.serializer)
       ..add(WorkspaceIdFinanceIdPutRequest.serializer)
+      ..add(WorkspaceIdFinanceMonthlyMonthKeyGet200Response.serializer)
       ..add(WorkspaceIdFinancePostRequest.serializer)
       ..add(WorkspaceIdInvitationIdPutRequest.serializer)
       ..add(WorkspaceIdInvitationPostRequest.serializer)
@@ -39,7 +40,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(WorkspacesPostRequest.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(AssetTransaction)]),
-          () => new ListBuilder<AssetTransaction>()))
+          () => new ListBuilder<AssetTransaction>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Transaction)]),
+          () => new ListBuilder<Transaction>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

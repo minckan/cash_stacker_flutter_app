@@ -10,7 +10,6 @@ import 'package:dio/dio.dart';
 import '../model/exchange_rate_response.dart';
 
 class ExchangeRateApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -30,7 +29,7 @@ class ExchangeRateApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ExchangeRateResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ExchangeRateResponse>> apiExchangeRatesGet({ 
+  Future<Response<ExchangeRateResponse>> apiExchangeRatesGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -38,8 +37,8 @@ class ExchangeRateApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/exchange-rates';
-    final _options = Options(
+    const path = r'/api/exchange-rates';
+    final options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -57,27 +56,28 @@ class ExchangeRateApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    ExchangeRateResponse? _responseData;
+    ExchangeRateResponse? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ExchangeRateResponse),
-      ) as ExchangeRateResponse;
-
+      final rawResponse = response.data;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(ExchangeRateResponse),
+            ) as ExchangeRateResponse;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -85,15 +85,14 @@ class ExchangeRateApi {
     }
 
     return Response<ExchangeRateResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
-
 }

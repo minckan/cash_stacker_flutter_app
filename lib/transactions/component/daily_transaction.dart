@@ -1,6 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/openapi.dart';
+import 'package:cash_stacker_flutter_app/src/model/transaction.dart';
+
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
@@ -10,39 +12,41 @@ import 'package:intl/intl.dart';
 class DailyTransaction extends ConsumerWidget {
   const DailyTransaction({
     super.key,
-    required this.transactions,
+    required this.transactionSummaries,
   });
 
-  final List<Map<String, dynamic>> transactions;
+  final List<TransactionSummary> transactionSummaries;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (transactions.isEmpty) {
+    if (transactionSummaries.isEmpty) {
       return const Center(
         child: Text('데이터가 없습니다.'),
       );
     }
     return ListView.builder(
       itemBuilder: (context, index) {
-        final transaction = transactions[index];
-        return buildDailyContent(transaction);
+        final summary = transactionSummaries[index];
+        return buildDailyContent(summary);
       },
-      itemCount: transactions.length,
+      itemCount: transactionSummaries.length,
     );
   }
 
-  Widget buildDailyContent(Map<String, dynamic> transactionByDay) {
+  Widget buildDailyContent(
+    TransactionSummary summary,
+  ) {
     const TextStyle normalStyle = TextStyle(
       color: AppColors.bodyTextDark,
       fontSize: 12,
     );
 
     DateFormat dateFormat = DateFormat('EEEE', 'ko');
-    DateTime date = transactionByDay['date'] as DateTime;
-    double totalIncome = transactionByDay['totalIncome'];
-    double totalExpense = transactionByDay['totalExpense'];
-    // double netIncome = transactionByDay['netIncome'];
-    List<Transaction> transactions = transactionByDay['transactions'];
+    DateTime date = summary.date;
+    num totalIncome = summary.income;
+    num totalExpense = summary.expense;
+    num netIncome = summary.total;
+    List<Transaction> transactions = summary.transactions;
     return Column(
       children: [
         Container(

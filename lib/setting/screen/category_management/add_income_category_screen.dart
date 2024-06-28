@@ -1,4 +1,3 @@
-import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
@@ -8,7 +7,6 @@ import 'package:cash_stacker_flutter_app/setting/model/transaction_category_mode
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 class IncomeAddCategoryScreen extends ConsumerWidget {
   const IncomeAddCategoryScreen({super.key});
@@ -16,7 +14,7 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
-    const Uuid uuid = Uuid();
+
     final workspace = ref.watch(workspaceViewModelProvider);
 
     return DefaultLayout(

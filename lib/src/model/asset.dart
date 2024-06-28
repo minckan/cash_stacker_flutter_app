@@ -11,13 +11,13 @@ part 'asset.g.dart';
 /// Asset
 ///
 /// Properties:
-/// * [assetId] 
-/// * [workspaceId] 
-/// * [assetTypeId] 
-/// * [assetName] 
-/// * [balance] 
-/// * [createdAt] 
-/// * [currencyCode] 
+/// * [assetId]
+/// * [workspaceId]
+/// * [assetTypeId]
+/// * [assetName]
+/// * [balance]
+/// * [createdAt]
+/// * [currencyCode]
 @BuiltValue()
 abstract class Asset implements Built<Asset, AssetBuilder> {
   @BuiltValueField(wireName: r'asset_id')
@@ -121,7 +121,9 @@ class _$AssetSerializer implements PrimitiveSerializer<Asset> {
     Asset object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -213,4 +215,3 @@ class _$AssetSerializer implements PrimitiveSerializer<Asset> {
     return result.build();
   }
 }
-

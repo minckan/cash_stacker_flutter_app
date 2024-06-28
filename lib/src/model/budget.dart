@@ -11,13 +11,13 @@ part 'budget.g.dart';
 /// Budget
 ///
 /// Properties:
-/// * [budgetId] 
-/// * [workspaceId] 
-/// * [startDate] 
-/// * [endDate] 
-/// * [amount] 
-/// * [createdAt] 
-/// * [isActive] 
+/// * [budgetId]
+/// * [workspaceId]
+/// * [startDate]
+/// * [endDate]
+/// * [amount]
+/// * [createdAt]
+/// * [isActive]
 @BuiltValue()
 abstract class Budget implements Built<Budget, BudgetBuilder> {
   @BuiltValueField(wireName: r'budget_id')
@@ -121,7 +121,9 @@ class _$BudgetSerializer implements PrimitiveSerializer<Budget> {
     Budget object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -213,4 +215,3 @@ class _$BudgetSerializer implements PrimitiveSerializer<Budget> {
     return result.build();
   }
 }
-

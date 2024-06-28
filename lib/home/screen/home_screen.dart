@@ -1,15 +1,12 @@
-import 'package:cash_stacker_flutter_app/common/component/chart/annual_trend_chart.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
-import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
+
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 
-import 'package:cash_stacker_flutter_app/home/screen/budget_setting_screen.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/budget_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
@@ -48,7 +45,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     // final monthlyAssetTrendList = ref.watch(assetTrendProvider);
 
-    final assetSummaryViewModel = ref.read(assetSummaryProvider.notifier);
     final currentAssetSummary = ref.watch(budgetViewModelProvider);
     final assetChangeMessage = ref
         .read(assetTrendProvider.notifier)
@@ -150,15 +146,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       size: 18,
                     ),
                     onPressed: () async {
-                      final newSummary = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const BudgetSettingScreen()));
+                      // final newSummary = await Navigator.of(context).push(
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             const BudgetSettingScreen()));
 
-                      if (workspaceId != null) {
-                        assetSummaryViewModel.updateAssetSummary(
-                            workspaceId, newSummary);
-                      }
+                      // if (workspaceId != null) {
+                      //   assetSummaryViewModel.updateAssetSummary(
+                      //       workspaceId, newSummary);
+                      // }
                     },
                   )
                 ],
@@ -198,10 +194,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                         ),
-                        Row(
+                        const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               '₩',
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
@@ -209,9 +205,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   fontFamily: 'Roboto'),
                             ),
                             Text(
-                              addComma.format(assetSummaryViewModel
-                                  .currentExpendableBudget),
-                              style: const TextStyle(
+                              // addComma.format(assetSummaryViewModel
+                              //     .currentExpendableBudget),
+                              '',
+                              style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 32,
                                 fontFamily: 'Roboto',
@@ -220,7 +217,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ],
                         ),
                         Text(
-                          '${addComma.format(currentAssetSummary.amount)}원 중 ${addComma.format(assetSummaryViewModel.monthlyExpenditure)}원을 사용했어요!',
+                          '${addComma.format(currentAssetSummary.amount)}원 중 ${addComma.format(0)}원을 사용했어요!', // assetSummaryViewModel.monthlyExpenditure
                           style: const TextStyle(
                             fontSize: 12,
                           ),
@@ -228,7 +225,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(height: 4),
                         LinearPercentIndicator(
                           percent:
-                              assetSummaryViewModel.budgetExpenditurePercentage,
+                              // assetSummaryViewModel.budgetExpenditurePercentage,
+                              0,
                           progressColor: AppColors.primary,
                           lineHeight: 10,
                           alignment: MainAxisAlignment.start,
@@ -237,9 +235,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           barRadius: const Radius.circular(10),
                         ),
                         const SizedBox(height: 20),
-                        Text(
-                          assetSummaryViewModel.warningText,
-                          style: const TextStyle(
+                        const Text(
+                          // assetSummaryViewModel.warningText,
+                          '',
+                          style: TextStyle(
                               height: 1.1,
                               fontSize: 14,
                               fontWeight: FontWeight.w500),

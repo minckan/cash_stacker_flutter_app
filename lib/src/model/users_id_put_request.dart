@@ -15,7 +15,8 @@ part 'users_id_put_request.g.dart';
 /// * [darkModeEnable] - Whether dark mode is enabled.
 /// * [role] - The role of the user.
 @BuiltValue()
-abstract class UsersIdPutRequest implements Built<UsersIdPutRequest, UsersIdPutRequestBuilder> {
+abstract class UsersIdPutRequest
+    implements Built<UsersIdPutRequest, UsersIdPutRequestBuilder> {
   /// Whether push notifications are enabled.
   @BuiltValueField(wireName: r'push_enable')
   bool? get pushEnable;
@@ -30,16 +31,19 @@ abstract class UsersIdPutRequest implements Built<UsersIdPutRequest, UsersIdPutR
 
   UsersIdPutRequest._();
 
-  factory UsersIdPutRequest([void updates(UsersIdPutRequestBuilder b)]) = _$UsersIdPutRequest;
+  factory UsersIdPutRequest([void updates(UsersIdPutRequestBuilder b)]) =
+      _$UsersIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UsersIdPutRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UsersIdPutRequest> get serializer => _$UsersIdPutRequestSerializer();
+  static Serializer<UsersIdPutRequest> get serializer =>
+      _$UsersIdPutRequestSerializer();
 }
 
-class _$UsersIdPutRequestSerializer implements PrimitiveSerializer<UsersIdPutRequest> {
+class _$UsersIdPutRequestSerializer
+    implements PrimitiveSerializer<UsersIdPutRequest> {
   @override
   final Iterable<Type> types = const [UsersIdPutRequest, _$UsersIdPutRequest];
 
@@ -80,7 +84,9 @@ class _$UsersIdPutRequestSerializer implements PrimitiveSerializer<UsersIdPutReq
     UsersIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -144,4 +150,3 @@ class _$UsersIdPutRequestSerializer implements PrimitiveSerializer<UsersIdPutReq
     return result.build();
   }
 }
-

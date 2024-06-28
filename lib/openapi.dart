@@ -43,6 +43,7 @@ export 'src/model/workspace_id_budget_post_request.dart';
 export 'src/model/workspace_id_finance_category_id_put_request.dart';
 export 'src/model/workspace_id_finance_category_post_request.dart';
 export 'src/model/workspace_id_finance_id_put_request.dart';
+export 'src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
 export 'src/model/workspace_id_finance_post_request.dart';
 export 'src/model/workspace_id_invitation_id_put_request.dart';
 export 'src/model/workspace_id_invitation_post_request.dart';

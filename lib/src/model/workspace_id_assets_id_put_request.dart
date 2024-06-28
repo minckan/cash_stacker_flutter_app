@@ -11,26 +11,36 @@ part 'workspace_id_assets_id_put_request.g.dart';
 /// WorkspaceIdAssetsIdPutRequest
 ///
 /// Properties:
-/// * [assetName] 
+/// * [assetName]
 @BuiltValue()
-abstract class WorkspaceIdAssetsIdPutRequest implements Built<WorkspaceIdAssetsIdPutRequest, WorkspaceIdAssetsIdPutRequestBuilder> {
+abstract class WorkspaceIdAssetsIdPutRequest
+    implements
+        Built<WorkspaceIdAssetsIdPutRequest,
+            WorkspaceIdAssetsIdPutRequestBuilder> {
   @BuiltValueField(wireName: r'asset_name')
   String? get assetName;
 
   WorkspaceIdAssetsIdPutRequest._();
 
-  factory WorkspaceIdAssetsIdPutRequest([void updates(WorkspaceIdAssetsIdPutRequestBuilder b)]) = _$WorkspaceIdAssetsIdPutRequest;
+  factory WorkspaceIdAssetsIdPutRequest(
+          [void updates(WorkspaceIdAssetsIdPutRequestBuilder b)]) =
+      _$WorkspaceIdAssetsIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdAssetsIdPutRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdAssetsIdPutRequest> get serializer => _$WorkspaceIdAssetsIdPutRequestSerializer();
+  static Serializer<WorkspaceIdAssetsIdPutRequest> get serializer =>
+      _$WorkspaceIdAssetsIdPutRequestSerializer();
 }
 
-class _$WorkspaceIdAssetsIdPutRequestSerializer implements PrimitiveSerializer<WorkspaceIdAssetsIdPutRequest> {
+class _$WorkspaceIdAssetsIdPutRequestSerializer
+    implements PrimitiveSerializer<WorkspaceIdAssetsIdPutRequest> {
   @override
-  final Iterable<Type> types = const [WorkspaceIdAssetsIdPutRequest, _$WorkspaceIdAssetsIdPutRequest];
+  final Iterable<Type> types = const [
+    WorkspaceIdAssetsIdPutRequest,
+    _$WorkspaceIdAssetsIdPutRequest
+  ];
 
   @override
   final String wireName = r'WorkspaceIdAssetsIdPutRequest';
@@ -55,7 +65,9 @@ class _$WorkspaceIdAssetsIdPutRequestSerializer implements PrimitiveSerializer<W
     WorkspaceIdAssetsIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -105,4 +117,3 @@ class _$WorkspaceIdAssetsIdPutRequestSerializer implements PrimitiveSerializer<W
     return result.build();
   }
 }
-

@@ -637,9 +637,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
+                type: object
+                properties:
+                  netTotal:
+                    type: number
+                    description: Total amount of transactions
+                  expense:
+                    type: number
+                    description: Total expense amount
+                  income:
+                    type: number
+                    description: Total income amount
+                  transactions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transaction"
         "500":
           description: Failed to fetch monthly transactions.
   "/{workspaceId}/finance/daily/{dateKey}":
@@ -669,9 +681,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
+                type: object
+                properties:
+                  netTotal:
+                    type: number
+                    description: Total amount of transactions
+                  expense:
+                    type: number
+                    description: Total expense amount
+                  income:
+                    type: number
+                    description: Total income amount
+                  transactions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transaction"
         "500":
           description: Failed to fetch daily transactions.
   "/{workspaceId}/asset/type":

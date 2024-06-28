@@ -1,8 +1,14 @@
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/openapi.dart';
+import 'package:cash_stacker_flutter_app/src/api.dart';
+import 'package:cash_stacker_flutter_app/src/api/financial_tracker_api.dart';
+import 'package:cash_stacker_flutter_app/src/model/transaction.dart';
+import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_id_put_request.dart';
+import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
+import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_post_request.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+//데이터 계층에 대한 모든 작업을 처리
 final financialTrackerRepositoryProvider =
     Provider<FinanceTrackerRepository>((ref) {
   final dio = ref.watch(dioProvider);
@@ -50,7 +56,8 @@ class FinanceTrackerRepository {
     );
   }
 
-  Future<Response<List<Transaction>>> getAllMonthlyTransactions({
+  Future<Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>>
+      getAllMonthlyTransactions({
     required String workspaceId,
     required String monthKey,
   }) async {
@@ -59,8 +66,8 @@ class FinanceTrackerRepository {
       workspaceId: workspaceId,
       monthKey: monthKey,
     );
-    return Response<List<Transaction>>(
-      data: response.data?.toList() ?? [],
+    return Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>(
+      data: response.data,
       requestOptions: response.requestOptions,
       statusCode: response.statusCode,
       statusMessage: response.statusMessage,
@@ -69,7 +76,8 @@ class FinanceTrackerRepository {
     );
   }
 
-  Future<Response<List<Transaction>>> getDailyTransactions({
+  Future<Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>>
+      getDailyTransactions({
     required String workspaceId,
     required String dateKey,
   }) async {
@@ -78,8 +86,8 @@ class FinanceTrackerRepository {
       workspaceId: workspaceId,
       dateKey: dateKey,
     );
-    return Response<List<Transaction>>(
-      data: response.data?.toList() ?? [],
+    return Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>(
+      data: response.data,
       requestOptions: response.requestOptions,
       statusCode: response.statusCode,
       statusMessage: response.statusMessage,

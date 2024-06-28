@@ -16,7 +16,10 @@ part 'workspace_id_budget_post_request.g.dart';
 /// * [amount] - The amount of the budget
 /// * [isActive] - Whether the budget is active
 @BuiltValue()
-abstract class WorkspaceIdBudgetPostRequest implements Built<WorkspaceIdBudgetPostRequest, WorkspaceIdBudgetPostRequestBuilder> {
+abstract class WorkspaceIdBudgetPostRequest
+    implements
+        Built<WorkspaceIdBudgetPostRequest,
+            WorkspaceIdBudgetPostRequestBuilder> {
   /// The start date of the budget
   @BuiltValueField(wireName: r'start_date')
   DateTime? get startDate;
@@ -35,18 +38,25 @@ abstract class WorkspaceIdBudgetPostRequest implements Built<WorkspaceIdBudgetPo
 
   WorkspaceIdBudgetPostRequest._();
 
-  factory WorkspaceIdBudgetPostRequest([void updates(WorkspaceIdBudgetPostRequestBuilder b)]) = _$WorkspaceIdBudgetPostRequest;
+  factory WorkspaceIdBudgetPostRequest(
+          [void updates(WorkspaceIdBudgetPostRequestBuilder b)]) =
+      _$WorkspaceIdBudgetPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdBudgetPostRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdBudgetPostRequest> get serializer => _$WorkspaceIdBudgetPostRequestSerializer();
+  static Serializer<WorkspaceIdBudgetPostRequest> get serializer =>
+      _$WorkspaceIdBudgetPostRequestSerializer();
 }
 
-class _$WorkspaceIdBudgetPostRequestSerializer implements PrimitiveSerializer<WorkspaceIdBudgetPostRequest> {
+class _$WorkspaceIdBudgetPostRequestSerializer
+    implements PrimitiveSerializer<WorkspaceIdBudgetPostRequest> {
   @override
-  final Iterable<Type> types = const [WorkspaceIdBudgetPostRequest, _$WorkspaceIdBudgetPostRequest];
+  final Iterable<Type> types = const [
+    WorkspaceIdBudgetPostRequest,
+    _$WorkspaceIdBudgetPostRequest
+  ];
 
   @override
   final String wireName = r'WorkspaceIdBudgetPostRequest';
@@ -92,7 +102,9 @@ class _$WorkspaceIdBudgetPostRequestSerializer implements PrimitiveSerializer<Wo
     WorkspaceIdBudgetPostRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -163,4 +175,3 @@ class _$WorkspaceIdBudgetPostRequestSerializer implements PrimitiveSerializer<Wo
     return result.build();
   }
 }
-

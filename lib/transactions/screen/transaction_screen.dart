@@ -1,9 +1,10 @@
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
-
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/daily_transaction.dart';
+import 'package:cash_stacker_flutter_app/transactions/providers/date_state.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -25,50 +26,74 @@ class TransactionScreen extends ConsumerStatefulWidget {
 class _TransactionScreenState extends ConsumerState<TransactionScreen>
     with SingleTickerProviderStateMixin {
   // 페이지를 중간부터 보이도록 하기위해 24(2년)를 더한다.
-  final PageController _pageController =
-      PageController(initialPage: (DateTime.now().month - 1 + 24));
 
   late TabController tabController = TabController(length: 3, vsync: this);
 
-  DateTime _currentDate = DateTime.now();
   bool selectedCurrentYear = false;
 
   @override
-  Widget build(BuildContext context) {
-    // 리빌드를 위해 watch
-    // ignore: unused_local_variable
-    final transactions = ref.watch(transactionViewModelProvider);
-    final transactionViewModel =
-        ref.read(transactionViewModelProvider.notifier);
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchTransactions(ref.read(dateProvider));
+    });
+  }
 
-    String yearMonth = getMonth(_currentDate);
-    List<Map<String, dynamic>> monthTransactions =
-        transactionViewModel.getMonthTransactions(yearMonth);
-    Map<String, double>? currentMonthTotals =
-        transactionViewModel.currentMonthTotal(_currentDate);
+  Future<void> fetchTransactions(DateTime date) async {
+    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+    if (workspaceId != null) {
+      await ref.read(financialStateProvider.notifier).loadMonthlyTransactions(
+            workspaceId,
+            date,
+          );
+    }
+  }
+
+// TODO: 로딩상태 노출하기
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(dateProvider, (prev, next) {
+      // 날짜가 변경될때마다 api 호출하기.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        fetchTransactions(next);
+      });
+    });
+    PageController pageController =
+        PageController(initialPage: (ref.read(dateProvider).month - 1 + 24));
+    DateTime currentDate = ref.watch(dateProvider);
+
+    final financeState = ref.watch(financialStateProvider);
+    final monthlyState = financeState.monthlyResponse;
+
+    final transactionSummaries =
+        ref.read(financialStateProvider.notifier).getMonthlyTransactionsInfo();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildHeader(),
+        _buildHeader(currentDate: currentDate, pageController: pageController),
         _buildTab(),
-        _buildIndicators(currentMonthTotals),
+        _buildIndicators(
+          total: monthlyState.netTotal ?? 0.0,
+          income: monthlyState.income ?? 0.0,
+          expense: monthlyState.expense ?? 0.0,
+        ),
         Expanded(
           child: PageView.builder(
-            controller: _pageController,
+            controller: pageController,
             onPageChanged: (index) {
-              DateTime date = DateTime(_currentDate.year, (index % 12) + 1, 1);
+              DateTime date = DateTime(currentDate.year, (index % 12) + 1, 1);
 
               setState(() {
-                _currentDate = date;
+                ref.read(dateProvider.notifier).updateDate(date);
               });
             },
             itemCount: 12 * 10,
             itemBuilder: (context, pageIndex) {
-              DateTime date =
-                  DateTime(_currentDate.year, (pageIndex % 12) + 1, 1);
+              // DateTime date =
+              //     DateTime(currentDate.year, (pageIndex % 12) + 1, 1);
 
-              return _buildTabBarView(monthTransactions);
+              return _buildTabBarView(transactionSummaries, currentDate);
             },
           ),
         )
@@ -76,9 +101,12 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     );
   }
 
-  Widget _buildHeader() {
-    bool isLastMonthOfYear = _currentDate.month == 12;
-    bool isFirstMonthOfYear = _currentDate.month == 1;
+  Widget _buildHeader({
+    required DateTime currentDate,
+    required PageController pageController,
+  }) {
+    bool isLastMonthOfYear = currentDate.month == 12;
+    bool isFirstMonthOfYear = currentDate.month == 1;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -92,18 +120,20 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
             ),
             onPressed: () {
               // Moves to the previous page if the current page index is greater than 0
-              if (_pageController.page! > 0) {
-                _pageController.previousPage(
+              if (pageController.page! > 0) {
+                pageController.previousPage(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                 );
 
                 if (isFirstMonthOfYear) {
                   setState(() {
-                    DateTime modifiedDateTime = DateTime(_currentDate.year - 1,
-                        _currentDate.month, _currentDate.day);
+                    DateTime modifiedDateTime = DateTime(currentDate.year - 1,
+                        currentDate.month, currentDate.day);
 
-                    _currentDate = modifiedDateTime;
+                    ref
+                        .read(dateProvider.notifier)
+                        .updateDate(modifiedDateTime);
                   });
                 }
               }
@@ -111,7 +141,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
           ),
           // Displays the name of the current month
           Text(
-            '${DateFormat('yyyy', 'ko').format(_currentDate)}년 ${DateFormat('MMMM', 'ko').format(_currentDate)}',
+            '${DateFormat('yyyy', 'ko').format(currentDate)}년 ${DateFormat('MMMM', 'ko').format(currentDate)}',
             style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -124,17 +154,17 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
             ),
             onPressed: () {
               setState(() {
-                _pageController.nextPage(
+                pageController.nextPage(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                 );
               });
               if (isLastMonthOfYear) {
                 setState(() {
-                  DateTime modifiedDateTime = DateTime(_currentDate.year + 1,
-                      _currentDate.month, _currentDate.day);
+                  DateTime modifiedDateTime = DateTime(
+                      currentDate.year + 1, currentDate.month, currentDate.day);
 
-                  _currentDate = modifiedDateTime;
+                  ref.read(dateProvider.notifier).updateDate(modifiedDateTime);
                 });
               }
             },
@@ -171,17 +201,18 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     );
   }
 
-  Widget _buildTabBarView(List<Map<String, dynamic>> transactions) {
+  Widget _buildTabBarView(
+      List<TransactionSummary> transactionSummaries, DateTime currentDate) {
     return TabBarView(
       controller: tabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
         DailyTransaction(
-          transactions: transactions,
+          transactionSummaries: transactionSummaries,
         ),
         Calender(
-          today: _currentDate,
-          transactions: transactions,
+          today: currentDate,
+          transactionSummaries: transactionSummaries,
         ),
         // const Analytics()
         const Padding(
@@ -192,7 +223,11 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     );
   }
 
-  Widget _buildIndicators(Map<String, double>? monthlyTotal) {
+  Widget _buildIndicators({
+    required num total,
+    required num income,
+    required num expense,
+  }) {
     TextStyle numberStyle = const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w700,
@@ -218,8 +253,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                   ),
                   // const SizedBox(width: 4),
                   Text(
-                    addComma.format(
-                        monthlyTotal != null ? monthlyTotal['income'] : 0),
+                    addComma.format(income),
                     style: numberStyle.copyWith(color: AppColors.income),
                   )
                 ],
@@ -234,9 +268,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                     style: TextStyle(fontSize: 10),
                   ),
                   // const SizedBox(width: 4),
-                  Text(
-                      addComma.format(
-                          monthlyTotal != null ? monthlyTotal['expanse'] : 0),
+                  Text(addComma.format(expense),
                       style: numberStyle.copyWith(color: AppColors.expense))
                 ],
               ),
@@ -252,10 +284,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                     ),
                   ),
                   // const SizedBox(width: 4),
-                  Text(
-                      addComma.format(
-                          monthlyTotal != null ? monthlyTotal['netIncome'] : 0),
-                      style: numberStyle)
+                  Text(addComma.format(total), style: numberStyle)
                 ],
               ),
             ),

@@ -30,7 +30,6 @@ class TransactionCategoryViewModel
   }
 
   List<TransactionCategoryModel> getCategoriesByType(String type) {
-    print(state[type]);
     return state[type] ?? [];
   }
 
@@ -39,11 +38,11 @@ class TransactionCategoryViewModel
     await _ref
         .read(financialTrackerCategoryRepositoryProvider)
         .createTransactionCategory(workspaceId: workspaceId, body: category);
-
     // Add the category to the state
+
     state = {
       ...state,
-      '${category.type}': [...state['${category.type}']!, category],
+      category.type.name: [...state[category.type.name]!, category],
     };
   }
 

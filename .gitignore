@@ -45,3 +45,6 @@ app.*.map.json
 
 #project settings
 *.env
+
+#openapi generated
+/lib/generated_code

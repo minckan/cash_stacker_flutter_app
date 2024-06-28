@@ -13,25 +13,35 @@ part 'workspace_id_finance_category_id_put_request.g.dart';
 /// Properties:
 /// * [categoryName] - The name of the category
 @BuiltValue()
-abstract class WorkspaceIdFinanceCategoryIdPutRequest implements Built<WorkspaceIdFinanceCategoryIdPutRequest, WorkspaceIdFinanceCategoryIdPutRequestBuilder> {
+abstract class WorkspaceIdFinanceCategoryIdPutRequest
+    implements
+        Built<WorkspaceIdFinanceCategoryIdPutRequest,
+            WorkspaceIdFinanceCategoryIdPutRequestBuilder> {
   /// The name of the category
   @BuiltValueField(wireName: r'category_name')
   String? get categoryName;
 
   WorkspaceIdFinanceCategoryIdPutRequest._();
 
-  factory WorkspaceIdFinanceCategoryIdPutRequest([void updates(WorkspaceIdFinanceCategoryIdPutRequestBuilder b)]) = _$WorkspaceIdFinanceCategoryIdPutRequest;
+  factory WorkspaceIdFinanceCategoryIdPutRequest(
+          [void updates(WorkspaceIdFinanceCategoryIdPutRequestBuilder b)]) =
+      _$WorkspaceIdFinanceCategoryIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdFinanceCategoryIdPutRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspaceIdFinanceCategoryIdPutRequest> get serializer => _$WorkspaceIdFinanceCategoryIdPutRequestSerializer();
+  static Serializer<WorkspaceIdFinanceCategoryIdPutRequest> get serializer =>
+      _$WorkspaceIdFinanceCategoryIdPutRequestSerializer();
 }
 
-class _$WorkspaceIdFinanceCategoryIdPutRequestSerializer implements PrimitiveSerializer<WorkspaceIdFinanceCategoryIdPutRequest> {
+class _$WorkspaceIdFinanceCategoryIdPutRequestSerializer
+    implements PrimitiveSerializer<WorkspaceIdFinanceCategoryIdPutRequest> {
   @override
-  final Iterable<Type> types = const [WorkspaceIdFinanceCategoryIdPutRequest, _$WorkspaceIdFinanceCategoryIdPutRequest];
+  final Iterable<Type> types = const [
+    WorkspaceIdFinanceCategoryIdPutRequest,
+    _$WorkspaceIdFinanceCategoryIdPutRequest
+  ];
 
   @override
   final String wireName = r'WorkspaceIdFinanceCategoryIdPutRequest';
@@ -56,7 +66,9 @@ class _$WorkspaceIdFinanceCategoryIdPutRequestSerializer implements PrimitiveSer
     WorkspaceIdFinanceCategoryIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -106,4 +118,3 @@ class _$WorkspaceIdFinanceCategoryIdPutRequestSerializer implements PrimitiveSer
     return result.build();
   }
 }
-

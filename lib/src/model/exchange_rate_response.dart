@@ -24,7 +24,8 @@ part 'exchange_rate_response.g.dart';
 /// * [KFTC_DEAL_BAS_R] - 서울외국환중개 매매기준율
 /// * [KFTC_BKPR] - 서울외국환중개 장부가격
 @BuiltValue()
-abstract class ExchangeRateResponse implements Built<ExchangeRateResponse, ExchangeRateResponseBuilder> {
+abstract class ExchangeRateResponse
+    implements Built<ExchangeRateResponse, ExchangeRateResponseBuilder> {
   /// 조회 결과
   @BuiltValueField(wireName: r'RESULT')
   ExchangeRateResponseRESULTEnum? get RESULT;
@@ -72,18 +73,24 @@ abstract class ExchangeRateResponse implements Built<ExchangeRateResponse, Excha
 
   ExchangeRateResponse._();
 
-  factory ExchangeRateResponse([void updates(ExchangeRateResponseBuilder b)]) = _$ExchangeRateResponse;
+  factory ExchangeRateResponse([void updates(ExchangeRateResponseBuilder b)]) =
+      _$ExchangeRateResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ExchangeRateResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ExchangeRateResponse> get serializer => _$ExchangeRateResponseSerializer();
+  static Serializer<ExchangeRateResponse> get serializer =>
+      _$ExchangeRateResponseSerializer();
 }
 
-class _$ExchangeRateResponseSerializer implements PrimitiveSerializer<ExchangeRateResponse> {
+class _$ExchangeRateResponseSerializer
+    implements PrimitiveSerializer<ExchangeRateResponse> {
   @override
-  final Iterable<Type> types = const [ExchangeRateResponse, _$ExchangeRateResponse];
+  final Iterable<Type> types = const [
+    ExchangeRateResponse,
+    _$ExchangeRateResponse
+  ];
 
   @override
   final String wireName = r'ExchangeRateResponse';
@@ -178,7 +185,9 @@ class _$ExchangeRateResponseSerializer implements PrimitiveSerializer<ExchangeRa
     ExchangeRateResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -300,25 +309,33 @@ class _$ExchangeRateResponseSerializer implements PrimitiveSerializer<ExchangeRa
 }
 
 class ExchangeRateResponseRESULTEnum extends EnumClass {
-
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 1)
-  static const ExchangeRateResponseRESULTEnum number1 = _$exchangeRateResponseRESULTEnum_number1;
+  static const ExchangeRateResponseRESULTEnum number1 =
+      _$exchangeRateResponseRESULTEnum_number1;
+
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 2)
-  static const ExchangeRateResponseRESULTEnum number2 = _$exchangeRateResponseRESULTEnum_number2;
+  static const ExchangeRateResponseRESULTEnum number2 =
+      _$exchangeRateResponseRESULTEnum_number2;
+
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 3)
-  static const ExchangeRateResponseRESULTEnum number3 = _$exchangeRateResponseRESULTEnum_number3;
+  static const ExchangeRateResponseRESULTEnum number3 =
+      _$exchangeRateResponseRESULTEnum_number3;
+
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 4)
-  static const ExchangeRateResponseRESULTEnum number4 = _$exchangeRateResponseRESULTEnum_number4;
+  static const ExchangeRateResponseRESULTEnum number4 =
+      _$exchangeRateResponseRESULTEnum_number4;
 
-  static Serializer<ExchangeRateResponseRESULTEnum> get serializer => _$exchangeRateResponseRESULTEnumSerializer;
+  static Serializer<ExchangeRateResponseRESULTEnum> get serializer =>
+      _$exchangeRateResponseRESULTEnumSerializer;
 
-  const ExchangeRateResponseRESULTEnum._(String name): super(name);
+  const ExchangeRateResponseRESULTEnum._(String name) : super(name);
 
-  static BuiltSet<ExchangeRateResponseRESULTEnum> get values => _$exchangeRateResponseRESULTEnumValues;
-  static ExchangeRateResponseRESULTEnum valueOf(String name) => _$exchangeRateResponseRESULTEnumValueOf(name);
+  static BuiltSet<ExchangeRateResponseRESULTEnum> get values =>
+      _$exchangeRateResponseRESULTEnumValues;
+  static ExchangeRateResponseRESULTEnum valueOf(String name) =>
+      _$exchangeRateResponseRESULTEnumValueOf(name);
 }
-

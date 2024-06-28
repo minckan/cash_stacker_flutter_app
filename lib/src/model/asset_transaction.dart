@@ -11,19 +11,20 @@ part 'asset_transaction.g.dart';
 /// AssetTransaction
 ///
 /// Properties:
-/// * [transactionId] 
-/// * [createdAt] 
-/// * [assetId] 
-/// * [transactionType] 
-/// * [description] 
-/// * [transactionDate] 
-/// * [currency] 
-/// * [amount] 
-/// * [exchangeRate] 
-/// * [shares] 
-/// * [pricePerShare] 
+/// * [transactionId]
+/// * [createdAt]
+/// * [assetId]
+/// * [transactionType]
+/// * [description]
+/// * [transactionDate]
+/// * [currency]
+/// * [amount]
+/// * [exchangeRate]
+/// * [shares]
+/// * [pricePerShare]
 @BuiltValue()
-abstract class AssetTransaction implements Built<AssetTransaction, AssetTransactionBuilder> {
+abstract class AssetTransaction
+    implements Built<AssetTransaction, AssetTransactionBuilder> {
   @BuiltValueField(wireName: r'transaction_id')
   int? get transactionId;
 
@@ -59,16 +60,19 @@ abstract class AssetTransaction implements Built<AssetTransaction, AssetTransact
 
   AssetTransaction._();
 
-  factory AssetTransaction([void updates(AssetTransactionBuilder b)]) = _$AssetTransaction;
+  factory AssetTransaction([void updates(AssetTransactionBuilder b)]) =
+      _$AssetTransaction;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetTransactionBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AssetTransaction> get serializer => _$AssetTransactionSerializer();
+  static Serializer<AssetTransaction> get serializer =>
+      _$AssetTransactionSerializer();
 }
 
-class _$AssetTransactionSerializer implements PrimitiveSerializer<AssetTransaction> {
+class _$AssetTransactionSerializer
+    implements PrimitiveSerializer<AssetTransaction> {
   @override
   final Iterable<Type> types = const [AssetTransaction, _$AssetTransaction];
 
@@ -165,7 +169,9 @@ class _$AssetTransactionSerializer implements PrimitiveSerializer<AssetTransacti
     AssetTransaction object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -285,4 +291,3 @@ class _$AssetTransactionSerializer implements PrimitiveSerializer<AssetTransacti
     return result.build();
   }
 }
-

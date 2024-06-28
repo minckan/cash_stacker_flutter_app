@@ -14,7 +14,8 @@ part 'workspaces_post_request.g.dart';
 /// * [workspaceName] - The name of the workspace.
 /// * [workspaceId] - The ID of the workspace.
 @BuiltValue()
-abstract class WorkspacesPostRequest implements Built<WorkspacesPostRequest, WorkspacesPostRequestBuilder> {
+abstract class WorkspacesPostRequest
+    implements Built<WorkspacesPostRequest, WorkspacesPostRequestBuilder> {
   /// The name of the workspace.
   @BuiltValueField(wireName: r'workspace_name')
   String? get workspaceName;
@@ -25,18 +26,24 @@ abstract class WorkspacesPostRequest implements Built<WorkspacesPostRequest, Wor
 
   WorkspacesPostRequest._();
 
-  factory WorkspacesPostRequest([void updates(WorkspacesPostRequestBuilder b)]) = _$WorkspacesPostRequest;
+  factory WorkspacesPostRequest(
+      [void updates(WorkspacesPostRequestBuilder b)]) = _$WorkspacesPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspacesPostRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WorkspacesPostRequest> get serializer => _$WorkspacesPostRequestSerializer();
+  static Serializer<WorkspacesPostRequest> get serializer =>
+      _$WorkspacesPostRequestSerializer();
 }
 
-class _$WorkspacesPostRequestSerializer implements PrimitiveSerializer<WorkspacesPostRequest> {
+class _$WorkspacesPostRequestSerializer
+    implements PrimitiveSerializer<WorkspacesPostRequest> {
   @override
-  final Iterable<Type> types = const [WorkspacesPostRequest, _$WorkspacesPostRequest];
+  final Iterable<Type> types = const [
+    WorkspacesPostRequest,
+    _$WorkspacesPostRequest
+  ];
 
   @override
   final String wireName = r'WorkspacesPostRequest';
@@ -68,7 +75,9 @@ class _$WorkspacesPostRequestSerializer implements PrimitiveSerializer<Workspace
     WorkspacesPostRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -125,4 +134,3 @@ class _$WorkspacesPostRequestSerializer implements PrimitiveSerializer<Workspace
     return result.build();
   }
 }
-

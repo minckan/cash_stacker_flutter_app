@@ -121,12 +121,13 @@ class AssetSummaryViewModel extends StateNotifier<List<AssetSummary>> {
   }
 
   double get monthlyExpenditure {
-    final thisMonthTransactions = _ref
-        .read(transactionViewModelProvider.notifier)
-        .getMonthTransactions(getMonth(DateTime.now()));
+    // final thisMonthTransactions = _ref
+    //     .read(transactionViewModelProvider.notifier)
+    //     .getMonthTransactions(getMonth(DateTime.now()));
 
-    return thisMonthTransactions.fold(
-        0.0, (total, transaction) => total + transaction['totalExpense']);
+    // return thisMonthTransactions.fold(
+    //     0.0, (total, transaction) => total + transaction['totalExpense']);
+    return 0.0;
   }
 
   double get currentExpendableBudget {

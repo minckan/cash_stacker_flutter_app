@@ -11,12 +11,13 @@ part 'transaction_category.g.dart';
 /// TransactionCategory
 ///
 /// Properties:
-/// * [categoryId] 
-/// * [workspaceId] 
-/// * [categoryName] 
-/// * [categoryType] 
+/// * [categoryId]
+/// * [workspaceId]
+/// * [categoryName]
+/// * [categoryType]
 @BuiltValue()
-abstract class TransactionCategory implements Built<TransactionCategory, TransactionCategoryBuilder> {
+abstract class TransactionCategory
+    implements Built<TransactionCategory, TransactionCategoryBuilder> {
   @BuiltValueField(wireName: r'category_id')
   int? get categoryId;
 
@@ -31,18 +32,24 @@ abstract class TransactionCategory implements Built<TransactionCategory, Transac
 
   TransactionCategory._();
 
-  factory TransactionCategory([void updates(TransactionCategoryBuilder b)]) = _$TransactionCategory;
+  factory TransactionCategory([void updates(TransactionCategoryBuilder b)]) =
+      _$TransactionCategory;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TransactionCategoryBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TransactionCategory> get serializer => _$TransactionCategorySerializer();
+  static Serializer<TransactionCategory> get serializer =>
+      _$TransactionCategorySerializer();
 }
 
-class _$TransactionCategorySerializer implements PrimitiveSerializer<TransactionCategory> {
+class _$TransactionCategorySerializer
+    implements PrimitiveSerializer<TransactionCategory> {
   @override
-  final Iterable<Type> types = const [TransactionCategory, _$TransactionCategory];
+  final Iterable<Type> types = const [
+    TransactionCategory,
+    _$TransactionCategory
+  ];
 
   @override
   final String wireName = r'TransactionCategory';
@@ -88,7 +95,9 @@ class _$TransactionCategorySerializer implements PrimitiveSerializer<Transaction
     TransactionCategory object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -159,4 +168,3 @@ class _$TransactionCategorySerializer implements PrimitiveSerializer<Transaction
     return result.build();
   }
 }
-
