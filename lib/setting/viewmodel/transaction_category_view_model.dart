@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_category_repository.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -59,30 +60,34 @@ class TransactionCategoryViewModel
     );
 
     // Update the category in the state
-    final categories = state[category.type]!.map((c) {
+    final categories = state[category.type.name]!.map((c) {
       return c.id == category.id ? category : c;
     }).toList();
     state = {
       ...state,
-      '${category.type}': categories,
+      category.type.name: categories,
     };
   }
 
   Future<void> removeCategory(
       TransactionCategoryModel category, String workspaceId) async {
-    await _ref
-        .read(financialTrackerCategoryRepositoryProvider)
-        .deleteTransactionCategory(
-          workspaceId: workspaceId,
-          id: category.id!,
-        );
+    try {
+      await _ref
+          .read(financialTrackerCategoryRepositoryProvider)
+          .deleteTransactionCategory(
+            workspaceId: workspaceId,
+            id: category.id!,
+          );
 
-    // Remove the category from the state
-    final categories =
-        state[category.type]!.where((c) => c.id != category.id).toList();
-    state = {
-      ...state,
-      '${category.type}': categories,
-    };
+      // Remove the category from the state
+      final categories =
+          state[category.type.name]!.where((c) => c.id != category.id).toList();
+      state = {
+        ...state,
+        category.type.name: categories,
+      };
+    } catch (e) {
+      logger.e(e);
+    }
   }
 }

@@ -1,7 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
+
 import 'package:cash_stacker_flutter_app/setting/component/category_list_tile.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
@@ -16,8 +15,7 @@ class IncomeCategoryScreen extends ConsumerWidget {
     final categories = ref
         .watch(transactionCategoryViewModelProvider.notifier)
         .getCategoriesByType('income');
-    final assets = ref.watch(assetViewModelProvider);
-
+// TODO: 404 상태에 대한 화면 노출 필요
     return DefaultLayout(
       title: '수입 카테고리 관리',
       actions: [
@@ -32,13 +30,8 @@ class IncomeCategoryScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categories[index];
 
-          const hasCategoryAsset = false;
-          // assets.any(
-          //   (element) => element.category.id == category.id,
-          // );
           return CategoryListTile(
             category: category,
-            hasCategoryAsset: hasCategoryAsset,
           );
         },
         itemCount: categories.length,

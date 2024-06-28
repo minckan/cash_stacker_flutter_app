@@ -1,7 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/setting/component/category_list_tile.dart';
-
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_expense_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +14,7 @@ class ExpenseCategoryScreen extends ConsumerWidget {
         .watch(transactionCategoryViewModelProvider.notifier)
         .getCategoriesByType('expense');
 
+// TODO: 404 상태에 대한 화면 노출 필요
     return DefaultLayout(
       title: '지출 카테고리 관리',
       actions: [
@@ -32,7 +31,6 @@ class ExpenseCategoryScreen extends ConsumerWidget {
 
           return CategoryListTile(
             category: category,
-            hasCategoryAsset: true,
           );
         },
         itemCount: categories.length,
