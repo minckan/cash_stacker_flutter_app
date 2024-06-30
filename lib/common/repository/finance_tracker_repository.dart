@@ -1,10 +1,10 @@
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/src/api.dart';
-import 'package:cash_stacker_flutter_app/src/api/financial_tracker_api.dart';
-import 'package:cash_stacker_flutter_app/src/model/transaction.dart';
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_id_put_request.dart';
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/api.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/api/financial_tracker_api.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_id_put_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_post_request.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

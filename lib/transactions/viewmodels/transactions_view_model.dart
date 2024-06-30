@@ -1,10 +1,10 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
-import 'package:cash_stacker_flutter_app/src/model/transaction.dart';
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_id_put_request.dart';
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_id_put_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_post_request.dart';
 
 import 'package:cash_stacker_flutter_app/transactions/providers/financial_tracker_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

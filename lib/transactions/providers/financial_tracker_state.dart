@@ -1,4 +1,4 @@
-import 'package:cash_stacker_flutter_app/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
 
 class FinancialState {
   final WorkspaceIdFinanceMonthlyMonthKeyGet200Response monthlyResponse;

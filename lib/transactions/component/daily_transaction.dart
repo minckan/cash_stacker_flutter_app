@@ -1,5 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/src/model/transaction.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction.dart';
 
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
