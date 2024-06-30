@@ -963,7 +963,7 @@ paths:
     get:
       tags:
         - budget
-      summary: Get all active budgets
+      summary: Get all budgets
       description: Retrieve all active budgets for the specified workspace.
       security:
         - bearerAuth: []
@@ -1030,6 +1030,44 @@ paths:
                 $ref: "#/components/schemas/Budget"
         "500":
           description: Failed to create budget.
+  "/{workspaceId}/budget/active":
+    get:
+      tags:
+        - budget
+      summary: Get active budgets
+      description: Retrieve all budgets for the specified workspace.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace
+      responses:
+        "200":
+          description: A list of active budgets.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  budget:
+                    $ref: "#/components/schemas/Budget"
+                    nullable: true
+                  expendableBudget:
+                    type: object
+                    properties:
+                      expendableBudget:
+                        type: number
+                        example: 500
+                      percentage:
+                        type: number
+                        example: 50
+                    nullable: true
+        "500":
+          description: Failed to fetch budgets.
   "/{workspaceId}/budget/{id}":
     put:
       tags:

@@ -39,6 +39,8 @@ export 'src/model/workspace_id_assets_asset_id_transactions_id_delete500_respons
 export 'src/model/workspace_id_assets_id_put_request.dart';
 export 'src/model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
 export 'src/model/workspace_id_assets_post_request.dart';
+export 'src/model/workspace_id_budget_active_get200_response.dart';
+export 'src/model/workspace_id_budget_active_get200_response_expendable_budget.dart';
 export 'src/model/workspace_id_budget_post_request.dart';
 export 'src/model/workspace_id_finance_category_id_put_request.dart';
 export 'src/model/workspace_id_finance_category_post_request.dart';

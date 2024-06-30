@@ -12,6 +12,7 @@ import '../api_util.dart';
 import '../model/asset.dart';
 import '../model/asset_transaction.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
+import '../model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
 import '../model/workspace_id_assets_id_put_request.dart';
 import '../model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
 import '../model/workspace_id_assets_post_request.dart';

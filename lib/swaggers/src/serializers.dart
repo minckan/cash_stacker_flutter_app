@@ -34,6 +34,8 @@ import 'model/workspace_id_assets_asset_id_transactions_id_delete500_response.da
 import 'model/workspace_id_assets_id_put_request.dart';
 import 'model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
 import 'model/workspace_id_assets_post_request.dart';
+import 'model/workspace_id_budget_active_get200_response.dart';
+import 'model/workspace_id_budget_active_get200_response_expendable_budget.dart';
 import 'model/workspace_id_budget_post_request.dart';
 import 'model/workspace_id_finance_category_id_put_request.dart';
 import 'model/workspace_id_finance_category_post_request.dart';
@@ -68,6 +70,8 @@ part 'serializers.g.dart';
   WorkspaceIdAssetsIdPutRequest,
   WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
   WorkspaceIdAssetsPostRequest,
+  WorkspaceIdBudgetActiveGet200Response,
+  WorkspaceIdBudgetActiveGet200ResponseExpendableBudget,
   WorkspaceIdBudgetPostRequest,
   WorkspaceIdFinanceCategoryIdPutRequest,
   WorkspaceIdFinanceCategoryPostRequest,

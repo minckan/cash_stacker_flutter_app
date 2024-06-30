@@ -2,7 +2,7 @@ import 'package:cash_stacker_flutter_app/common/repository/workspace_repository.
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
+
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
