@@ -41,9 +41,10 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
   List<TransactionSummary>? getMonthlyTransactionsInfo() {
     if (state is TransactionState) {
       final monthlyResponse = (state as TransactionState).monthlyResponse;
+
       Map<String, List<Transaction>> groupedTransactions = {};
 
-      monthlyResponse!.transactions?.forEach((transaction) {
+      monthlyResponse?.transactions?.forEach((transaction) {
         final String dateKey =
             DateFormat('yyyy-MM-dd').format(transaction.transactionDate!);
 
@@ -95,16 +96,27 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
     // 캐시에서 데이터 확인
     final cachedData = state is TransactionState
-        ? (state as TransactionState).monthlyCache![monthKey]
+        ? (state as TransactionState).monthlyCache
         : null;
 
-    if (cachedData != null) {
+    if (cachedData?[monthKey] != null) {
       state = TransactionState(
-        monthlyResponse: cachedData,
+        monthlyResponse: cachedData![monthKey],
         monthlyCache: (state as TransactionState).monthlyCache,
         dailyCache: (state as TransactionState).dailyCache,
       );
       return;
+    }
+
+    Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response> previousCache =
+        {};
+
+    if (cachedData != null) {
+      previousCache = {
+        ...(state is TransactionState
+            ? (state as TransactionState).monthlyCache ?? {}
+            : {})
+      };
     }
 
     // 상태를 로딩 상태로 설정
@@ -121,9 +133,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
       if (response.data != null) {
         final Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>
             newMonthlyCache = {
-          ...(state is TransactionState
-              ? (state as TransactionState).monthlyCache ?? {}
-              : {}),
+          ...previousCache,
           monthKey: response.data!,
         };
 
@@ -162,7 +172,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
       }
 
       // API 호출
-      state = TransactionStateLoading();
+
       try {
         final financialTrackerRep =
             _ref.read(financialTrackerRepositoryProvider);
