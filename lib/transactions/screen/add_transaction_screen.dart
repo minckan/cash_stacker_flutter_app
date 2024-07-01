@@ -54,18 +54,18 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
     final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
 
     if (_addIncomeTabKey.currentState != null &&
-        _addIncomeTabKey.currentState!.selectedCategory != null) {
+        _addIncomeTabKey.currentState?.selectedCategory != null) {
       final incomePrice = _addIncomeTabKey.currentState!.priceController.text;
       final selectedIncomeCategory =
           _addIncomeTabKey.currentState!.selectedCategory;
 
       transaction = WorkspaceIdFinancePostRequest(
         (b) => b
-          ..categoryId = selectedIncomeCategory!.id!
+          ..categoryId = selectedIncomeCategory!.categoryId
           ..amount = double.parse(incomePrice)
           ..transactionType = 'income'
           ..description = ''
-          ..transactionDate = selectedDate,
+          ..transactionDate = selectedDate.toUtc(),
       );
 
       await ref
@@ -74,21 +74,22 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
     }
 
     if (_addExpenseTabKey.currentState != null &&
-        _addExpenseTabKey.currentState!.selectedCategory != null) {
+        _addExpenseTabKey.currentState?.selectedCategory != null) {
       final expensePrice = _addExpenseTabKey.currentState!.priceController.text;
       final selectedExpenseCategory =
           _addExpenseTabKey.currentState!.selectedCategory;
       final expensePaymentMethod =
           _addExpenseTabKey.currentState!.selectedPaymentMethod;
 
+      print(_addExpenseTabKey.currentState?.selectedCategory);
       transaction = WorkspaceIdFinancePostRequest(
         (b) => b
-          ..categoryId = selectedExpenseCategory!.id!
+          ..categoryId = selectedExpenseCategory!.categoryId
           ..amount = double.parse(expensePrice)
           ..transactionType = 'expense'
           ..description = ''
           ..transactionDate = selectedDate.toUtc()
-          ..paymentMethod = expensePaymentMethod!.type.name,
+          ..paymentMethod = expensePaymentMethod,
       );
 
       await ref

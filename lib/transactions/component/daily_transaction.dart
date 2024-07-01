@@ -125,14 +125,12 @@ class DailyTransaction extends ConsumerWidget {
                         child: Row(
                           children: [
                             Text(
-                              transaction.category!.categoryName ?? "",
+                              transaction.category?.categoryName ?? "",
                               style: normalStyle,
                             ),
                             const SizedBox(width: 20),
                             Text(
-                              transaction.paymentMethod != null
-                                  ? transaction.paymentMethod!
-                                  : '',
+                              transaction.paymentMethod ?? '',
                               style: normalStyle.copyWith(
                                   color: AppColors.bodyTextDark),
                             ),

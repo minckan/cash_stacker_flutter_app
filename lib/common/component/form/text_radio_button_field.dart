@@ -52,6 +52,9 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
                 child: const Icon(Icons.add)),
           );
         }
+
+        final item = widget.list[index - 1];
+
         return Container(
           decoration: const BoxDecoration(),
           child: GestureDetector(
@@ -59,7 +62,7 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
               setState(() {
                 selectedIndex = index;
               });
-              widget.onTabSelectItem(widget.list[index - 1]);
+              widget.onTabSelectItem(item);
             },
             child: Container(
               alignment: Alignment.center,
@@ -73,7 +76,7 @@ class _TextRadioButtonFieldState extends State<TextRadioButtonField> {
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Text(
-                widget.list[index - 1].name,
+                item['name'] ?? "", // Check if item has a name
                 style: TextStyle(
                   color: isSelected ? Colors.white : Colors.black,
                   fontSize: 12,

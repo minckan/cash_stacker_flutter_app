@@ -5,6 +5,7 @@ import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_category_post_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,16 +27,14 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
               if (controller.value.text == '') {
                 return;
               }
-              final category = TransactionCategoryModel(
-                name: controller.value.text.toString(),
-                type: CategoryType.expense,
-              );
 
               if (currentUser != null) {
                 await ref
                     .read(transactionCategoryViewModelProvider.notifier)
                     .addCategory(
-                      category,
+                      WorkspaceIdFinanceCategoryPostRequest((b) => b
+                        ..categoryName = controller.value.text.toString()
+                        ..categoryType = CategoryType.expense.name),
                       currentUser.workspaceId,
                     );
 

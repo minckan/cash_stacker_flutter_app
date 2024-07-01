@@ -1,90 +1,95 @@
 import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_category_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
+
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final transactionCategoryViewModelProvider = StateNotifierProvider<
-        TransactionCategoryViewModel,
-        Map<String, List<TransactionCategoryModel>>>(
+        TransactionCategoryViewModel, Map<String, List<TransactionCategory>>>(
     (ref) => TransactionCategoryViewModel(ref));
 
 class TransactionCategoryViewModel
-    extends StateNotifier<Map<String, List<TransactionCategoryModel>>> {
+    extends StateNotifier<Map<String, List<TransactionCategory>>> {
   final Ref _ref;
 
   TransactionCategoryViewModel(this._ref)
       : super({'expense': [], 'income': []});
 
   Future<void> loadCategory({required String workspaceId}) async {
-    final incomeCategory = await _ref
+    final incomeCategoryRes = await _ref
         .read(financialTrackerCategoryRepositoryProvider)
         .getAllTransactionCategoryByType(
             workspaceId: workspaceId, type: 'income');
-    final expenseCategory = await _ref
+    final expenseCategoryRes = await _ref
         .read(financialTrackerCategoryRepositoryProvider)
         .getAllTransactionCategoryByType(
             workspaceId: workspaceId, type: 'expense');
     state = {
-      'income': incomeCategory,
-      'expense': expenseCategory,
+      'income': incomeCategoryRes.data?.toList() ?? [],
+      'expense': expenseCategoryRes.data?.toList() ?? [],
     };
   }
 
-  List<TransactionCategoryModel> getCategoriesByType(String type) {
+  List<TransactionCategory> getCategoriesByType(String type) {
     return state[type] ?? [];
   }
 
-  Future<void> addCategory(
-      TransactionCategoryModel category, String workspaceId) async {
-    await _ref
+  Future<void> addCategory(WorkspaceIdFinanceCategoryPostRequest category,
+      String workspaceId) async {
+    final response = await _ref
         .read(financialTrackerCategoryRepositoryProvider)
         .createTransactionCategory(workspaceId: workspaceId, body: category);
     // Add the category to the state
 
     state = {
       ...state,
-      category.type.name: [...state[category.type.name]!, category],
+      category.categoryType!: [
+        ...state[category.categoryType]!,
+        response.data!
+      ],
     };
   }
 
   Future<void> updateCategory(
-      TransactionCategoryModel category, String workspaceId) async {
-    await _ref
+    String workspaceId,
+    int categoryId,
+    WorkspaceIdFinanceCategoryIdPutRequest body,
+  ) async {
+    final response = await _ref
         .read(financialTrackerCategoryRepositoryProvider)
         .updateTransactionCategory(
-      workspaceId: workspaceId,
-      id: category.id!,
-      body: {
-        'category_name': category.name,
-      },
-    );
+          workspaceId: workspaceId,
+          id: categoryId,
+          body: body,
+        );
 
     // Update the category in the state
-    final categories = state[category.type.name]!.map((c) {
-      return c.id == category.id ? category : c;
+    final categories = state[response.data!.categoryType]!.map((c) {
+      return c.categoryId == response.data!.categoryId ? response.data! : c;
     }).toList();
     state = {
       ...state,
-      category.type.name: categories,
+      response.data!.categoryType!: categories,
     };
   }
 
   Future<void> removeCategory(
-      TransactionCategoryModel category, String workspaceId) async {
+      TransactionCategory category, String workspaceId) async {
     try {
       await _ref
           .read(financialTrackerCategoryRepositoryProvider)
           .deleteTransactionCategory(
             workspaceId: workspaceId,
-            id: category.id!,
+            id: category.categoryId!,
           );
 
       // Remove the category from the state
-      final categories =
-          state[category.type.name]!.where((c) => c.id != category.id).toList();
+      final categories = state[category.categoryType]!
+          .where((c) => c.categoryId != category.categoryId)
+          .toList();
       state = {
         ...state,
-        category.type.name: categories,
+        category.categoryType!: categories,
       };
     } catch (e) {
       logger.e(e);

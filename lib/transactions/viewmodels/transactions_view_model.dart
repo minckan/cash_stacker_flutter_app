@@ -80,6 +80,8 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
           total: netIncome,
           transactions: transactions,
         ));
+
+        summaries.sort((a, b) => b.date.compareTo(a.date));
       });
 
       return summaries;
@@ -215,69 +217,83 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
       );
 
       if (response.data != null) {
-        final newTransaction = response.data!;
-        final transactionDate = newTransaction.transactionDate!;
+        final newTransaction = response.data;
 
-        // 현재 상태의 월과 일 데이터인지 확인
-        final isCurrentMonth =
-            getMonth(transactionDate) == getMonth(DateTime.now());
-        final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
-            DateFormat('yyyy-MM-dd').format(DateTime.now());
+        if (newTransaction != null && newTransaction.transactionDate != null) {
+          final transactionDate = newTransaction.transactionDate!;
 
-        if (state is TransactionState) {
-          final currentState = state as TransactionState;
+          // 현재 상태의 월과 일 데이터인지 확인
+          final isCurrentMonth =
+              getMonth(transactionDate) == getMonth(DateTime.now());
+          final isCurrentDay =
+              DateFormat('yyyy-MM-dd').format(transactionDate) ==
+                  DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-          if (isCurrentMonth) {
-            final updatedTransactions =
-                currentState.monthlyResponse?.transactions?.toBuilder() ??
-                    ListBuilder<Transaction>()
-                  ..add(newTransaction);
+          if (state is TransactionState) {
+            final currentState = state as TransactionState;
 
-            final updatedMonthlyResponse =
-                currentState.monthlyResponse?.rebuild(
-              (b) => b..transactions = updatedTransactions,
-            );
+            if (isCurrentMonth) {
+              final updatedTransactions =
+                  currentState.monthlyResponse?.transactions?.toBuilder() ??
+                      ListBuilder<Transaction>()
+                    ..add(newTransaction);
 
-            final newMonthlyCache = Map<String,
-                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-              currentState.monthlyCache ?? {},
-            )..[getMonth(transactionDate)] = updatedMonthlyResponse!;
+              final updatedMonthlyResponse =
+                  currentState.monthlyResponse?.rebuild(
+                (b) => b..transactions = updatedTransactions,
+              );
 
-            state = TransactionState(
-              monthlyResponse: updatedMonthlyResponse,
-              dailyResponse: currentState.dailyResponse,
-              monthlyCache: newMonthlyCache,
-              dailyCache: currentState.dailyCache,
-            );
+              if (updatedMonthlyResponse != null) {
+                final newMonthlyCache = Map<String,
+                    WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+                  currentState.monthlyCache ?? {},
+                )..[getMonth(transactionDate)] = updatedMonthlyResponse;
+
+                state = TransactionState(
+                  monthlyResponse: updatedMonthlyResponse,
+                  dailyResponse: currentState.dailyResponse,
+                  monthlyCache: newMonthlyCache,
+                  dailyCache: currentState.dailyCache,
+                );
+              }
+            }
+
+            if (isCurrentDay) {
+              final updatedDailyTransactions =
+                  currentState.dailyResponse?.transactions?.toBuilder() ??
+                      ListBuilder<Transaction>()
+                    ..add(newTransaction);
+
+              final updatedDailyResponse = currentState.dailyResponse?.rebuild(
+                (b) => b..transactions = updatedDailyTransactions,
+              );
+
+              if (updatedDailyResponse != null) {
+                final newDailyCache = Map<String,
+                    WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+                  currentState.dailyCache ?? {},
+                )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
+                    updatedDailyResponse;
+
+                state = TransactionState(
+                  monthlyResponse: currentState.monthlyResponse,
+                  dailyResponse: updatedDailyResponse,
+                  monthlyCache: currentState.monthlyCache,
+                  dailyCache: newDailyCache,
+                );
+              }
+            }
           }
-
-          if (isCurrentDay) {
-            final updatedDailyTransactions =
-                currentState.dailyResponse?.transactions?.toBuilder() ??
-                    ListBuilder<Transaction>()
-                  ..add(newTransaction);
-
-            final updatedDailyResponse = currentState.dailyResponse?.rebuild(
-              (b) => b..transactions = updatedDailyTransactions,
-            );
-
-            final newDailyCache = Map<String,
-                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-              currentState.dailyCache ?? {},
-            )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
-                updatedDailyResponse!;
-
-            state = TransactionState(
-              monthlyResponse: currentState.monthlyResponse,
-              dailyResponse: updatedDailyResponse,
-              monthlyCache: currentState.monthlyCache,
-              dailyCache: newDailyCache,
-            );
-          }
+        } else {
+          state = TransactionStateError(
+            errorMessage:
+                '[Create Transaction]: Null transaction or transaction date',
+          );
         }
       }
     } catch (e) {
-      state = TransactionStateError(errorMessage: e.toString());
+      state = TransactionStateError(
+          errorMessage: '[Create Transaction]: ${e.toString()}');
     }
   }
 
