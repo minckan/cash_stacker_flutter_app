@@ -6,20 +6,20 @@ import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_post_request.dart';
 
-import 'package:cash_stacker_flutter_app/transactions/providers/financial_tracker_state.dart';
+import 'package:cash_stacker_flutter_app/transactions/providers/transaction_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-final financialStateProvider =
-    StateNotifierProvider<FinancialStateNotifier, FinancialState>(
-  (ref) => FinancialStateNotifier(ref),
+final transactionStateProvider =
+    StateNotifierProvider<TransactionStateNotifier, TransactionState>(
+  (ref) => TransactionStateNotifier(ref),
 );
 
-class FinancialStateNotifier extends StateNotifier<FinancialState> {
+class TransactionStateNotifier extends StateNotifier<TransactionState> {
   final Ref _ref;
 
-  FinancialStateNotifier(this._ref)
-      : super(FinancialState(
+  TransactionStateNotifier(this._ref)
+      : super(TransactionState(
           monthlyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response(
               (b) => b..transactions = ListBuilder()),
           dailyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response(
@@ -335,7 +335,7 @@ class FinancialStateNotifier extends StateNotifier<FinancialState> {
   }
 
   void clear() {
-    state = FinancialState(
+    state = TransactionState(
       monthlyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response((b) => b
         ..netTotal = 0
         ..expense = 0

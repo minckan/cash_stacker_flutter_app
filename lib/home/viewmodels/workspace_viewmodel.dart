@@ -1,13 +1,12 @@
 import 'package:cash_stacker_flutter_app/common/repository/workspace_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
+
 import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
 
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final workspaceViewModelProvider =
@@ -94,7 +93,7 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
     state = null;
     try {
       _ref.read(assetViewModelProvider.notifier).clearAssets();
-      _ref.read(financialStateProvider.notifier).clear();
+      _ref.read(transactionStateProvider.notifier).clear();
     } catch (e) {
       logger.e('Error clearing workspace: $e');
     }

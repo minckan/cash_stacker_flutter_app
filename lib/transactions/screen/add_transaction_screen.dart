@@ -5,7 +5,7 @@ import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance
 
 import 'package:cash_stacker_flutter_app/transactions/component/add_expense_tab.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/add_income_tab.dart';
-import 'package:cash_stacker_flutter_app/transactions/model/transaction_model.dart';
+import 'package:cash_stacker_flutter_app/transactions/providers/transaction_state.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 
 import 'package:flutter/material.dart';
@@ -69,7 +69,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       );
 
       await ref
-          .read(financialStateProvider.notifier)
+          .read(transactionStateProvider.notifier)
           .addTransaction(workspaceId: workspaceId, transaction: transaction);
     }
 
@@ -92,7 +92,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       );
 
       await ref
-          .read(financialStateProvider.notifier)
+          .read(transactionStateProvider.notifier)
           .addTransaction(workspaceId: workspaceId, transaction: transaction);
     }
 

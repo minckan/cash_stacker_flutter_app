@@ -42,7 +42,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
   Future<void> fetchTransactions(DateTime date) async {
     final workspaceId = ref.read(workspaceViewModelProvider)?.id;
     if (workspaceId != null) {
-      await ref.read(financialStateProvider.notifier).loadMonthlyTransactions(
+      await ref.read(transactionStateProvider.notifier).loadMonthlyTransactions(
             workspaceId,
             date,
           );
@@ -62,11 +62,12 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
         PageController(initialPage: (ref.read(dateProvider).month - 1 + 24));
     DateTime currentDate = ref.watch(dateProvider);
 
-    final financeState = ref.watch(financialStateProvider);
+    final financeState = ref.watch(transactionStateProvider);
     final monthlyState = financeState.monthlyResponse;
 
-    final transactionSummaries =
-        ref.read(financialStateProvider.notifier).getMonthlyTransactionsInfo();
+    final transactionSummaries = ref
+        .read(transactionStateProvider.notifier)
+        .getMonthlyTransactionsInfo();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
