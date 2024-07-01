@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/budget/model/budget_state.dart';
+import 'package:cash_stacker_flutter_app/budget/screen/budget_list_screen.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
@@ -87,15 +88,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       size: 18,
                     ),
                     onPressed: () async {
-                      // final newSummary = await Navigator.of(context).push(
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             const BudgetSettingScreen()));
+                      await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const BudgetListScreen()));
 
-                      // if (workspaceId != null) {
-                      //   assetSummaryViewModel.updateAssetSummary(
-                      //       workspaceId, newSummary);
-                      // }
+                      if (workspaceId != null) {}
                     },
                   )
                 ],
@@ -282,7 +278,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: const TextStyle(
                     height: 1.1, fontSize: 14, fontWeight: FontWeight.w500),
               ),
-            ]
+            ] else
+              const Center(
+                child: Text(
+                  '활성가능한 예산이 없습니다.\n예산을 설정해주세요.',
+                  textAlign: TextAlign.center,
+                ),
+              )
           ],
         ),
       ),

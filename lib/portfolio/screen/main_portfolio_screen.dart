@@ -13,7 +13,6 @@ import 'package:cash_stacker_flutter_app/portfolio/screen/current_exchange_rate_
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/asset_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 
 import 'package:flutter/material.dart';
 

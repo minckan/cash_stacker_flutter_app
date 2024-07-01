@@ -1,13 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/input-formatter/decimal.dart';
-import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 
-import 'package:cash_stacker_flutter_app/home/model/asset_summary_model.dart';
-
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -23,22 +18,11 @@ class BudgetSettingScreen extends ConsumerStatefulWidget {
 }
 
 class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
-  AssetSummary? currentMonthSummary;
-  AssetSummaryViewModel? assetSummaryVM;
   final formKey = GlobalKey<FormBuilderState>();
 
   @override
   void initState() {
     super.initState();
-
-    assetSummaryVM = ref.read(assetSummaryProvider.notifier);
-    currentMonthSummary =
-        assetSummaryVM?.getAssetSummaryByMonth(getMonth(DateTime.now()));
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      formKey.currentState?.patchValue(
-          {'budget': currentMonthSummary?.monthlyBudget.toString()});
-    });
   }
 
   @override
@@ -55,17 +39,7 @@ class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
 
               final workspaceId = ref.watch(workspaceViewModelProvider)?.id;
 
-              if (workspaceId == null ||
-                  currentMonthSummary == null ||
-                  budget == null) {
-                return;
-              }
-
-              final assetSummary = currentMonthSummary!.copyWith(
-                monthlyBudget: double.parse(removeComma(budget)),
-              );
-
-              Navigator.of(context).pop(assetSummary);
+              Navigator.of(context).pop();
             }
           },
           child: const Text(

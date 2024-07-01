@@ -1,5 +1,7 @@
 import 'package:cash_stacker_flutter_app/budget/model/budget_state.dart';
 import 'package:cash_stacker_flutter_app/common/repository/budget_repository.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/budget.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,8 +38,9 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
     return null;
   }
 
-  Future<void> loadBudgets(String? workspaceId) async {
+  Future<List<Budget>?> loadBudgets() async {
     try {
+      final workspaceId = _ref.read(workspaceViewModelProvider)?.id;
       if (workspaceId != null) {
         final response = await _ref
             .read(budgetRepositoryProvider)
@@ -45,6 +48,7 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
 
         if (response.data != null && response.data!.isNotEmpty) {
           state = BudgetState(budgets: response.data!.toList());
+          return response.data!.toList();
         }
       } else {
         setError('workspaceId is null');
@@ -52,6 +56,7 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
     } catch (e) {
       setError(e.toString());
     }
+    return null;
   }
 
   Future<void> loadActiveBudget(String? workspaceId) async {
