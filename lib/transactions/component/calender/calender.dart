@@ -5,11 +5,11 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 
 class Calender extends StatefulWidget {
   final DateTime today;
-  final List<TransactionSummary> transactionSummaries;
+  final List<TransactionSummary>? transactionSummaries;
   const Calender({
     super.key,
     required this.today,
-    required this.transactionSummaries,
+    this.transactionSummaries,
   });
 
   @override
@@ -24,7 +24,7 @@ class _CalenderState extends State<Calender> {
         _buildWeek(),
         _buildCalendar(
           date: widget.today,
-          transactionSummaries: widget.transactionSummaries,
+          transactionSummaries: widget.transactionSummaries ?? [],
         ),
       ],
     );

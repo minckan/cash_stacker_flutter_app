@@ -3,7 +3,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/screen/home_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
-import 'package:cash_stacker_flutter_app/transactions/providers/transaction_state.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_state.dart';
 
 import 'package:cash_stacker_flutter_app/transactions/screen/add_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/transactions/screen/main_transaction_screen.dart';

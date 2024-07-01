@@ -2,6 +2,7 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/daily_transaction.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_state.dart';
 import 'package:cash_stacker_flutter_app/transactions/providers/date_state.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 
@@ -49,7 +50,6 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     }
   }
 
-// TODO: 로딩상태 노출하기
   @override
   Widget build(BuildContext context) {
     ref.listen(dateProvider, (prev, next) {
@@ -63,39 +63,40 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     DateTime currentDate = ref.watch(dateProvider);
 
     final financeState = ref.watch(transactionStateProvider);
-    final monthlyState = financeState.monthlyResponse;
-
-    final transactionSummaries = ref
-        .read(transactionStateProvider.notifier)
-        .getMonthlyTransactionsInfo();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildHeader(currentDate: currentDate, pageController: pageController),
         _buildTab(),
-        _buildIndicators(
-          total: monthlyState.netTotal ?? 0.0,
-          income: monthlyState.income ?? 0.0,
-          expense: monthlyState.expense ?? 0.0,
-        ),
+        _buildIndicators(financeState),
         Expanded(
-          child: PageView.builder(
-            controller: pageController,
-            onPageChanged: (index) {
-              DateTime date = DateTime(currentDate.year, (index % 12) + 1, 1);
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 100),
+            child: financeState is TransactionStateLoading
+                ? const Center(child: CircularProgressIndicator())
+                : financeState is TransactionStateError
+                    ? Center(
+                        child: Text(financeState.errorMessage),
+                      )
+                    : PageView.builder(
+                        controller: pageController,
+                        onPageChanged: (index) {
+                          DateTime date =
+                              DateTime(currentDate.year, (index % 12) + 1, 1);
 
-              setState(() {
-                ref.read(dateProvider.notifier).updateDate(date);
-              });
-            },
-            itemCount: 12 * 10,
-            itemBuilder: (context, pageIndex) {
-              // DateTime date =
-              //     DateTime(currentDate.year, (pageIndex % 12) + 1, 1);
+                          setState(() {
+                            ref.read(dateProvider.notifier).updateDate(date);
+                          });
+                        },
+                        itemCount: 12 * 10,
+                        itemBuilder: (context, pageIndex) {
+                          // DateTime date =
+                          //     DateTime(currentDate.year, (pageIndex % 12) + 1, 1);
 
-              return _buildTabBarView(transactionSummaries, currentDate);
-            },
+                          return _buildTabBarView(currentDate);
+                        },
+                      ),
           ),
         )
       ],
@@ -202,8 +203,10 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     );
   }
 
-  Widget _buildTabBarView(
-      List<TransactionSummary> transactionSummaries, DateTime currentDate) {
+  Widget _buildTabBarView(DateTime currentDate) {
+    final transactionSummaries = ref
+        .read(transactionStateProvider.notifier)
+        .getMonthlyTransactionsInfo();
     return TabBarView(
       controller: tabController,
       physics: const NeverScrollableScrollPhysics(),
@@ -224,11 +227,9 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
     );
   }
 
-  Widget _buildIndicators({
-    required num total,
-    required num income,
-    required num expense,
-  }) {
+  Widget _buildIndicators(TransactionStateBase financeState) {
+    final monthlyState =
+        financeState is TransactionState ? financeState.monthlyResponse : null;
     TextStyle numberStyle = const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w700,
@@ -254,7 +255,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                   ),
                   // const SizedBox(width: 4),
                   Text(
-                    addComma.format(income),
+                    addComma.format(monthlyState?.income ?? 0),
                     style: numberStyle.copyWith(color: AppColors.income),
                   )
                 ],
@@ -269,7 +270,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                     style: TextStyle(fontSize: 10),
                   ),
                   // const SizedBox(width: 4),
-                  Text(addComma.format(expense),
+                  Text(addComma.format(monthlyState?.expense ?? 0),
                       style: numberStyle.copyWith(color: AppColors.expense))
                 ],
               ),
@@ -285,7 +286,8 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                     ),
                   ),
                   // const SizedBox(width: 4),
-                  Text(addComma.format(total), style: numberStyle)
+                  Text(addComma.format(monthlyState?.netTotal ?? 0),
+                      style: numberStyle)
                 ],
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction.dart';
-import 'package:cash_stacker_flutter_app/transactions/providers/transaction_state.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_state.dart';
 
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 import 'package:flutter/material.dart';
@@ -12,24 +12,24 @@ import 'package:intl/intl.dart';
 class DailyTransaction extends ConsumerWidget {
   const DailyTransaction({
     super.key,
-    required this.transactionSummaries,
+    this.transactionSummaries,
   });
 
-  final List<TransactionSummary> transactionSummaries;
+  final List<TransactionSummary>? transactionSummaries;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (transactionSummaries.isEmpty) {
+    if (transactionSummaries == null || transactionSummaries!.isEmpty) {
       return const Center(
         child: Text('데이터가 없습니다.'),
       );
     }
     return ListView.builder(
       itemBuilder: (context, index) {
-        final summary = transactionSummaries[index];
+        final summary = transactionSummaries![index];
         return buildDailyContent(summary);
       },
-      itemCount: transactionSummaries.length,
+      itemCount: transactionSummaries!.length,
     );
   }
 

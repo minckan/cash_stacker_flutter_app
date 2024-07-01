@@ -6,101 +6,139 @@ import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_post_request.dart';
 
-import 'package:cash_stacker_flutter_app/transactions/providers/transaction_state.dart';
+import 'package:cash_stacker_flutter_app/transactions/model/transaction_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+class TransactionSummary {
+  final DateTime date;
+  final double income;
+  final double expense;
+  final double total;
+  final List<Transaction> transactions;
+
+  TransactionSummary({
+    required this.date,
+    required this.income,
+    required this.expense,
+    required this.total,
+    required this.transactions,
+  });
+}
+
 final transactionStateProvider =
-    StateNotifierProvider<TransactionStateNotifier, TransactionState>(
+    StateNotifierProvider<TransactionStateNotifier, TransactionStateBase>(
   (ref) => TransactionStateNotifier(ref),
 );
 
-class TransactionStateNotifier extends StateNotifier<TransactionState> {
+class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
   final Ref _ref;
 
-  TransactionStateNotifier(this._ref)
-      : super(TransactionState(
-          monthlyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response(
-              (b) => b..transactions = ListBuilder()),
-          dailyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response(
-              (b) => b..transactions = ListBuilder()),
-          monthlyCache: {},
-          dailyCache: {},
-        ));
+  TransactionStateNotifier(this._ref) : super(TransactionStateLoading());
 
   /// 월별 데이터를 일자별로 소팅한 데이터
   ///  TransactionSummary
-  List<TransactionSummary> getMonthlyTransactionsInfo() {
-    final monthlyResponse = state.monthlyResponse;
-    Map<String, List<Transaction>> groupedTransactions = {};
+  List<TransactionSummary>? getMonthlyTransactionsInfo() {
+    if (state is TransactionState) {
+      final monthlyResponse = (state as TransactionState).monthlyResponse;
+      Map<String, List<Transaction>> groupedTransactions = {};
 
-    monthlyResponse.transactions?.forEach((transaction) {
-      final String dateKey =
-          DateFormat('yyyy-MM-dd').format(transaction.transactionDate!);
+      monthlyResponse!.transactions?.forEach((transaction) {
+        final String dateKey =
+            DateFormat('yyyy-MM-dd').format(transaction.transactionDate!);
 
-      if (!groupedTransactions.containsKey(dateKey)) {
-        groupedTransactions[dateKey] = [];
-      }
-      groupedTransactions[dateKey]!.add(transaction);
-    });
-
-    List<TransactionSummary> summaries = [];
-
-    groupedTransactions.forEach((dateStr, transactions) {
-      double totalIncome = 0;
-      double totalExpense = 0;
-
-      for (var transaction in transactions) {
-        double amount = transaction.amount!;
-
-        if (transaction.transactionType == 'income') {
-          totalIncome += amount;
-        } else if (transaction.transactionType == 'expense') {
-          totalExpense += amount;
+        if (!groupedTransactions.containsKey(dateKey)) {
+          groupedTransactions[dateKey] = [];
         }
-      }
+        groupedTransactions[dateKey]!.add(transaction);
+      });
 
-      double netIncome = totalIncome - totalExpense;
-      DateTime date = transactions[0].transactionDate!;
+      List<TransactionSummary> summaries = [];
 
-      summaries.add(TransactionSummary(
-        date: date,
-        income: totalIncome,
-        expense: totalExpense,
-        total: netIncome,
-        transactions: transactions,
-      ));
-    });
+      groupedTransactions.forEach((dateStr, transactions) {
+        double totalIncome = 0;
+        double totalExpense = 0;
 
-    return summaries;
+        for (var transaction in transactions) {
+          double amount = transaction.amount!;
+
+          if (transaction.transactionType == 'income') {
+            totalIncome += amount;
+          } else if (transaction.transactionType == 'expense') {
+            totalExpense += amount;
+          }
+        }
+
+        double netIncome = totalIncome - totalExpense;
+        DateTime date = transactions[0].transactionDate!;
+
+        summaries.add(TransactionSummary(
+          date: date,
+          income: totalIncome,
+          expense: totalExpense,
+          total: netIncome,
+          transactions: transactions,
+        ));
+      });
+
+      return summaries;
+    } else {
+      return null;
+    }
   }
 
   Future<void> loadMonthlyTransactions(
-      String workspaceId, DateTime month) async {
+    String workspaceId,
+    DateTime month,
+  ) async {
     final monthKey = getMonth(month);
 
     // 캐시에서 데이터 확인
-    final cachedData = state.monthlyCache[monthKey];
+    final cachedData = state is TransactionState
+        ? (state as TransactionState).monthlyCache![monthKey]
+        : null;
+
     if (cachedData != null) {
-      state = state.copyWith(monthlyResponse: cachedData);
+      state = TransactionState(
+        monthlyResponse: cachedData,
+        monthlyCache: (state as TransactionState).monthlyCache,
+        dailyCache: (state as TransactionState).dailyCache,
+      );
       return;
     }
 
-    // API 호출
-    final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-    final response = await financialTrackerRep.getAllMonthlyTransactions(
-      workspaceId: workspaceId,
-      monthKey: monthKey,
-    );
+    // 상태를 로딩 상태로 설정
+    state = TransactionStateLoading();
 
-    if (response.data != null) {
-      final newMonthlyCache =
-          Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-        state.monthlyCache,
-      )..[monthKey] = response.data!;
-      state = state.copyWith(
-        monthlyResponse: response.data!,
-        monthlyCache: newMonthlyCache,
+    try {
+      // API 호출
+      final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
+      final response = await financialTrackerRep.getAllMonthlyTransactions(
+        workspaceId: workspaceId,
+        monthKey: monthKey,
+      );
+
+      if (response.data != null) {
+        final Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>
+            newMonthlyCache = {
+          ...(state is TransactionState
+              ? (state as TransactionState).monthlyCache ?? {}
+              : {}),
+          monthKey: response.data!,
+        };
+
+        state = TransactionState(
+          monthlyResponse: response.data!,
+          monthlyCache: newMonthlyCache,
+        );
+      } else {
+        state = TransactionStateError(
+          errorMessage: 'Failed to load monthly transactions',
+        );
+      }
+    } catch (e) {
+      state = TransactionStateError(
+        errorMessage: 'An error occurred: $e',
       );
     }
   }
@@ -108,29 +146,49 @@ class TransactionStateNotifier extends StateNotifier<TransactionState> {
   Future<void> loadDailyTransactions(String workspaceId, DateTime date) async {
     final dateKey = DateFormat('yyyy-MM-dd').format(date);
 
-    // 캐시에서 데이터 확인
-    final cachedData = state.dailyCache[dateKey];
-    if (cachedData != null) {
-      state = state.copyWith(dailyResponse: cachedData);
-      return;
-    }
+    if (state is TransactionState) {
+      final currentState = state as TransactionState;
 
-    // API 호출
-    final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-    final response = await financialTrackerRep.getDailyTransactions(
-      workspaceId: workspaceId,
-      dateKey: dateKey,
-    );
+      // 캐시에서 데이터 확인
+      final cachedData = currentState.dailyCache?[dateKey];
+      if (cachedData != null) {
+        state = TransactionState(
+          monthlyResponse: currentState.monthlyResponse,
+          dailyResponse: cachedData,
+          monthlyCache: currentState.monthlyCache,
+          dailyCache: currentState.dailyCache,
+        );
+        return;
+      }
 
-    if (response.data != null) {
-      final newDailyCache =
-          Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-              state.dailyCache)
-            ..[dateKey] = response.data!;
-      state = state.copyWith(
-        dailyResponse: response.data!,
-        dailyCache: newDailyCache,
-      );
+      // API 호출
+      state = TransactionStateLoading();
+      try {
+        final financialTrackerRep =
+            _ref.read(financialTrackerRepositoryProvider);
+        final response = await financialTrackerRep.getDailyTransactions(
+          workspaceId: workspaceId,
+          dateKey: dateKey,
+        );
+
+        if (response.data != null) {
+          final newDailyCache =
+              Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+            currentState.dailyCache ?? {},
+          )..[dateKey] = response.data!;
+
+          state = TransactionState(
+            monthlyResponse: currentState.monthlyResponse,
+            dailyResponse: response.data!,
+            monthlyCache: currentState.monthlyCache,
+            dailyCache: newDailyCache,
+          );
+        } else {
+          state = TransactionStateError(errorMessage: "No data found");
+        }
+      } catch (e) {
+        state = TransactionStateError(errorMessage: e.toString());
+      }
     }
   }
 
@@ -139,62 +197,77 @@ class TransactionStateNotifier extends StateNotifier<TransactionState> {
     required String workspaceId,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-    final response = await financialTrackerRep.createTransaction(
-      workspaceId: workspaceId,
-      body: transaction,
-    );
 
-    if (response.data != null) {
-      final newTransaction = response.data!;
-      final transactionDate = newTransaction.transactionDate!;
+    try {
+      final response = await financialTrackerRep.createTransaction(
+        workspaceId: workspaceId,
+        body: transaction,
+      );
 
-      // 현재 상태의 월과 일 데이터인지 확인
-      final isCurrentMonth =
-          getMonth(transactionDate) == getMonth(DateTime.now());
-      final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
-          DateFormat('yyyy-MM-dd').format(DateTime.now());
+      if (response.data != null) {
+        final newTransaction = response.data!;
+        final transactionDate = newTransaction.transactionDate!;
 
-      if (isCurrentMonth) {
-        final updatedTransactions = state.monthlyResponse.transactions
-                ?.toBuilder() ??
-            ListBuilder<Transaction>()
-          ..add(newTransaction);
+        // 현재 상태의 월과 일 데이터인지 확인
+        final isCurrentMonth =
+            getMonth(transactionDate) == getMonth(DateTime.now());
+        final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-        state = state.copyWith(
-          monthlyResponse: state.monthlyResponse
-              .rebuild((b) => b..transactions = updatedTransactions),
-        );
+        if (state is TransactionState) {
+          final currentState = state as TransactionState;
 
-        // 캐시 업데이트
-        final monthKey = getMonth(transactionDate);
-        final newMonthlyCache =
-            Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-                state.monthlyCache)
-              ..[monthKey] = state.monthlyResponse
-                  .rebuild((b) => b..transactions = updatedTransactions);
-        state = state.copyWith(monthlyCache: newMonthlyCache);
+          if (isCurrentMonth) {
+            final updatedTransactions =
+                currentState.monthlyResponse?.transactions?.toBuilder() ??
+                    ListBuilder<Transaction>()
+                  ..add(newTransaction);
+
+            final updatedMonthlyResponse =
+                currentState.monthlyResponse?.rebuild(
+              (b) => b..transactions = updatedTransactions,
+            );
+
+            final newMonthlyCache = Map<String,
+                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              currentState.monthlyCache ?? {},
+            )..[getMonth(transactionDate)] = updatedMonthlyResponse!;
+
+            state = TransactionState(
+              monthlyResponse: updatedMonthlyResponse,
+              dailyResponse: currentState.dailyResponse,
+              monthlyCache: newMonthlyCache,
+              dailyCache: currentState.dailyCache,
+            );
+          }
+
+          if (isCurrentDay) {
+            final updatedDailyTransactions =
+                currentState.dailyResponse?.transactions?.toBuilder() ??
+                    ListBuilder<Transaction>()
+                  ..add(newTransaction);
+
+            final updatedDailyResponse = currentState.dailyResponse?.rebuild(
+              (b) => b..transactions = updatedDailyTransactions,
+            );
+
+            final newDailyCache = Map<String,
+                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              currentState.dailyCache ?? {},
+            )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
+                updatedDailyResponse!;
+
+            state = TransactionState(
+              monthlyResponse: currentState.monthlyResponse,
+              dailyResponse: updatedDailyResponse,
+              monthlyCache: currentState.monthlyCache,
+              dailyCache: newDailyCache,
+            );
+          }
+        }
       }
-
-      if (isCurrentDay) {
-        final updatedDailyTransactions = state.dailyResponse.transactions
-                ?.toBuilder() ??
-            ListBuilder<Transaction>()
-          ..add(newTransaction);
-
-        state = state.copyWith(
-          dailyResponse: state.dailyResponse
-              .rebuild((b) => b..transactions = updatedDailyTransactions),
-        );
-
-        // 캐시 업데이트
-        final dateKey = DateFormat('yyyy-MM-dd').format(transactionDate);
-        final newDailyCache =
-            Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-                state.dailyCache)
-              ..[dateKey] = state.dailyResponse
-                  .rebuild((b) => b..transactions = updatedDailyTransactions);
-        state = state.copyWith(dailyCache: newDailyCache);
-      }
+    } catch (e) {
+      state = TransactionStateError(errorMessage: e.toString());
     }
   }
 
@@ -205,69 +278,86 @@ class TransactionStateNotifier extends StateNotifier<TransactionState> {
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
 
-    final response = await financialTrackerRep.updateTransaction(
-      workspaceId: workspaceId,
-      id: transactionId,
-      body: modifiedData,
-    );
+    try {
+      final response = await financialTrackerRep.updateTransaction(
+        workspaceId: workspaceId,
+        id: transactionId,
+        body: modifiedData,
+      );
 
-    if (response.data != null) {
-      final updatedTransaction = response.data!;
-      final transactionDate = updatedTransaction.transactionDate!;
+      if (response.data != null) {
+        final updatedTransaction = response.data!;
+        final transactionDate = updatedTransaction.transactionDate!;
 
-      // 현재 상태의 월과 일 데이터인지 확인
-      final isCurrentMonth =
-          getMonth(transactionDate) == getMonth(DateTime.now());
-      final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
-          DateFormat('yyyy-MM-dd').format(DateTime.now());
+        final isCurrentMonth =
+            getMonth(transactionDate) == getMonth(DateTime.now());
+        final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
+            DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      if (isCurrentMonth) {
-        final updatedTransactions = (state.monthlyResponse.transactions
-                ?.toBuilder() ??
-            ListBuilder<Transaction>())
-          ..update((list) {
-            list.replace(state.monthlyResponse.transactions!.map((t) =>
-                t.transactionId == transactionId ? updatedTransaction : t));
-          });
+        if (state is TransactionState) {
+          final currentState = state as TransactionState;
 
-        state = state.copyWith(
-          monthlyResponse: state.monthlyResponse
-              .rebuild((b) => b..transactions = updatedTransactions),
-        );
+          if (isCurrentMonth) {
+            final updatedTransactions =
+                currentState.monthlyResponse?.transactions?.toBuilder() ??
+                    ListBuilder<Transaction>()
+                  ..update((list) {
+                    list.replace(currentState.monthlyResponse!.transactions!
+                        .map((t) => t.transactionId == transactionId
+                            ? updatedTransaction
+                            : t));
+                  });
 
-        // 캐시 업데이트
-        final monthKey = getMonth(transactionDate);
-        final newMonthlyCache =
-            Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-                state.monthlyCache)
-              ..[monthKey] = state.monthlyResponse
-                  .rebuild((b) => b..transactions = updatedTransactions);
-        state = state.copyWith(monthlyCache: newMonthlyCache);
+            final updatedMonthlyResponse =
+                currentState.monthlyResponse?.rebuild(
+              (b) => b..transactions = updatedTransactions,
+            );
+
+            final newMonthlyCache = Map<String,
+                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              currentState.monthlyCache ?? {},
+            )..[getMonth(transactionDate)] = updatedMonthlyResponse!;
+
+            state = TransactionState(
+              monthlyResponse: updatedMonthlyResponse,
+              dailyResponse: currentState.dailyResponse,
+              monthlyCache: newMonthlyCache,
+              dailyCache: currentState.dailyCache,
+            );
+          }
+
+          if (isCurrentDay) {
+            final updatedDailyTransactions =
+                currentState.dailyResponse?.transactions?.toBuilder() ??
+                    ListBuilder<Transaction>()
+                  ..update((list) {
+                    list.replace(currentState.dailyResponse!.transactions!.map(
+                        (t) => t.transactionId == transactionId
+                            ? updatedTransaction
+                            : t));
+                  });
+
+            final updatedDailyResponse = currentState.dailyResponse?.rebuild(
+              (b) => b..transactions = updatedDailyTransactions,
+            );
+
+            final newDailyCache = Map<String,
+                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              currentState.dailyCache ?? {},
+            )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
+                updatedDailyResponse!;
+
+            state = TransactionState(
+              monthlyResponse: currentState.monthlyResponse,
+              dailyResponse: updatedDailyResponse,
+              monthlyCache: currentState.monthlyCache,
+              dailyCache: newDailyCache,
+            );
+          }
+        }
       }
-
-      if (isCurrentDay) {
-        final updatedDailyTransactions = (state.dailyResponse.transactions
-                ?.toBuilder() ??
-            ListBuilder<Transaction>())
-          ..update((list) {
-            list.replace(state.dailyResponse.transactions!.map((t) =>
-                t.transactionId == transactionId ? updatedTransaction : t));
-          });
-
-        state = state.copyWith(
-          dailyResponse: state.dailyResponse
-              .rebuild((b) => b..transactions = updatedDailyTransactions),
-        );
-
-        // 캐시 업데이트
-        final dateKey = DateFormat('yyyy-MM-dd').format(transactionDate);
-        final newDailyCache =
-            Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-                state.dailyCache)
-              ..[dateKey] = state.dailyResponse
-                  .rebuild((b) => b..transactions = updatedDailyTransactions);
-        state = state.copyWith(dailyCache: newDailyCache);
-      }
+    } catch (e) {
+      state = TransactionStateError(errorMessage: e.toString());
     }
   }
 
@@ -276,61 +366,75 @@ class TransactionStateNotifier extends StateNotifier<TransactionState> {
     required String workspaceId,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-    await financialTrackerRep.deleteTransaction(
-        workspaceId: workspaceId, id: transactionId);
 
-    final transactionDate = DateTime.now(); // 실제 트랜잭션의 날짜를 가져와야 함
-    final isCurrentMonth =
-        getMonth(transactionDate) == getMonth(DateTime.now());
-    final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
-        DateFormat('yyyy-MM-dd').format(DateTime.now());
+    try {
+      await financialTrackerRep.deleteTransaction(
+          workspaceId: workspaceId, id: transactionId);
 
-    if (isCurrentMonth) {
-      final updatedTransactions = (state.monthlyResponse.transactions
-              ?.toBuilder() ??
-          ListBuilder<Transaction>())
-        ..update((list) {
-          list.replace(state.monthlyResponse.transactions!
-              .where((t) => t.transactionId != transactionId));
-        });
+      final transactionDate = DateTime.now(); // 실제 트랜잭션의 날짜를 가져와야 함
+      final isCurrentMonth =
+          getMonth(transactionDate) == getMonth(DateTime.now());
+      final isCurrentDay = DateFormat('yyyy-MM-dd').format(transactionDate) ==
+          DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      state = state.copyWith(
-        monthlyResponse: state.monthlyResponse
-            .rebuild((b) => b..transactions = updatedTransactions),
-      );
+      if (state is TransactionState) {
+        final currentState = state as TransactionState;
 
-      // 캐시 업데이트
-      final monthKey = getMonth(transactionDate);
-      final newMonthlyCache =
-          Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-              state.monthlyCache)
-            ..[monthKey] = state.monthlyResponse
-                .rebuild((b) => b..transactions = updatedTransactions);
-      state = state.copyWith(monthlyCache: newMonthlyCache);
-    }
+        if (isCurrentMonth) {
+          final updatedTransactions =
+              (currentState.monthlyResponse?.transactions?.toBuilder() ??
+                  ListBuilder<Transaction>())
+                ..update((list) {
+                  list.replace(currentState.monthlyResponse!.transactions!
+                      .where((t) => t.transactionId != transactionId));
+                });
 
-    if (isCurrentDay) {
-      final updatedDailyTransactions = (state.dailyResponse.transactions
-              ?.toBuilder() ??
-          ListBuilder<Transaction>())
-        ..update((list) {
-          list.replace(state.dailyResponse.transactions!
-              .where((t) => t.transactionId != transactionId));
-        });
+          final updatedMonthlyResponse = currentState.monthlyResponse?.rebuild(
+            (b) => b..transactions = updatedTransactions,
+          );
 
-      state = state.copyWith(
-        dailyResponse: state.dailyResponse
-            .rebuild((b) => b..transactions = updatedDailyTransactions),
-      );
+          final newMonthlyCache =
+              Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+            currentState.monthlyCache ?? {},
+          )..[getMonth(transactionDate)] = updatedMonthlyResponse!;
 
-      // 캐시 업데이트
-      final dateKey = DateFormat('yyyy-MM-dd').format(transactionDate);
-      final newDailyCache =
-          Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
-              state.dailyCache)
-            ..[dateKey] = state.dailyResponse
-                .rebuild((b) => b..transactions = updatedDailyTransactions);
-      state = state.copyWith(dailyCache: newDailyCache);
+          state = TransactionState(
+            monthlyResponse: updatedMonthlyResponse,
+            dailyResponse: currentState.dailyResponse,
+            monthlyCache: newMonthlyCache,
+            dailyCache: currentState.dailyCache,
+          );
+        }
+
+        if (isCurrentDay) {
+          final updatedDailyTransactions =
+              (currentState.dailyResponse?.transactions?.toBuilder() ??
+                  ListBuilder<Transaction>())
+                ..update((list) {
+                  list.replace(currentState.dailyResponse!.transactions!
+                      .where((t) => t.transactionId != transactionId));
+                });
+
+          final updatedDailyResponse = currentState.dailyResponse?.rebuild(
+            (b) => b..transactions = updatedDailyTransactions,
+          );
+
+          final newDailyCache =
+              Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+            currentState.dailyCache ?? {},
+          )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
+                  updatedDailyResponse!;
+
+          state = TransactionState(
+            monthlyResponse: currentState.monthlyResponse,
+            dailyResponse: updatedDailyResponse,
+            monthlyCache: currentState.monthlyCache,
+            dailyCache: newDailyCache,
+          );
+        }
+      }
+    } catch (e) {
+      state = TransactionStateError(errorMessage: e.toString());
     }
   }
 
@@ -350,20 +454,4 @@ class TransactionStateNotifier extends StateNotifier<TransactionState> {
       dailyCache: {},
     );
   }
-}
-
-class TransactionSummary {
-  final DateTime date;
-  final double income;
-  final double expense;
-  final double total;
-  final List<Transaction> transactions;
-
-  TransactionSummary({
-    required this.date,
-    required this.income,
-    required this.expense,
-    required this.total,
-    required this.transactions,
-  });
 }
