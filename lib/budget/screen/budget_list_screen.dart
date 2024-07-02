@@ -23,7 +23,7 @@ class BudgetListScreen extends ConsumerWidget {
         )
       ],
       child: FutureBuilder<List<Budget>?>(
-        future: ref.read(budgetViewModelProvider.notifier).loadBudgets(),
+        future: ref.watch(budgetViewModelProvider.notifier).loadBudgets(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:

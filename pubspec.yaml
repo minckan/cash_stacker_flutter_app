@@ -64,6 +64,7 @@ dependencies:
   built_collection: ^5.0.0
   one_of: ">=1.5.0 <2.0.0"
   one_of_serializer: ">=1.5.0 <2.0.0"
+  syncfusion_flutter_datepicker: ^26.1.39
 
 dev_dependencies:
   flutter_test:
