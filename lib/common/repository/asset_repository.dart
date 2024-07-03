@@ -1,86 +1,107 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/common/model/monthly_asset_trend_model.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:retrofit/retrofit.dart';
-
-part 'asset_repository.g.dart';
 
 final assetRepositoryProvider = Provider<AssetRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
-
-    final repository =
-        AssetRepository(dio, baseUrl: dotenv.get('API_BASE_URL'));
-
+    final openapi = Openapi(dio: dio);
+    final repository = AssetRepository(openapi.getAssetApi());
     return repository;
   },
 );
 
-@RestApi()
-abstract class AssetRepository {
-  factory AssetRepository(Dio dio, {String baseUrl}) = _AssetRepository;
+class AssetRepository {
+  final AssetApi _assetApi;
+  AssetRepository(this._assetApi);
 
   static const basePath = '/{workspaceId}/assets';
 
-  @POST(basePath)
-  @Headers({'accessToken': 'true'})
-  Future<void> createAsset({
-    @Path() required String workspaceId,
-    @Body() required Asset body,
-  });
+  Future<Response<Asset>> createAsset({
+    required String workspaceId,
+    required WorkspaceIdAssetsPostRequest body,
+  }) {
+    return _assetApi.workspaceIdAssetsPost(
+      workspaceId: workspaceId,
+      workspaceIdAssetsPostRequest: body,
+    );
+  }
 
-  @GET(basePath)
-  @Headers({'accessToken': 'true'})
-  Future<List<Asset>> getAllAssets({
-    @Path() required String workspaceId,
-  });
+  Future<Response<BuiltList<Asset>>> getAllAssets({
+    required String workspaceId,
+  }) {
+    return _assetApi.workspaceIdAssetsGet(
+      workspaceId: workspaceId,
+    );
+  }
 
-  @GET('$basePath/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<Asset> getOneAsset({
-    @Path() required String workspaceId,
-    @Path() required String id,
-  });
+  Future<Response<Asset>> getOneAsset({
+    required String workspaceId,
+    required int id,
+  }) {
+    return _assetApi.workspaceIdAssetsIdGet(
+      workspaceId: workspaceId,
+      id: id,
+    );
+  }
 
-  @PUT('$basePath/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<Asset> updateAsset({
-    @Path() required String workspaceId,
-    @Path() required String id,
-    @Body() required body,
-  });
+  Future<Response<Asset>> updateAsset({
+    required String workspaceId,
+    required int id,
+    required WorkspaceIdAssetsIdPutRequest body,
+  }) {
+    return _assetApi.workspaceIdAssetsIdPut(
+      workspaceId: workspaceId,
+      id: id,
+      workspaceIdAssetsIdPutRequest: body,
+    );
+  }
 
-  @DELETE('$basePath/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<void> deleteAsset({
-    @Path() required String workspaceId,
-    @Path() required String id,
-  });
+  Future<Response<void>> deleteAsset({
+    required String workspaceId,
+    required int id,
+  }) {
+    return _assetApi.workspaceIdAssetsIdDelete(
+      workspaceId: workspaceId,
+      id: id,
+    );
+  }
 
-  // @PUT('$basePath/{assetId}/transactions/{id}')
-  // @Headers({'accessToken': 'true'})
-  // Future<AssetTransaction> updateAssetTransaction({
-  //   @Path() required String workspaceId,
-  //   @Path() required String assetId,
-  //   @Path() required String id,
-  //   @Body() required List<AssetTransaction> body,
-  // });
+  Future<Response<AssetTransaction>> updateAssetTransaction({
+    required String workspaceId,
+    required int assetId,
+    required int id,
+    required WorkspaceIdAssetsAssetIdTransactionsIdPutRequest body,
+  }) {
+    return _assetApi.workspaceIdAssetsAssetIdTransactionsIdPut(
+      workspaceId: workspaceId,
+      assetId: assetId,
+      id: id,
+      workspaceIdAssetsAssetIdTransactionsIdPutRequest: body,
+    );
+  }
 
-  @DELETE('$basePath/{assetId}/transactions/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<void> deleteAssetTransaction({
-    @Path() required String workspaceId,
-    @Path() required String assetId,
-    @Path() required String id,
-  });
+  Future<Response<WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response>>
+      deleteAssetTransaction({
+    required String workspaceId,
+    required int assetId,
+    required int id,
+  }) {
+    return _assetApi.workspaceIdAssetsAssetIdTransactionsIdDelete(
+      workspaceId: workspaceId,
+      assetId: assetId,
+      id: id,
+    );
+  }
 
-  @POST('$basePath/monthlyTrend')
-  @Headers({'accessToken': 'true'})
-  Future<List<MonthlyAssetTrendModel>?> getMonthlyTrends({
-    @Path() required String workspaceId,
-  });
+  Future<Response<BuiltList<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner>>>
+      getMonthlyTrends({
+    required String workspaceId,
+  }) {
+    return _assetApi.workspaceIdAssetsMonthlyTrendGet(
+      workspaceId: workspaceId,
+    );
+  }
 }

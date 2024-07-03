@@ -31,6 +31,7 @@ import 'model/workspace.dart';
 import 'model/workspace_id_asset_type_post_request.dart';
 import 'model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
 import 'model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
+import 'model/workspace_id_assets_asset_id_transactions_id_put_request.dart';
 import 'model/workspace_id_assets_id_put_request.dart';
 import 'model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
 import 'model/workspace_id_assets_post_request.dart';
@@ -67,6 +68,7 @@ part 'serializers.g.dart';
   WorkspaceIdAssetTypePostRequest,
   WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response,
   WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response,
+  WorkspaceIdAssetsAssetIdTransactionsIdPutRequest,
   WorkspaceIdAssetsIdPutRequest,
   WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
   WorkspaceIdAssetsPostRequest,

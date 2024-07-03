@@ -13,6 +13,7 @@ import '../model/asset.dart';
 import '../model/asset_transaction.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
+import '../model/workspace_id_assets_asset_id_transactions_id_put_request.dart';
 import '../model/workspace_id_assets_id_put_request.dart';
 import '../model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
 import '../model/workspace_id_assets_post_request.dart';
@@ -125,13 +126,14 @@ class AssetApi {
     );
   }
 
-  /// Get an asset transaction by ID
-  /// Retrieve a specific asset transaction by its ID.
+  /// update asset transaction by ID
+  /// update specific asset transaction by its ID.
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [assetId] - The ID of the asset
   /// * [id] - The ID of the asset transaction
+  /// * [workspaceIdAssetsAssetIdTransactionsIdPutRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -141,10 +143,12 @@ class AssetApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AssetTransaction] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AssetTransaction>> workspaceIdAssetsAssetIdTransactionsIdGet({
+  Future<Response<AssetTransaction>> workspaceIdAssetsAssetIdTransactionsIdPut({
     required String workspaceId,
     required int assetId,
     required int id,
+    required WorkspaceIdAssetsAssetIdTransactionsIdPutRequest
+        workspaceIdAssetsAssetIdTransactionsIdPutRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -167,7 +171,7 @@ class AssetApi {
             encodeQueryParameter(_serializers, id, const FullType(int))
                 .toString());
     final options = Options(
-      method: r'GET',
+      method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -181,11 +185,32 @@ class AssetApi {
         ],
         ...?extra,
       },
+      contentType: 'application/json',
       validateStatus: validateStatus,
     );
 
+    dynamic bodyData;
+
+    try {
+      const type = FullType(WorkspaceIdAssetsAssetIdTransactionsIdPutRequest);
+      bodyData = _serializers.serialize(
+          workspaceIdAssetsAssetIdTransactionsIdPutRequest,
+          specifiedType: type);
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: options.compose(
+          _dio.options,
+          path,
+        ),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
     final response = await _dio.request<Object>(
       path,
+      data: bodyData,
       options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
@@ -373,7 +398,7 @@ class AssetApi {
     return response;
   }
 
-  /// Get an asset by ID
+  /// asset ID로 자산 조회
   /// Retrieve a specific asset by its ID.
   ///
   /// Parameters:
@@ -466,7 +491,7 @@ class AssetApi {
     );
   }
 
-  /// Update an asset name
+  /// 자산 데이터 수정
   /// Update the name of a specific asset by its ID.
   ///
   /// Parameters:

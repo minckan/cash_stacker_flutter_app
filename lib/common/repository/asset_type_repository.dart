@@ -1,54 +1,65 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/api.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/api/asset_type_api.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_type.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_asset_type_post_request.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:retrofit/retrofit.dart';
-
-part 'asset_type_repository.g.dart';
 
 final assetTypeRepositoryProvider = Provider<AssetTypeRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
-
-    final repository =
-        AssetTypeRepository(dio, baseUrl: dotenv.get('API_BASE_URL'));
-
+    final openapi = Openapi(dio: dio);
+    final repository = AssetTypeRepository(openapi.getAssetTypeApi());
     return repository;
   },
 );
 
-@RestApi()
-abstract class AssetTypeRepository {
-  factory AssetTypeRepository(Dio dio, {String baseUrl}) = _AssetTypeRepository;
+class AssetTypeRepository {
+  final AssetTypeApi _assetTypeApi;
+
+  AssetTypeRepository(this._assetTypeApi);
 
   static const basePath = '/{workspaceId}/asset/type';
 
-  @GET(basePath)
-  @Headers({'accessToken': 'true'})
-  Future<List<AssetTypeModel>> getAllAssetTypes({
-    @Path() required String workspaceId,
-  });
+  Future<Response<BuiltList<AssetType>>> getAllAssetTypes({
+    required String workspaceId,
+  }) {
+    return _assetTypeApi.workspaceIdAssetTypeGet(
+      workspaceId: workspaceId,
+    );
+  }
 
-  @POST(basePath)
-  @Headers({'accessToken': 'true'})
-  Future<AssetTypeModel> createAssetType({
-    @Path() required String workspaceId,
-    @Body() required AssetTypeModel body,
-  });
+  Future<Response<AssetType>> createAssetType({
+    required String workspaceId,
+    required WorkspaceIdAssetTypePostRequest body,
+  }) {
+    return _assetTypeApi.workspaceIdAssetTypePost(
+      workspaceId: workspaceId,
+      workspaceIdAssetTypePostRequest: body,
+    );
+  }
 
-  @PUT('$basePath/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<AssetTypeModel> updateAssetType({
-    @Path() required String workspaceId,
-    @Path() required String id,
-    @Body() required body,
-  });
+  Future<Response<AssetType>> updateAssetType({
+    required String workspaceId,
+    required int id,
+    required WorkspaceIdAssetTypePostRequest body,
+  }) {
+    return _assetTypeApi.workspaceIdAssetTypeIdPut(
+      workspaceId: workspaceId,
+      id: id,
+      workspaceIdAssetTypePostRequest: body,
+    );
+  }
 
-  @DELETE('$basePath/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<void> deleteAssetType({
-    @Path() required String workspaceId,
-    @Path() required String id,
-  });
+  Future<Response<void>> deleteAssetType({
+    required String workspaceId,
+    required int id,
+  }) {
+    return _assetTypeApi.workspaceIdAssetTypeIdDelete(
+      workspaceId: workspaceId,
+      id: id,
+    );
+  }
 }

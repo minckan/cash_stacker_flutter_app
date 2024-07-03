@@ -29,8 +29,8 @@ abstract class WorkspaceIdBudgetActiveGet200Response
   WorkspaceIdBudgetActiveGet200Response._();
 
   factory WorkspaceIdBudgetActiveGet200Response(
-          [void updates(WorkspaceIdBudgetActiveGet200ResponseBuilder b)]) =
-      _$WorkspaceIdBudgetActiveGet200Response;
+      [void Function(WorkspaceIdBudgetActiveGet200ResponseBuilder b)
+          updates]) = _$WorkspaceIdBudgetActiveGet200Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdBudgetActiveGet200ResponseBuilder b) => b;

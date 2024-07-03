@@ -73,7 +73,8 @@ abstract class ExchangeRateResponse
 
   ExchangeRateResponse._();
 
-  factory ExchangeRateResponse([void updates(ExchangeRateResponseBuilder b)]) =
+  factory ExchangeRateResponse(
+          [void Function(ExchangeRateResponseBuilder b) updates]) =
       _$ExchangeRateResponse;
 
   @BuiltValueHook(initializeBuilder: true)
@@ -332,7 +333,7 @@ class ExchangeRateResponseRESULTEnum extends EnumClass {
   static Serializer<ExchangeRateResponseRESULTEnum> get serializer =>
       _$exchangeRateResponseRESULTEnumSerializer;
 
-  const ExchangeRateResponseRESULTEnum._(String name) : super(name);
+  const ExchangeRateResponseRESULTEnum._(super.name);
 
   static BuiltSet<ExchangeRateResponseRESULTEnum> get values =>
       _$exchangeRateResponseRESULTEnumValues;

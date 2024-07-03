@@ -1,39 +1,41 @@
-import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:retrofit/http.dart';
 
-part 'user_repository.g.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   final dio = ref.watch(dioProvider);
-
-  final repository =
-      UserRepository(dio, baseUrl: '${dotenv.get('API_BASE_URL')}/users');
-
+  final openapi = Openapi(dio: dio);
+  final repository = UserRepository(openapi.getUserApi());
   return repository;
 });
 
-@RestApi()
-abstract class UserRepository {
-  factory UserRepository(Dio dio, {String baseUrl}) = _UserRepository;
+class UserRepository {
+  final UserApi _userApi;
+  UserRepository(this._userApi);
 
-  @GET('/{id}')
-  Future<UserModel?> getUser({
-    @Path() required String id,
-  });
+  Future<Response<User>> getUser({
+    required String id,
+  }) {
+    return _userApi.usersIdGet(id: id);
+  }
 
-  @POST('/')
-  Future<void> createUser({
-    @Body() required UserModel body,
-  });
+  Future<Response<UsersPost201Response>> createUser({
+    required UsersPostRequest body,
+  }) {
+    return _userApi.usersPost(
+      usersPostRequest: body,
+    );
+  }
 
-  @PUT('/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<void> updateUser({
-    @Path() required String id,
-    @Body() required body,
-  });
+  Future<Response<void>> updateUser({
+    required String id,
+    required UsersIdPutRequest body,
+  }) {
+    return _userApi.usersIdPut(
+      id: id,
+      usersIdPutRequest: body,
+    );
+  }
 }

@@ -23,9 +23,9 @@ abstract class WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response
   WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response._();
 
   factory WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response(
-      [void updates(
-          WorkspaceIdAssetsAssetIdTransactionsIdDelete201ResponseBuilder
-              b)]) = _$WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response;
+      [void Function(
+              WorkspaceIdAssetsAssetIdTransactionsIdDelete201ResponseBuilder b)
+          updates]) = _$WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(

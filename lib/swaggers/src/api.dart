@@ -20,7 +20,7 @@ import 'api/user_api.dart';
 import 'api/workspace_api.dart';
 
 class Openapi {
-  static const String basePath = r'http://localhost:8080';
+  static const String basePath = r'http://localhost:8000';
 
   final Dio dio;
   final Serializers serializers;

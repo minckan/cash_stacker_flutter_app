@@ -36,6 +36,7 @@ export 'src/model/workspace.dart';
 export 'src/model/workspace_id_asset_type_post_request.dart';
 export 'src/model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
 export 'src/model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
+export 'src/model/workspace_id_assets_asset_id_transactions_id_put_request.dart';
 export 'src/model/workspace_id_assets_id_put_request.dart';
 export 'src/model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
 export 'src/model/workspace_id_assets_post_request.dart';

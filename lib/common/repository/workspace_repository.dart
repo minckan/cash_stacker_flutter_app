@@ -1,42 +1,39 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:retrofit/retrofit.dart';
-
-part 'workspace_repository.g.dart';
 
 final workspaceRepositoryProvider = Provider<WorkspaceRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
-
-    final repository = WorkspaceRepository(
-      dio,
-      baseUrl: '${dotenv.get('API_BASE_URL')}/workspaces',
-    );
-
+    final openapi = Openapi(dio: dio);
+    final repository = WorkspaceRepository(openapi.getWorkspaceApi());
     return repository;
   },
 );
 
-@RestApi()
-abstract class WorkspaceRepository {
-  factory WorkspaceRepository(Dio dio, {String baseUrl}) = _WorkspaceRepository;
+class WorkspaceRepository {
+  final WorkspaceApi _workspaceApi;
+  WorkspaceRepository(this._workspaceApi);
 
-  @POST('/')
-  @Headers({'accessToken': 'true'})
-  Future<Map<String, String>> createWorkspace(
-    @Body() Workspace body,
-  );
+  Future<Response<WorkspacesPost201Response>> createWorkspace({
+    required WorkspacesPostRequest body,
+  }) {
+    return _workspaceApi.workspacesPost(
+      workspacesPostRequest: body,
+    );
+  }
 
-  @GET('/')
-  @Headers({'accessToken': 'true'})
-  Future<List<Workspace>?> getAllWorkspaces();
+  Future<Response<BuiltList<Workspace>>> getAllWorkspaces() {
+    return _workspaceApi.workspacesGet();
+  }
 
-  @GET('/{id}')
-  @Headers({'accessToken': 'true'})
-  Future<Workspace?> getOneWorkspace({
-    @Path() required String id,
-  });
+  Future<Response<Workspace>> getOneWorkspace({
+    required String id,
+  }) {
+    return _workspaceApi.workspacesIdGet(
+      id: id,
+    );
+  }
 }

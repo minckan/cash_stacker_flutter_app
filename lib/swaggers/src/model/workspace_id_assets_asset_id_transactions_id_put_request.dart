@@ -3,43 +3,31 @@
 //
 
 // ignore_for_file: unused_element
-import 'transaction_category.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'transaction.g.dart';
+part 'workspace_id_assets_asset_id_transactions_id_put_request.g.dart';
 
-/// Transaction
+/// WorkspaceIdAssetsAssetIdTransactionsIdPutRequest
 ///
 /// Properties:
-/// * [transactionId]
-/// * [category]
-/// * [workspaceId]
 /// * [amount]
 /// * [transactionType]
-/// * [paymentMethod]
 /// * [description]
 /// * [transactionDate]
-/// * [createdAt]
+/// * [exchangeRate]
+/// * [shares]
+/// * [pricePerShare]
 @BuiltValue()
-abstract class Transaction implements Built<Transaction, TransactionBuilder> {
-  @BuiltValueField(wireName: r'transaction_id')
-  int? get transactionId;
-
-  @BuiltValueField(wireName: r'category')
-  TransactionCategory? get category;
-
-  @BuiltValueField(wireName: r'workspace_id')
-  String? get workspaceId;
-
+abstract class WorkspaceIdAssetsAssetIdTransactionsIdPutRequest
+    implements
+        Built<WorkspaceIdAssetsAssetIdTransactionsIdPutRequest,
+            WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder> {
   @BuiltValueField(wireName: r'amount')
-  double? get amount;
+  num? get amount;
 
   @BuiltValueField(wireName: r'transaction_type')
   String? get transactionType;
-
-  @BuiltValueField(wireName: r'payment_method')
-  String? get paymentMethod;
 
   @BuiltValueField(wireName: r'description')
   String? get description;
@@ -47,72 +35,60 @@ abstract class Transaction implements Built<Transaction, TransactionBuilder> {
   @BuiltValueField(wireName: r'transaction_date')
   DateTime? get transactionDate;
 
-  @BuiltValueField(wireName: r'created_at')
-  DateTime? get createdAt;
+  @BuiltValueField(wireName: r'exchange_rate')
+  num? get exchangeRate;
 
-  Transaction._();
+  @BuiltValueField(wireName: r'shares')
+  num? get shares;
 
-  factory Transaction([void Function(TransactionBuilder b) updates]) =
-      _$Transaction;
+  @BuiltValueField(wireName: r'price_per_share')
+  num? get pricePerShare;
+
+  WorkspaceIdAssetsAssetIdTransactionsIdPutRequest._();
+
+  factory WorkspaceIdAssetsAssetIdTransactionsIdPutRequest(
+      [void Function(WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder b)
+          updates]) = _$WorkspaceIdAssetsAssetIdTransactionsIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(TransactionBuilder b) => b;
+  static void _defaults(
+          WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder b) =>
+      b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<Transaction> get serializer => _$TransactionSerializer();
+  static Serializer<WorkspaceIdAssetsAssetIdTransactionsIdPutRequest>
+      get serializer =>
+          _$WorkspaceIdAssetsAssetIdTransactionsIdPutRequestSerializer();
 }
 
-class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
+class _$WorkspaceIdAssetsAssetIdTransactionsIdPutRequestSerializer
+    implements
+        PrimitiveSerializer<WorkspaceIdAssetsAssetIdTransactionsIdPutRequest> {
   @override
-  final Iterable<Type> types = const [Transaction, _$Transaction];
+  final Iterable<Type> types = const [
+    WorkspaceIdAssetsAssetIdTransactionsIdPutRequest,
+    _$WorkspaceIdAssetsAssetIdTransactionsIdPutRequest
+  ];
 
   @override
-  final String wireName = r'Transaction';
+  final String wireName = r'WorkspaceIdAssetsAssetIdTransactionsIdPutRequest';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    Transaction object, {
+    WorkspaceIdAssetsAssetIdTransactionsIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.transactionId != null) {
-      yield r'transaction_id';
-      yield serializers.serialize(
-        object.transactionId,
-        specifiedType: const FullType(int),
-      );
-    }
-    if (object.category != null) {
-      yield r'category';
-      yield serializers.serialize(
-        object.category,
-        specifiedType: const FullType(TransactionCategory),
-      );
-    }
-    if (object.workspaceId != null) {
-      yield r'workspace_id';
-      yield serializers.serialize(
-        object.workspaceId,
-        specifiedType: const FullType(String),
-      );
-    }
     if (object.amount != null) {
       yield r'amount';
       yield serializers.serialize(
         object.amount,
-        specifiedType: const FullType(double),
+        specifiedType: const FullType(num),
       );
     }
     if (object.transactionType != null) {
       yield r'transaction_type';
       yield serializers.serialize(
         object.transactionType,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.paymentMethod != null) {
-      yield r'payment_method';
-      yield serializers.serialize(
-        object.paymentMethod,
         specifiedType: const FullType(String),
       );
     }
@@ -130,11 +106,25 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
         specifiedType: const FullType(DateTime),
       );
     }
-    if (object.createdAt != null) {
-      yield r'created_at';
+    if (object.exchangeRate != null) {
+      yield r'exchange_rate';
       yield serializers.serialize(
-        object.createdAt,
-        specifiedType: const FullType(DateTime),
+        object.exchangeRate,
+        specifiedType: const FullType(num),
+      );
+    }
+    if (object.shares != null) {
+      yield r'shares';
+      yield serializers.serialize(
+        object.shares,
+        specifiedType: const FullType(num),
+      );
+    }
+    if (object.pricePerShare != null) {
+      yield r'price_per_share';
+      yield serializers.serialize(
+        object.pricePerShare,
+        specifiedType: const FullType(num),
       );
     }
   }
@@ -142,7 +132,7 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
   @override
   Object serialize(
     Serializers serializers,
-    Transaction object, {
+    WorkspaceIdAssetsAssetIdTransactionsIdPutRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -155,39 +145,18 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required TransactionBuilder result,
+    required WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'transaction_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
-          result.transactionId = valueDes;
-          break;
-        case r'category':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(TransactionCategory),
-          ) as TransactionCategory;
-          result.category.replace(valueDes);
-          break;
-        case r'workspace_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.workspaceId = valueDes;
-          break;
         case r'amount':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(double),
-          ) as double;
+            specifiedType: const FullType(num),
+          ) as num;
           result.amount = valueDes;
           break;
         case r'transaction_type':
@@ -196,13 +165,6 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
             specifiedType: const FullType(String),
           ) as String;
           result.transactionType = valueDes;
-          break;
-        case r'payment_method':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.paymentMethod = valueDes;
           break;
         case r'description':
           final valueDes = serializers.deserialize(
@@ -218,12 +180,26 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
           ) as DateTime;
           result.transactionDate = valueDes;
           break;
-        case r'created_at':
+        case r'exchange_rate':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(DateTime),
-          ) as DateTime;
-          result.createdAt = valueDes;
+            specifiedType: const FullType(num),
+          ) as num;
+          result.exchangeRate = valueDes;
+          break;
+        case r'shares':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(num),
+          ) as num;
+          result.shares = valueDes;
+          break;
+        case r'price_per_share':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(num),
+          ) as num;
+          result.pricePerShare = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -234,12 +210,12 @@ class _$TransactionSerializer implements PrimitiveSerializer<Transaction> {
   }
 
   @override
-  Transaction deserialize(
+  WorkspaceIdAssetsAssetIdTransactionsIdPutRequest deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = TransactionBuilder();
+    final result = WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
