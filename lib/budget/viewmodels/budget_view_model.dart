@@ -1,8 +1,8 @@
 import 'package:cash_stacker_flutter_app/budget/model/budget_state.dart';
 import 'package:cash_stacker_flutter_app/common/repository/budget_repository.dart';
+import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/budget.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -51,17 +51,23 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
 
   Future<List<Budget>?> loadBudgets() async {
     try {
-      final workspaceId = _ref.read(workspaceViewModelProvider)?.id;
+      final workspaceId = _ref.read(workspaceViewModelProvider)?.workspaceId;
       if (workspaceId != null) {
         final response = await _ref
             .read(budgetRepositoryProvider)
             .getAllBudget(workspaceId: workspaceId);
 
         if (response.data != null && response.data!.isNotEmpty) {
-          state = BudgetState(
-            budgets: response.data!.toList(),
-            activeBudget: (state as BudgetState).activeBudget,
-          );
+          if (state is BudgetState) {
+            state = BudgetState(
+              budgets: response.data!.toList(),
+              activeBudget: (state as BudgetState).activeBudget,
+            );
+          } else {
+            state = BudgetState(
+                budgets: response.data!.toList(),
+                activeBudget: WorkspaceIdBudgetActiveGet200Response());
+          }
           return response.data!.toList();
         }
       } else {
@@ -81,10 +87,19 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
             .getActiveBudget(workspaceId: workspaceId);
 
         if (response.data != null) {
-          state = BudgetState(
-            activeBudget: response.data,
-            budgets: (state as BudgetState).budgets,
-          );
+          if (state is BudgetState) {
+            state = BudgetState(
+              activeBudget: response.data,
+              budgets: (state as BudgetState).budgets,
+            );
+          } else {
+            // state가 BudgetState가 아닌 경우에 대한 처리
+            // 예를 들어 기본값으로 설정하거나, 다른 로직을 수행할 수 있습니다.
+            state = BudgetState(
+              activeBudget: response.data,
+              budgets: [],
+            );
+          }
         }
       } else {
         setError('workspaceId is null');
@@ -125,6 +140,7 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
   }
 
   void setError(String error) {
+    logger.e(error);
     state = BudgetStatError(errorMessage: error);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
 
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
@@ -18,7 +19,7 @@ class ExchangeRateRepository {
   final ExchangeRateApi _exchangeRateApi;
   ExchangeRateRepository(this._exchangeRateApi);
 
-  Future<Response<ExchangeRateResponse>> getCurrentExchangeRates() {
+  Future<Response<BuiltList<ExchangeRateResponse>>> getCurrentExchangeRates() {
     return _exchangeRateApi.apiExchangeRatesGet();
   }
 }

@@ -81,7 +81,7 @@ abstract class UsersPostRequest
 
   UsersPostRequest._();
 
-  factory UsersPostRequest([void Function(UsersPostRequestBuilder b) updates]) =
+  factory UsersPostRequest([void updates(UsersPostRequestBuilder b)]) =
       _$UsersPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)

@@ -41,8 +41,8 @@ class WorkspaceApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    const path = r'/workspaces';
-    final options = Options(
+    final _path = r'/workspaces';
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -60,19 +60,19 @@ class WorkspaceApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<Workspace>? responseData;
+    BuiltList<Workspace>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -80,8 +80,8 @@ class WorkspaceApi {
             ) as BuiltList<Workspace>;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -89,14 +89,14 @@ class WorkspaceApi {
     }
 
     return Response<BuiltList<Workspace>>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -123,11 +123,11 @@ class WorkspaceApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/workspaces/{id}'.replaceAll(
+    final _path = r'/workspaces/{id}'.replaceAll(
         '{' r'id' '}',
         encodeQueryParameter(_serializers, id, const FullType(String))
             .toString());
-    final options = Options(
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -145,19 +145,19 @@ class WorkspaceApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Workspace? responseData;
+    Workspace? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -165,8 +165,8 @@ class WorkspaceApi {
             ) as Workspace;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -174,14 +174,14 @@ class WorkspaceApi {
     }
 
     return Response<Workspace>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -208,8 +208,8 @@ class WorkspaceApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    const path = r'/workspaces';
-    final options = Options(
+    final _path = r'/workspaces';
+    final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -228,17 +228,17 @@ class WorkspaceApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspacesPostRequest);
-      bodyData =
-          _serializers.serialize(workspacesPostRequest, specifiedType: type);
+      const _type = FullType(WorkspacesPostRequest);
+      _bodyData =
+          _serializers.serialize(workspacesPostRequest, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+        requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -246,20 +246,20 @@ class WorkspaceApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    WorkspacesPost201Response? responseData;
+    WorkspacesPost201Response? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -267,8 +267,8 @@ class WorkspaceApi {
             ) as WorkspacesPost201Response;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -276,14 +276,14 @@ class WorkspaceApi {
     }
 
     return Response<WorkspacesPost201Response>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 }

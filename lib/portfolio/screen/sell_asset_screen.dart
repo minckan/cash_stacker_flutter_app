@@ -156,7 +156,7 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
 
   handleSave() async {
     if (formKey.currentState?.saveAndValidate() ?? false) {
-      final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
+      final workspaceId = ref.watch(workspaceViewModelProvider)!.workspaceId;
       final value = formKey.currentState?.value;
 
       // if (value != null) {

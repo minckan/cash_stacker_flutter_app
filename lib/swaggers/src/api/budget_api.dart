@@ -44,11 +44,11 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget/active'.replaceAll(
+    final _path = r'/{workspaceId}/budget/active'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final options = Options(
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -66,19 +66,19 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    WorkspaceIdBudgetActiveGet200Response? responseData;
+    WorkspaceIdBudgetActiveGet200Response? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -87,8 +87,8 @@ class BudgetApi {
             ) as WorkspaceIdBudgetActiveGet200Response;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -96,14 +96,14 @@ class BudgetApi {
     }
 
     return Response<WorkspaceIdBudgetActiveGet200Response>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -130,11 +130,11 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget'.replaceAll(
+    final _path = r'/{workspaceId}/budget'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final options = Options(
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -152,19 +152,19 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<Budget>? responseData;
+    BuiltList<Budget>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -172,8 +172,8 @@ class BudgetApi {
             ) as BuiltList<Budget>;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -181,14 +181,14 @@ class BudgetApi {
     }
 
     return Response<BuiltList<Budget>>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -217,7 +217,7 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget/{id}'
+    final _path = r'/{workspaceId}/budget/{id}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -227,7 +227,7 @@ class BudgetApi {
             '{' r'id' '}',
             encodeQueryParameter(_serializers, id, const FullType(int))
                 .toString());
-    final options = Options(
+    final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -245,15 +245,15 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return response;
+    return _response;
   }
 
   /// Update a budget
@@ -283,7 +283,7 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget/{id}'
+    final _path = r'/{workspaceId}/budget/{id}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -293,7 +293,7 @@ class BudgetApi {
             '{' r'id' '}',
             encodeQueryParameter(_serializers, id, const FullType(int))
                 .toString());
-    final options = Options(
+    final _options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -312,17 +312,17 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdBudgetPostRequest);
-      bodyData = _serializers.serialize(workspaceIdBudgetPostRequest,
-          specifiedType: type);
+      const _type = FullType(WorkspaceIdBudgetPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdBudgetPostRequest,
+          specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+        requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -330,20 +330,20 @@ class BudgetApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Budget? responseData;
+    Budget? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -351,8 +351,8 @@ class BudgetApi {
             ) as Budget;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -360,14 +360,14 @@ class BudgetApi {
     }
 
     return Response<Budget>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -396,11 +396,11 @@ class BudgetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/budget'.replaceAll(
+    final _path = r'/{workspaceId}/budget'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final options = Options(
+    final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -419,17 +419,17 @@ class BudgetApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdBudgetPostRequest);
-      bodyData = _serializers.serialize(workspaceIdBudgetPostRequest,
-          specifiedType: type);
+      const _type = FullType(WorkspaceIdBudgetPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdBudgetPostRequest,
+          specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+        requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -437,20 +437,20 @@ class BudgetApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Budget? responseData;
+    Budget? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -458,8 +458,8 @@ class BudgetApi {
             ) as Budget;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -467,14 +467,14 @@ class BudgetApi {
     }
 
     return Response<Budget>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 }

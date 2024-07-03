@@ -1,7 +1,7 @@
-import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+import 'package:cash_stacker_flutter_app/common/repository/asset_repository.dart';
+
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetViewModelProvider =
@@ -15,10 +15,10 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   Asset? get krwCashAsset {
     final krwCashCategoryId =
-        _ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
+        _ref.read(assetTypeViewModelProvider.notifier).cashAsset.assetTypeId;
     try {
       return state.firstWhere(
-        (asset) => asset.categoryId == krwCashCategoryId,
+        (asset) => asset.assetTypeId == krwCashCategoryId,
       );
     } catch (e) {
       return null;
@@ -26,64 +26,30 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
   }
 
   Future<void> loadAssets(String workspaceId) async {
-    final QuerySnapshot assetsQuery = await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.assets)
-        .get();
+    final response = await _ref
+        .read(assetRepositoryProvider)
+        .getAllAssets(workspaceId: workspaceId);
 
-    if (assetsQuery.docs.isEmpty) {
-      state = [];
-      return;
+    if (response.data != null || response.data!.isNotEmpty) {
+      List<Asset> assets = response.data!.toList();
+      state = _sortAssets(assets);
     }
-    List<Asset> assets = assetsQuery.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>?;
-
-      if (data != null) {
-        return Asset.fromJson(data);
-      } else {
-        throw Exception("Document data is null");
-      }
-    }).toList();
-
-    state = _sortAssets(assets);
   }
 
   Future<void> addAsset(Asset asset, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.assets)
-        .doc(asset.id)
-        .set(
-          asset.toJson(),
-        );
-
     state = _sortAssets([...state, asset]);
   }
 
   Future<void> updateAsset(Asset asset, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.assets)
-        .doc(asset.id)
-        .set(asset.toJson());
-
-    state =
-        _sortAssets(state.map((e) => e.id == asset.id ? asset : e).toList());
+    state = _sortAssets(state
+        .map((e) => e.assetTypeId == asset.assetTypeId ? asset : e)
+        .toList());
   }
 
   Future<void> removeAsset(Asset asset, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.assets)
-        .doc(asset.id)
-        .delete();
-
-    state =
-        _sortAssets(state.where((element) => element.id != asset.id).toList());
+    state = _sortAssets(state
+        .where((element) => element.assetTypeId != asset.assetTypeId)
+        .toList());
   }
 
   void clearAssets() {
@@ -91,19 +57,20 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
   }
 
   Asset getParticularAssets(String assetId) {
-    final result = state.firstWhere((element) => element.id == assetId);
+    final result =
+        state.firstWhere((element) => element.assetTypeId == assetId);
 
     return result;
   }
 
   List<Asset> _sortAssets(List<Asset> assets) {
     final cashCategoryId =
-        _ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
+        _ref.read(assetTypeViewModelProvider.notifier).cashAsset.assetTypeId;
 
     List<Asset> nonCashAssets =
-        assets.where((asset) => asset.categoryId != cashCategoryId).toList();
+        assets.where((asset) => asset.assetTypeId != cashCategoryId).toList();
     List<Asset> cashAssets =
-        assets.where((asset) => asset.categoryId == cashCategoryId).toList();
+        assets.where((asset) => asset.assetTypeId == cashCategoryId).toList();
     return [...nonCashAssets, ...cashAssets];
   }
 }

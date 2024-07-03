@@ -17,7 +17,7 @@ class InvitationScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = GlobalKey<FormBuilderState>();
     final viewModel = ref.read(invitationViewModelProvider.notifier);
-    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
     Uuid uuid = const Uuid();
     return DefaultLayout(
       isFormView: true,

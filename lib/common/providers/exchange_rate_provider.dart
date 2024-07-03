@@ -1,30 +1,36 @@
-import 'package:cash_stacker_flutter_app/common/model/exchange_rate_api_model.dart';
 import 'package:cash_stacker_flutter_app/common/repository/exchange_rate_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final exchangeRateProvider =
-    StateNotifierProvider<ExchangeRateNotifier, List<ExchangeRateApiModel>>(
+    StateNotifierProvider<ExchangeRateNotifier, List<ExchangeRateResponse>>(
         (ref) {
-  final repository = ref.watch(exchangeRateRepositoryProvider);
-  final notifier = ExchangeRateNotifier(repository: repository);
-
-  return notifier;
+  return ExchangeRateNotifier(ref);
 });
 
-class ExchangeRateNotifier extends StateNotifier<List<ExchangeRateApiModel>> {
-  final ExchangeRateRepository repository;
+class ExchangeRateNotifier extends StateNotifier<List<ExchangeRateResponse>> {
+  final Ref _ref;
 
-  ExchangeRateNotifier({required this.repository}) : super([]);
+  ExchangeRateNotifier(this._ref) : super([]);
 
-  Future<void> loadExchangeRates() async {
+  Future<List<ExchangeRateResponse>> loadExchangeRates() async {
     try {
-      final repo = await repository.getCurrentExchangeRates();
+      final repo = await _ref
+          .read(exchangeRateRepositoryProvider)
+          .getCurrentExchangeRates();
 
-      state = repo;
+      if (repo.data != null) {
+        state = repo.data!.toList();
+
+        return state;
+      }
+
+      return [];
     } catch (e) {
       logger.e('[Error: loadExchangeRates] => ${(e as DioException).response}');
+      return [];
     }
   }
 }

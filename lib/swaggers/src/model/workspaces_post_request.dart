@@ -27,8 +27,7 @@ abstract class WorkspacesPostRequest
   WorkspacesPostRequest._();
 
   factory WorkspacesPostRequest(
-          [void Function(WorkspacesPostRequestBuilder b) updates]) =
-      _$WorkspacesPostRequest;
+      [void updates(WorkspacesPostRequestBuilder b)]) = _$WorkspacesPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspacesPostRequestBuilder b) => b;

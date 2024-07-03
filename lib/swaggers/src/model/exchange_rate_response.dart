@@ -12,69 +12,68 @@ part 'exchange_rate_response.g.dart';
 /// ExchangeRateResponse
 ///
 /// Properties:
-/// * [RESULT] - 조회 결과
-/// * [CUR_UNIT] - 통화코드
-/// * [CUR_NM] - 국가/통화명
-/// * [TTB] - 전신환(송금) 받으실때
-/// * [TTS] - 전신환(송금) 보내실때
-/// * [DEAL_BAS_R] - 매매 기준율
-/// * [BKPR] - 장부가격
-/// * [YY_EFEE_R] - 년환가료율
-/// * [TEN_DD_EFEE_R] - 10일환가료율
-/// * [KFTC_DEAL_BAS_R] - 서울외국환중개 매매기준율
-/// * [KFTC_BKPR] - 서울외국환중개 장부가격
+/// * [result] - 조회 결과
+/// * [curUnit] - 통화코드
+/// * [curNm] - 국가/통화명
+/// * [ttb] - 전신환(송금) 받으실때
+/// * [tts] - 전신환(송금) 보내실때
+/// * [dealBasR] - 매매 기준율
+/// * [bkpr] - 장부가격
+/// * [yyEfeeR] - 년환가료율
+/// * [tenDdEfeeR] - 10일환가료율
+/// * [kftcDealBasR] - 서울외국환중개 매매기준율
+/// * [kftcBkpr] - 서울외국환중개 장부가격
 @BuiltValue()
 abstract class ExchangeRateResponse
     implements Built<ExchangeRateResponse, ExchangeRateResponseBuilder> {
   /// 조회 결과
-  @BuiltValueField(wireName: r'RESULT')
-  ExchangeRateResponseRESULTEnum? get RESULT;
-  // enum RESULTEnum {  1,  2,  3,  4,  };
+  @BuiltValueField(wireName: r'result')
+  ExchangeRateResponseResultEnum? get result;
+  // enum resultEnum {  1,  2,  3,  4,  };
 
   /// 통화코드
-  @BuiltValueField(wireName: r'CUR_UNIT')
-  String? get CUR_UNIT;
+  @BuiltValueField(wireName: r'cur_unit')
+  String? get curUnit;
 
   /// 국가/통화명
-  @BuiltValueField(wireName: r'CUR_NM')
-  String? get CUR_NM;
+  @BuiltValueField(wireName: r'cur_nm')
+  String? get curNm;
 
   /// 전신환(송금) 받으실때
-  @BuiltValueField(wireName: r'TTB')
-  String? get TTB;
+  @BuiltValueField(wireName: r'ttb')
+  String? get ttb;
 
   /// 전신환(송금) 보내실때
-  @BuiltValueField(wireName: r'TTS')
-  String? get TTS;
+  @BuiltValueField(wireName: r'tts')
+  String? get tts;
 
   /// 매매 기준율
-  @BuiltValueField(wireName: r'DEAL_BAS_R')
-  String? get DEAL_BAS_R;
+  @BuiltValueField(wireName: r'deal_bas_r')
+  String? get dealBasR;
 
   /// 장부가격
-  @BuiltValueField(wireName: r'BKPR')
-  String? get BKPR;
+  @BuiltValueField(wireName: r'bkpr')
+  String? get bkpr;
 
   /// 년환가료율
-  @BuiltValueField(wireName: r'YY_EFEE_R')
-  String? get YY_EFEE_R;
+  @BuiltValueField(wireName: r'yy_efee_r')
+  String? get yyEfeeR;
 
   /// 10일환가료율
-  @BuiltValueField(wireName: r'TEN_DD_EFEE_R')
-  String? get TEN_DD_EFEE_R;
+  @BuiltValueField(wireName: r'ten_dd_efee_r')
+  String? get tenDdEfeeR;
 
   /// 서울외국환중개 매매기준율
-  @BuiltValueField(wireName: r'KFTC_DEAL_BAS_R')
-  String? get KFTC_DEAL_BAS_R;
+  @BuiltValueField(wireName: r'kftc_deal_bas_r')
+  String? get kftcDealBasR;
 
   /// 서울외국환중개 장부가격
-  @BuiltValueField(wireName: r'KFTC_BKPR')
-  String? get KFTC_BKPR;
+  @BuiltValueField(wireName: r'kftc_bkpr')
+  String? get kftcBkpr;
 
   ExchangeRateResponse._();
 
-  factory ExchangeRateResponse(
-          [void Function(ExchangeRateResponseBuilder b) updates]) =
+  factory ExchangeRateResponse([void updates(ExchangeRateResponseBuilder b)]) =
       _$ExchangeRateResponse;
 
   @BuiltValueHook(initializeBuilder: true)
@@ -101,80 +100,80 @@ class _$ExchangeRateResponseSerializer
     ExchangeRateResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.RESULT != null) {
-      yield r'RESULT';
+    if (object.result != null) {
+      yield r'result';
       yield serializers.serialize(
-        object.RESULT,
-        specifiedType: const FullType(ExchangeRateResponseRESULTEnum),
+        object.result,
+        specifiedType: const FullType(ExchangeRateResponseResultEnum),
       );
     }
-    if (object.CUR_UNIT != null) {
-      yield r'CUR_UNIT';
+    if (object.curUnit != null) {
+      yield r'cur_unit';
       yield serializers.serialize(
-        object.CUR_UNIT,
+        object.curUnit,
         specifiedType: const FullType(String),
       );
     }
-    if (object.CUR_NM != null) {
-      yield r'CUR_NM';
+    if (object.curNm != null) {
+      yield r'cur_nm';
       yield serializers.serialize(
-        object.CUR_NM,
+        object.curNm,
         specifiedType: const FullType(String),
       );
     }
-    if (object.TTB != null) {
-      yield r'TTB';
+    if (object.ttb != null) {
+      yield r'ttb';
       yield serializers.serialize(
-        object.TTB,
+        object.ttb,
         specifiedType: const FullType(String),
       );
     }
-    if (object.TTS != null) {
-      yield r'TTS';
+    if (object.tts != null) {
+      yield r'tts';
       yield serializers.serialize(
-        object.TTS,
+        object.tts,
         specifiedType: const FullType(String),
       );
     }
-    if (object.DEAL_BAS_R != null) {
-      yield r'DEAL_BAS_R';
+    if (object.dealBasR != null) {
+      yield r'deal_bas_r';
       yield serializers.serialize(
-        object.DEAL_BAS_R,
+        object.dealBasR,
         specifiedType: const FullType(String),
       );
     }
-    if (object.BKPR != null) {
-      yield r'BKPR';
+    if (object.bkpr != null) {
+      yield r'bkpr';
       yield serializers.serialize(
-        object.BKPR,
+        object.bkpr,
         specifiedType: const FullType(String),
       );
     }
-    if (object.YY_EFEE_R != null) {
-      yield r'YY_EFEE_R';
+    if (object.yyEfeeR != null) {
+      yield r'yy_efee_r';
       yield serializers.serialize(
-        object.YY_EFEE_R,
+        object.yyEfeeR,
         specifiedType: const FullType(String),
       );
     }
-    if (object.TEN_DD_EFEE_R != null) {
-      yield r'TEN_DD_EFEE_R';
+    if (object.tenDdEfeeR != null) {
+      yield r'ten_dd_efee_r';
       yield serializers.serialize(
-        object.TEN_DD_EFEE_R,
+        object.tenDdEfeeR,
         specifiedType: const FullType(String),
       );
     }
-    if (object.KFTC_DEAL_BAS_R != null) {
-      yield r'KFTC_DEAL_BAS_R';
+    if (object.kftcDealBasR != null) {
+      yield r'kftc_deal_bas_r';
       yield serializers.serialize(
-        object.KFTC_DEAL_BAS_R,
+        object.kftcDealBasR,
         specifiedType: const FullType(String),
       );
     }
-    if (object.KFTC_BKPR != null) {
-      yield r'KFTC_BKPR';
+    if (object.kftcBkpr != null) {
+      yield r'kftc_bkpr';
       yield serializers.serialize(
-        object.KFTC_BKPR,
+        object.kftcBkpr,
         specifiedType: const FullType(String),
       );
     }
@@ -203,82 +202,82 @@ class _$ExchangeRateResponseSerializer
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'RESULT':
+        case r'result':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(ExchangeRateResponseRESULTEnum),
-          ) as ExchangeRateResponseRESULTEnum;
-          result.RESULT = valueDes;
+            specifiedType: const FullType(ExchangeRateResponseResultEnum),
+          ) as ExchangeRateResponseResultEnum;
+          result.result = valueDes;
           break;
-        case r'CUR_UNIT':
+        case r'cur_unit':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.CUR_UNIT = valueDes;
+          result.curUnit = valueDes;
           break;
-        case r'CUR_NM':
+        case r'cur_nm':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.CUR_NM = valueDes;
+          result.curNm = valueDes;
           break;
-        case r'TTB':
+        case r'ttb':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.TTB = valueDes;
+          result.ttb = valueDes;
           break;
-        case r'TTS':
+        case r'tts':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.TTS = valueDes;
+          result.tts = valueDes;
           break;
-        case r'DEAL_BAS_R':
+        case r'deal_bas_r':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.DEAL_BAS_R = valueDes;
+          result.dealBasR = valueDes;
           break;
-        case r'BKPR':
+        case r'bkpr':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.BKPR = valueDes;
+          result.bkpr = valueDes;
           break;
-        case r'YY_EFEE_R':
+        case r'yy_efee_r':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.YY_EFEE_R = valueDes;
+          result.yyEfeeR = valueDes;
           break;
-        case r'TEN_DD_EFEE_R':
+        case r'ten_dd_efee_r':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.TEN_DD_EFEE_R = valueDes;
+          result.tenDdEfeeR = valueDes;
           break;
-        case r'KFTC_DEAL_BAS_R':
+        case r'kftc_deal_bas_r':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.KFTC_DEAL_BAS_R = valueDes;
+          result.kftcDealBasR = valueDes;
           break;
-        case r'KFTC_BKPR':
+        case r'kftc_bkpr':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.KFTC_BKPR = valueDes;
+          result.kftcBkpr = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -309,34 +308,34 @@ class _$ExchangeRateResponseSerializer
   }
 }
 
-class ExchangeRateResponseRESULTEnum extends EnumClass {
+class ExchangeRateResponseResultEnum extends EnumClass {
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 1)
-  static const ExchangeRateResponseRESULTEnum number1 =
-      _$exchangeRateResponseRESULTEnum_number1;
+  static const ExchangeRateResponseResultEnum number1 =
+      _$exchangeRateResponseResultEnum_number1;
 
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 2)
-  static const ExchangeRateResponseRESULTEnum number2 =
-      _$exchangeRateResponseRESULTEnum_number2;
+  static const ExchangeRateResponseResultEnum number2 =
+      _$exchangeRateResponseResultEnum_number2;
 
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 3)
-  static const ExchangeRateResponseRESULTEnum number3 =
-      _$exchangeRateResponseRESULTEnum_number3;
+  static const ExchangeRateResponseResultEnum number3 =
+      _$exchangeRateResponseResultEnum_number3;
 
   /// 조회 결과
   @BuiltValueEnumConst(wireNumber: 4)
-  static const ExchangeRateResponseRESULTEnum number4 =
-      _$exchangeRateResponseRESULTEnum_number4;
+  static const ExchangeRateResponseResultEnum number4 =
+      _$exchangeRateResponseResultEnum_number4;
 
-  static Serializer<ExchangeRateResponseRESULTEnum> get serializer =>
-      _$exchangeRateResponseRESULTEnumSerializer;
+  static Serializer<ExchangeRateResponseResultEnum> get serializer =>
+      _$exchangeRateResponseResultEnumSerializer;
 
-  const ExchangeRateResponseRESULTEnum._(super.name);
+  const ExchangeRateResponseResultEnum._(String name) : super(name);
 
-  static BuiltSet<ExchangeRateResponseRESULTEnum> get values =>
-      _$exchangeRateResponseRESULTEnumValues;
-  static ExchangeRateResponseRESULTEnum valueOf(String name) =>
-      _$exchangeRateResponseRESULTEnumValueOf(name);
+  static BuiltSet<ExchangeRateResponseResultEnum> get values =>
+      _$exchangeRateResponseResultEnumValues;
+  static ExchangeRateResponseResultEnum valueOf(String name) =>
+      _$exchangeRateResponseResultEnumValueOf(name);
 }

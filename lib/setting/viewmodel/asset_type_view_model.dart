@@ -1,84 +1,81 @@
-import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
-import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:cash_stacker_flutter_app/common/repository/asset_type_repository.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetTypeViewModelProvider =
-    StateNotifierProvider<AssetTypeViewModel, List<AssetTypeModel>>(
-        (ref) => AssetTypeViewModel());
+    StateNotifierProvider<AssetTypeViewModel, List<AssetType>>(
+        (ref) => AssetTypeViewModel(ref));
 
-class AssetTypeViewModel extends StateNotifier<List<AssetTypeModel>> {
-  AssetTypeViewModel() : super([]);
+class AssetTypeViewModel extends StateNotifier<List<AssetType>> {
+  final Ref _ref;
+  AssetTypeViewModel(this._ref) : super([]);
 
-  AssetTypeModel get cashAsset {
-    return state.firstWhere((item) => item.name == '현금');
+  AssetType get cashAsset {
+    return state.firstWhere((item) => item.assetTypeName == '현금');
   }
 
-  AssetTypeModel get foreignCashAsset {
-    return state.firstWhere((item) => item.name == '외환');
+  AssetType get foreignCashAsset {
+    return state.firstWhere((item) => item.assetTypeName == '외환');
   }
 
   Future<void> loadCategory({required String workspaceId}) async {
-    final QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.category)
-        .get();
-    final defaultCategorySnapshot = await FirebaseFirestore.instance
-        .collection(Collection.globalSetting)
-        .doc(Collection.defaultCategory)
-        .get();
+    try {
+      final response = await _ref
+          .read(assetTypeRepositoryProvider)
+          .getAllAssetTypes(workspaceId: workspaceId);
 
-    final defaultCategories =
-        defaultCategorySnapshot.data()?.entries.map((entry) {
-      return AssetTypeModel.fromJson(entry.value);
-    }).toList();
-
-    if (categorySnapshot.docs.isNotEmpty) {
-      state = categorySnapshot.docs
-          .map((doc) =>
-              AssetTypeModel.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
-    }
-
-    if (defaultCategories != null && defaultCategories.isNotEmpty) {
-      state = [...state, ...defaultCategories];
+      if (response.data != null) {
+        state = response.data!.toList();
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-  Future<void> addCategory(AssetTypeModel category, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.category)
-        .doc(category.id)
-        .set(category.toJson());
-
-    state = [...state, category];
+  Future<void> addCategory(
+      WorkspaceIdAssetTypePostRequest category, String workspaceId) async {
+    try {
+      final response = await _ref
+          .read(assetTypeRepositoryProvider)
+          .createAssetType(workspaceId: workspaceId, body: category);
+      if (response.data != null) {
+        state = [...state, response.data!];
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> updateCategory(
-      AssetTypeModel category, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.category)
-        .doc(category.id)
-        .set(category.toJson());
+    int id,
+    WorkspaceIdAssetTypePostRequest category,
+    String workspaceId,
+  ) async {
+    try {
+      final response =
+          await _ref.read(assetTypeRepositoryProvider).updateAssetType(
+                workspaceId: workspaceId,
+                id: id,
+                body: category,
+              );
 
-    state = state.map((e) => e.id == category.id ? category : e).toList();
+      if (response.data != null) {
+        state =
+            state.map((e) => e.assetTypeId == id ? response.data! : e).toList();
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
-  Future<void> removeCategory(
-      AssetTypeModel category, String workspaceId) async {
-    await FirebaseFirestore.instance
-        .collection(Collection.workspaces)
-        .doc(workspaceId)
-        .collection(Collection.category)
-        .doc(category.id)
-        .delete();
-    state = state.where((e) => e.id != category.id).toList();
+  Future<void> removeCategory(int categoryId, String workspaceId) async {
+    try {
+      await _ref
+          .read(assetTypeRepositoryProvider)
+          .deleteAssetType(workspaceId: workspaceId, id: categoryId);
+      state = state.where((e) => e.assetTypeId != categoryId).toList();
+    } catch (e) {
+      print(e);
+    }
   }
 }

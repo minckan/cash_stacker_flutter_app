@@ -61,7 +61,8 @@ class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
               final value = formKey.currentState?.value;
               final budget = value?['budget'];
               final isActive = value?['is_active'];
-              final workspaceId = ref.watch(workspaceViewModelProvider)?.id;
+              final workspaceId =
+                  ref.watch(workspaceViewModelProvider)?.workspaceId;
 
               final result =
                   await ref.read(budgetViewModelProvider.notifier).addBudget(

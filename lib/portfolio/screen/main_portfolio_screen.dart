@@ -92,7 +92,7 @@ class MainPortfolioScreen extends ConsumerWidget {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(monthlyAsset!.totalValue),
+                            addComma.format(monthlyAsset?.totalValue ?? 0),
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,

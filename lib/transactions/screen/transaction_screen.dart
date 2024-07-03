@@ -41,7 +41,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
   }
 
   Future<void> fetchTransactions(DateTime date) async {
-    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
     if (workspaceId != null) {
       await ref.read(transactionStateProvider.notifier).loadMonthlyTransactions(
             workspaceId,

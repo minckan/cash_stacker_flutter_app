@@ -47,7 +47,7 @@ class _AssetAddCategoryScreenState
                   if (currentUser != null) {
                     ref.read(assetTypeViewModelProvider.notifier).addCategory(
                           category,
-                          currentUser.workspaceId,
+                          currentUser.workspaceId!,
                         );
 
                     Navigator.of(context).pop();

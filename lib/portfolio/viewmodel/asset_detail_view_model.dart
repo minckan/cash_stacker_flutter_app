@@ -58,9 +58,9 @@ class AssetDetailViewModel {
 
 // TODO: Bad state: No element ERROR
     final exchangeRate = ref.watch(exchangeRateProvider).firstWhere(
-        (rate) => rate.cur_unit.contains(asset.currencyCode as Pattern));
+        (rate) => rate.curUnit!.contains(asset.currencyCode as Pattern));
 
-    final parseDouble = double.parse(removeComma(exchangeRate.deal_bas_r));
+    final parseDouble = double.parse(removeComma(exchangeRate.dealBasR));
     final valueTransformed =
         asset.currencyCode == 'JPY' ? (parseDouble / 100) : parseDouble; // IDR
 

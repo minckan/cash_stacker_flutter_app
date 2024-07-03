@@ -34,7 +34,7 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
                       WorkspaceIdFinanceCategoryPostRequest((b) => b
                         ..categoryName = controller.value.text.toString()
                         ..categoryType = CategoryType.income.name),
-                      workspace.id,
+                      workspace.workspaceId!,
                     );
 
                 Navigator.of(context).pop();

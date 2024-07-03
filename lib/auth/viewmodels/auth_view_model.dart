@@ -1,23 +1,14 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
-import 'dart:io';
-
-import 'package:cash_stacker_flutter_app/auth/model/user_model.dart';
 import 'package:cash_stacker_flutter_app/auth/screen/login_screen.dart';
 import 'package:cash_stacker_flutter_app/auth/util/auth_type.dart';
-import 'package:cash_stacker_flutter_app/auth/util/id_token.dart';
-import 'package:cash_stacker_flutter_app/common/const/storage.dart';
 import 'package:cash_stacker_flutter_app/common/repository/user_repository.dart';
-import 'package:cash_stacker_flutter_app/common/repository/workspace_repository.dart';
 import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
-import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 
-import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/asset_summary_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/user.dart'
+    as swagger;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,10 +17,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart'
     as kakao_user;
 
-final authViewModelProvider = StateNotifierProvider<AuthViewModel, UserModel?>(
-    (ref) => AuthViewModel(ref));
+final authViewModelProvider =
+    StateNotifierProvider<AuthViewModel, swagger.User?>(
+        (ref) => AuthViewModel(ref));
 
-class AuthViewModel extends StateNotifier<UserModel?> {
+class AuthViewModel extends StateNotifier<swagger.User?> {
   final Ref _ref;
 
   AuthViewModel(this._ref) : super(null) {
@@ -38,22 +30,18 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final kakao_user.UserApi kakaoUserApi = kakao_user.UserApi.instance;
-  UserModel? _user;
+  swagger.User? _user;
 
-  UserModel? get user => _user;
+  swagger.User? get user => _user;
 
   Future<void> loadUser() async {
     final firebaseUser = _auth.currentUser;
     if (firebaseUser != null) {
       final user =
           await _ref.read(userRepositoryProvider).getUser(id: firebaseUser.uid);
-      if (user != null) {
-        state = user;
+      if (user.data != null) {
+        state = user.data;
       }
-
-      // _ref
-      //     .read(workspaceViewModelProvider.notifier)
-      //     .loadWorkspace(state!.uid);
     }
   }
 
@@ -168,63 +156,12 @@ class AuthViewModel extends StateNotifier<UserModel?> {
 
         final user = await userRepository.getUser(id: firebaseUser.uid);
 
-        if (user == null) {
-          final workspaceId = 'workspace_${firebaseUser.uid}';
-          final fcmToken = await SharedPreferencesUtil.getString(
-              SharedPreferencesUtil.fcmTokenKey);
+        state = user.data;
 
-          try {
-            // 유저가 존재하지 않으면
-            _user = UserModel(
-              uid: firebaseUser.uid,
-              email: firebaseUser.email ?? '',
-              role: UserRole.keyUser,
-              profileImage: firebaseUser.photoURL ?? '',
-              displayName: firebaseUser.displayName ?? '',
-              workspaceId: workspaceId,
-              platformType: Platform.operatingSystem,
-              pushId: fcmToken ?? '',
-              loginType: loginType,
-              pushEnables: false,
-              darkMode: false,
-            );
-            // 신규 유저 추가
-
-            await userRepository.createUser(body: _user!);
-
-            final idToken = await getIdToken();
-            await storage.write(key: ACCESS_TOKEN_KEY, value: idToken);
-            SharedPreferencesUtil.saveString(
-                SharedPreferencesUtil.workspaceId, workspaceId);
-          } catch (e) {
-            logger.e('[User create error]: $e');
-            await _handleCreateUserError(firebaseUser);
-            return;
-          }
-
-          // 신규 워크스페이스 추가
-          try {
-            final workspace = Workspace(
-              id: workspaceId,
-            );
-
-            final workspaceRepository = _ref.read(workspaceRepositoryProvider);
-            await workspaceRepository.createWorkspace(workspace);
-
-            _ref
-                .read(workspaceViewModelProvider.notifier)
-                .setWorkspace(workspace);
-          } catch (e) {
-            logger.e('[Workspace create error]: $e');
-
-            await _handleCreateUserError(firebaseUser);
-            return;
-          }
-        } else {
-          state = user;
+        if (state?.userId != null) {
           _ref
               .read(workspaceViewModelProvider.notifier)
-              .loadWorkspace(state!.uid);
+              .loadWorkspace(state!.userId!);
         }
 
         Navigator.of(context).pushAndRemoveUntil(

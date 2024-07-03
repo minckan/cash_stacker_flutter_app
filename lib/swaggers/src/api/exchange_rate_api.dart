@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
+import 'package:built_collection/built_collection.dart';
 import '../model/exchange_rate_response.dart';
 
 class ExchangeRateApi {
@@ -27,9 +28,9 @@ class ExchangeRateApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [ExchangeRateResponse] as data
+  /// Returns a [Future] containing a [Response] with a [BuiltList<ExchangeRateResponse>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ExchangeRateResponse>> apiExchangeRatesGet({
+  Future<Response<BuiltList<ExchangeRateResponse>>> apiExchangeRatesGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -37,8 +38,8 @@ class ExchangeRateApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    const path = r'/api/exchange-rates';
-    final options = Options(
+    final _path = r'/api/exchange-rates';
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -56,43 +57,44 @@ class ExchangeRateApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    ExchangeRateResponse? responseData;
+    BuiltList<ExchangeRateResponse>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(ExchangeRateResponse),
-            ) as ExchangeRateResponse;
+              specifiedType:
+                  const FullType(BuiltList, [FullType(ExchangeRateResponse)]),
+            ) as BuiltList<ExchangeRateResponse>;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    return Response<ExchangeRateResponse>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+    return Response<BuiltList<ExchangeRateResponse>>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 }

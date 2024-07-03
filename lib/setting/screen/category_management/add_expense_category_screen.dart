@@ -35,7 +35,7 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
                       WorkspaceIdFinanceCategoryPostRequest((b) => b
                         ..categoryName = controller.value.text.toString()
                         ..categoryType = CategoryType.expense.name),
-                      currentUser.workspaceId,
+                      currentUser.workspaceId!,
                     );
 
                 Navigator.of(context).pop();

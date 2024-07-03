@@ -47,8 +47,9 @@ abstract class WorkspaceIdAssetsAssetIdTransactionsIdPutRequest
   WorkspaceIdAssetsAssetIdTransactionsIdPutRequest._();
 
   factory WorkspaceIdAssetsAssetIdTransactionsIdPutRequest(
-      [void Function(WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder b)
-          updates]) = _$WorkspaceIdAssetsAssetIdTransactionsIdPutRequest;
+          [void updates(
+              WorkspaceIdAssetsAssetIdTransactionsIdPutRequestBuilder b)]) =
+      _$WorkspaceIdAssetsAssetIdTransactionsIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(

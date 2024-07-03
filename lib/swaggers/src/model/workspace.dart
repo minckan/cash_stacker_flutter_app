@@ -27,7 +27,7 @@ abstract class Workspace implements Built<Workspace, WorkspaceBuilder> {
 
   Workspace._();
 
-  factory Workspace([void Function(WorkspaceBuilder b) updates]) = _$Workspace;
+  factory Workspace([void updates(WorkspaceBuilder b)]) = _$Workspace;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceBuilder b) => b;

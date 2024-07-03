@@ -15,7 +15,7 @@ class CategoryListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
     final categoryVM = ref.read(transactionCategoryViewModelProvider.notifier);
     return Container(
       decoration: const BoxDecoration(

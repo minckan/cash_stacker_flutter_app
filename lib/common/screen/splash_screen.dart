@@ -47,7 +47,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               .read(workspaceViewModelProvider.notifier)
               .loadWorkspace(user.uid);
 
-          final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+          final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
           if (workspaceId != null) {
             await SharedPreferencesUtil.saveString(
                 SharedPreferencesUtil.workspaceId, workspaceId);

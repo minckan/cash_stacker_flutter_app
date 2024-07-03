@@ -43,7 +43,7 @@ abstract class Asset implements Built<Asset, AssetBuilder> {
 
   Asset._();
 
-  factory Asset([void Function(AssetBuilder b) updates]) = _$Asset;
+  factory Asset([void updates(AssetBuilder b)]) = _$Asset;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetBuilder b) => b;

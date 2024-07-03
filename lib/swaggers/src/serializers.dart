@@ -103,6 +103,10 @@ Serializers serializers = (_$serializers.toBuilder()
         () => ListBuilder<Workspace>(),
       )
       ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(ExchangeRateResponse)]),
+        () => ListBuilder<ExchangeRateResponse>(),
+      )
+      ..addBuilderFactory(
         const FullType(BuiltList,
             [FullType(WorkspaceIdAssetsMonthlyTrendGet200ResponseInner)]),
         () => ListBuilder<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner>(),

@@ -6,46 +6,46 @@ part of 'exchange_rate_response.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-const ExchangeRateResponseRESULTEnum _$exchangeRateResponseRESULTEnum_number1 =
-    const ExchangeRateResponseRESULTEnum._('number1');
-const ExchangeRateResponseRESULTEnum _$exchangeRateResponseRESULTEnum_number2 =
-    const ExchangeRateResponseRESULTEnum._('number2');
-const ExchangeRateResponseRESULTEnum _$exchangeRateResponseRESULTEnum_number3 =
-    const ExchangeRateResponseRESULTEnum._('number3');
-const ExchangeRateResponseRESULTEnum _$exchangeRateResponseRESULTEnum_number4 =
-    const ExchangeRateResponseRESULTEnum._('number4');
+const ExchangeRateResponseResultEnum _$exchangeRateResponseResultEnum_number1 =
+    const ExchangeRateResponseResultEnum._('number1');
+const ExchangeRateResponseResultEnum _$exchangeRateResponseResultEnum_number2 =
+    const ExchangeRateResponseResultEnum._('number2');
+const ExchangeRateResponseResultEnum _$exchangeRateResponseResultEnum_number3 =
+    const ExchangeRateResponseResultEnum._('number3');
+const ExchangeRateResponseResultEnum _$exchangeRateResponseResultEnum_number4 =
+    const ExchangeRateResponseResultEnum._('number4');
 
-ExchangeRateResponseRESULTEnum _$exchangeRateResponseRESULTEnumValueOf(
+ExchangeRateResponseResultEnum _$exchangeRateResponseResultEnumValueOf(
     String name) {
   switch (name) {
     case 'number1':
-      return _$exchangeRateResponseRESULTEnum_number1;
+      return _$exchangeRateResponseResultEnum_number1;
     case 'number2':
-      return _$exchangeRateResponseRESULTEnum_number2;
+      return _$exchangeRateResponseResultEnum_number2;
     case 'number3':
-      return _$exchangeRateResponseRESULTEnum_number3;
+      return _$exchangeRateResponseResultEnum_number3;
     case 'number4':
-      return _$exchangeRateResponseRESULTEnum_number4;
+      return _$exchangeRateResponseResultEnum_number4;
     default:
       throw new ArgumentError(name);
   }
 }
 
-final BuiltSet<ExchangeRateResponseRESULTEnum>
-    _$exchangeRateResponseRESULTEnumValues = new BuiltSet<
-        ExchangeRateResponseRESULTEnum>(const <ExchangeRateResponseRESULTEnum>[
-  _$exchangeRateResponseRESULTEnum_number1,
-  _$exchangeRateResponseRESULTEnum_number2,
-  _$exchangeRateResponseRESULTEnum_number3,
-  _$exchangeRateResponseRESULTEnum_number4,
+final BuiltSet<ExchangeRateResponseResultEnum>
+    _$exchangeRateResponseResultEnumValues = new BuiltSet<
+        ExchangeRateResponseResultEnum>(const <ExchangeRateResponseResultEnum>[
+  _$exchangeRateResponseResultEnum_number1,
+  _$exchangeRateResponseResultEnum_number2,
+  _$exchangeRateResponseResultEnum_number3,
+  _$exchangeRateResponseResultEnum_number4,
 ]);
 
-Serializer<ExchangeRateResponseRESULTEnum>
-    _$exchangeRateResponseRESULTEnumSerializer =
-    new _$ExchangeRateResponseRESULTEnumSerializer();
+Serializer<ExchangeRateResponseResultEnum>
+    _$exchangeRateResponseResultEnumSerializer =
+    new _$ExchangeRateResponseResultEnumSerializer();
 
-class _$ExchangeRateResponseRESULTEnumSerializer
-    implements PrimitiveSerializer<ExchangeRateResponseRESULTEnum> {
+class _$ExchangeRateResponseResultEnumSerializer
+    implements PrimitiveSerializer<ExchangeRateResponseResultEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number1': 1,
     'number2': 2,
@@ -60,64 +60,64 @@ class _$ExchangeRateResponseRESULTEnumSerializer
   };
 
   @override
-  final Iterable<Type> types = const <Type>[ExchangeRateResponseRESULTEnum];
+  final Iterable<Type> types = const <Type>[ExchangeRateResponseResultEnum];
   @override
-  final String wireName = 'ExchangeRateResponseRESULTEnum';
+  final String wireName = 'ExchangeRateResponseResultEnum';
 
   @override
   Object serialize(
-          Serializers serializers, ExchangeRateResponseRESULTEnum object,
+          Serializers serializers, ExchangeRateResponseResultEnum object,
           {FullType specifiedType = FullType.unspecified}) =>
       _toWire[object.name] ?? object.name;
 
   @override
-  ExchangeRateResponseRESULTEnum deserialize(
+  ExchangeRateResponseResultEnum deserialize(
           Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
-      ExchangeRateResponseRESULTEnum.valueOf(
+      ExchangeRateResponseResultEnum.valueOf(
           _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$ExchangeRateResponse extends ExchangeRateResponse {
   @override
-  final ExchangeRateResponseRESULTEnum? RESULT;
+  final ExchangeRateResponseResultEnum? result;
   @override
-  final String? CUR_UNIT;
+  final String? curUnit;
   @override
-  final String? CUR_NM;
+  final String? curNm;
   @override
-  final String? TTB;
+  final String? ttb;
   @override
-  final String? TTS;
+  final String? tts;
   @override
-  final String? DEAL_BAS_R;
+  final String? dealBasR;
   @override
-  final String? BKPR;
+  final String? bkpr;
   @override
-  final String? YY_EFEE_R;
+  final String? yyEfeeR;
   @override
-  final String? TEN_DD_EFEE_R;
+  final String? tenDdEfeeR;
   @override
-  final String? KFTC_DEAL_BAS_R;
+  final String? kftcDealBasR;
   @override
-  final String? KFTC_BKPR;
+  final String? kftcBkpr;
 
   factory _$ExchangeRateResponse(
           [void Function(ExchangeRateResponseBuilder)? updates]) =>
       (new ExchangeRateResponseBuilder()..update(updates))._build();
 
   _$ExchangeRateResponse._(
-      {this.RESULT,
-      this.CUR_UNIT,
-      this.CUR_NM,
-      this.TTB,
-      this.TTS,
-      this.DEAL_BAS_R,
-      this.BKPR,
-      this.YY_EFEE_R,
-      this.TEN_DD_EFEE_R,
-      this.KFTC_DEAL_BAS_R,
-      this.KFTC_BKPR})
+      {this.result,
+      this.curUnit,
+      this.curNm,
+      this.ttb,
+      this.tts,
+      this.dealBasR,
+      this.bkpr,
+      this.yyEfeeR,
+      this.tenDdEfeeR,
+      this.kftcDealBasR,
+      this.kftcBkpr})
       : super._();
 
   @override
@@ -133,33 +133,33 @@ class _$ExchangeRateResponse extends ExchangeRateResponse {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is ExchangeRateResponse &&
-        RESULT == other.RESULT &&
-        CUR_UNIT == other.CUR_UNIT &&
-        CUR_NM == other.CUR_NM &&
-        TTB == other.TTB &&
-        TTS == other.TTS &&
-        DEAL_BAS_R == other.DEAL_BAS_R &&
-        BKPR == other.BKPR &&
-        YY_EFEE_R == other.YY_EFEE_R &&
-        TEN_DD_EFEE_R == other.TEN_DD_EFEE_R &&
-        KFTC_DEAL_BAS_R == other.KFTC_DEAL_BAS_R &&
-        KFTC_BKPR == other.KFTC_BKPR;
+        result == other.result &&
+        curUnit == other.curUnit &&
+        curNm == other.curNm &&
+        ttb == other.ttb &&
+        tts == other.tts &&
+        dealBasR == other.dealBasR &&
+        bkpr == other.bkpr &&
+        yyEfeeR == other.yyEfeeR &&
+        tenDdEfeeR == other.tenDdEfeeR &&
+        kftcDealBasR == other.kftcDealBasR &&
+        kftcBkpr == other.kftcBkpr;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, RESULT.hashCode);
-    _$hash = $jc(_$hash, CUR_UNIT.hashCode);
-    _$hash = $jc(_$hash, CUR_NM.hashCode);
-    _$hash = $jc(_$hash, TTB.hashCode);
-    _$hash = $jc(_$hash, TTS.hashCode);
-    _$hash = $jc(_$hash, DEAL_BAS_R.hashCode);
-    _$hash = $jc(_$hash, BKPR.hashCode);
-    _$hash = $jc(_$hash, YY_EFEE_R.hashCode);
-    _$hash = $jc(_$hash, TEN_DD_EFEE_R.hashCode);
-    _$hash = $jc(_$hash, KFTC_DEAL_BAS_R.hashCode);
-    _$hash = $jc(_$hash, KFTC_BKPR.hashCode);
+    _$hash = $jc(_$hash, result.hashCode);
+    _$hash = $jc(_$hash, curUnit.hashCode);
+    _$hash = $jc(_$hash, curNm.hashCode);
+    _$hash = $jc(_$hash, ttb.hashCode);
+    _$hash = $jc(_$hash, tts.hashCode);
+    _$hash = $jc(_$hash, dealBasR.hashCode);
+    _$hash = $jc(_$hash, bkpr.hashCode);
+    _$hash = $jc(_$hash, yyEfeeR.hashCode);
+    _$hash = $jc(_$hash, tenDdEfeeR.hashCode);
+    _$hash = $jc(_$hash, kftcDealBasR.hashCode);
+    _$hash = $jc(_$hash, kftcBkpr.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -167,17 +167,17 @@ class _$ExchangeRateResponse extends ExchangeRateResponse {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'ExchangeRateResponse')
-          ..add('RESULT', RESULT)
-          ..add('CUR_UNIT', CUR_UNIT)
-          ..add('CUR_NM', CUR_NM)
-          ..add('TTB', TTB)
-          ..add('TTS', TTS)
-          ..add('DEAL_BAS_R', DEAL_BAS_R)
-          ..add('BKPR', BKPR)
-          ..add('YY_EFEE_R', YY_EFEE_R)
-          ..add('TEN_DD_EFEE_R', TEN_DD_EFEE_R)
-          ..add('KFTC_DEAL_BAS_R', KFTC_DEAL_BAS_R)
-          ..add('KFTC_BKPR', KFTC_BKPR))
+          ..add('result', result)
+          ..add('curUnit', curUnit)
+          ..add('curNm', curNm)
+          ..add('ttb', ttb)
+          ..add('tts', tts)
+          ..add('dealBasR', dealBasR)
+          ..add('bkpr', bkpr)
+          ..add('yyEfeeR', yyEfeeR)
+          ..add('tenDdEfeeR', tenDdEfeeR)
+          ..add('kftcDealBasR', kftcDealBasR)
+          ..add('kftcBkpr', kftcBkpr))
         .toString();
   }
 }
@@ -186,51 +186,49 @@ class ExchangeRateResponseBuilder
     implements Builder<ExchangeRateResponse, ExchangeRateResponseBuilder> {
   _$ExchangeRateResponse? _$v;
 
-  ExchangeRateResponseRESULTEnum? _RESULT;
-  ExchangeRateResponseRESULTEnum? get RESULT => _$this._RESULT;
-  set RESULT(ExchangeRateResponseRESULTEnum? RESULT) => _$this._RESULT = RESULT;
+  ExchangeRateResponseResultEnum? _result;
+  ExchangeRateResponseResultEnum? get result => _$this._result;
+  set result(ExchangeRateResponseResultEnum? result) => _$this._result = result;
 
-  String? _CUR_UNIT;
-  String? get CUR_UNIT => _$this._CUR_UNIT;
-  set CUR_UNIT(String? CUR_UNIT) => _$this._CUR_UNIT = CUR_UNIT;
+  String? _curUnit;
+  String? get curUnit => _$this._curUnit;
+  set curUnit(String? curUnit) => _$this._curUnit = curUnit;
 
-  String? _CUR_NM;
-  String? get CUR_NM => _$this._CUR_NM;
-  set CUR_NM(String? CUR_NM) => _$this._CUR_NM = CUR_NM;
+  String? _curNm;
+  String? get curNm => _$this._curNm;
+  set curNm(String? curNm) => _$this._curNm = curNm;
 
-  String? _TTB;
-  String? get TTB => _$this._TTB;
-  set TTB(String? TTB) => _$this._TTB = TTB;
+  String? _ttb;
+  String? get ttb => _$this._ttb;
+  set ttb(String? ttb) => _$this._ttb = ttb;
 
-  String? _TTS;
-  String? get TTS => _$this._TTS;
-  set TTS(String? TTS) => _$this._TTS = TTS;
+  String? _tts;
+  String? get tts => _$this._tts;
+  set tts(String? tts) => _$this._tts = tts;
 
-  String? _DEAL_BAS_R;
-  String? get DEAL_BAS_R => _$this._DEAL_BAS_R;
-  set DEAL_BAS_R(String? DEAL_BAS_R) => _$this._DEAL_BAS_R = DEAL_BAS_R;
+  String? _dealBasR;
+  String? get dealBasR => _$this._dealBasR;
+  set dealBasR(String? dealBasR) => _$this._dealBasR = dealBasR;
 
-  String? _BKPR;
-  String? get BKPR => _$this._BKPR;
-  set BKPR(String? BKPR) => _$this._BKPR = BKPR;
+  String? _bkpr;
+  String? get bkpr => _$this._bkpr;
+  set bkpr(String? bkpr) => _$this._bkpr = bkpr;
 
-  String? _YY_EFEE_R;
-  String? get YY_EFEE_R => _$this._YY_EFEE_R;
-  set YY_EFEE_R(String? YY_EFEE_R) => _$this._YY_EFEE_R = YY_EFEE_R;
+  String? _yyEfeeR;
+  String? get yyEfeeR => _$this._yyEfeeR;
+  set yyEfeeR(String? yyEfeeR) => _$this._yyEfeeR = yyEfeeR;
 
-  String? _TEN_DD_EFEE_R;
-  String? get TEN_DD_EFEE_R => _$this._TEN_DD_EFEE_R;
-  set TEN_DD_EFEE_R(String? TEN_DD_EFEE_R) =>
-      _$this._TEN_DD_EFEE_R = TEN_DD_EFEE_R;
+  String? _tenDdEfeeR;
+  String? get tenDdEfeeR => _$this._tenDdEfeeR;
+  set tenDdEfeeR(String? tenDdEfeeR) => _$this._tenDdEfeeR = tenDdEfeeR;
 
-  String? _KFTC_DEAL_BAS_R;
-  String? get KFTC_DEAL_BAS_R => _$this._KFTC_DEAL_BAS_R;
-  set KFTC_DEAL_BAS_R(String? KFTC_DEAL_BAS_R) =>
-      _$this._KFTC_DEAL_BAS_R = KFTC_DEAL_BAS_R;
+  String? _kftcDealBasR;
+  String? get kftcDealBasR => _$this._kftcDealBasR;
+  set kftcDealBasR(String? kftcDealBasR) => _$this._kftcDealBasR = kftcDealBasR;
 
-  String? _KFTC_BKPR;
-  String? get KFTC_BKPR => _$this._KFTC_BKPR;
-  set KFTC_BKPR(String? KFTC_BKPR) => _$this._KFTC_BKPR = KFTC_BKPR;
+  String? _kftcBkpr;
+  String? get kftcBkpr => _$this._kftcBkpr;
+  set kftcBkpr(String? kftcBkpr) => _$this._kftcBkpr = kftcBkpr;
 
   ExchangeRateResponseBuilder() {
     ExchangeRateResponse._defaults(this);
@@ -239,17 +237,17 @@ class ExchangeRateResponseBuilder
   ExchangeRateResponseBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _RESULT = $v.RESULT;
-      _CUR_UNIT = $v.CUR_UNIT;
-      _CUR_NM = $v.CUR_NM;
-      _TTB = $v.TTB;
-      _TTS = $v.TTS;
-      _DEAL_BAS_R = $v.DEAL_BAS_R;
-      _BKPR = $v.BKPR;
-      _YY_EFEE_R = $v.YY_EFEE_R;
-      _TEN_DD_EFEE_R = $v.TEN_DD_EFEE_R;
-      _KFTC_DEAL_BAS_R = $v.KFTC_DEAL_BAS_R;
-      _KFTC_BKPR = $v.KFTC_BKPR;
+      _result = $v.result;
+      _curUnit = $v.curUnit;
+      _curNm = $v.curNm;
+      _ttb = $v.ttb;
+      _tts = $v.tts;
+      _dealBasR = $v.dealBasR;
+      _bkpr = $v.bkpr;
+      _yyEfeeR = $v.yyEfeeR;
+      _tenDdEfeeR = $v.tenDdEfeeR;
+      _kftcDealBasR = $v.kftcDealBasR;
+      _kftcBkpr = $v.kftcBkpr;
       _$v = null;
     }
     return this;
@@ -272,17 +270,17 @@ class ExchangeRateResponseBuilder
   _$ExchangeRateResponse _build() {
     final _$result = _$v ??
         new _$ExchangeRateResponse._(
-            RESULT: RESULT,
-            CUR_UNIT: CUR_UNIT,
-            CUR_NM: CUR_NM,
-            TTB: TTB,
-            TTS: TTS,
-            DEAL_BAS_R: DEAL_BAS_R,
-            BKPR: BKPR,
-            YY_EFEE_R: YY_EFEE_R,
-            TEN_DD_EFEE_R: TEN_DD_EFEE_R,
-            KFTC_DEAL_BAS_R: KFTC_DEAL_BAS_R,
-            KFTC_BKPR: KFTC_BKPR);
+            result: result,
+            curUnit: curUnit,
+            curNm: curNm,
+            ttb: ttb,
+            tts: tts,
+            dealBasR: dealBasR,
+            bkpr: bkpr,
+            yyEfeeR: yyEfeeR,
+            tenDdEfeeR: tenDdEfeeR,
+            kftcDealBasR: kftcDealBasR,
+            kftcBkpr: kftcBkpr);
     replace(_$result);
     return _$result;
   }

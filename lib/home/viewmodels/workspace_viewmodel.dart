@@ -1,10 +1,9 @@
 import 'package:cash_stacker_flutter_app/common/repository/workspace_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
-import 'package:cash_stacker_flutter_app/home/model/workspace_model.dart';
-
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,12 +23,12 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
           .read(workspaceRepositoryProvider)
           .getOneWorkspace(id: 'workspace_$userId');
 
-      if (workspace != null) {
-        state = workspace;
+      if (workspace.data != null) {
+        state = workspace.data;
         try {
           await _ref
               .read(transactionCategoryViewModelProvider.notifier)
-              .loadCategory(workspaceId: state!.id);
+              .loadCategory(workspaceId: state!.workspaceId!);
         } catch (e) {
           logger.e('ERROR : 카테고리 조회  $userId: $e');
         }

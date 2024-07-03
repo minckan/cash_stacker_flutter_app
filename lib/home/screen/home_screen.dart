@@ -44,7 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final workspaceId = ref.read(workspaceViewModelProvider)?.id;
+    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
 
     // final monthlyAssetTrendList = ref.watch(assetTrendProvider);
 
@@ -203,7 +203,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (budgetStat is BudgetStatLoading)
-              const Center(child: CircularProgressIndicator())
+              const Center(
+                child: CircularProgressIndicator(),
+              )
             else if (budgetStat is BudgetState &&
                 budgetStat.activeBudget?.budget != null) ...[
               Row(
