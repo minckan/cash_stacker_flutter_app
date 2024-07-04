@@ -4,6 +4,7 @@ import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -24,7 +25,6 @@ class _AssetAddCategoryScreenState
 
   @override
   Widget build(BuildContext context) {
-    const Uuid uuid = Uuid();
     final currentUser = ref.watch(authViewModelProvider);
 
     return DefaultLayout(
@@ -32,16 +32,12 @@ class _AssetAddCategoryScreenState
       actions: [
         TextButton(
             onPressed: () {
-              String docId = uuid.v4();
-
               if (_formKey.currentState?.saveAndValidate() ?? false) {
                 final value = _formKey.currentState?.value;
 
                 if (value != null) {
-                  final category = AssetTypeModel(
-                    id: docId,
-                    name: value['category_name'],
-                    isDefault: false,
+                  final category = WorkspaceIdAssetTypePostRequest(
+                    (b) => b..assetTypeName = value['category_name'],
                   );
 
                   if (currentUser != null) {

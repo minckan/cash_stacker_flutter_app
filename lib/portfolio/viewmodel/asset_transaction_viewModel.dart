@@ -93,7 +93,7 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
         (total, transaction) => total + transaction.totalKrwTransactionPrice);
   }
 
-  List<AssetTransaction> getParticularAssetTransactions(String assetId) {
+  List<AssetTransaction> getParticularAssetTransactions(int assetId) {
     final list = state.where((item) => item.assetId == assetId).toList();
     list.sort((a, b) => b.date.compareTo(a.date));
     return list;

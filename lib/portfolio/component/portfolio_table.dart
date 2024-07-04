@@ -1,7 +1,8 @@
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_column.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_row.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';

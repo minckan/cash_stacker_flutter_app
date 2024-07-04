@@ -26,7 +26,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 class AddAssetScreen extends ConsumerStatefulWidget {
-  String? assetId;
+  int? assetId;
 
   AddAssetScreen({super.key, this.assetId});
 

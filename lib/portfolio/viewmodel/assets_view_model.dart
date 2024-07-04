@@ -56,7 +56,7 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     state = [];
   }
 
-  Asset getParticularAssets(String assetId) {
+  Asset getParticularAssets(int assetId) {
     final result =
         state.firstWhere((element) => element.assetTypeId == assetId);
 

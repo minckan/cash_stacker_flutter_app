@@ -35,7 +35,7 @@ Widget buildActionSheet(BuildContext context) => CupertinoActionSheet(
 class AssetTransactionListScreen extends ConsumerWidget {
   AssetTransactionListScreen({super.key, this.assetId});
 
-  String? assetId;
+  int? assetId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -142,8 +142,8 @@ class AssetTransactionListScreen extends ConsumerWidget {
           if (index > 1) {
             final transaction = assetsTransactions[index - 2];
 
-            final cashTr =
-                transaction.category.id == categoryVm.foreignCashAsset.id;
+            final cashTr = transaction.category.id ==
+                categoryVm.foreignCashAsset.assetTypeId;
 
             return buildListTile(
               context: context,

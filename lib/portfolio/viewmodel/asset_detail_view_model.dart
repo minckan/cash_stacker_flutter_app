@@ -5,10 +5,10 @@ import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,21 +27,24 @@ class AssetDetailViewModel {
 
   bool get isCashAsset {
     final categoryVm = ref.read(assetTypeViewModelProvider.notifier);
-    final krwCashAssetId = categoryVm.cashAsset.id;
+    final krwCashAssetId = categoryVm.cashAsset.assetTypeId;
 
-    final foreignCashAssetId = categoryVm.foreignCashAsset.id;
+    final foreignCashAssetId = categoryVm.foreignCashAsset.assetTypeId;
 
-    return krwCashAssetId == asset.categoryId ||
-        foreignCashAssetId == asset.categoryId;
+    return krwCashAssetId == asset.assetTypeId ||
+        foreignCashAssetId == asset.assetTypeId;
   }
 
   bool get isKrwCashAsset =>
-      asset.categoryId ==
-      ref.read(assetTypeViewModelProvider.notifier).cashAsset.id;
+      asset.assetTypeId ==
+      ref.read(assetTypeViewModelProvider.notifier).cashAsset.assetTypeId;
 
   bool get isForeignCashAsset =>
-      asset.categoryId ==
-      ref.read(assetTypeViewModelProvider.notifier).foreignCashAsset.id;
+      asset.assetTypeId ==
+      ref
+          .read(assetTypeViewModelProvider.notifier)
+          .foreignCashAsset
+          .assetTypeId;
 
   //================================================================
 
@@ -71,7 +74,7 @@ class AssetDetailViewModel {
   /// 각 자산의 거래내역
   List<AssetTransaction> get transactions {
     final allTR = ref.read(assetTransactionViewModelProvider);
-    final assetId = asset.id;
+    final assetId = asset.assetId;
 
     return allTR
         .where((transaction) => transaction.assetId == assetId)
@@ -118,7 +121,7 @@ class AssetDetailViewModel {
   /// [원화] 실제 투자원금 총액
   double get totalBuyingAmountKrw {
     if (isKrwCashAsset) {
-      return asset.balance;
+      return asset.balance ?? 0;
     } else if (isForeignCashAsset) {
       final totalBuying = purchaseTransactions.fold(0.0,
           (total, transaction) => total + transaction.totalTransactionPrice);
@@ -148,9 +151,9 @@ class AssetDetailViewModel {
   /// [원화] 입력 받은 현재가
   double get currentSinglePriceKrw {
     if (_isKrwAsset) {
-      return asset.balance;
+      return asset.balance ?? 0;
     } else {
-      return asset.balance * exchangeRate;
+      return (asset.balance ?? 0) * exchangeRate;
     }
   }
 
@@ -206,7 +209,7 @@ class AssetDetailViewModel {
 
   /// [외화] 입력받은 현재가
   double get currentSinglePriceForeign {
-    return asset.balance;
+    return asset.balance ?? 0;
   }
 
   /// [외화] 현재가 * 수량 = 현재가 총금액

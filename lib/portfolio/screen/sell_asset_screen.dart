@@ -4,13 +4,14 @@ import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 class SellAssetScreen extends ConsumerStatefulWidget {
-  String assetId;
+  int assetId;
   SellAssetScreen({super.key, required this.assetId});
 
   @override
@@ -30,7 +31,7 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
   Uuid uuid = const Uuid();
   DateTime selectedDate = DateTime.now();
   Asset? asset;
-  String? foreignCashCategoryId;
+  int? foreignCashCategoryId;
   String? sellableAmount;
   bool? isKrwAsset;
   bool? isForeignCash;
@@ -40,8 +41,10 @@ class _SellAssetScreenState extends ConsumerState<SellAssetScreen> {
   void initState() {
     super.initState();
 
-    foreignCashCategoryId =
-        ref.read(assetTypeViewModelProvider.notifier).foreignCashAsset.id;
+    foreignCashCategoryId = ref
+        .read(assetTypeViewModelProvider.notifier)
+        .foreignCashAsset
+        .assetTypeId;
     asset = ref
         .read(assetViewModelProvider.notifier)
         .getParticularAssets(widget.assetId);

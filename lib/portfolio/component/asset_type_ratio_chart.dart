@@ -1,7 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/component/lib/Indicator.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+// import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+// import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,7 @@ class AssetTypeRatioChart extends ConsumerStatefulWidget {
     required this.assets,
   });
 
-  final List<AssetTypeModel> categories;
+  final List<AssetType> categories;
   final List<Asset> assets; // Assume you have an AssetModel defined
 
   @override
@@ -73,7 +74,7 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
                 child: Indicator(
                   color: _AppColors
                       .categoryColors[i % _AppColors.categoryColors.length],
-                  text: widget.categories[i].name,
+                  text: widget.categories[i].assetTypeName!,
                   isSquare: true,
                 ),
               );
@@ -88,7 +89,7 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
   }
 
   List<PieChartSectionData> showingSections(
-      Map<AssetTypeModel, double> categoryRatios) {
+      Map<AssetType, double> categoryRatios) {
     final items = categoryRatios.entries.fold([], (categoryItems, ratios) {
       for (var category in widget.categories) {
         if (category == ratios.key) {
@@ -120,15 +121,15 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
     }).toList();
   }
 
-  Map<AssetTypeModel, double> _calculateCategoryRatios() {
-    final Map<AssetTypeModel, double> categorySums = {};
+  Map<AssetType, double> _calculateCategoryRatios() {
+    final Map<AssetType, double> categorySums = {};
     double totalSum = 0;
 
     for (var asset in widget.assets) {
       final vm = AssetDetailViewModel(asset: asset, ref: ref);
 
       final category = widget.categories
-          .firstWhere((category) => category.id == asset.categoryId);
+          .firstWhere((category) => category.assetTypeId == asset.assetTypeId);
 
       categorySums.update(category, (value) => value + vm.ratioValue,
           ifAbsent: () => vm.ratioValue);

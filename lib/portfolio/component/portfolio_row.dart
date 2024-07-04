@@ -1,8 +1,9 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
+
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,14 +29,14 @@ class PortfolioRow extends ConsumerWidget {
 
     return _buildRows(
       context: context,
-      assetId: asset.id,
+      assetId: asset.assetId!,
       row: row,
       hasTransactions: hasTransactions.isNotEmpty,
     );
   }
 
   Column _buildRows({
-    required String assetId,
+    required int assetId,
     required BuildContext context,
     required TableRowAsset row,
     required bool hasTransactions,
