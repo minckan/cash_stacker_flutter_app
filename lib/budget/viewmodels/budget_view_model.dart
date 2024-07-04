@@ -16,6 +16,10 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
 
   BudgetViewModel(this._ref) : super(BudgetStatLoading());
 
+  String? get workspaceId {
+    return _ref.read(workspaceViewModelProvider)?.workspaceId;
+  }
+
   String? get warningText {
     if (state is BudgetState) {
       final budgetState = state as BudgetState;
@@ -51,11 +55,10 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
 
   Future<List<Budget>?> loadBudgets() async {
     try {
-      final workspaceId = _ref.read(workspaceViewModelProvider)?.workspaceId;
       if (workspaceId != null) {
         final response = await _ref
             .read(budgetRepositoryProvider)
-            .getAllBudget(workspaceId: workspaceId);
+            .getAllBudget(workspaceId: workspaceId!);
 
         if (response.data != null && response.data!.isNotEmpty) {
           if (state is BudgetState) {
@@ -79,12 +82,12 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
     return null;
   }
 
-  Future<void> loadActiveBudget(String? workspaceId) async {
+  Future<void> loadActiveBudget() async {
     try {
       if (workspaceId != null) {
         final response = await _ref
             .read(budgetRepositoryProvider)
-            .getActiveBudget(workspaceId: workspaceId);
+            .getActiveBudget(workspaceId: workspaceId!);
 
         if (response.data != null) {
           if (state is BudgetState) {
@@ -110,14 +113,13 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
   }
 
   Future<dynamic> addBudget({
-    required String? workspaceId,
     required WorkspaceIdBudgetPostRequest body,
   }) async {
     try {
       if (workspaceId != null) {
         final response = await _ref
             .read(budgetRepositoryProvider)
-            .createBudget(workspaceId: workspaceId, body: body);
+            .createBudget(workspaceId: workspaceId!, body: body);
 
         if (response.data != null) {
           state = BudgetState(

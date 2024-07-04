@@ -6,7 +6,6 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/snackbar.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -61,12 +60,9 @@ class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
               final value = formKey.currentState?.value;
               final budget = value?['budget'];
               final isActive = value?['is_active'];
-              final workspaceId =
-                  ref.watch(workspaceViewModelProvider)?.workspaceId;
 
               final result =
                   await ref.read(budgetViewModelProvider.notifier).addBudget(
-                        workspaceId: workspaceId,
                         body: WorkspaceIdBudgetPostRequest(
                           (b) => b
                             ..startDate = startDate.toUtc()

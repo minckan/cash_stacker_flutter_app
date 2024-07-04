@@ -25,13 +25,11 @@ class _AssetAddCategoryScreenState
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = ref.watch(authViewModelProvider);
-
     return DefaultLayout(
       title: '자산 카테고리 추가',
       actions: [
         TextButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState?.saveAndValidate() ?? false) {
                 final value = _formKey.currentState?.value;
 
@@ -40,12 +38,13 @@ class _AssetAddCategoryScreenState
                     (b) => b..assetTypeName = value['category_name'],
                   );
 
-                  if (currentUser != null) {
-                    ref.read(assetTypeViewModelProvider.notifier).addCategory(
-                          category,
-                          currentUser.workspaceId!,
-                        );
+                  final result = await ref
+                      .read(assetTypeViewModelProvider.notifier)
+                      .addCategory(
+                        category,
+                      );
 
+                  if (result == true) {
                     Navigator.of(context).pop();
                   }
                 }

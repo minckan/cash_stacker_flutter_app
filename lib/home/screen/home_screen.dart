@@ -36,9 +36,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final workspaceId = await SharedPreferencesUtil.getString(
         SharedPreferencesUtil.workspaceId);
     if (workspaceId != null) {
-      await ref
-          .read(budgetViewModelProvider.notifier)
-          .loadActiveBudget(workspaceId);
+      await ref.read(budgetViewModelProvider.notifier).loadActiveBudget();
     }
   }
 

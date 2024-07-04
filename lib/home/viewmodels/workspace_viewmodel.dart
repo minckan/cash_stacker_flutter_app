@@ -25,20 +25,6 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
 
       if (workspace.data != null) {
         state = workspace.data;
-        try {
-          await _ref
-              .read(transactionCategoryViewModelProvider.notifier)
-              .loadCategory(workspaceId: state!.workspaceId!);
-        } catch (e) {
-          logger.e('ERROR : 카테고리 조회  $userId: $e');
-        }
-        // try {
-        //   await _ref
-        //       .read(financialStateProvider.notifier)
-        //       .loadMonthlyTransactions(state!.id, DateTime.now());
-        // } catch (e) {
-        //   logger.e('ERROR : 가계부 거래내역 조회  $userId: $e');
-        // }
 
         // try {
         //   await _ref
@@ -46,22 +32,6 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
         //       .loadAssetSummaries(state!.id);
         // } catch (e) {
         //   logger.e('ERROR : 자산 요약 조회  $userId: $e');
-        // }
-
-        // try {
-        //   await _ref
-        //       .read(assetViewModelProvider.notifier)
-        //       .loadAssets(state!.id);
-        // } catch (e) {
-        //   logger.e('ERROR : 자산 조회  $userId: $e');
-        // }
-
-        // try {
-        //   await _ref
-        //       .read(assetTransactionViewModelProvider.notifier)
-        //       .loadAssetTransactions(state!.id);
-        // } catch (e) {
-        //   logger.e('ERROR : 자산 거래내역 조회  $userId: $e');
         // }
 
         // try {

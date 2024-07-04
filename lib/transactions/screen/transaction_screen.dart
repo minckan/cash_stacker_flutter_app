@@ -1,5 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+
 import 'package:cash_stacker_flutter_app/transactions/component/calender/calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/daily_transaction.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/transaction_state.dart';
@@ -41,13 +41,9 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
   }
 
   Future<void> fetchTransactions(DateTime date) async {
-    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
-    if (workspaceId != null) {
-      await ref.read(transactionStateProvider.notifier).loadMonthlyTransactions(
-            workspaceId,
-            date,
-          );
-    }
+    await ref.read(transactionStateProvider.notifier).loadMonthlyTransactions(
+          date,
+        );
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/repository/asset_repository.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
@@ -13,6 +14,10 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   AssetsViewModel(this._ref) : super([]);
 
+  String? get workspaceId {
+    return _ref.read(workspaceViewModelProvider)?.workspaceId;
+  }
+
   Asset? get krwCashAsset {
     final krwCashCategoryId =
         _ref.read(assetTypeViewModelProvider.notifier).cashAsset.assetTypeId;
@@ -25,31 +30,39 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     }
   }
 
-  Future<void> loadAssets(String workspaceId) async {
-    final response = await _ref
-        .read(assetRepositoryProvider)
-        .getAllAssets(workspaceId: workspaceId);
+  Future<void> loadAssets() async {
+    if (workspaceId != null) {
+      final response = await _ref
+          .read(assetRepositoryProvider)
+          .getAllAssets(workspaceId: workspaceId!);
 
-    if (response.data != null || response.data!.isNotEmpty) {
-      List<Asset> assets = response.data!.toList();
-      state = _sortAssets(assets);
+      if (response.data != null || response.data!.isNotEmpty) {
+        List<Asset> assets = response.data!.toList();
+        state = _sortAssets(assets);
+      }
     }
   }
 
-  Future<void> addAsset(Asset asset, String workspaceId) async {
-    state = _sortAssets([...state, asset]);
+  Future<void> addAsset(Asset asset) async {
+    if (workspaceId != null) {
+      state = _sortAssets([...state, asset]);
+    }
   }
 
-  Future<void> updateAsset(Asset asset, String workspaceId) async {
-    state = _sortAssets(state
-        .map((e) => e.assetTypeId == asset.assetTypeId ? asset : e)
-        .toList());
+  Future<void> updateAsset(Asset asset) async {
+    if (workspaceId != null) {
+      state = _sortAssets(state
+          .map((e) => e.assetTypeId == asset.assetTypeId ? asset : e)
+          .toList());
+    }
   }
 
-  Future<void> removeAsset(Asset asset, String workspaceId) async {
-    state = _sortAssets(state
-        .where((element) => element.assetTypeId != asset.assetTypeId)
-        .toList());
+  Future<void> removeAsset(Asset asset) async {
+    if (workspaceId != null) {
+      state = _sortAssets(state
+          .where((element) => element.assetTypeId != asset.assetTypeId)
+          .toList());
+    }
   }
 
   void clearAssets() {

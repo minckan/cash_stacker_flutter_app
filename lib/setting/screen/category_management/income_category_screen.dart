@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/setting/component/category_list_tile.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
@@ -7,14 +8,26 @@ import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IncomeCategoryScreen extends ConsumerWidget {
+class IncomeCategoryScreen extends ConsumerStatefulWidget {
   const IncomeCategoryScreen({super.key});
+  @override
+  ConsumerState<IncomeCategoryScreen> createState() =>
+      _IncomeCategoryScreenState();
+}
+
+class _IncomeCategoryScreenState extends ConsumerState<IncomeCategoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(transactionCategoryViewModelProvider.notifier).loadCategory();
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref
-        .watch(transactionCategoryViewModelProvider.notifier)
-        .getCategoriesByType('income');
+  Widget build(BuildContext context) {
+    final categories = ref.watch(transactionCategoryViewModelProvider);
+
+    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
+    final categoryVM = ref.read(transactionCategoryViewModelProvider.notifier);
 // TODO: 404 상태에 대한 화면 노출 필요
     return DefaultLayout(
       title: '수입 카테고리 관리',
@@ -28,10 +41,18 @@ class IncomeCategoryScreen extends ConsumerWidget {
       ],
       child: ListView.builder(
         itemBuilder: (context, index) {
-          final category = categories[index];
+          final incomeCategory = categories['income'];
+          (incomeCategory.length == 0)
 
           return CategoryListTile(
-            category: category,
+            category: CategoryTile(name: category.categoryName!),
+            onDelete: () {
+              if (workspaceId != null) {
+                categoryVM.removeCategory(
+                  category,
+                );
+              }
+            },
           );
         },
         itemCount: categories.length,

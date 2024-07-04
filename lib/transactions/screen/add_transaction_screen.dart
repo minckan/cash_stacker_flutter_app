@@ -51,7 +51,6 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
 
   void handleSubmit() async {
     WorkspaceIdFinancePostRequest transaction;
-    final workspaceId = ref.watch(workspaceViewModelProvider)?.workspaceId;
 
     if (_addIncomeTabKey.currentState != null &&
         _addIncomeTabKey.currentState?.selectedCategory != null) {
@@ -68,11 +67,9 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
           ..transactionDate = selectedDate.toUtc(),
       );
 
-      if (workspaceId != null) {
-        await ref
-            .read(transactionStateProvider.notifier)
-            .addTransaction(workspaceId: workspaceId, transaction: transaction);
-      }
+      await ref
+          .read(transactionStateProvider.notifier)
+          .addTransaction(transaction: transaction);
     }
 
     if (_addExpenseTabKey.currentState != null &&
@@ -92,11 +89,9 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
           ..transactionDate = selectedDate.toUtc()
           ..paymentMethod = expensePaymentMethod,
       );
-      if (workspaceId != null) {
-        await ref
-            .read(transactionStateProvider.notifier)
-            .addTransaction(workspaceId: workspaceId, transaction: transaction);
-      }
+      await ref
+          .read(transactionStateProvider.notifier)
+          .addTransaction(transaction: transaction);
     }
 
     if (!mounted) return;

@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
+import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_id_put_request.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_monthly_month_key_get200_response.dart';
@@ -35,6 +36,10 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
   final Ref _ref;
 
   TransactionStateNotifier(this._ref) : super(TransactionStateLoading());
+
+  String? get workspaceId {
+    return _ref.read(workspaceViewModelProvider)?.workspaceId;
+  }
 
   /// 월별 데이터를 일자별로 소팅한 데이터
   ///  TransactionSummary
@@ -91,7 +96,6 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
   }
 
   Future<void> loadMonthlyTransactions(
-    String workspaceId,
     DateTime month,
   ) async {
     final monthKey = getMonth(month);
@@ -125,10 +129,13 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
     state = TransactionStateLoading();
 
     try {
+      if (workspaceId == null) {
+        return;
+      }
       // API 호출
       final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
       final response = await financialTrackerRep.getAllMonthlyTransactions(
-        workspaceId: workspaceId,
+        workspaceId: workspaceId!,
         monthKey: monthKey,
       );
 
@@ -155,7 +162,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
     }
   }
 
-  Future<void> loadDailyTransactions(String workspaceId, DateTime date) async {
+  Future<void> loadDailyTransactions(DateTime date) async {
     final dateKey = DateFormat('yyyy-MM-dd').format(date);
 
     if (state is TransactionState) {
@@ -174,12 +181,14 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
       }
 
       // API 호출
-
+      if (workspaceId == null) {
+        return;
+      }
       try {
         final financialTrackerRep =
             _ref.read(financialTrackerRepositoryProvider);
         final response = await financialTrackerRep.getDailyTransactions(
-          workspaceId: workspaceId,
+          workspaceId: workspaceId!,
           dateKey: dateKey,
         );
 
@@ -206,13 +215,14 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
   Future<void> addTransaction({
     required WorkspaceIdFinancePostRequest transaction,
-    required String workspaceId,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-
+    if (workspaceId == null) {
+      return;
+    }
     try {
       final response = await financialTrackerRep.createTransaction(
-        workspaceId: workspaceId,
+        workspaceId: workspaceId!,
         body: transaction,
       );
 
@@ -299,14 +309,15 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
   Future<void> updateTransaction({
     required int transactionId,
-    required String workspaceId,
     required WorkspaceIdFinanceIdPutRequest modifiedData,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-
+    if (workspaceId == null) {
+      return;
+    }
     try {
       final response = await financialTrackerRep.updateTransaction(
-        workspaceId: workspaceId,
+        workspaceId: workspaceId!,
         id: transactionId,
         body: modifiedData,
       );
@@ -389,13 +400,14 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
   Future<void> deleteTransaction({
     required int transactionId,
-    required String workspaceId,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
-
+    if (workspaceId == null) {
+      return;
+    }
     try {
       await financialTrackerRep.deleteTransaction(
-          workspaceId: workspaceId, id: transactionId);
+          workspaceId: workspaceId!, id: transactionId);
 
       final transactionDate = DateTime.now(); // 실제 트랜잭션의 날짜를 가져와야 함
       final isCurrentMonth =
