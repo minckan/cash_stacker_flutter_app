@@ -43,11 +43,11 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/invitation'.replaceAll(
+    final path = r'/{workspaceId}/invitation'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final _options = Options(
+    final options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -65,19 +65,19 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<Invitation>? _responseData;
+    BuiltList<Invitation>? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null
+      final rawResponse = response.data;
+      responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -85,8 +85,8 @@ class InvitationApi {
             ) as BuiltList<Invitation>;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -94,14 +94,14 @@ class InvitationApi {
     }
 
     return Response<BuiltList<Invitation>>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -130,7 +130,7 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/invitation/{id}'
+    final path = r'/{workspaceId}/invitation/{id}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -140,7 +140,7 @@ class InvitationApi {
             '{' r'id' '}',
             encodeQueryParameter(_serializers, id, const FullType(String))
                 .toString());
-    final _options = Options(
+    final options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -158,15 +158,15 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return response;
   }
 
   /// Update an invitation
@@ -197,7 +197,7 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/invitation/{id}'
+    final path = r'/{workspaceId}/invitation/{id}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -207,7 +207,7 @@ class InvitationApi {
             '{' r'id' '}',
             encodeQueryParameter(_serializers, id, const FullType(String))
                 .toString());
-    final _options = Options(
+    final options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -226,17 +226,17 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-      const _type = FullType(WorkspaceIdInvitationIdPutRequest);
-      _bodyData = _serializers.serialize(workspaceIdInvitationIdPutRequest,
-          specifiedType: _type);
+      const type = FullType(WorkspaceIdInvitationIdPutRequest);
+      bodyData = _serializers.serialize(workspaceIdInvitationIdPutRequest,
+          specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -244,20 +244,20 @@ class InvitationApi {
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Invitation? _responseData;
+    Invitation? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null
+      final rawResponse = response.data;
+      responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -265,8 +265,8 @@ class InvitationApi {
             ) as Invitation;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -274,14 +274,14 @@ class InvitationApi {
     }
 
     return Response<Invitation>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -310,11 +310,11 @@ class InvitationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/invitation'.replaceAll(
+    final path = r'/{workspaceId}/invitation'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final _options = Options(
+    final options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -333,17 +333,17 @@ class InvitationApi {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-      const _type = FullType(WorkspaceIdInvitationPostRequest);
-      _bodyData = _serializers.serialize(workspaceIdInvitationPostRequest,
-          specifiedType: _type);
+      const type = FullType(WorkspaceIdInvitationPostRequest);
+      bodyData = _serializers.serialize(workspaceIdInvitationPostRequest,
+          specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -351,20 +351,20 @@ class InvitationApi {
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Invitation? _responseData;
+    Invitation? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null
+      final rawResponse = response.data;
+      responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -372,8 +372,8 @@ class InvitationApi {
             ) as Invitation;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -381,14 +381,14 @@ class InvitationApi {
     }
 
     return Response<Invitation>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 }

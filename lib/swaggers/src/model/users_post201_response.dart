@@ -21,7 +21,8 @@ abstract class UsersPost201Response
 
   UsersPost201Response._();
 
-  factory UsersPost201Response([void updates(UsersPost201ResponseBuilder b)]) =
+  factory UsersPost201Response(
+          [void Function(UsersPost201ResponseBuilder b) updates]) =
       _$UsersPost201Response;
 
   @BuiltValueHook(initializeBuilder: true)

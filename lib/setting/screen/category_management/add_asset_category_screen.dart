@@ -73,25 +73,11 @@ class _AssetAddCategoryScreenState
               FormBuilderCheckbox(
                 name: 'is_foreign_asset',
                 title: const Text('해외 통화로 매입할 수 있는 자산입니다'),
-
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.zero, // Remove padding
                   border: InputBorder.none,
                   // Remove border
                 ),
-                //   child: Checkbox(
-                //     value: isForeignAsset,
-                //     onChanged: (on) {
-                //       if (on != null) {
-                //         setState(() {
-                //           isForeignAsset = on;
-                //         });
-                //       }
-                //     },
-
-                //   ),
-                // ),
-                // const Text('해외 통화로 매입할 수 있는 자산입니다.')
               )
             ],
           ),

@@ -60,7 +60,7 @@ abstract class AssetTransaction
 
   AssetTransaction._();
 
-  factory AssetTransaction([void updates(AssetTransactionBuilder b)]) =
+  factory AssetTransaction([void Function(AssetTransactionBuilder b) updates]) =
       _$AssetTransaction;
 
   @BuiltValueHook(initializeBuilder: true)

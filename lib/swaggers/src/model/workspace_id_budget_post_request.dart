@@ -39,7 +39,7 @@ abstract class WorkspaceIdBudgetPostRequest
   WorkspaceIdBudgetPostRequest._();
 
   factory WorkspaceIdBudgetPostRequest(
-          [void updates(WorkspaceIdBudgetPostRequestBuilder b)]) =
+          [void Function(WorkspaceIdBudgetPostRequestBuilder b) updates]) =
       _$WorkspaceIdBudgetPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)

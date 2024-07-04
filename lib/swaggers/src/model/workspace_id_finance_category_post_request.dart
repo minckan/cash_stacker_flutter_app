@@ -29,8 +29,8 @@ abstract class WorkspaceIdFinanceCategoryPostRequest
   WorkspaceIdFinanceCategoryPostRequest._();
 
   factory WorkspaceIdFinanceCategoryPostRequest(
-          [void updates(WorkspaceIdFinanceCategoryPostRequestBuilder b)]) =
-      _$WorkspaceIdFinanceCategoryPostRequest;
+      [void Function(WorkspaceIdFinanceCategoryPostRequestBuilder b)
+          updates]) = _$WorkspaceIdFinanceCategoryPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdFinanceCategoryPostRequestBuilder b) => b;

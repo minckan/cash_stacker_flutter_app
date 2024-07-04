@@ -27,9 +27,9 @@ abstract class WorkspaceIdBudgetActiveGet200ResponseExpendableBudget
   WorkspaceIdBudgetActiveGet200ResponseExpendableBudget._();
 
   factory WorkspaceIdBudgetActiveGet200ResponseExpendableBudget(
-      [void updates(
-          WorkspaceIdBudgetActiveGet200ResponseExpendableBudgetBuilder
-              b)]) = _$WorkspaceIdBudgetActiveGet200ResponseExpendableBudget;
+      [void Function(
+              WorkspaceIdBudgetActiveGet200ResponseExpendableBudgetBuilder b)
+          updates]) = _$WorkspaceIdBudgetActiveGet200ResponseExpendableBudget;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(
