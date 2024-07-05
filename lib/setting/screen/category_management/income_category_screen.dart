@@ -42,14 +42,18 @@ class _IncomeCategoryScreenState extends ConsumerState<IncomeCategoryScreen> {
       child: ListView.builder(
         itemBuilder: (context, index) {
           final incomeCategory = categories['income'];
-          (incomeCategory.length == 0)
+          if (incomeCategory!.isEmpty) {
+            return const Center(
+              child: Text('조회된 항목이 없습니다'),
+            );
+          }
 
           return CategoryListTile(
-            category: CategoryTile(name: category.categoryName!),
+            category: CategoryTile(name: incomeCategory[index].categoryName!),
             onDelete: () {
               if (workspaceId != null) {
                 categoryVM.removeCategory(
-                  category,
+                  incomeCategory[index],
                 );
               }
             },
