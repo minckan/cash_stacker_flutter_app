@@ -39,75 +39,85 @@ class TransactionCategoryViewModel
   }
 
   Future<void> loadCategory() async {
-    if (workspaceId != null) {
-      final incomeCategoryRes = await _ref
-          .read(financialTrackerCategoryRepositoryProvider)
-          .getAllTransactionCategoryByType(
-              workspaceId: workspaceId!, type: 'income');
-      final expenseCategoryRes = await _ref
-          .read(financialTrackerCategoryRepositoryProvider)
-          .getAllTransactionCategoryByType(
-              workspaceId: workspaceId!, type: 'expense');
-      state = TransactionCategories(
-        income: incomeCategoryRes.data?.toList() ?? [],
-        expense: expenseCategoryRes.data?.toList() ?? [],
-      );
-    }
-  }
-
-  List<TransactionCategory> getCategoriesByType(String type) {
-    if (type == 'income') {
-      return state.income;
-    } else if (type == 'expense') {
-      return state.expense;
-    }
-    return [];
-  }
-
-  Future<void> addCategory(
-      WorkspaceIdFinanceCategoryPostRequest category) async {
-    if (workspaceId != null) {
-      final response = await _ref
-          .read(financialTrackerCategoryRepositoryProvider)
-          .createTransactionCategory(workspaceId: workspaceId!, body: category);
-      // Add the category to the state
-      if (category.categoryType == 'income') {
-        state = state.copyWith(
-          income: [...state.income, response.data!],
-        );
-      } else if (category.categoryType == 'expense') {
-        state = state.copyWith(
-          expense: [...state.expense, response.data!],
+    try {
+      if (workspaceId != null) {
+        final incomeCategoryRes = await _ref
+            .read(financialTrackerCategoryRepositoryProvider)
+            .getAllTransactionCategoryByType(
+                workspaceId: workspaceId!, type: 'income');
+        final expenseCategoryRes = await _ref
+            .read(financialTrackerCategoryRepositoryProvider)
+            .getAllTransactionCategoryByType(
+                workspaceId: workspaceId!, type: 'expense');
+        state = TransactionCategories(
+          income: incomeCategoryRes.data?.toList() ?? [],
+          expense: expenseCategoryRes.data?.toList() ?? [],
         );
       }
+    } catch (e) {
+      logger.e(e);
     }
+  }
+
+  Future<bool> addCategory(
+      WorkspaceIdFinanceCategoryPostRequest category) async {
+    try {
+      if (workspaceId != null) {
+        final response = await _ref
+            .read(financialTrackerCategoryRepositoryProvider)
+            .createTransactionCategory(
+                workspaceId: workspaceId!, body: category);
+        // Add the category to the state
+        if (category.categoryType == 'income') {
+          state = state.copyWith(
+            income: [...state.income, response.data!],
+          );
+        } else if (category.categoryType == 'expense') {
+          state = state.copyWith(
+            expense: [...state.expense, response.data!],
+          );
+        }
+        return true; // 성공 시 true 반환
+      }
+    } catch (e) {
+      logger.e(e);
+    }
+    return false; // 실패 시 false 반환
   }
 
   Future<void> updateCategory(
     int categoryId,
     WorkspaceIdFinanceCategoryIdPutRequest body,
   ) async {
-    if (workspaceId != null) {
-      final response = await _ref
-          .read(financialTrackerCategoryRepositoryProvider)
-          .updateTransactionCategory(
-            workspaceId: workspaceId!,
-            id: categoryId,
-            body: body,
-          );
+    try {
+      if (workspaceId != null) {
+        final response = await _ref
+            .read(financialTrackerCategoryRepositoryProvider)
+            .updateTransactionCategory(
+              workspaceId: workspaceId!,
+              id: categoryId,
+              body: body,
+            );
 
-      // Update the category in the state
-      if (response.data!.categoryType == 'income') {
-        final categories = state.income.map((c) {
-          return c.categoryId == response.data!.categoryId ? response.data! : c;
-        }).toList();
-        state = state.copyWith(income: categories);
-      } else if (response.data!.categoryType == 'expense') {
-        final categories = state.expense.map((c) {
-          return c.categoryId == response.data!.categoryId ? response.data! : c;
-        }).toList();
-        state = state.copyWith(expense: categories);
+        // Update the category in the state
+        if (response.data!.categoryType == 'income') {
+          final categories = state.income.map((c) {
+            return c.categoryId == response.data!.categoryId
+                ? response.data!
+                : c;
+          }).toList();
+          state = state.copyWith(income: categories);
+        } else if (response.data!.categoryType == 'expense') {
+          final categories = state.expense.map((c) {
+            return c.categoryId == response.data!.categoryId
+                ? response.data!
+                : c;
+          }).toList();
+          state = state.copyWith(expense: categories);
+        }
       }
+    } catch (e) {
+      logger.e(e);
     }
   }
 

@@ -25,7 +25,7 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
                 return;
               }
 
-              await ref
+              final result = await ref
                   .read(transactionCategoryViewModelProvider.notifier)
                   .addCategory(
                     WorkspaceIdFinanceCategoryPostRequest((b) => b
@@ -33,7 +33,9 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
                       ..categoryType = CategoryType.income.name),
                   );
 
-              Navigator.of(context).pop();
+              if (result == true) {
+                Navigator.of(context).pop();
+              }
             },
             child: const Text(
               '저장',
