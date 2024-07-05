@@ -1,5 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+
 import 'package:cash_stacker_flutter_app/setting/component/category_list_tile.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_expense_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
@@ -22,11 +22,7 @@ class _ExpenseCategoryScreenState extends ConsumerState<ExpenseCategoryScreen> {
 
   @override
   Widget build(BuildContext contex) {
-    final categories = ref
-        .watch(transactionCategoryViewModelProvider.notifier)
-        .getCategoriesByType('expense');
-
-    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
+    final categories = ref.watch(transactionCategoryViewModelProvider);
     final categoryVM = ref.read(transactionCategoryViewModelProvider.notifier);
 
 // TODO: 404 상태에 대한 화면 노출 필요
@@ -42,20 +38,25 @@ class _ExpenseCategoryScreenState extends ConsumerState<ExpenseCategoryScreen> {
       ],
       child: ListView.builder(
         itemBuilder: (context, index) {
-          final category = categories[index];
+          final expenseCategories = categories.expense;
+
+          if (expenseCategories.isEmpty) {
+            return const Center(
+              child: Text('조회된 항목이 없습니다'),
+            );
+          }
 
           return CategoryListTile(
-            category: CategoryTile(name: category.categoryName!),
+            category:
+                CategoryTile(name: expenseCategories[index].categoryName!),
             onDelete: () {
-              if (workspaceId != null) {
-                categoryVM.removeCategory(
-                  category,
-                );
-              }
+              categoryVM.removeCategory(
+                expenseCategories[index],
+              );
             },
           );
         },
-        itemCount: categories.length,
+        itemCount: categories.expense.length,
       ),
     );
   }

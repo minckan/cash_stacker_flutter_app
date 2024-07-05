@@ -58,7 +58,7 @@ class AddExpenseTabState extends ConsumerState<AddExpenseTab> {
           FormFieldWithLabel(
             label: '지출 카테고리',
             formField: TextRadioButtonField(
-              list: categories['expense']!.map((c) {
+              list: categories.expense.map((c) {
                 final json = convertToStandardJson(serializers.serializeWith(
                     TransactionCategory.serializer, c));
                 json['name'] = c.categoryName;

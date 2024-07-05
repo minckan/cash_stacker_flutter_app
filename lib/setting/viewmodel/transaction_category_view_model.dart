@@ -5,16 +5,34 @@ import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dar
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final transactionCategoryViewModelProvider = StateNotifierProvider<
-        TransactionCategoryViewModel, Map<String, List<TransactionCategory>>>(
-    (ref) => TransactionCategoryViewModel(ref));
+class TransactionCategories {
+  final List<TransactionCategory> income;
+  final List<TransactionCategory> expense;
+
+  TransactionCategories({required this.income, required this.expense});
+
+  TransactionCategories copyWith({
+    List<TransactionCategory>? income,
+    List<TransactionCategory>? expense,
+  }) {
+    return TransactionCategories(
+      income: income ?? this.income,
+      expense: expense ?? this.expense,
+    );
+  }
+}
+
+final transactionCategoryViewModelProvider =
+    StateNotifierProvider<TransactionCategoryViewModel, TransactionCategories>(
+  (ref) => TransactionCategoryViewModel(ref),
+);
 
 class TransactionCategoryViewModel
-    extends StateNotifier<Map<String, List<TransactionCategory>>> {
+    extends StateNotifier<TransactionCategories> {
   final Ref _ref;
 
   TransactionCategoryViewModel(this._ref)
-      : super({'expense': [], 'income': []});
+      : super(TransactionCategories(income: [], expense: []));
 
   String? get workspaceId {
     return _ref.read(workspaceViewModelProvider)?.workspaceId;
@@ -30,15 +48,20 @@ class TransactionCategoryViewModel
           .read(financialTrackerCategoryRepositoryProvider)
           .getAllTransactionCategoryByType(
               workspaceId: workspaceId!, type: 'expense');
-      state = {
-        'income': incomeCategoryRes.data?.toList() ?? [],
-        'expense': expenseCategoryRes.data?.toList() ?? [],
-      };
+      state = TransactionCategories(
+        income: incomeCategoryRes.data?.toList() ?? [],
+        expense: expenseCategoryRes.data?.toList() ?? [],
+      );
     }
   }
 
   List<TransactionCategory> getCategoriesByType(String type) {
-    return state[type] ?? [];
+    if (type == 'income') {
+      return state.income;
+    } else if (type == 'expense') {
+      return state.expense;
+    }
+    return [];
   }
 
   Future<void> addCategory(
@@ -48,14 +71,15 @@ class TransactionCategoryViewModel
           .read(financialTrackerCategoryRepositoryProvider)
           .createTransactionCategory(workspaceId: workspaceId!, body: category);
       // Add the category to the state
-
-      state = {
-        ...state,
-        category.categoryType!: [
-          ...state[category.categoryType]!,
-          response.data!
-        ],
-      };
+      if (category.categoryType == 'income') {
+        state = state.copyWith(
+          income: [...state.income, response.data!],
+        );
+      } else if (category.categoryType == 'expense') {
+        state = state.copyWith(
+          expense: [...state.expense, response.data!],
+        );
+      }
     }
   }
 
@@ -73,13 +97,17 @@ class TransactionCategoryViewModel
           );
 
       // Update the category in the state
-      final categories = state[response.data!.categoryType]!.map((c) {
-        return c.categoryId == response.data!.categoryId ? response.data! : c;
-      }).toList();
-      state = {
-        ...state,
-        response.data!.categoryType!: categories,
-      };
+      if (response.data!.categoryType == 'income') {
+        final categories = state.income.map((c) {
+          return c.categoryId == response.data!.categoryId ? response.data! : c;
+        }).toList();
+        state = state.copyWith(income: categories);
+      } else if (response.data!.categoryType == 'expense') {
+        final categories = state.expense.map((c) {
+          return c.categoryId == response.data!.categoryId ? response.data! : c;
+        }).toList();
+        state = state.copyWith(expense: categories);
+      }
     }
   }
 
@@ -94,13 +122,17 @@ class TransactionCategoryViewModel
             );
 
         // Remove the category from the state
-        final categories = state[category.categoryType]!
-            .where((c) => c.categoryId != category.categoryId)
-            .toList();
-        state = {
-          ...state,
-          category.categoryType!: categories,
-        };
+        if (category.categoryType == 'income') {
+          final categories = state.income
+              .where((c) => c.categoryId != category.categoryId)
+              .toList();
+          state = state.copyWith(income: categories);
+        } else if (category.categoryType == 'expense') {
+          final categories = state.expense
+              .where((c) => c.categoryId != category.categoryId)
+              .toList();
+          state = state.copyWith(expense: categories);
+        }
       }
     } catch (e) {
       logger.e(e);

@@ -1,7 +1,5 @@
-import 'package:cash_stacker_flutter_app/auth/viewmodels/auth_view_model.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
@@ -9,7 +7,6 @@ import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 class AssetAddCategoryScreen extends ConsumerStatefulWidget {
   const AssetAddCategoryScreen({super.key});

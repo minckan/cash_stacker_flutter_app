@@ -16,8 +16,6 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
 
-    final currentUser = ref.watch(authViewModelProvider);
-
     return DefaultLayout(
       title: '지출 카테고리 추가',
       isFormView: true,
@@ -28,17 +26,15 @@ class ExpenseAddCategoryScreen extends ConsumerWidget {
                 return;
               }
 
-              if (currentUser != null) {
-                await ref
-                    .read(transactionCategoryViewModelProvider.notifier)
-                    .addCategory(
-                      WorkspaceIdFinanceCategoryPostRequest((b) => b
-                        ..categoryName = controller.value.text.toString()
-                        ..categoryType = CategoryType.expense.name),
-                    );
+              await ref
+                  .read(transactionCategoryViewModelProvider.notifier)
+                  .addCategory(
+                    WorkspaceIdFinanceCategoryPostRequest((b) => b
+                      ..categoryName = controller.value.text.toString()
+                      ..categoryType = CategoryType.expense.name),
+                  );
 
-                Navigator.of(context).pop();
-              }
+              Navigator.of(context).pop();
             },
             child: const Text(
               '저장',

@@ -16,8 +16,6 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController controller = TextEditingController();
 
-    final workspace = ref.watch(workspaceViewModelProvider);
-
     return DefaultLayout(
       title: '수입 카테고리 추가',
       actions: [
@@ -27,17 +25,15 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
                 return;
               }
 
-              if (workspace != null) {
-                await ref
-                    .read(transactionCategoryViewModelProvider.notifier)
-                    .addCategory(
-                      WorkspaceIdFinanceCategoryPostRequest((b) => b
-                        ..categoryName = controller.value.text.toString()
-                        ..categoryType = CategoryType.income.name),
-                    );
+              await ref
+                  .read(transactionCategoryViewModelProvider.notifier)
+                  .addCategory(
+                    WorkspaceIdFinanceCategoryPostRequest((b) => b
+                      ..categoryName = controller.value.text.toString()
+                      ..categoryType = CategoryType.income.name),
+                  );
 
-                Navigator.of(context).pop();
-              }
+              Navigator.of(context).pop();
             },
             child: const Text(
               '저장',

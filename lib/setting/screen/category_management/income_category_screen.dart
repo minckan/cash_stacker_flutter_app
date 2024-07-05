@@ -1,5 +1,4 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/setting/component/category_list_tile.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_income_category_screen.dart';
@@ -25,8 +24,6 @@ class _IncomeCategoryScreenState extends ConsumerState<IncomeCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(transactionCategoryViewModelProvider);
-
-    final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
     final categoryVM = ref.read(transactionCategoryViewModelProvider.notifier);
 // TODO: 404 상태에 대한 화면 노출 필요
     return DefaultLayout(
@@ -41,25 +38,23 @@ class _IncomeCategoryScreenState extends ConsumerState<IncomeCategoryScreen> {
       ],
       child: ListView.builder(
         itemBuilder: (context, index) {
-          final incomeCategory = categories['income'];
-          if (incomeCategory!.isEmpty) {
+          final incomeCategories = categories.income;
+          if (incomeCategories.isEmpty) {
             return const Center(
               child: Text('조회된 항목이 없습니다'),
             );
           }
 
           return CategoryListTile(
-            category: CategoryTile(name: incomeCategory[index].categoryName!),
+            category: CategoryTile(name: incomeCategories[index].categoryName!),
             onDelete: () {
-              if (workspaceId != null) {
-                categoryVM.removeCategory(
-                  incomeCategory[index],
-                );
-              }
+              categoryVM.removeCategory(
+                incomeCategories[index],
+              );
             },
           );
         },
-        itemCount: categories.length,
+        itemCount: categories.income.length,
       ),
     );
   }
