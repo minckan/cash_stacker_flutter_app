@@ -44,12 +44,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final workspaceId = ref.read(workspaceViewModelProvider)?.workspaceId;
 
-    // final monthlyAssetTrendList = ref.watch(assetTrendProvider);
-
-    // if (currentBudget == null || monthlyAsset == null) {
-    //   return const Center(child: CircularProgressIndicator());
-    // }
-
     return DefaultLayout(
       isSliverView: true,
       actions: [

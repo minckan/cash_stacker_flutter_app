@@ -11,6 +11,10 @@ class TransactionCategories {
 
   TransactionCategories({required this.income, required this.expense});
 
+  bool get isEmpty {
+    return income.isEmpty && expense.isEmpty;
+  }
+
   TransactionCategories copyWith({
     List<TransactionCategory>? income,
     List<TransactionCategory>? expense,

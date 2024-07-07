@@ -248,9 +248,20 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
                       ListBuilder<Transaction>()
                     ..add(newTransaction);
 
+              final currentExpenses =
+                  currentState.monthlyResponse?.expense ?? 0;
+              final currentIncomes = currentState.monthlyResponse?.income ?? 0;
+
               final updatedMonthlyResponse =
                   currentState.monthlyResponse?.rebuild(
-                (b) => b..transactions = updatedTransactions,
+                (b) => b
+                  ..transactions = updatedTransactions
+                  ..expense = newTransaction.transactionType == 'expense'
+                      ? currentExpenses + num.parse('${newTransaction.amount}')
+                      : currentExpenses
+                  ..income = newTransaction.transactionType == 'income'
+                      ? currentIncomes + num.parse('${newTransaction.amount}')
+                      : currentIncomes,
               );
 
               if (updatedMonthlyResponse != null) {

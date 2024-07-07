@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_post_request.dart';
 
 import 'package:cash_stacker_flutter_app/transactions/component/add_expense_tab.dart';
@@ -41,12 +42,22 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
     super.initState();
 
     tabController.animateTo(widget.transactionType.index);
+
+    _initState();
   }
 
   @override
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  void _initState() async {
+    if (ref.read(transactionCategoryViewModelProvider).isEmpty) {
+      await ref
+          .read(transactionCategoryViewModelProvider.notifier)
+          .loadCategory();
+    }
   }
 
   void handleSubmit() async {
@@ -80,6 +91,9 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       final expensePaymentMethod =
           _addExpenseTabKey.currentState!.selectedPaymentMethod;
 
+      if (expensePaymentMethod == null) {
+        return;
+      }
       transaction = WorkspaceIdFinancePostRequest(
         (b) => b
           ..categoryId = selectedExpenseCategory!.categoryId
