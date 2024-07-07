@@ -20,7 +20,13 @@ class _AssetCategoryScreenState extends ConsumerState<AssetCategoryScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(assetTypeViewModelProvider.notifier).loadCategory();
+    _initState();
+  }
+
+  void _initState() async {
+    if (ref.read(assetTypeViewModelProvider).isEmpty) {
+      await ref.read(assetTypeViewModelProvider.notifier).loadCategory();
+    }
   }
 
   @override

@@ -17,7 +17,15 @@ class _ExpenseCategoryScreenState extends ConsumerState<ExpenseCategoryScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(transactionCategoryViewModelProvider.notifier).loadCategory();
+    _initState();
+  }
+
+  void _initState() async {
+    if (ref.read(transactionCategoryViewModelProvider).isEmpty) {
+      await ref
+          .read(transactionCategoryViewModelProvider.notifier)
+          .loadCategory();
+    }
   }
 
   @override
