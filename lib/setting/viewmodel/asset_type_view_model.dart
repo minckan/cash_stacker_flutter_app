@@ -1,4 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/repository/asset_type_repository.dart';
+
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
