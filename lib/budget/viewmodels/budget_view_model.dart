@@ -141,6 +141,63 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
     }
   }
 
+  Future<dynamic> updateBudgetStatus({
+    required int budgetId,
+    required bool status,
+  }) async {
+    try {
+      if (workspaceId != null) {
+        final response = await _ref.read(budgetRepositoryProvider).updateBudget(
+              workspaceId: workspaceId!,
+              id: budgetId,
+              body: WorkspaceIdBudgetPostRequest(
+                (b) => b..isActive = status,
+              ),
+            );
+
+        if (response.data != null) {
+          state = BudgetState(
+            activeBudget: (state as BudgetState).activeBudget,
+            budgets: [
+              ...((state as BudgetState).budgets ?? []),
+              response.data!,
+            ],
+          );
+          return true;
+        } else {
+          setError('Failed to update budget, response data is null');
+        }
+      } else {
+        setError('workspaceId is null');
+      }
+    } catch (e) {
+      setError('[Update Budget] ${e.toString()}');
+    }
+  }
+
+  Future<void> deleteBudget({
+    required int budgetId,
+  }) async {
+    try {
+      if (workspaceId != null) {
+        await _ref
+            .read(budgetRepositoryProvider)
+            .deleteBudget(workspaceId: workspaceId!, id: budgetId);
+
+        state = BudgetState(
+          activeBudget: (state as BudgetState).activeBudget,
+          budgets: [
+            ...((state as BudgetState).budgets ?? []),
+          ],
+        );
+      } else {
+        setError('workspaceId is null');
+      }
+    } catch (e) {
+      setError('[Delete Budget] ${e.toString()}');
+    }
+  }
+
   void setError(String error) {
     logger.e(error);
     state = BudgetStatError(errorMessage: error);

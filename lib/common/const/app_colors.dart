@@ -48,6 +48,10 @@ class AppColors {
   static const buy = Color(0xffEF4343);
   static const sell = Color(0xff0070F0);
 
+// 활성 비활성
+  static const active = Color(0xff28a745);
+  static const inactive = Color(0xff6c757d);
+
   // 스위치
   static const switchOn = Color(0xffF8D7A0);
   static const switchOff = Color(0xff6865F8);

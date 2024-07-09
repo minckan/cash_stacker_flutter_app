@@ -50,7 +50,7 @@ class BudgetRepository {
     );
   }
 
-  Future<Response<void>> updateBudget({
+  Future<Response<Budget>> updateBudget({
     required String workspaceId,
     required int id,
     required WorkspaceIdBudgetPostRequest body,
