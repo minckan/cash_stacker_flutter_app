@@ -3,6 +3,7 @@ import 'package:cash_stacker_flutter_app/common/repository/asset_type_repository
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_type.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_asset_type_id_put_request.dart';
 import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_asset_type_post_request.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -67,7 +68,7 @@ class AssetTypeViewModel extends StateNotifier<List<AssetType>> {
 
   Future<void> updateCategory(
     int id,
-    WorkspaceIdAssetTypePostRequest category,
+    WorkspaceIdAssetTypeIdPutRequest category,
   ) async {
     try {
       if (workspaceId != null) {
