@@ -806,6 +806,9 @@ paths:
                 asset_type_name:
                   type: string
                   description: The name of the asset type
+                is_foreign_asset_type:
+                  type: boolean
+                  description: 해외 자산 여부
       responses:
         "201":
           description: Asset type created successfully.
@@ -1484,6 +1487,8 @@ components:
         asset_type_name:
           type: string
         is_default:
+          type: boolean
+        is_foreign_asset_type:
           type: boolean
     Asset:
       type: object

@@ -15,12 +15,18 @@ class _$AssetType extends AssetType {
   final String? assetTypeName;
   @override
   final bool? isDefault;
+  @override
+  final bool? isForeignAssetType;
 
   factory _$AssetType([void Function(AssetTypeBuilder)? updates]) =>
       (new AssetTypeBuilder()..update(updates))._build();
 
   _$AssetType._(
-      {this.assetTypeId, this.workspaceId, this.assetTypeName, this.isDefault})
+      {this.assetTypeId,
+      this.workspaceId,
+      this.assetTypeName,
+      this.isDefault,
+      this.isForeignAssetType})
       : super._();
 
   @override
@@ -37,7 +43,8 @@ class _$AssetType extends AssetType {
         assetTypeId == other.assetTypeId &&
         workspaceId == other.workspaceId &&
         assetTypeName == other.assetTypeName &&
-        isDefault == other.isDefault;
+        isDefault == other.isDefault &&
+        isForeignAssetType == other.isForeignAssetType;
   }
 
   @override
@@ -47,6 +54,7 @@ class _$AssetType extends AssetType {
     _$hash = $jc(_$hash, workspaceId.hashCode);
     _$hash = $jc(_$hash, assetTypeName.hashCode);
     _$hash = $jc(_$hash, isDefault.hashCode);
+    _$hash = $jc(_$hash, isForeignAssetType.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -57,7 +65,8 @@ class _$AssetType extends AssetType {
           ..add('assetTypeId', assetTypeId)
           ..add('workspaceId', workspaceId)
           ..add('assetTypeName', assetTypeName)
-          ..add('isDefault', isDefault))
+          ..add('isDefault', isDefault)
+          ..add('isForeignAssetType', isForeignAssetType))
         .toString();
   }
 }
@@ -82,6 +91,11 @@ class AssetTypeBuilder implements Builder<AssetType, AssetTypeBuilder> {
   bool? get isDefault => _$this._isDefault;
   set isDefault(bool? isDefault) => _$this._isDefault = isDefault;
 
+  bool? _isForeignAssetType;
+  bool? get isForeignAssetType => _$this._isForeignAssetType;
+  set isForeignAssetType(bool? isForeignAssetType) =>
+      _$this._isForeignAssetType = isForeignAssetType;
+
   AssetTypeBuilder() {
     AssetType._defaults(this);
   }
@@ -93,6 +107,7 @@ class AssetTypeBuilder implements Builder<AssetType, AssetTypeBuilder> {
       _workspaceId = $v.workspaceId;
       _assetTypeName = $v.assetTypeName;
       _isDefault = $v.isDefault;
+      _isForeignAssetType = $v.isForeignAssetType;
       _$v = null;
     }
     return this;
@@ -118,7 +133,8 @@ class AssetTypeBuilder implements Builder<AssetType, AssetTypeBuilder> {
             assetTypeId: assetTypeId,
             workspaceId: workspaceId,
             assetTypeName: assetTypeName,
-            isDefault: isDefault);
+            isDefault: isDefault,
+            isForeignAssetType: isForeignAssetType);
     replace(_$result);
     return _$result;
   }

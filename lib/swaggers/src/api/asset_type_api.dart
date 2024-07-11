@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 import '../api_util.dart';
 import '../model/asset_type.dart';
+import '../model/workspace_id_asset_type_id_put_request.dart';
 import '../model/workspace_id_asset_type_post_request.dart';
 
 class AssetTypeApi {
@@ -174,7 +175,7 @@ class AssetTypeApi {
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [id] - The ID of the asset type
-  /// * [workspaceIdAssetTypePostRequest]
+  /// * [workspaceIdAssetTypeIdPutRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -187,7 +188,7 @@ class AssetTypeApi {
   Future<Response<AssetType>> workspaceIdAssetTypeIdPut({
     required String workspaceId,
     required int id,
-    required WorkspaceIdAssetTypePostRequest workspaceIdAssetTypePostRequest,
+    required WorkspaceIdAssetTypeIdPutRequest workspaceIdAssetTypeIdPutRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -227,8 +228,8 @@ class AssetTypeApi {
     dynamic bodyData;
 
     try {
-      const type = FullType(WorkspaceIdAssetTypePostRequest);
-      bodyData = _serializers.serialize(workspaceIdAssetTypePostRequest,
+      const type = FullType(WorkspaceIdAssetTypeIdPutRequest);
+      bodyData = _serializers.serialize(workspaceIdAssetTypeIdPutRequest,
           specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(

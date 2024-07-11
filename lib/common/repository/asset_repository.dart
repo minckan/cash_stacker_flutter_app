@@ -1,6 +1,15 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/api.dart';
+
+import 'package:cash_stacker_flutter_app/swaggers/src/api/asset_api.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_transaction.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_assets_asset_id_transactions_id_put_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_assets_id_put_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_assets_post_request.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

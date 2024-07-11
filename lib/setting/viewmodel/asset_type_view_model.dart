@@ -1,7 +1,9 @@
 import 'package:cash_stacker_flutter_app/common/repository/asset_type_repository.dart';
 
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_type.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_asset_type_post_request.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetTypeViewModelProvider =

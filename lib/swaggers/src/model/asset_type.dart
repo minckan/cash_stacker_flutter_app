@@ -15,6 +15,7 @@ part 'asset_type.g.dart';
 /// * [workspaceId]
 /// * [assetTypeName]
 /// * [isDefault]
+/// * [isForeignAssetType]
 @BuiltValue()
 abstract class AssetType implements Built<AssetType, AssetTypeBuilder> {
   @BuiltValueField(wireName: r'asset_type_id')
@@ -28,6 +29,9 @@ abstract class AssetType implements Built<AssetType, AssetTypeBuilder> {
 
   @BuiltValueField(wireName: r'is_default')
   bool? get isDefault;
+
+  @BuiltValueField(wireName: r'is_foreign_asset_type')
+  bool? get isForeignAssetType;
 
   AssetType._();
 
@@ -77,6 +81,13 @@ class _$AssetTypeSerializer implements PrimitiveSerializer<AssetType> {
       yield r'is_default';
       yield serializers.serialize(
         object.isDefault,
+        specifiedType: const FullType(bool),
+      );
+    }
+    if (object.isForeignAssetType != null) {
+      yield r'is_foreign_asset_type';
+      yield serializers.serialize(
+        object.isForeignAssetType,
         specifiedType: const FullType(bool),
       );
     }
@@ -132,6 +143,13 @@ class _$AssetTypeSerializer implements PrimitiveSerializer<AssetType> {
             specifiedType: const FullType(bool),
           ) as bool;
           result.isDefault = valueDes;
+          break;
+        case r'is_foreign_asset_type':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
+          result.isForeignAssetType = valueDes;
           break;
         default:
           unhandled.add(key);

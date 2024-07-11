@@ -18,7 +18,9 @@ import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_type.dart';
+
+import 'package:cash_stacker_flutter_app/swaggers/src/model/exchange_rate_response.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -78,8 +80,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           .firstWhere((model) => model.assetTypeId == thisAsset.assetTypeId);
       selectedCurrencyCode = thisAsset.currencyCode;
 
-      final isForeignCash = foreignCashCategoryId == thisAsset.assetTypeId;
-
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // _formKey.currentState?.patchValue({
         //   'category': thisAsset.category.name, // 초기 값 설정
@@ -98,9 +98,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     final categories = ref.watch(assetTypeViewModelProvider).toList();
 
     final currencies = ref.watch(exchangeRateProvider).toList();
-
-    final selectedCashCategory = selectedCategory == krwCashCategoryId ||
-        selectedCategory == foreignCashCategoryId;
 
     final bool isDisabledField = widget.assetId != null;
 
@@ -156,11 +153,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  if (selectedCashCategory)
-                    ..._buildCashAssetForm(context, currencies, isDisabledField)
-                  else
-                    ..._buildCommonAssetForm(
-                        context, currencies, isDisabledField),
+                  ..._buildCommonAssetForm(
+                      context, currencies, isDisabledField),
                 ]),
               ),
             ],
@@ -173,13 +167,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   List<Widget> _buildCommonAssetForm(BuildContext context,
       List<ExchangeRateResponse> currencies, bool disabled) {
     return [
-      // CustomTextFormField(
-      //   formName: 'name',
-      //   placeholder: '종목명 입력',
-      //   disabled: disabled,
-      // ),
+      CustomTextFormField(
+        formName: 'name',
+        placeholder: '종목명 입력',
+        disabled: disabled,
+      ),
       // const SizedBox(height: 10),
-      // if (selectedCategory?.isForeignAsset == true) ...[
       //   buildCurrencyFormField(
       //     context: context,
       //     currencies: currencyVM
@@ -197,40 +190,40 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       //       Navigator.pop(context);
       //     },
       //   ),
-      //   const SizedBox(height: 10),
-      // ],
-      // NumberFormField(
-      //   formName: 'buyingPrice',
-      //   placeholder: '매입가',
-      //   disabled: selectedCurrency == null,
-      //   suffixText: selectedCurrency?.currencyCode,
-      // ),
-      // if (selectedCategory?.isForeignAsset == true) ...[
-      //   const SizedBox(
-      //     width: 10,
-      //   ),
-      //   NumberFormField(
-      //     formName: 'exchangeRate',
-      //     placeholder: '구매 환율',
-      //     suffixText: '/ ${selectedCurrency?.currencySymbol}1',
-      //     addComma: false,
-      //   ),
-      // ],
-      // const SizedBox(
-      //   width: 10,
-      // ),
-      // const NumberFormField(
-      //   formName: 'amount',
-      //   placeholder: '수량',
-      // ),
-      // const SizedBox(height: 10),
-      // NumberFormField(
-      //   formName: 'currentPrice',
-      //   placeholder: '현재가',
-      //   isOptional: true,
-      //   disabled: selectedCurrency == null,
-      //   suffixText: selectedCurrency?.currencyCode,
-      // ),
+      const SizedBox(height: 10),
+
+      NumberFormField(
+        formName: 'buyingPrice',
+        placeholder: '매입가',
+        disabled: selectedCurrency == null,
+        suffixText: selectedCurrency?.currencyCode,
+      ),
+
+      const SizedBox(
+        width: 10,
+      ),
+      NumberFormField(
+        formName: 'exchangeRate',
+        placeholder: '구매 환율',
+        suffixText: '/ ${selectedCurrency?.currencySymbol}1',
+        addComma: false,
+      ),
+
+      const SizedBox(
+        width: 10,
+      ),
+      const NumberFormField(
+        formName: 'amount',
+        placeholder: '수량',
+      ),
+      const SizedBox(height: 10),
+      NumberFormField(
+        formName: 'currentPrice',
+        placeholder: '현재가',
+        isOptional: true,
+        disabled: selectedCurrency == null,
+        suffixText: selectedCurrency?.currencyCode,
+      ),
     ];
   }
 

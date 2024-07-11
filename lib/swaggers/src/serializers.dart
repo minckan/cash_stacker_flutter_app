@@ -28,6 +28,7 @@ import 'model/users_id_put_request.dart';
 import 'model/users_post201_response.dart';
 import 'model/users_post_request.dart';
 import 'model/workspace.dart';
+import 'model/workspace_id_asset_type_id_put_request.dart';
 import 'model/workspace_id_asset_type_post_request.dart';
 import 'model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
 import 'model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
@@ -65,6 +66,7 @@ part 'serializers.g.dart';
   UsersPost201Response,
   UsersPostRequest,
   Workspace,
+  WorkspaceIdAssetTypeIdPutRequest,
   WorkspaceIdAssetTypePostRequest,
   WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response,
   WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response,
