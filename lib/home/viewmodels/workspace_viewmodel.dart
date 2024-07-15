@@ -3,7 +3,7 @@ import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace.dart';
 import 'package:cash_stacker_flutter_app/transactions/viewmodels/transactions_view_model.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,12 +32,6 @@ class WorkspaceViewModel extends StateNotifier<Workspace?> {
         //       .loadAssetSummaries(state!.id);
         // } catch (e) {
         //   logger.e('ERROR : 자산 요약 조회  $userId: $e');
-        // }
-
-        // try {
-        //   await _ref.read(currencyViewModelProvider.notifier).loadCurrencies();
-        // } catch (e) {
-        //   logger.e('ERROR : 통화 리스트 조회  $userId: $e');
         // }
       }
     } catch (e) {

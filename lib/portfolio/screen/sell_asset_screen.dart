@@ -2,7 +2,7 @@ import 'package:cash_stacker_flutter_app/common/component/form/number_form_field
 import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
+
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
