@@ -55,12 +55,17 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
 
   void _initState() async {
     final assetTypes = ref.read(assetTypeViewModelProvider);
+    final exchangeRate = ref.read(exchangeRateProvider);
 
     if (assetTypes.isNotEmpty) {
       _setProperties();
     } else {
       await ref.read(assetTypeViewModelProvider.notifier).loadCategory();
       _setProperties();
+    }
+
+    if (exchangeRate.isEmpty) {
+      ref.read(exchangeRateProvider.notifier).loadExchangeRates();
     }
   }
 
@@ -138,16 +143,18 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     selectedCategory: selectedCategory,
                     disabled: isDisabledField,
                     onSelect: (value) {
+                      print(value);
                       setState(() {
-                        // _formKey.currentState?.fields['category']
-                        //     ?.didChange(value);
-                        // selectedCategory = value;
+                        _formKey.currentState?.fields['category']
+                            ?.didChange(value?.assetTypeName);
+                        selectedCategory = value;
 
-                        // if (value?.isForeignAsset == null ||
-                        //     value?.isForeignAsset == false) {
-                        //   selectedCurrency = currencyVM.firstWhere(
-                        //       (currency) => currency.currencyCode == 'KRW');
-                        // }
+                        if (value?.isForeignAssetType == false) {
+                          selectedCurrency = ref
+                              .read(exchangeRateProvider)
+                              .firstWhere(
+                                  (currency) => currency.currencyCode == 'KRW');
+                        }
                       });
                       Navigator.pop(context);
                     },
@@ -172,43 +179,38 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         placeholder: '종목명 입력',
         disabled: disabled,
       ),
-      // const SizedBox(height: 10),
-      //   buildCurrencyFormField(
-      //     context: context,
-      //     currencies: currencyVM
-      //         .where(((currency) => currency.currencyCode != 'KRW'))
-      //         .toList(),
-      //     formName: 'currency',
-      //     selectedCurrency: selectedCurrency,
-      //     disabled: disabled,
-      //     onSelect: (value) {
-      //       setState(() {
-      //         selectedCurrency = value;
-      //         _formKey.currentState?.fields['currency']
-      //             ?.didChange(value!.currencyName);
-      //       });
-      //       Navigator.pop(context);
-      //     },
-      //   ),
       const SizedBox(height: 10),
-
+      buildCurrencyFormField(
+        context: context,
+        currencies: currencies,
+        formName: 'currency',
+        selectedCurrency: selectedCurrency,
+        disabled: disabled,
+        onSelect: (value) {
+          setState(() {
+            selectedCurrency = value;
+            _formKey.currentState?.fields['currency']
+                ?.didChange(value!.currencyName);
+          });
+          Navigator.pop(context);
+        },
+      ),
+      const SizedBox(height: 10),
       NumberFormField(
         formName: 'buyingPrice',
         placeholder: '매입가',
         disabled: selectedCurrency == null,
         suffixText: selectedCurrency?.currencyCode,
       ),
-
       const SizedBox(
         width: 10,
       ),
       NumberFormField(
         formName: 'exchangeRate',
         placeholder: '구매 환율',
-        suffixText: '/ ${selectedCurrency?.currencySymbol}1',
+        suffixText: '/ 1 ${selectedCurrency?.currencyCode}',
         addComma: false,
       ),
-
       const SizedBox(
         width: 10,
       ),
@@ -458,7 +460,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                         onTap: () => onSelect(currencies[index]),
                         child: Center(
                           child: Text(
-                              '${currencies[index].currencyName} - ${currencies[index].currencySymbol}'),
+                              '${currencies[index].currencyName} - ${currencies[index].currencyCode}'),
                         ),
                       );
                     },
