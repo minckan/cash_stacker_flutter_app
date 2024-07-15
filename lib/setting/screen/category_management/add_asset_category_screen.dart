@@ -35,7 +35,8 @@ class _AssetAddCategoryScreenState
                   final category = WorkspaceIdAssetTypePostRequest(
                     (b) => b
                       ..assetTypeName = value['category_name']
-                      ..isForeignAssetType = value['is_foreign_asset'],
+                      ..isForeignAssetType =
+                          value['is_foreign_asset'] != null ? true : false,
                   );
 
                   final result = await ref
