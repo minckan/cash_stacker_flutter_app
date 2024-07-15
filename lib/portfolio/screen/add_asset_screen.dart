@@ -7,7 +7,6 @@ import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
-import 'package:cash_stacker_flutter_app/common/viewmodels/currency_view_model.dart';
 
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
@@ -45,7 +44,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   int? krwCashCategoryId;
 
   AssetType? selectedCategory;
-  String? selectedCurrencyCode;
+  Currency? selectedCurrency;
   DateTime selectedDate = DateTime.now();
 
   @override
@@ -78,7 +77,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       selectedCategory = ref
           .read(assetTypeViewModelProvider)
           .firstWhere((model) => model.assetTypeId == thisAsset.assetTypeId);
-      selectedCurrencyCode = thisAsset.currencyCode;
+      selectedCurrency =
+          ref.read(assetViewModelProvider.notifier).getAssetCurrency(thisAsset);
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // _formKey.currentState?.patchValue({
@@ -164,8 +164,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     );
   }
 
-  List<Widget> _buildCommonAssetForm(BuildContext context,
-      List<ExchangeRateResponse> currencies, bool disabled) {
+  List<Widget> _buildCommonAssetForm(
+      BuildContext context, List<Currency> currencies, bool disabled) {
     return [
       CustomTextFormField(
         formName: 'name',

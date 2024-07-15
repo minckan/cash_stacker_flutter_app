@@ -1,3 +1,5 @@
+import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
+import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/repository/asset_repository.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
@@ -85,5 +87,12 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     List<Asset> cashAssets =
         assets.where((asset) => asset.assetTypeId == cashCategoryId).toList();
     return [...nonCashAssets, ...cashAssets];
+  }
+
+  Currency? getAssetCurrency(Asset asset) {
+    final currency = _ref
+        .read(exchangeRateProvider)
+        .firstWhere((currency) => currency.currencyCode == asset.currencyCode);
+    return currency;
   }
 }

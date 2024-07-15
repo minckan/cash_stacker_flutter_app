@@ -1,6 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/exchange_rate_response.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ class CurrentExchangeRateScreen extends ConsumerStatefulWidget {
 
 class _CurrentExchangeRateScreenState
     extends ConsumerState<CurrentExchangeRateScreen> {
-  late Future<List<ExchangeRateResponse>> _exchangeRatesFuture;
+  late Future<List<Currency>> _exchangeRatesFuture;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _CurrentExchangeRateScreenState
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '현재 환율',
-      child: FutureBuilder<List<ExchangeRateResponse>>(
+      child: FutureBuilder<List<Currency>>(
         future: _exchangeRatesFuture,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -41,8 +41,8 @@ class _CurrentExchangeRateScreenState
                   itemBuilder: (context, index) {
                     final exchangeRate = snapshot.data![index];
                     return ListTile(
-                      title: Text(exchangeRate.curUnit!),
-                      subtitle: Text(exchangeRate.dealBasR!),
+                      title: Text(exchangeRate.currencyCode),
+                      subtitle: Text(exchangeRate.rate),
                     );
                   },
                   itemCount: snapshot.data!.length,
