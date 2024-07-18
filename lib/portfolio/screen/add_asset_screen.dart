@@ -9,6 +9,11 @@ import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/domestic_cash_form.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/domestic_transaction_form.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/foreign_cash_form.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/foreign_transaction_form.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/form-field/category_selection_field.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
@@ -102,10 +107,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   Widget build(BuildContext context) {
     final categories = ref.watch(assetTypeViewModelProvider).toList();
 
-    final currencies = ref.watch(exchangeRateProvider).toList();
-
-    final bool isDisabledField = widget.assetId != null;
-
     return DefaultLayout(
       isFormView: true,
       title: '자산 추가',
@@ -127,147 +128,48 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             children: [
               FormBuilder(
                 key: _formKey,
-                child: Column(children: [
-                  WeeklyCalendar(
-                    selectedDate: selectedDate,
-                    handleChangeSelectDate: (value) {
-                      setState(() {
-                        selectedDate = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  buildCategoryFormField(
-                    context: context,
-                    categories: categories,
-                    selectedCategory: selectedCategory,
-                    disabled: isDisabledField,
-                    onSelect: (value) {
-                      print(value);
-                      setState(() {
-                        _formKey.currentState?.fields['category']
-                            ?.didChange(value?.assetTypeName);
-                        selectedCategory = value;
-
-                        if (value?.isForeignAssetType == false) {
-                          selectedCurrency = ref
-                              .read(exchangeRateProvider)
-                              .firstWhere(
-                                  (currency) => currency.currencyCode == 'KRW');
-                        }
-                      });
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  ..._buildCommonAssetForm(
-                      context, currencies, isDisabledField),
-                ]),
+                child: Column(
+                  children: [
+                    WeeklyCalendar(
+                      selectedDate: selectedDate,
+                      handleChangeSelectDate: (value) {
+                        setState(() {
+                          selectedDate = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CategorySelectionField(
+                      categories: categories,
+                      selectedCategory: selectedCategory,
+                      onSelect: (value) {
+                        setState(() {
+                          selectedCategory = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    if (selectedCategory != null) ...[
+                      if (selectedCategory?.assetTypeId == krwCashCategoryId)
+                        const DomesticCashForm()
+                      else if (selectedCategory?.assetTypeId ==
+                          foreignCashCategoryId)
+                        ForeignCashForm(selectedCurrency: selectedCurrency)
+                      else if (selectedCategory?.isForeignAssetType == false)
+                        const DomesticTransactionForm()
+                      else
+                        ForeignTransactionForm(
+                          selectedCurrency: selectedCurrency,
+                        )
+                    ]
+                  ],
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  List<Widget> _buildCommonAssetForm(
-      BuildContext context, List<Currency> currencies, bool disabled) {
-    return [
-      CustomTextFormField(
-        formName: 'name',
-        placeholder: '종목명 입력',
-        disabled: disabled,
-      ),
-      const SizedBox(height: 10),
-      buildCurrencyFormField(
-        context: context,
-        currencies: currencies,
-        formName: 'currency',
-        selectedCurrency: selectedCurrency,
-        disabled: disabled,
-        onSelect: (value) {
-          setState(() {
-            selectedCurrency = value;
-            _formKey.currentState?.fields['currency']
-                ?.didChange(value!.currencyName);
-          });
-          Navigator.pop(context);
-        },
-      ),
-      const SizedBox(height: 10),
-      NumberFormField(
-        formName: 'buyingPrice',
-        placeholder: '매입가',
-        disabled: selectedCurrency == null,
-        suffixText: selectedCurrency?.currencyCode,
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      NumberFormField(
-        formName: 'exchangeRate',
-        placeholder: '구매 환율',
-        suffixText: '/ 1 ${selectedCurrency?.currencyCode}',
-        addComma: false,
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      const NumberFormField(
-        formName: 'amount',
-        placeholder: '수량',
-      ),
-      const SizedBox(height: 10),
-      NumberFormField(
-        formName: 'currentPrice',
-        placeholder: '현재가',
-        isOptional: true,
-        disabled: selectedCurrency == null,
-        suffixText: selectedCurrency?.currencyCode,
-      ),
-    ];
-  }
-
-  List<Widget> _buildCashAssetForm(BuildContext context,
-      List<ExchangeRateResponse> currencies, bool disabled) {
-    return [
-      // if (selectedCategory?.isForeignAsset == true) ...[
-      //   buildCurrencyFormField(
-      //     context: context,
-      //     currencies: currencyVM
-      //         .where(((currency) => currency.currencyCode != 'KRW'))
-      //         .toList(),
-      //     formName: 'cashCurrency',
-      //     disabled: disabled,
-      //     selectedCurrency: selectedCurrency,
-      //     onSelect: (value) {
-      //       setState(() {
-      //         selectedCurrency = value;
-      //         _formKey.currentState?.fields['cashCurrency']
-      //             ?.didChange(value!.currencyName);
-      //       });
-      //       Navigator.pop(context);
-      //     },
-      //   ),
-      //   const SizedBox(
-      //     width: 10,
-      //   ),
-      //   NumberFormField(
-      //     formName: 'cashExchangeRate',
-      //     placeholder: '외환 매입 환율',
-      //     suffixText: '/ ${selectedCurrency?.currencySymbol}1',
-      //     addComma: false,
-      //   ),
-      //   const SizedBox(height: 10),
-      // ],
-      // NumberFormField(
-      //   formName: 'cashAmount',
-      //   placeholder: '금액',
-      //   disabled: selectedCurrency == null,
-      //   suffixText: selectedCurrency?.currencyCode,
-      // ),
-    ];
   }
 
   handleSave() async {
@@ -373,104 +275,5 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     //     Navigator.of(context).pop();
     //   }
     // }
-  }
-
-  buildCategoryFormField({
-    required BuildContext context,
-    required List<AssetType> categories,
-    required AssetType? selectedCategory,
-    required Function(AssetType?) onSelect,
-    bool disabled = false,
-  }) {
-    // TODO: 모달을 다시 띄웠을때 선택한 아이템이 선택되어 있도록 수정
-    return FormFieldWithLabel(
-      label: '자산분류',
-      formField: FormBuilderTextField(
-        key: UniqueKey(),
-        name: 'category',
-        decoration: inputDecoration.copyWith(
-          suffixIcon: const Icon(Icons.arrow_drop_down),
-        ),
-        readOnly: true,
-        enabled: !disabled,
-        onTap: () {
-          showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                height: 250,
-                color: Colors.white,
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 32,
-                  onSelectedItemChanged: (int index) {},
-                  children: List<Widget>.generate(
-                    categories.length,
-                    (int index) {
-                      return GestureDetector(
-                        onTap: () => onSelect(categories[index]),
-                        child: Center(
-                          child: Text(categories[index].assetTypeName ?? ''),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  buildCurrencyFormField({
-    required BuildContext context,
-    required List<Currency> currencies,
-    required String formName,
-    required Currency? selectedCurrency,
-    required Function(Currency?) onSelect,
-    bool disabled = false,
-  }) {
-    return FormFieldWithLabel(
-      label: '구매통화',
-      formField: FormBuilderTextField(
-        key: UniqueKey(),
-        name: formName,
-        enabled: !disabled,
-        decoration: inputDecoration.copyWith(
-          suffixIcon: const Icon(Icons.arrow_drop_down),
-        ),
-        readOnly: true,
-        onTap: () {
-          showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                height: 250,
-                color: Colors.white,
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 32,
-                  onSelectedItemChanged: (int index) {},
-                  children: List<Widget>.generate(
-                    currencies.length,
-                    (int index) {
-                      return GestureDetector(
-                        onTap: () => onSelect(currencies[index]),
-                        child: Center(
-                          child: Text(
-                              '${currencies[index].currencyName} - ${currencies[index].currencyCode}'),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
   }
 }
