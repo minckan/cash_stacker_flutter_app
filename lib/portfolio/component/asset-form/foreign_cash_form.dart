@@ -9,9 +9,11 @@ class ForeignCashForm extends ConsumerWidget {
   const ForeignCashForm({
     super.key,
     required this.selectedCurrency,
+    required this.onSelectCurrency,
   });
 
   final Currency? selectedCurrency;
+  final Function(Currency?) onSelectCurrency;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +24,7 @@ class ForeignCashForm extends ConsumerWidget {
           currencies: currencies,
           formName: '매수 통화',
           selectedCurrency: selectedCurrency,
-          onSelect: (currency) {}),
+          onSelect: (value) => onSelectCurrency(value)),
       const SizedBox(height: 10),
       NumberFormField(
         formName: 'exchangeRate',

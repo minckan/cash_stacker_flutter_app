@@ -26,7 +26,7 @@ class CurrencySelectionField extends StatelessWidget {
       label: '구매통화',
       formField: FormBuilderTextField(
         key: UniqueKey(),
-        name: formName,
+        name: 'currency',
         enabled: !disabled,
         decoration: inputDecoration.copyWith(
           suffixIcon: const Icon(Icons.arrow_drop_down),

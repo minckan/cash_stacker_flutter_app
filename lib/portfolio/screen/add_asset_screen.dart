@@ -103,6 +103,17 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     }
   }
 
+  void selectCurrency(Currency? currency) {
+    setState(() {
+      selectedCurrency = currency;
+
+      _formKey.currentState?.fields['currency']
+          ?.didChange(currency?.currencyName);
+    });
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(assetTypeViewModelProvider).toList();
@@ -154,12 +165,16 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                         const DomesticCashForm()
                       else if (selectedCategory?.assetTypeId ==
                           foreignCashCategoryId)
-                        ForeignCashForm(selectedCurrency: selectedCurrency)
+                        ForeignCashForm(
+                          selectedCurrency: selectedCurrency,
+                          onSelectCurrency: selectCurrency,
+                        )
                       else if (selectedCategory?.isForeignAssetType == false)
                         const DomesticTransactionForm()
                       else
                         ForeignTransactionForm(
                           selectedCurrency: selectedCurrency,
+                          onSelectCurrency: selectCurrency,
                         )
                     ]
                   ],
