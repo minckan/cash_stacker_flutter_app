@@ -1,6 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/domestic_cash_form.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/domestic_transaction_form.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/foreign_cash_form.dart';
@@ -172,6 +173,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
     final value = _formKey.currentState?.value;
 
     if (value == null) return;
+    print(value);
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       // 🟠 1. 기존에 존재하는 자산에 거래내역만 추가하는 경우 : 한화 현금 제외
       if (widget.assetId != null) {
@@ -183,9 +185,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             (b) => b
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
-              ..transactionDate = value['selectedDate']
+              ..transactionDate = selectedDate
               ..exchangeRate = value['exchangeRate']
-              ..pricePerShare = value['balance'],
+              ..pricePerShare = removeComma(value['balance']),
           ));
         }
         // 1-2. 국내 트레이드인 경우
@@ -194,7 +196,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             (b) => b
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
-              ..transactionDate = value['selectedDate']
+              ..transactionDate = selectedDate
               ..shares = value['shares']
               ..pricePerShare = value['pricePerShare']
               ..currentPricePerShare = value['currentPricePerShare'],
@@ -206,7 +208,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             (b) => b
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
-              ..transactionDate = value['selectedDate']
+              ..transactionDate = selectedDate
               ..shares = value['shares']
               ..pricePerShare = value['pricePerShare']
               ..currentPricePerShare = value['currentPricePerShare']
@@ -222,7 +224,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         if (selectedCategory?.assetTypeId == krwCashCategoryId) {
           assetVM.addAsset(
             assetTypeId: krwCashCategoryId!,
-            balance: value['balance'],
+            balance: removeComma(value['balance']),
             currencyCode: 'KWR',
           );
         }
@@ -236,9 +238,9 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               (b) => b
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
-                ..transactionDate = value['selectedDate']
+                ..transactionDate = selectedDate
                 ..exchangeRate = value['exchangeRate']
-                ..pricePerShare = value['balance'],
+                ..pricePerShare = removeComma(value['balance']),
             ),
           );
         }
@@ -253,7 +255,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               (b) => b
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
-                ..transactionDate = value['selectedDate']
+                ..transactionDate = selectedDate
                 ..shares = value['shares']
                 ..pricePerShare = value['pricePerShare']
                 ..currentPricePerShare = value['currentPricePerShare'],
@@ -272,7 +274,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               (b) => b
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
-                ..transactionDate = value['selectedDate']
+                ..transactionDate = selectedDate
                 ..shares = value['shares']
                 ..pricePerShare = value['pricePerShare']
                 ..currentPricePerShare = value['currentPricePerShare']
