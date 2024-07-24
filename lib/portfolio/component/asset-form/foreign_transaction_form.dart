@@ -33,7 +33,7 @@ class ForeignTransactionForm extends ConsumerWidget {
           onSelect: (currency) => onSelectCurrency(currency)),
       const SizedBox(height: 10),
       NumberFormField(
-        formName: 'buyingPrice',
+        formName: 'pricePerShare',
         placeholder: '매입가',
         suffixText: selectedCurrency?.currencyCode,
       ),
@@ -54,12 +54,12 @@ class ForeignTransactionForm extends ConsumerWidget {
         width: 10,
       ),
       const NumberFormField(
-        formName: 'amount',
+        formName: 'shares',
         placeholder: '수량',
       ),
       const SizedBox(height: 10),
       NumberFormField(
-        formName: 'currentPrice',
+        formName: 'currentPricePerShare',
         placeholder: '현재가',
         isOptional: true,
         suffixText: selectedCurrency?.currencyCode,

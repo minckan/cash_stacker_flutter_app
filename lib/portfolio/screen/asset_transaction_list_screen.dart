@@ -2,13 +2,14 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/edit_asset_transaction_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/sell_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
+
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -158,11 +159,13 @@ class AssetTransactionListScreen extends ConsumerWidget {
                       children: [
                         const SizedBox(height: 10),
                         Text(
-                          DateFormat('yyyy-MM-dd').format(transaction.date),
+                          DateFormat('yyyy-MM-dd')
+                              .format(transaction.transactionDate!),
                           style: const TextStyle(fontFamily: 'Roboto'),
                         ),
                         Text(
-                          DateFormat('HH:mm').format(transaction.date),
+                          DateFormat('HH:mm')
+                              .format(transaction.transactionDate!),
                           style: const TextStyle(fontFamily: 'Roboto'),
                         ),
                       ],

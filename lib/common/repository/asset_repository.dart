@@ -69,6 +69,18 @@ class AssetRepository {
     );
   }
 
+  Future<Response<AssetTransaction>> createAssetTransaction({
+    required String workspaceId,
+    required int assetId,
+    required AssetTransactionRequest body,
+  }) {
+    return _assetApi.workspaceIdAssetsAssetIdTransactionsPost(
+      workspaceId: workspaceId,
+      assetId: assetId.toString(),
+      assetTransactionRequest: body,
+    );
+  }
+
   Future<Response<AssetTransaction>> updateAssetTransaction({
     required String workspaceId,
     required int assetId,

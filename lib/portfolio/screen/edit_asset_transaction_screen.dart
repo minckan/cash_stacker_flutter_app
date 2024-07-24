@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+
 import 'package:flutter/material.dart';
 
 class EditAssetTransactionScreen extends StatelessWidget {

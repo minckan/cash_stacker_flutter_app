@@ -1,7 +1,6 @@
-import 'package:cash_stacker_flutter_app/common/utill/fire_store_collections.dart';
+import 'package:cash_stacker_flutter_app/common/repository/asset_repository.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetTransactionViewModelProvider =
@@ -18,79 +17,39 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
 
   Future<void> loadAssetTransactions() async {
     if (workspaceId != null) {
-      final QuerySnapshot assetTransactionsQuery = await FirebaseFirestore
-          .instance
-          .collection('workspaces')
-          .doc(workspaceId)
-          .collection(Collection.assetTransactions)
-          .get();
+      //  final assetTransactions = await _ref.read(assetRepositoryProvider)
 
-      List<AssetTransaction> assetTransactions =
-          assetTransactionsQuery.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-
-        final type = data['transactionType'];
-        switch (type) {
-          case 'DomesticTransaction':
-            return DomesticTransaction.fromJson(data);
-          case 'ForeignTransaction':
-            return ForeignTransaction.fromJson(data);
-          case 'ForexTransaction':
-            return ForexTransaction.fromJson(data);
-          default:
-            throw Exception('Unknown transaction type');
-        }
-      }).toList();
-
-      state = assetTransactions;
+      //   state = assetTransactions;
     }
   }
 
-  Future<void> addAssetTransaction(AssetTransaction assetTransaction) async {
+  Future<void> addAssetTransaction(AssetTransactionRequest reqBody) async {
     if (workspaceId != null) {
-      await FirebaseFirestore.instance
-          .collection('workspaces')
-          .doc(workspaceId)
-          .collection(Collection.assetTransactions)
-          .doc(assetTransaction.id)
-          .set(
-            assetTransaction.toJson()
-              ..['transactionType'] = assetTransaction.runtimeType.toString(),
-          );
+      final resp =
+          await _ref.read(assetRepositoryProvider).createAssetTransaction(
+                workspaceId: workspaceId!,
+                assetId: reqBody.assetId!,
+                body: reqBody,
+              );
 
-      state = [...state, assetTransaction];
+      if (resp.data != null) {
+        state = [...state, resp.data!];
+      }
     }
   }
 
   Future<void> updateAssetTransaction(AssetTransaction assetTransaction) async {
     if (workspaceId != null) {
-      await FirebaseFirestore.instance
-          .collection('workspaces')
-          .doc(workspaceId)
-          .collection(Collection.assetTransactions)
-          .doc(assetTransaction.id)
-          .set(
-            assetTransaction.toJson()
-              ..['transactionType'] = assetTransaction.runtimeType.toString(),
-          );
-
-      state = state
-          .map((e) => e.id == assetTransaction.id ? assetTransaction : e)
-          .toList();
+      // state = state
+      //     .map((e) => e.id == assetTransaction.id ? assetTransaction : e)
+      //     .toList();
     }
   }
 
   Future<void> removeAssetTransaction(AssetTransaction assetTransaction) async {
     if (workspaceId != null) {
-      await FirebaseFirestore.instance
-          .collection('workspaces')
-          .doc(workspaceId)
-          .collection(Collection.assetTransactions)
-          .doc(assetTransaction.id)
-          .delete();
-
-      state =
-          state.where((element) => element.id != assetTransaction.id).toList();
+      // state =
+      //     state.where((element) => element.id != assetTransaction.id).toList();
     }
   }
 
@@ -99,13 +58,15 @@ class AssetTransactionViewModel extends StateNotifier<List<AssetTransaction>> {
   }
 
   double getAllTransactionKrwAmt(List<AssetTransaction> assetTransactions) {
-    return assetTransactions.fold(0,
-        (total, transaction) => total + transaction.totalKrwTransactionPrice);
+    return 0;
+    // return assetTransactions.fold(0,
+    //     (total, transaction) => total + transaction.totalKrwTransactionPrice);
   }
 
   List<AssetTransaction> getParticularAssetTransactions(int assetId) {
-    final list = state.where((item) => item.assetId == assetId).toList();
-    list.sort((a, b) => b.date.compareTo(a.date));
-    return list;
+    // final list = state.where((item) => item.assetId == assetId).toList();
+    // list.sort((a, b) => b.date.compareTo(a.date));
+    // return list;
+    return [];
   }
 }

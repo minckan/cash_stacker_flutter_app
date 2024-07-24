@@ -1,32 +1,16 @@
-import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
-import 'package:cash_stacker_flutter_app/common/component/form/number_form_field.dart';
-import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
-
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
-import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
-
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/domestic_cash_form.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/domestic_transaction_form.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/foreign_cash_form.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/foreign_transaction_form.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset-form/form-field/category_selection_field.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
-import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
-import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_type.dart';
-
-import 'package:cash_stacker_flutter_app/swaggers/src/model/exchange_rate_response.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -91,14 +75,11 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           ref.read(assetViewModelProvider.notifier).getAssetCurrency(thisAsset);
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        // _formKey.currentState?.patchValue({
-        //   'category': thisAsset.category.name, // 초기 값 설정
-        //   'currency': thisAsset.currency?.currencyName,
-        //   'cashCurrency': thisAsset.currency?.currencyName,
-        //   'name': isForeignCash
-        //       ? '${thisAsset.name}(${thisAsset.currency?.currencyCode})'
-        //       : thisAsset.name,
-        // });
+        _formKey.currentState?.patchValue({
+          'category': thisAsset.assetTypeId, // 초기 값 설정
+          'currency': thisAsset.currencyCode,
+          'name': thisAsset.assetName ?? '',
+        });
       });
     }
   }
@@ -188,107 +169,109 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }
 
   handleSave() async {
-    // if (_formKey.currentState?.saveAndValidate() ?? false) {
-    //   final value = _formKey.currentState?.value;
-    //   if (value != null &&
-    //       selectedCategory != null &&
-    //       selectedCurrency != null) {
-    //     final workspaceId = ref.watch(workspaceViewModelProvider)!.id;
-    //     final newAssetId = uuid.v4();
-    //     final isKrwAsset = selectedCurrency?.currencyCode == 'KRW';
-    //     final isKrwCashAsset = selectedCategory?.id == krwCashCategoryId;
-    //     final isForeignCashAsset =
-    //         selectedCategory?.id == foreignCashCategoryId;
+    final value = _formKey.currentState?.value;
 
-    //     if (widget.assetId == null) {
-    //       final asset = Asset(
-    //         id: newAssetId,
-    //         name: isKrwCashAsset
-    //             ? '현금'
-    //             : isForeignCashAsset
-    //                 ? '외환'
-    //                 : value['name'],
-    //         category: selectedCategory!,
-    //         currency: selectedCurrency,
-    //         inputCurrentPrice: isKrwCashAsset
-    //             ? value['cashAmount'] != null
-    //                 ? (double.tryParse(
-    //                       removeComma(value['cashAmount']),
-    //                     )) ??
-    //                     0
-    //                 : 0
-    //             : value['currentPrice'] != null
-    //                 ? (double.tryParse(
-    //                       removeComma(value['currentPrice']),
-    //                     )) ??
-    //                     0
-    //                 : 0,
-    //         initialPurchaseDate: selectedDate,
-    //       );
+    if (value == null) return;
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      // 🟠 1. 기존에 존재하는 자산에 거래내역만 추가하는 경우 : 한화 현금 제외
+      if (widget.assetId != null) {
+        final assetTransactionVM =
+            ref.read(assetTransactionViewModelProvider.notifier);
+        // 1-1. 외환일 경우
+        if (selectedCategory?.assetTypeId == foreignCashCategoryId) {
+          assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
+            (b) => b
+              ..assetId = widget.assetId
+              ..transactionDate = value['selectedDate']
+              ..exchangeRate = value['exchangeRate']
+              ..pricePerShare = value['balance'],
+          ));
+        }
+        // 1-2. 국내 트레이드인 경우
+        else if (selectedCategory?.isForeignAssetType == false) {
+          assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
+            (b) => b
+              ..assetId = widget.assetId
+              ..transactionDate = value['selectedDate']
+              ..shares = value['shares']
+              ..pricePerShare = value['pricePerShare']
+              ..currentPricePerShare = value['currentPricePerShare'],
+          ));
+        }
+        // 1-3. 해외 트레이드인 경우
+        else {
+          assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
+            (b) => b
+              ..assetId = widget.assetId
+              ..transactionDate = value['selectedDate']
+              ..shares = value['shares']
+              ..pricePerShare = value['pricePerShare']
+              ..currentPricePerShare = value['currentPricePerShare']
+              ..exchangeRate = value['exchangeRate'],
+          ));
+        }
+      }
 
-    //       await ref
-    //           .read(assetViewModelProvider.notifier)
-    //           .addAsset(asset, workspaceId);
-    //     }
-    //     final AssetTransaction assetTr;
+      // 🟢 2. 새로운 자산을 추가하는 경우
+      else {
+        final assetVM = ref.read(assetViewModelProvider.notifier);
+        // 2-1. 현금 자산일 경우
+        if (selectedCategory?.assetTypeId == krwCashCategoryId) {
+          assetVM.addAsset(
+            assetTypeId: krwCashCategoryId!,
+            balance: value['balance'],
+            currencyCode: 'KWR',
+          );
+        }
+        // 2-2. 외환일 경우
+        else if (selectedCategory?.assetTypeId == foreignCashCategoryId) {
+          assetVM.addAsset(
+            assetTypeId: foreignCashCategoryId!,
+            balance: 0,
+            currencyCode: selectedCurrency!.currencyCode,
+            transaction: AssetTransactionRequest(
+              (b) => b
+                ..transactionDate = value['selectedDate']
+                ..exchangeRate = value['exchangeRate']
+                ..pricePerShare = value['balance'],
+            ),
+          );
+        }
+        // 2-3. 국내 트레이드인 경우
+        else if (selectedCategory?.isForeignAssetType == false) {
+          assetVM.addAsset(
+            assetTypeId: selectedCategory!.assetTypeId!,
+            balance: 0,
+            currencyCode: 'KWR',
+            assetName: value['name'],
+            transaction: AssetTransactionRequest(
+              (b) => b
+                ..transactionDate = value['selectedDate']
+                ..shares = value['shares']
+                ..pricePerShare = value['pricePerShare']
+                ..currentPricePerShare = value['currentPricePerShare'],
+            ),
+          );
+        }
 
-    //     if (!isKrwCashAsset) {
-    //       // 외환 거래
-    //       if (isForeignCashAsset) {
-    //         assetTr = ForexTransaction(
-    //           name: '외환(${selectedCurrency!.currencyCode})',
-    //           id: uuid.v4(),
-    //           assetId: widget.assetId ?? newAssetId,
-    //           date: selectedDate,
-    //           type: AssetTransactionType.buy,
-    //           category: selectedCategory!,
-    //           currency: selectedCurrency!,
-    //           transactionAmt:
-    //               double.tryParse(removeComma(value['cashAmount'])) ?? 0,
-    //           inputExchangeRate: double.parse(value['cashExchangeRate']),
-    //         );
-    //       }
-    //       // 국내 자산 거래
-    //       else if (isKrwAsset) {
-    //         assetTr = DomesticTransaction(
-    //           name: value['name'],
-    //           id: uuid.v4(),
-    //           assetId: widget.assetId ?? newAssetId,
-    //           date: selectedDate,
-    //           type: AssetTransactionType.buy,
-    //           category: selectedCategory!,
-    //           currency: selectedCurrency!,
-    //           shares: int.tryParse(removeComma(value['amount'])) ?? 0,
-    //           pricePerShare:
-    //               double.tryParse(removeComma(value['buyingPrice'])) ?? 0,
-    //         );
-    //       }
-    //       // 해외 자산 거래
-    //       else {
-    //         assetTr = ForeignTransaction(
-    //           name: value['name'],
-    //           id: uuid.v4(),
-    //           assetId: widget.assetId ?? newAssetId,
-    //           date: selectedDate,
-    //           type: AssetTransactionType.buy,
-    //           category: selectedCategory!,
-    //           currency: selectedCurrency!,
-    //           shares: int.tryParse(removeComma(value['amount'])) ?? 0,
-    //           pricePerShare:
-    //               double.tryParse(removeComma(value['buyingPrice'])) ?? 0,
-    //           inputExchangeRate: double.parse(value['exchangeRate']),
-    //         );
-    //       }
-
-    //       /// add transaction
-    //       await ref
-    //           .read(assetTransactionViewModelProvider.notifier)
-    //           .addAssetTransaction(assetTr, workspaceId);
-    //     }
-
-    //     if (!mounted) return;
-    //     Navigator.of(context).pop();
-    //   }
-    // }
+        // 2-4. 해외 트레이드인 경우
+        else {
+          assetVM.addAsset(
+            assetTypeId: selectedCategory!.assetTypeId!,
+            balance: 0,
+            currencyCode: selectedCurrency!.currencyCode,
+            assetName: value['name'],
+            transaction: AssetTransactionRequest(
+              (b) => b
+                ..transactionDate = value['selectedDate']
+                ..shares = value['shares']
+                ..pricePerShare = value['pricePerShare']
+                ..currentPricePerShare = value['currentPricePerShare']
+                ..exchangeRate = value['exchangeRate'],
+            ),
+          );
+        }
+      }
+    }
   }
 }

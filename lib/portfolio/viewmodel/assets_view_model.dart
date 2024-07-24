@@ -1,4 +1,3 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/repository/asset_repository.dart';
