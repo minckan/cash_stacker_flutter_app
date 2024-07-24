@@ -29,6 +29,7 @@ class ForeignCashForm extends ConsumerWidget {
       NumberFormField(
         formName: 'exchangeRate',
         placeholder: '매수 환율',
+        expandSuffixWidth: true,
         disabled: selectedCurrency?.currencyCode == null,
         suffixText: selectedCurrency?.currencyCode != null
             ? '/ 1 ${selectedCurrency?.currencyCode}'

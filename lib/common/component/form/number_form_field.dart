@@ -13,16 +13,19 @@ class NumberFormField extends StatelessWidget {
   final String? suffixText;
   final bool addComma;
   final String? helperText;
+  final bool? expandSuffixWidth;
 
-  const NumberFormField(
-      {super.key,
-      required this.formName,
-      required this.placeholder,
-      this.isOptional = false,
-      this.disabled = false,
-      this.suffixText,
-      this.addComma = true,
-      this.helperText});
+  const NumberFormField({
+    super.key,
+    required this.formName,
+    required this.placeholder,
+    this.isOptional = false,
+    this.disabled = false,
+    this.suffixText,
+    this.addComma = true,
+    this.helperText,
+    this.expandSuffixWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +43,11 @@ class NumberFormField extends StatelessWidget {
               ? Container(
                   padding: const EdgeInsets.only(right: 16.0),
                   alignment: Alignment.centerRight,
-                  width: 10,
-                  child: Text(suffixText!),
+                  width: expandSuffixWidth == true ? 70 : 10,
+                  child: Text(
+                    suffixText!,
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 )
               : null,
         ),

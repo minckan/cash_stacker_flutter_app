@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 
+// TODO: 모달을 다시 띄웠을때 선택한 아이템이 선택되어 있도록 수정
 class CurrencySelectionField extends StatelessWidget {
   final List<Currency> currencies;
   final String formName;
