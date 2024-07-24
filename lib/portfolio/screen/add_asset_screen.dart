@@ -182,6 +182,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
               ..transactionDate = value['selectedDate']
               ..exchangeRate = value['exchangeRate']
               ..pricePerShare = value['balance'],
@@ -192,6 +193,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
               ..transactionDate = value['selectedDate']
               ..shares = value['shares']
               ..pricePerShare = value['pricePerShare']
@@ -203,6 +205,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
               ..transactionDate = value['selectedDate']
               ..shares = value['shares']
               ..pricePerShare = value['pricePerShare']
@@ -231,6 +234,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             currencyCode: selectedCurrency!.currencyCode,
             transaction: AssetTransactionRequest(
               (b) => b
+                ..transactionType =
+                    AssetTransactionRequestTransactionTypeEnum.buy
                 ..transactionDate = value['selectedDate']
                 ..exchangeRate = value['exchangeRate']
                 ..pricePerShare = value['balance'],
@@ -246,6 +251,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             assetName: value['name'],
             transaction: AssetTransactionRequest(
               (b) => b
+                ..transactionType =
+                    AssetTransactionRequestTransactionTypeEnum.buy
                 ..transactionDate = value['selectedDate']
                 ..shares = value['shares']
                 ..pricePerShare = value['pricePerShare']
@@ -263,6 +270,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             assetName: value['name'],
             transaction: AssetTransactionRequest(
               (b) => b
+                ..transactionType =
+                    AssetTransactionRequestTransactionTypeEnum.buy
                 ..transactionDate = value['selectedDate']
                 ..shares = value['shares']
                 ..pricePerShare = value['pricePerShare']
