@@ -126,18 +126,24 @@ class AssetDetailViewModel {
     if (isKrwCashAsset) {
       return asset.balance ?? 0;
     } else if (isForeignCashAsset) {
-      final totalBuying = purchaseTransactions.fold(0.0,
-          (total, transaction) => total + transaction.totalTransactionPrice);
-      final totalSelling = sellingTransactions.fold(0.0,
-          (total, transaction) => total + transaction.totalTransactionPrice);
+      final totalBuying = purchaseTransactions.fold(
+          0.0,
+          (total, transaction) =>
+              total +
+              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
+      final totalSelling = sellingTransactions.fold(
+          0.0,
+          (total, transaction) =>
+              total +
+              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
 
       return (totalBuying - totalSelling) * averageExchangeRate;
     }
 
     final totalBuying = purchaseTransactions.fold(
-        0.0, (total, transaction) => total + transaction.quantity);
+        0.0, (total, transaction) => total + transaction.shares!);
     final totalSelling = sellingTransactions.fold(
-        0.0, (total, transaction) => total + transaction.quantity);
+        0.0, (total, transaction) => total + transaction.shares!);
 
     final total = totalBuying - totalSelling;
 
@@ -147,7 +153,7 @@ class AssetDetailViewModel {
   /// [원화] 평균 매입가
   double get buyingSinglePriceKrw {
     final totalPurchasePrice = purchaseTransactions.fold(
-        0.0, (sum, transaction) => sum + transaction.krwSinglePrice);
+        0.0, (sum, transaction) => sum + (transaction.pricePerShare ?? 0));
     return totalPurchasePrice / purchaseTransactions.length;
   }
 
@@ -185,10 +191,16 @@ class AssetDetailViewModel {
   /// [외화] 실제 투자원금 총액
   double get totalBuyingAmountForeign {
     if (isForeignCashAsset) {
-      final totalBuying = purchaseTransactions.fold(0.0,
-          (total, transaction) => total + transaction.totalTransactionPrice);
-      final totalSelling = sellingTransactions.fold(0.0,
-          (total, transaction) => total + transaction.totalTransactionPrice);
+      final totalBuying = purchaseTransactions.fold(
+          0.0,
+          (total, transaction) =>
+              total +
+              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
+      final totalSelling = sellingTransactions.fold(
+          0.0,
+          (total, transaction) =>
+              total +
+              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
 
       final total = totalBuying - totalSelling;
       return total;
