@@ -1,8 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/component/lib/Indicator.dart';
 // import 'package:cash_stacker_flutter_app/portfolio/model/asset_model.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset_type.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 // import 'package:cash_stacker_flutter_app/setting/model/asset_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';

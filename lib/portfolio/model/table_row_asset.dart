@@ -1,7 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:intl/intl.dart';
 
 class TableRowAsset {

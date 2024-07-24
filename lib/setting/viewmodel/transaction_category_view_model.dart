@@ -1,9 +1,7 @@
 import 'package:cash_stacker_flutter_app/common/repository/finance_tracker_category_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction_category.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_category_id_put_request.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_category_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -240,15 +240,15 @@ paths:
                   type: integer
                 asset_name:
                   type: string
+                  nullable: true
                 balance:
                   type: number
                   format: float
-                transactions:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/AssetTransaction"
                 currency_code:
                   type: string
+                transactions:
+                  $ref: "#/components/schemas/AssetTransactionRequest"
+                  nullable: true
       responses:
         "201":
           description: Asset created successfully.
@@ -402,7 +402,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AssetTransaction"
+              $ref: "#/components/schemas/AssetTransactionRequest"
       responses:
         "201":
           description: Asset Transaction created successfully
@@ -849,6 +849,8 @@ paths:
                 asset_type_name:
                   type: string
                   description: The name of the asset type
+                is_foreign_asset_type:
+                  type: boolean
       responses:
         "200":
           description: Asset type updated successfully.
@@ -1539,6 +1541,38 @@ components:
         price_per_share:
           type: number
           format: float
+    AssetTransactionRequest:
+      type: object
+      properties:
+        asset_id:
+          type: integer
+          nullable: true
+        transaction_type:
+          type: string
+          enum:
+            - sell
+            - buy
+        description:
+          type: string
+          nullable: true
+        transaction_date:
+          type: string
+          format: date-time
+        exchange_rate:
+          type: number
+          format: float
+          nullable: true
+        shares:
+          type: integer
+          nullable: true
+        price_per_share:
+          type: number
+          format: float
+          nullable: true
+        current_price_per_share:
+          type: number
+          format: float
+          nullable: true
     AssetToTransaction:
       type: object
       properties:

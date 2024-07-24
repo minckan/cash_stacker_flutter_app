@@ -1,11 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
-import 'package:cash_stacker_flutter_app/swaggers/src/api.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/api/invitation_api.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/invitation.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_invitation_id_put_request.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_invitation_post_request.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

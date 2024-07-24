@@ -5,8 +5,7 @@ import 'package:cash_stacker_flutter_app/common/utill/json.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/add_expense_category_screen.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/transaction_category.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/serializers.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:cash_stacker_flutter_app/transactions/model/payment_method.dart';
 import 'package:flutter/material.dart';

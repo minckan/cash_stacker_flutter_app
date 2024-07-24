@@ -15,7 +15,7 @@ class DomesticTransactionForm extends StatelessWidget {
       ),
       SizedBox(height: 10),
       NumberFormField(
-        formName: 'buyingPrice',
+        formName: 'pricePerShare',
         placeholder: '매입가',
         suffixText: 'KRW',
       ),
@@ -23,12 +23,12 @@ class DomesticTransactionForm extends StatelessWidget {
         width: 10,
       ),
       NumberFormField(
-        formName: 'amount',
+        formName: 'shares',
         placeholder: '수량',
       ),
       SizedBox(height: 10),
       NumberFormField(
-        formName: 'currentPrice',
+        formName: 'currentPricePerShare',
         placeholder: '현재가',
         isOptional: true,
         suffixText: 'KRW',

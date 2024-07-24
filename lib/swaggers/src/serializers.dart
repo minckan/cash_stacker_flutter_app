@@ -17,6 +17,7 @@ import 'model/date.dart';
 import 'model/asset.dart';
 import 'model/asset_to_transaction.dart';
 import 'model/asset_transaction.dart';
+import 'model/asset_transaction_request.dart';
 import 'model/asset_type.dart';
 import 'model/budget.dart';
 import 'model/exchange_rate_response.dart';
@@ -55,6 +56,7 @@ part 'serializers.g.dart';
   Asset,
   AssetToTransaction,
   AssetTransaction,
+  AssetTransactionRequest,
   AssetType,
   Budget,
   ExchangeRateResponse,

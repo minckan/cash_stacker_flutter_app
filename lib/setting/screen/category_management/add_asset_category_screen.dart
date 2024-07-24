@@ -3,7 +3,7 @@ import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_asset_type_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

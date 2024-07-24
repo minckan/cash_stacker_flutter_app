@@ -2,7 +2,7 @@ import 'package:cash_stacker_flutter_app/common/component/form/number_form_field
 import 'package:cash_stacker_flutter_app/common/component/form/text_form_field.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
-
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
@@ -11,7 +11,7 @@ import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_v
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
+
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

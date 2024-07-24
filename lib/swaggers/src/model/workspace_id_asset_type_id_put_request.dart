@@ -12,6 +12,7 @@ part 'workspace_id_asset_type_id_put_request.g.dart';
 ///
 /// Properties:
 /// * [assetTypeName] - The name of the asset type
+/// * [isForeignAssetType]
 @BuiltValue()
 abstract class WorkspaceIdAssetTypeIdPutRequest
     implements
@@ -20,6 +21,9 @@ abstract class WorkspaceIdAssetTypeIdPutRequest
   /// The name of the asset type
   @BuiltValueField(wireName: r'asset_type_name')
   String? get assetTypeName;
+
+  @BuiltValueField(wireName: r'is_foreign_asset_type')
+  bool? get isForeignAssetType;
 
   WorkspaceIdAssetTypeIdPutRequest._();
 
@@ -58,6 +62,13 @@ class _$WorkspaceIdAssetTypeIdPutRequestSerializer
         specifiedType: const FullType(String),
       );
     }
+    if (object.isForeignAssetType != null) {
+      yield r'is_foreign_asset_type';
+      yield serializers.serialize(
+        object.isForeignAssetType,
+        specifiedType: const FullType(bool),
+      );
+    }
   }
 
   @override
@@ -89,6 +100,13 @@ class _$WorkspaceIdAssetTypeIdPutRequestSerializer
             specifiedType: const FullType(String),
           ) as String;
           result.assetTypeName = valueDes;
+          break;
+        case r'is_foreign_asset_type':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
+          result.isForeignAssetType = valueDes;
           break;
         default:
           unhandled.add(key);

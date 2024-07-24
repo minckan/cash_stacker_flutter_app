@@ -9,7 +9,7 @@ class DomesticCashForm extends StatelessWidget {
     return const Column(
       children: [
         NumberFormField(
-          formName: 'cashAmount',
+          formName: 'balance',
           placeholder: '금액',
           suffixText: 'KWR',
         ),

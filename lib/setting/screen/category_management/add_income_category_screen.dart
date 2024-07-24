@@ -1,11 +1,10 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_text_field.dart';
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/setting/model/transaction_category_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_category_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

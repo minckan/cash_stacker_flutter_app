@@ -10,12 +10,16 @@ class _$WorkspaceIdAssetTypeIdPutRequest
     extends WorkspaceIdAssetTypeIdPutRequest {
   @override
   final String? assetTypeName;
+  @override
+  final bool? isForeignAssetType;
 
   factory _$WorkspaceIdAssetTypeIdPutRequest(
           [void Function(WorkspaceIdAssetTypeIdPutRequestBuilder)? updates]) =>
       (new WorkspaceIdAssetTypeIdPutRequestBuilder()..update(updates))._build();
 
-  _$WorkspaceIdAssetTypeIdPutRequest._({this.assetTypeName}) : super._();
+  _$WorkspaceIdAssetTypeIdPutRequest._(
+      {this.assetTypeName, this.isForeignAssetType})
+      : super._();
 
   @override
   WorkspaceIdAssetTypeIdPutRequest rebuild(
@@ -30,13 +34,15 @@ class _$WorkspaceIdAssetTypeIdPutRequest
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is WorkspaceIdAssetTypeIdPutRequest &&
-        assetTypeName == other.assetTypeName;
+        assetTypeName == other.assetTypeName &&
+        isForeignAssetType == other.isForeignAssetType;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, assetTypeName.hashCode);
+    _$hash = $jc(_$hash, isForeignAssetType.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -44,7 +50,8 @@ class _$WorkspaceIdAssetTypeIdPutRequest
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'WorkspaceIdAssetTypeIdPutRequest')
-          ..add('assetTypeName', assetTypeName))
+          ..add('assetTypeName', assetTypeName)
+          ..add('isForeignAssetType', isForeignAssetType))
         .toString();
   }
 }
@@ -60,6 +67,11 @@ class WorkspaceIdAssetTypeIdPutRequestBuilder
   set assetTypeName(String? assetTypeName) =>
       _$this._assetTypeName = assetTypeName;
 
+  bool? _isForeignAssetType;
+  bool? get isForeignAssetType => _$this._isForeignAssetType;
+  set isForeignAssetType(bool? isForeignAssetType) =>
+      _$this._isForeignAssetType = isForeignAssetType;
+
   WorkspaceIdAssetTypeIdPutRequestBuilder() {
     WorkspaceIdAssetTypeIdPutRequest._defaults(this);
   }
@@ -68,6 +80,7 @@ class WorkspaceIdAssetTypeIdPutRequestBuilder
     final $v = _$v;
     if ($v != null) {
       _assetTypeName = $v.assetTypeName;
+      _isForeignAssetType = $v.isForeignAssetType;
       _$v = null;
     }
     return this;
@@ -89,7 +102,9 @@ class WorkspaceIdAssetTypeIdPutRequestBuilder
 
   _$WorkspaceIdAssetTypeIdPutRequest _build() {
     final _$result = _$v ??
-        new _$WorkspaceIdAssetTypeIdPutRequest._(assetTypeName: assetTypeName);
+        new _$WorkspaceIdAssetTypeIdPutRequest._(
+            assetTypeName: assetTypeName,
+            isForeignAssetType: isForeignAssetType);
     replace(_$result);
     return _$result;
   }

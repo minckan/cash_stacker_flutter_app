@@ -10,6 +10,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Asset.serializer)
       ..add(AssetToTransaction.serializer)
       ..add(AssetTransaction.serializer)
+      ..add(AssetTransactionRequest.serializer)
+      ..add(AssetTransactionRequestTransactionTypeEnum.serializer)
       ..add(AssetType.serializer)
       ..add(Budget.serializer)
       ..add(ExchangeRateResponse.serializer)
@@ -42,9 +44,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(WorkspaceIdInvitationPostRequest.serializer)
       ..add(WorkspacesPost201Response.serializer)
       ..add(WorkspacesPostRequest.serializer)
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(AssetTransaction)]),
-          () => new ListBuilder<AssetTransaction>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Transaction)]),
           () => new ListBuilder<Transaction>()))

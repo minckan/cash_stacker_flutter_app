@@ -2,7 +2,7 @@ import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/transaction_category_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_finance_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 import 'package:cash_stacker_flutter_app/transactions/component/add_expense_tab.dart';
 import 'package:cash_stacker_flutter_app/transactions/component/add_income_tab.dart';

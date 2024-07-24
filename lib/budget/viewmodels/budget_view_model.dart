@@ -2,9 +2,7 @@ import 'package:cash_stacker_flutter_app/budget/model/budget_state.dart';
 import 'package:cash_stacker_flutter_app/common/repository/budget_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/budget.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_budget_active_get200_response.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_budget_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,10 +1,5 @@
 import 'package:cash_stacker_flutter_app/common/dio/dio.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/api.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/api/user_api.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/user.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/users_id_put_request.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/users_post201_response.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/users_post_request.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 import 'package:dio/dio.dart' hide Headers;
 

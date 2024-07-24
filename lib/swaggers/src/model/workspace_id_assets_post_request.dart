@@ -3,8 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'asset_transaction.dart';
-import 'package:built_collection/built_collection.dart';
+import 'asset_transaction_request.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -16,8 +15,8 @@ part 'workspace_id_assets_post_request.g.dart';
 /// * [assetTypeId]
 /// * [assetName]
 /// * [balance]
-/// * [transactions]
 /// * [currencyCode]
+/// * [transactions]
 @BuiltValue()
 abstract class WorkspaceIdAssetsPostRequest
     implements
@@ -32,11 +31,11 @@ abstract class WorkspaceIdAssetsPostRequest
   @BuiltValueField(wireName: r'balance')
   double? get balance;
 
-  @BuiltValueField(wireName: r'transactions')
-  BuiltList<AssetTransaction>? get transactions;
-
   @BuiltValueField(wireName: r'currency_code')
   String? get currencyCode;
+
+  @BuiltValueField(wireName: r'transactions')
+  AssetTransactionRequest? get transactions;
 
   WorkspaceIdAssetsPostRequest._();
 
@@ -79,7 +78,7 @@ class _$WorkspaceIdAssetsPostRequestSerializer
       yield r'asset_name';
       yield serializers.serialize(
         object.assetName,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType.nullable(String),
       );
     }
     if (object.balance != null) {
@@ -89,18 +88,18 @@ class _$WorkspaceIdAssetsPostRequestSerializer
         specifiedType: const FullType(double),
       );
     }
-    if (object.transactions != null) {
-      yield r'transactions';
-      yield serializers.serialize(
-        object.transactions,
-        specifiedType: const FullType(BuiltList, [FullType(AssetTransaction)]),
-      );
-    }
     if (object.currencyCode != null) {
       yield r'currency_code';
       yield serializers.serialize(
         object.currencyCode,
         specifiedType: const FullType(String),
+      );
+    }
+    if (object.transactions != null) {
+      yield r'transactions';
+      yield serializers.serialize(
+        object.transactions,
+        specifiedType: const FullType(AssetTransactionRequest),
       );
     }
   }
@@ -138,8 +137,9 @@ class _$WorkspaceIdAssetsPostRequestSerializer
         case r'asset_name':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
           result.assetName = valueDes;
           break;
         case r'balance':
@@ -149,20 +149,19 @@ class _$WorkspaceIdAssetsPostRequestSerializer
           ) as double;
           result.balance = valueDes;
           break;
-        case r'transactions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(AssetTransaction)]),
-          ) as BuiltList<AssetTransaction>;
-          result.transactions.replace(valueDes);
-          break;
         case r'currency_code':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
           result.currencyCode = valueDes;
+          break;
+        case r'transactions':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(AssetTransactionRequest),
+          ) as AssetTransactionRequest;
+          result.transactions.replace(valueDes);
           break;
         default:
           unhandled.add(key);

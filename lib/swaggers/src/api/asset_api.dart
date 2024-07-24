@@ -11,6 +11,7 @@ import 'package:built_collection/built_collection.dart';
 import '../api_util.dart';
 import '../model/asset.dart';
 import '../model/asset_transaction.dart';
+import '../model/asset_transaction_request.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_put_request.dart';
@@ -255,7 +256,7 @@ class AssetApi {
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
   /// * [assetId] - The ID of the asset
-  /// * [assetTransaction]
+  /// * [assetTransactionRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -268,7 +269,7 @@ class AssetApi {
   Future<Response<AssetTransaction>> workspaceIdAssetsAssetIdTransactionsPost({
     required String workspaceId,
     required String assetId,
-    required AssetTransaction assetTransaction,
+    required AssetTransactionRequest assetTransactionRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -308,8 +309,9 @@ class AssetApi {
     dynamic bodyData;
 
     try {
-      const type = FullType(AssetTransaction);
-      bodyData = _serializers.serialize(assetTransaction, specifiedType: type);
+      const type = FullType(AssetTransactionRequest);
+      bodyData =
+          _serializers.serialize(assetTransactionRequest, specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(

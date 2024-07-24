@@ -2,7 +2,7 @@ import 'package:cash_stacker_flutter_app/portfolio/component/new/portfolio_colum
 import 'package:cash_stacker_flutter_app/portfolio/component/new/portfolio_row.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 

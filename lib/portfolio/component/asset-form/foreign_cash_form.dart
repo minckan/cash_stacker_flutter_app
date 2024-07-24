@@ -38,7 +38,7 @@ class ForeignCashForm extends ConsumerWidget {
       ),
       const SizedBox(height: 10),
       NumberFormField(
-        formName: 'cashAmount',
+        formName: 'balance',
         placeholder: '금액',
         suffixText: selectedCurrency?.currencyCode,
       ),

@@ -1,10 +1,12 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cash_stacker_flutter_app/common/model/currency_model.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/repository/asset_repository.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetViewModelProvider =
@@ -45,9 +47,28 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     }
   }
 
-  Future<void> addAsset(Asset asset) async {
+  Future<void> addAsset({
+    required int assetTypeId,
+    required double balance,
+    required String currencyCode,
+    String? assetName,
+    AssetTransactionRequest? transaction,
+  }) async {
     if (workspaceId != null) {
-      state = _sortAssets([...state, asset]);
+      final response = await _ref.read(assetRepositoryProvider).createAsset(
+            workspaceId: workspaceId!,
+            body: WorkspaceIdAssetsPostRequest(
+              (b) => b
+                ..assetName = assetName
+                ..assetTypeId = assetTypeId
+                ..balance = balance
+                ..currencyCode = currencyCode
+                ..transactions = transaction?.toBuilder(),
+            ),
+          );
+      if (response.data != null) {
+        state = _sortAssets([...state, response.data!]);
+      }
     }
   }
 

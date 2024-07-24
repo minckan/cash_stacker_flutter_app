@@ -1,5 +1,4 @@
-import 'package:cash_stacker_flutter_app/swaggers/src/model/budget.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/workspace_id_budget_active_get200_response.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 
 abstract class BudgetStatBase {}
 
