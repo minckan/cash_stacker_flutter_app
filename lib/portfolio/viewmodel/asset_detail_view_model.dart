@@ -5,7 +5,6 @@ import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
-import 'package:cash_stacker_flutter_app/portfolio/model/asset_transaction.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_viewModel.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
@@ -84,23 +83,27 @@ class AssetDetailViewModel {
   /// 매수 이력 리스트
   List<AssetTransaction> get purchaseTransactions {
     return transactions
-        .where((transaction) => transaction.type == AssetTransactionType.buy)
+        .where((transaction) =>
+            transaction.transactionType ==
+            AssetTransactionRequestTransactionTypeEnum.buy)
         .toList();
   }
 
   /// 매도 이력 리스트
   List<AssetTransaction> get sellingTransactions {
     return transactions
-        .where((transaction) => transaction.type == AssetTransactionType.sell)
+        .where((transaction) =>
+            transaction.transactionType ==
+            AssetTransactionRequestTransactionTypeEnum.sell)
         .toList();
   }
 
   /// 전체 투자 수량
   double get totalQuantity {
     return purchaseTransactions.fold(
-            0, (sum, transaction) => sum + transaction.quantity) -
+            0, (sum, transaction) => sum + (transaction.shares ?? 0)) -
         sellingTransactions.fold(
-            0, (sum, transaction) => sum + transaction.quantity);
+            0, (sum, transaction) => sum + (transaction.shares ?? 0));
   }
 
   /// 매수금액 기준 자산 비율
@@ -191,9 +194,9 @@ class AssetDetailViewModel {
       return total;
     }
     final totalBuying = purchaseTransactions.fold(
-        0.0, (total, transaction) => total + transaction.quantity);
+        0.0, (total, transaction) => total + transaction.shares!);
     final totalSelling = sellingTransactions.fold(
-        0.0, (total, transaction) => total + transaction.quantity);
+        0.0, (total, transaction) => total + transaction.shares!);
 
     final total = totalBuying - totalSelling;
     return total * buyingSinglePriceForeign;
@@ -202,7 +205,7 @@ class AssetDetailViewModel {
   /// [외화] 평균 매입가
   double get buyingSinglePriceForeign {
     final totalPurchasePrice = purchaseTransactions.fold(
-        0.0, (sum, transaction) => sum + transaction.singlePrice);
+        0.0, (sum, transaction) => sum + transaction.pricePerShare!);
 
     return totalPurchasePrice / purchaseTransactions.length;
   }
@@ -259,7 +262,7 @@ class AssetDetailViewModel {
   double get averageExchangeRate {
     final transactionSize = purchaseTransactions.length;
     final value = purchaseTransactions.fold(0.0, (total, transaction) {
-          return total + (transaction.exchangeRate);
+          return total + (transaction.exchangeRate!);
         }) /
         transactionSize;
 

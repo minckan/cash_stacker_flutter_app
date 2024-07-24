@@ -143,8 +143,8 @@ class AssetTransactionListScreen extends ConsumerWidget {
           if (index > 1) {
             final transaction = assetsTransactions[index - 2];
 
-            final cashTr = transaction.category.id ==
-                categoryVm.foreignCashAsset.assetTypeId;
+            // final cashTr = transaction.category.id ==
+            //     categoryVm.foreignCashAsset.assetTypeId;
 
             return buildListTile(
               context: context,
@@ -187,9 +187,9 @@ class AssetTransactionListScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          cashTr
-                              ? _buildCashAssetCategoryTR(transaction)
-                              : _buildCommonAssetCategoryTR(transaction),
+                          // cashTr
+                          //     ? _buildCashAssetCategoryTR(transaction)
+                          //     : _buildCommonAssetCategoryTR(transaction),
                         ],
                       ),
                     )
@@ -204,124 +204,124 @@ class AssetTransactionListScreen extends ConsumerWidget {
     );
   }
 
-  Column _buildCommonAssetCategoryTR(AssetTransaction transaction) {
-    final String type = transaction.typeToString() ?? '';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          '',
-          // transaction.name,
-          overflow: TextOverflow.clip,
-        ),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  type,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: type == '매수' ? AppColors.buy : AppColors.sell),
-                ),
-                const SizedBox(width: 6),
-                Row(
-                  children: [
-                    Text(
-                      addComma.format(transaction.quantity),
-                      style: const TextStyle(fontFamily: 'Roboto'),
-                    ),
-                    const Text(
-                      'units',
-                      style: TextStyle(fontSize: 10, fontFamily: 'Roboto'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(transaction.singlePrice.toStringAsFixed(0),
-                    style: const TextStyle(fontFamily: 'Roboto')),
-                const Text(
-                  '/1unit',
-                  style: TextStyle(fontSize: 12, fontFamily: 'Roboto'),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('총 금액'),
-            Row(
-              children: [
-                Text(addComma.format(transaction.totalTransactionPrice),
-                    style: const TextStyle(fontFamily: 'Roboto')),
-                const SizedBox(width: 4),
-                Text(transaction.currencyCode,
-                    style: const TextStyle(fontFamily: 'Roboto'))
-              ],
-            ),
-          ],
-        )
-      ],
-    );
-  }
+  // Column _buildCommonAssetCategoryTR(AssetTransaction transaction) {
+  //   final String type = transaction.typeToString() ?? '';
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       const Text(
+  //         '',
+  //         // transaction.name,
+  //         overflow: TextOverflow.clip,
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Row(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Text(
+  //                 type,
+  //                 style: TextStyle(
+  //                     fontWeight: FontWeight.w500,
+  //                     color: type == '매수' ? AppColors.buy : AppColors.sell),
+  //               ),
+  //               const SizedBox(width: 6),
+  //               Row(
+  //                 children: [
+  //                   Text(
+  //                     addComma.format(transaction.shares),
+  //                     style: const TextStyle(fontFamily: 'Roboto'),
+  //                   ),
+  //                   const Text(
+  //                     'units',
+  //                     style: TextStyle(fontSize: 10, fontFamily: 'Roboto'),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //           Row(
+  //             children: [
+  //               Text(transaction.pricePerShare!.toStringAsFixed(0),
+  //                   style: const TextStyle(fontFamily: 'Roboto')),
+  //               const Text(
+  //                 '/1unit',
+  //                 style: TextStyle(fontSize: 12, fontFamily: 'Roboto'),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           const Text('총 금액'),
+  //           Row(
+  //             children: [
+  //               Text(addComma.format(transaction.totalTransactionPrice),
+  //                   style: const TextStyle(fontFamily: 'Roboto')),
+  //               const SizedBox(width: 4),
+  //               Text(transaction.currencyCode,
+  //                   style: const TextStyle(fontFamily: 'Roboto'))
+  //             ],
+  //           ),
+  //         ],
+  //       )
+  //     ],
+  //   );
+  // }
 
-  Column _buildCashAssetCategoryTR(AssetTransaction transaction) {
-    final String type = transaction.typeToString() ?? '';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          // transaction.name,
-          '',
-          overflow: TextOverflow.clip,
-        ),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  type,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: type == '매수' ? AppColors.buy : AppColors.sell),
-                ),
-              ],
-            ),
-            Text('환율 ${transaction.exchangeRate}',
-                style: const TextStyle(fontFamily: 'Roboto')),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('총 금액'),
-            Row(
-              children: [
-                Text(addComma.format(transaction.totalTransactionPrice),
-                    style: const TextStyle(fontFamily: 'Roboto')),
-                const SizedBox(width: 4),
-                Text(transaction.currencyCode,
-                    style: const TextStyle(fontFamily: 'Roboto'))
-              ],
-            ),
-          ],
-        )
-      ],
-    );
-  }
+  // Column _buildCashAssetCategoryTR(AssetTransaction transaction) {
+  //   final String type = transaction.typeToString() ?? '';
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       const Text(
+  //         // transaction.name,
+  //         '',
+  //         overflow: TextOverflow.clip,
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Row(
+  //             children: [
+  //               Text(
+  //                 type,
+  //                 style: TextStyle(
+  //                     fontWeight: FontWeight.w500,
+  //                     color: type == '매수' ? AppColors.buy : AppColors.sell),
+  //               ),
+  //             ],
+  //           ),
+  //           Text('환율 ${transaction.exchangeRate}',
+  //               style: const TextStyle(fontFamily: 'Roboto')),
+  //         ],
+  //       ),
+  //       const SizedBox(height: 4),
+  //       const Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text('총 금액'),
+  //           Row(
+  //             children: [
+  //               // Text(addComma.format(transaction.totalTransactionPrice),
+  //               //     style: const TextStyle(fontFamily: 'Roboto')),
+  //               // const SizedBox(width: 4),
+  //               // Text(transaction.currencyCode,
+  //               //     style: const TextStyle(fontFamily: 'Roboto'))
+  //             ],
+  //           ),
+  //         ],
+  //       )
+  //     ],
+  //   );
+  // }
 
   Container buildListTile(
       {required BuildContext context, required Widget child}) {
