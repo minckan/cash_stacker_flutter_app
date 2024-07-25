@@ -65,181 +65,195 @@ class TableRowAsset {
     String buyingExchangeRate = '';
     String currentExchangeRate = '';
 
-    /// =================================================================
-    /// [현금] 🇰🇷 한화
-    /// =================================================================
+    //   /// =================================================================
+    //   /// [현금] 🇰🇷 한화
+    //   /// =================================================================
 
-    if (assetVM.isCashAsset) {
-      if (asset.currencyCode == 'KRW') {
-        name = '현금';
-        buyingSinglePriceKrw = '-';
-        buyingSinglePriceForeign = '-';
-        amount = '-';
-        totalEvaluationAmountKrw = '-';
-        totalEvaluationAmountForeign = '-';
-        currentSinglePriceKrw = '-';
-        currentSinglePriceForeign = '-';
-        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
-        profitLossRateKrw = '-';
-        profitLossRateForeign = '-';
-        initialPurchaseDate = '-';
-        totalBuyingAmountKrw = addSymbol(
-            addComma.format(assetVM.totalBuyingAmountKrw),
-            // asset.currency?.currencySymbol,
-            '');
+    //   if (assetVM.isCashAsset) {
+    //     if (asset.currencyCode == 'KRW') {
+    //       name = '현금';
+    //       buyingSinglePriceKrw = '-';
+    //       buyingSinglePriceForeign = '-';
+    //       amount = '-';
+    //       totalEvaluationAmountKrw = '-';
+    //       totalEvaluationAmountForeign = '-';
+    //       currentSinglePriceKrw = '-';
+    //       currentSinglePriceForeign = '-';
+    //       ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+    //       profitLossRateKrw = '-';
+    //       profitLossRateForeign = '-';
+    //       initialPurchaseDate = '-';
+    //       totalBuyingAmountKrw = addSymbol(
+    //           addComma.format(assetVM.totalBuyingAmountKrw),
+    //           // asset.currency?.currencySymbol,
+    //           '');
 
-        totalBuyingAmountForeign = '-';
-        totalCurrentAmountKrw = '-';
-        totalCurrentAmountForeign = '-';
-        buyingExchangeRate = '-';
-        currentExchangeRate = '-';
-      } else {
-        /// =================================================================
-        /// [현금] 외환
-        /// =================================================================
-        name = '외환(${asset.currencyCode})';
-        amount = '-';
-        buyingSinglePriceKrw = '-';
-        buyingSinglePriceForeign = '-';
-        totalEvaluationAmountKrw = addSymbol(
-            addComma.format(assetVM.totalCashEvaluationAmountForeign), '₩');
-        totalEvaluationAmountForeign = '-';
-        currentSinglePriceKrw = '-';
-        currentSinglePriceForeign = '-';
-        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
-        profitLossRateKrw =
-            '${assetVM.foreignCashProfitLossRate.toStringAsFixed(1)}%';
-        profitLossRateForeign = '-';
+    //       totalBuyingAmountForeign = '-';
+    //       totalCurrentAmountKrw = '-';
+    //       totalCurrentAmountForeign = '-';
+    //       buyingExchangeRate = '-';
+    //       currentExchangeRate = '-';
+    //     } else {
+    //       /// =================================================================
+    //       /// [현금] 외환
+    //       /// =================================================================
+    //       name = '외환(${asset.currencyCode})';
+    //       amount = '-';
+    //       buyingSinglePriceKrw = '-';
+    //       buyingSinglePriceForeign = '-';
+    //       totalEvaluationAmountKrw = addSymbol(
+    //           addComma.format(assetVM.totalCashEvaluationAmountForeign), '₩');
+    //       totalEvaluationAmountForeign = '-';
+    //       currentSinglePriceKrw = '-';
+    //       currentSinglePriceForeign = '-';
+    //       ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+    //       profitLossRateKrw =
+    //           '${assetVM.foreignCashProfitLossRate.toStringAsFixed(1)}%';
+    //       profitLossRateForeign = '-';
 
-        initialPurchaseDate = DateFormat('yyyy.MM.dd').format(asset.createdAt!);
+    //       initialPurchaseDate = DateFormat('yyyy.MM.dd').format(asset.createdAt!);
 
-        buyingExchangeRate = addSymbol('${assetVM.averageExchangeRate}', ''
-            // asset.currency?.currencySymbol
-            );
-        currentExchangeRate =
-            addSymbol(assetVM.exchangeRate.toStringAsFixed(2), ''
-                // asset.currency?.currencySymbol
-                );
+    //       buyingExchangeRate = addSymbol('${assetVM.averageExchangeRate}', ''
+    //           // asset.currency?.currencySymbol
+    //           );
+    //       currentExchangeRate =
+    //           addSymbol(assetVM.exchangeRate.toStringAsFixed(2), ''
+    //               // asset.currency?.currencySymbol
+    //               );
 
-        totalCurrentAmountKrw = addSymbol(
-            addComma.format(assetVM.totalCurrentCashAmountForeignKrw), '₩');
-        totalCurrentAmountForeign =
-            addSymbol(addComma.format(assetVM.totalBuyingAmountForeign), ''
-                // asset.currency?.currencySymbol,
-                );
-        totalBuyingAmountKrw =
-            addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
-        totalBuyingAmountForeign =
-            addSymbol(addComma.format(assetVM.totalBuyingAmountForeign), ''
-                // asset.currency?.currencySymbol
-                );
-      }
-    } else {
-      /// =================================================================
-      /// [자산] 🇰🇷 국내
-      /// =================================================================
-      if (asset.currencyCode == 'KRW') {
-        name = asset.assetName!;
-        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
-        amount = addComma.format(assetVM.totalQuantity);
-        initialPurchaseDate = DateFormat('yyyy.MM.dd').format(asset.createdAt!);
-        buyingSinglePriceKrw =
-            addSymbol(addComma.format(assetVM.buyingSinglePriceKrw), '₩');
-        buyingSinglePriceForeign = '-';
-        totalBuyingAmountKrw =
-            addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
-        totalBuyingAmountForeign = '-';
-        totalEvaluationAmountKrw =
-            addSymbol(addComma.format(assetVM.totalEvaluationAmountKrw), '₩');
-        totalEvaluationAmountForeign = '-';
-        currentSinglePriceKrw =
-            addSymbol(addComma.format(assetVM.currentSinglePriceKrw), '₩');
-        currentSinglePriceForeign = '-';
-        totalCurrentAmountForeign = '-';
-        profitLossRateKrw = asset.balance == 0
-            ? '-'
-            : '${assetVM.profitLossRateKrw.toStringAsFixed(2)}%';
-        profitLossRateForeign = '-';
-        currentExchangeRate = '-';
-        buyingExchangeRate = '-';
-        totalCurrentAmountKrw =
-            addSymbol(addComma.format(assetVM.totalCurrentAmountKrw), '₩');
-      } else {
-        /// =================================================================
-        /// [자산] 해외
-        /// =================================================================
+    //       totalCurrentAmountKrw = addSymbol(
+    //           addComma.format(assetVM.totalCurrentCashAmountForeignKrw), '₩');
+    //       totalCurrentAmountForeign =
+    //           addSymbol(addComma.format(assetVM.totalBuyingAmountForeign), ''
+    //               // asset.currency?.currencySymbol,
+    //               );
+    //       totalBuyingAmountKrw =
+    //           addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
+    //       totalBuyingAmountForeign =
+    //           addSymbol(addComma.format(assetVM.totalBuyingAmountForeign), ''
+    //               // asset.currency?.currencySymbol
+    //               );
+    //     }
+    //   } else {
+    //     /// =================================================================
+    //     /// [자산] 🇰🇷 국내
+    //     /// =================================================================
+    //     if (asset.currencyCode == 'KRW') {
+    //       name = asset.assetName!;
+    //       ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+    //       amount = addComma.format(assetVM.totalQuantity);
+    //       initialPurchaseDate = DateFormat('yyyy.MM.dd').format(asset.createdAt!);
+    //       buyingSinglePriceKrw =
+    //           addSymbol(addComma.format(assetVM.buyingSinglePriceKrw), '₩');
+    //       buyingSinglePriceForeign = '-';
+    //       totalBuyingAmountKrw =
+    //           addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
+    //       totalBuyingAmountForeign = '-';
+    //       totalEvaluationAmountKrw =
+    //           addSymbol(addComma.format(assetVM.totalEvaluationAmountKrw), '₩');
+    //       totalEvaluationAmountForeign = '-';
+    //       currentSinglePriceKrw =
+    //           addSymbol(addComma.format(assetVM.currentSinglePriceKrw), '₩');
+    //       currentSinglePriceForeign = '-';
+    //       totalCurrentAmountForeign = '-';
+    //       profitLossRateKrw = asset.balance == 0
+    //           ? '-'
+    //           : '${assetVM.profitLossRateKrw.toStringAsFixed(2)}%';
+    //       profitLossRateForeign = '-';
+    //       currentExchangeRate = '-';
+    //       buyingExchangeRate = '-';
+    //       totalCurrentAmountKrw =
+    //           addSymbol(addComma.format(assetVM.totalCurrentAmountKrw), '₩');
+    //     } else {
+    //       /// =================================================================
+    //       /// [자산] 해외
+    //       /// =================================================================
 
-        name = asset.assetName!;
-        amount = addComma.format(assetVM.totalQuantity);
-        ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
-        buyingSinglePriceKrw =
-            addSymbol(addComma.format(assetVM.buyingSinglePriceKrw), '₩');
-        buyingSinglePriceForeign =
-            addSymbol(addComma.format(assetVM.buyingSinglePriceForeign), ''
-                // asset.currency?.currencySymbol,
-                );
-        totalEvaluationAmountKrw = assetVM.totalEvaluationAmountKrw != 0
-            ? addSymbol(addComma.format(assetVM.totalEvaluationAmountKrw), '₩')
-            : '-';
-        totalEvaluationAmountForeign = assetVM.totalEvaluationAmountForeign != 0
-            ? addSymbol(
-                addComma.format(assetVM.totalEvaluationAmountForeign), ''
-                // asset.currency?.currencySymbol,
-                )
-            : '-';
-        currentSinglePriceKrw = assetVM.currentSinglePriceKrw != 0
-            ? addSymbol(addComma.format(assetVM.currentSinglePriceKrw), '₩')
-            : '-';
-        currentSinglePriceForeign = assetVM.currentSinglePriceForeign != 0
-            ? addSymbol(addComma.format(assetVM.currentSinglePriceForeign), ''
-                // asset.currency?.currencySymbol,
-                )
-            : '-';
-        profitLossRateKrw = asset.balance == 0
-            ? '-'
-            : '${assetVM.profitLossRateKrw.toStringAsFixed(2)}%';
-        profitLossRateForeign = asset.balance == 0
-            ? '-'
-            : '${assetVM.profitLossRateForeign.toStringAsFixed(2)}%';
-        initialPurchaseDate = DateFormat('yyyy.MM.dd').format(asset.createdAt!);
-        buyingExchangeRate = assetVM.averageExchangeRate.toStringAsFixed(2);
-        currentExchangeRate = assetVM.exchangeRate.toStringAsFixed(2);
-        totalCurrentAmountKrw = assetVM.totalCurrentAmountKrw != 0
-            ? addSymbol(addComma.format(assetVM.totalCurrentAmountKrw), '₩')
-            : '-';
-        totalCurrentAmountForeign = assetVM.totalCurrentAmountForeign != 0
-            ? addSymbol(addComma.format(assetVM.totalCurrentAmountForeign), ''
-                // asset.currency?.currencySymbol,
-                )
-            : '-';
-        totalBuyingAmountKrw =
-            addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
-        totalBuyingAmountForeign =
-            addSymbol(addComma.format(assetVM.totalBuyingAmountForeign), ''
-                // asset.currency?.currencySymbol,
-                );
-      }
-    }
+    //       name = asset.assetName!;
+    //       amount = addComma.format(assetVM.totalQuantity);
+    //       ratio = '${assetVM.ratioValue.toStringAsFixed(2)}%';
+    //       buyingSinglePriceKrw =
+    //           addSymbol(addComma.format(assetVM.buyingSinglePriceKrw), '₩');
+    //       buyingSinglePriceForeign =
+    //           addSymbol(addComma.format(assetVM.buyingSinglePriceForeign), ''
+    //               // asset.currency?.currencySymbol,
+    //               );
+    //       totalEvaluationAmountKrw = assetVM.totalEvaluationAmountKrw != 0
+    //           ? addSymbol(addComma.format(assetVM.totalEvaluationAmountKrw), '₩')
+    //           : '-';
+    //       totalEvaluationAmountForeign = assetVM.totalEvaluationAmountForeign != 0
+    //           ? addSymbol(
+    //               addComma.format(assetVM.totalEvaluationAmountForeign), ''
+    //               // asset.currency?.currencySymbol,
+    //               )
+    //           : '-';
+    //       currentSinglePriceKrw = assetVM.currentSinglePriceKrw != 0
+    //           ? addSymbol(addComma.format(assetVM.currentSinglePriceKrw), '₩')
+    //           : '-';
+    //       currentSinglePriceForeign = assetVM.currentSinglePriceForeign != 0
+    //           ? addSymbol(addComma.format(assetVM.currentSinglePriceForeign), ''
+    //               // asset.currency?.currencySymbol,
+    //               )
+    //           : '-';
+    //       profitLossRateKrw = asset.balance == 0
+    //           ? '-'
+    //           : '${assetVM.profitLossRateKrw.toStringAsFixed(2)}%';
+    //       profitLossRateForeign = asset.balance == 0
+    //           ? '-'
+    //           : '${assetVM.profitLossRateForeign.toStringAsFixed(2)}%';
+    //       initialPurchaseDate = DateFormat('yyyy.MM.dd').format(asset.createdAt!);
+    //       buyingExchangeRate = assetVM.averageExchangeRate.toStringAsFixed(2);
+    //       currentExchangeRate = assetVM.exchangeRate.toStringAsFixed(2);
+    //       totalCurrentAmountKrw = assetVM.totalCurrentAmountKrw != 0
+    //           ? addSymbol(addComma.format(assetVM.totalCurrentAmountKrw), '₩')
+    //           : '-';
+    //       totalCurrentAmountForeign = assetVM.totalCurrentAmountForeign != 0
+    //           ? addSymbol(addComma.format(assetVM.totalCurrentAmountForeign), ''
+    //               // asset.currency?.currencySymbol,
+    //               )
+    //           : '-';
+    //       totalBuyingAmountKrw =
+    //           addSymbol(addComma.format(assetVM.totalBuyingAmountKrw), '₩');
+    //       totalBuyingAmountForeign =
+    //           addSymbol(addComma.format(assetVM.totalBuyingAmountForeign), ''
+    //               // asset.currency?.currencySymbol,
+    //               );
+    //     }
+    //   }
+    //   return TableRowAsset(
+    //     name: name,
+    //     amount: amount,
+    //     ratio: ratio,
+    //     initialPurchaseDate: initialPurchaseDate,
+    //     buyingSinglePriceKrw: buyingSinglePriceKrw,
+    //     buyingSinglePriceForeign: buyingSinglePriceForeign,
+    //     totalEvaluationAmountKrw: totalEvaluationAmountKrw,
+    //     totalEvaluationAmountForeign: totalEvaluationAmountForeign,
+    //     currentSinglePriceKrw: currentSinglePriceKrw,
+    //     currentSinglePriceForeign: currentSinglePriceForeign,
+    //     profitLossRateKrw: profitLossRateKrw,
+    //     profitLossRateForeign: profitLossRateForeign,
+    //     totalBuyingAmountKrw: totalBuyingAmountKrw,
+    //     totalBuyingAmountForeign: totalBuyingAmountForeign,
+    //     totalCurrentAmountKrw: totalCurrentAmountKrw,
+    //     totalCurrentAmountForeign: totalCurrentAmountForeign,
+    //     buyingExchangeRate: buyingExchangeRate,
+    //     currentExchangeRate: currentExchangeRate,
+    //   );
+
     return TableRowAsset(
-      name: name,
-      amount: amount,
-      ratio: ratio,
-      initialPurchaseDate: initialPurchaseDate,
-      buyingSinglePriceKrw: buyingSinglePriceKrw,
-      buyingSinglePriceForeign: buyingSinglePriceForeign,
-      totalEvaluationAmountKrw: totalEvaluationAmountKrw,
-      totalEvaluationAmountForeign: totalEvaluationAmountForeign,
-      currentSinglePriceKrw: currentSinglePriceKrw,
-      currentSinglePriceForeign: currentSinglePriceForeign,
-      profitLossRateKrw: profitLossRateKrw,
-      profitLossRateForeign: profitLossRateForeign,
-      totalBuyingAmountKrw: totalBuyingAmountKrw,
-      totalBuyingAmountForeign: totalBuyingAmountForeign,
-      totalCurrentAmountKrw: totalCurrentAmountKrw,
-      totalCurrentAmountForeign: totalCurrentAmountForeign,
-      buyingExchangeRate: buyingExchangeRate,
-      currentExchangeRate: currentExchangeRate,
-    );
+        name: '',
+        buyingSinglePriceKrw: '0',
+        buyingSinglePriceForeign: '0',
+        amount: '0',
+        totalEvaluationAmountKrw: '0',
+        totalEvaluationAmountForeign: '0',
+        currentSinglePriceKrw: '0',
+        currentSinglePriceForeign: '0',
+        ratio: '0',
+        profitLossRateKrw: '0',
+        profitLossRateForeign: '0',
+        initialPurchaseDate: '0');
   }
 }
 
