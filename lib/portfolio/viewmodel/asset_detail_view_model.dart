@@ -58,7 +58,6 @@ class AssetDetailViewModel {
   double get exchangeRate {
     if (asset.currencyCode == 'BRL') return 0;
 
-// TODO: Bad state: No element ERROR
     final exchangeRate = ref.watch(exchangeRateProvider).firstWhere(
         (rate) => rate.currencyCode.contains(asset.currencyCode as Pattern));
 
@@ -82,210 +81,231 @@ class AssetDetailViewModel {
 
   /// 매수 이력 리스트
   List<AssetTransaction> get purchaseTransactions {
-    return transactions
-        .where((transaction) =>
-            transaction.transactionType ==
-            AssetTransactionRequestTransactionTypeEnum.buy)
-        .toList();
+    // return transactions
+    //     .where((transaction) =>
+    //         transaction.transactionType ==
+    //         AssetTransactionRequestTransactionTypeEnum.buy)
+    //     .toList();
+    return [];
   }
 
   /// 매도 이력 리스트
   List<AssetTransaction> get sellingTransactions {
-    return transactions
-        .where((transaction) =>
-            transaction.transactionType ==
-            AssetTransactionRequestTransactionTypeEnum.sell)
-        .toList();
+    // return transactions
+    //     .where((transaction) =>
+    //         transaction.transactionType ==
+    //         AssetTransactionRequestTransactionTypeEnum.sell)
+    //     .toList();
+    return [];
   }
 
   /// 전체 투자 수량
   double get totalQuantity {
-    return purchaseTransactions.fold(
-            0, (sum, transaction) => sum + (transaction.shares ?? 0)) -
-        sellingTransactions.fold(
-            0, (sum, transaction) => sum + (transaction.shares ?? 0));
+    // return purchaseTransactions.fold(
+    //         0, (sum, transaction) => sum + (transaction.shares ?? 0)) -
+    //     sellingTransactions.fold(
+    //         0, (sum, transaction) => sum + (transaction.shares ?? 0));
+    return 0;
   }
 
   /// 매수금액 기준 자산 비율
   double get ratioValue {
-    final totalValue = ref
-        .read(thisMonthMonthlyAssetAmountProvider(getMonth(DateTime.now())))!
-        .totalValue;
+    // final totalValue = ref
+    //     .read(thisMonthMonthlyAssetAmountProvider(getMonth(DateTime.now())))!
+    //     .totalValue;
 
-    if (isCashAsset) {
-      return (totalBuyingAmountKrw / totalValue) * 100;
-    }
+    // if (isCashAsset) {
+    //   return (totalBuyingAmountKrw / totalValue) * 100;
+    // }
 
-    return (totalBuyingAmountKrw / totalValue) * 100;
+    // return (totalBuyingAmountKrw / totalValue) * 100;
+    return 0;
   }
 
   //================================================================
 
   /// [원화] 실제 투자원금 총액
   double get totalBuyingAmountKrw {
-    if (isKrwCashAsset) {
-      return asset.balance ?? 0;
-    } else if (isForeignCashAsset) {
-      final totalBuying = purchaseTransactions.fold(
-          0.0,
-          (total, transaction) =>
-              total +
-              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
-      final totalSelling = sellingTransactions.fold(
-          0.0,
-          (total, transaction) =>
-              total +
-              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
+    // if (isKrwCashAsset) {
+    //   return asset.balance ?? 0;
+    // } else if (isForeignCashAsset) {
+    //   final totalBuying = purchaseTransactions.fold(
+    //       0.0,
+    //       (total, transaction) =>
+    //           total +
+    //           ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
+    //   final totalSelling = sellingTransactions.fold(
+    //       0.0,
+    //       (total, transaction) =>
+    //           total +
+    //           ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
 
-      return (totalBuying - totalSelling) * averageExchangeRate;
-    }
+    //   return (totalBuying - totalSelling) * averageExchangeRate;
+    // }
 
-    final totalBuying = purchaseTransactions.fold(
-        0.0, (total, transaction) => total + transaction.shares!);
-    final totalSelling = sellingTransactions.fold(
-        0.0, (total, transaction) => total + transaction.shares!);
+    // final totalBuying = purchaseTransactions.fold(
+    //     0.0, (total, transaction) => total + transaction.shares!);
+    // final totalSelling = sellingTransactions.fold(
+    //     0.0, (total, transaction) => total + transaction.shares!);
 
-    final total = totalBuying - totalSelling;
+    // final total = totalBuying - totalSelling;
 
-    return total * buyingSinglePriceKrw;
+    // return total * buyingSinglePriceKrw;
+    return 0;
   }
 
   /// [원화] 평균 매입가
   double get buyingSinglePriceKrw {
-    final totalPurchasePrice = purchaseTransactions.fold(
-        0.0, (sum, transaction) => sum + (transaction.pricePerShare ?? 0));
-    return totalPurchasePrice / purchaseTransactions.length;
+    // final totalPurchasePrice = purchaseTransactions.fold(
+    //     0.0, (sum, transaction) => sum + (transaction.pricePerShare ?? 0));
+    // return totalPurchasePrice / purchaseTransactions.length;
+    return 0;
   }
 
   /// [원화] 입력 받은 현재가
   double get currentSinglePriceKrw {
-    if (_isKrwAsset) {
-      return asset.balance ?? 0;
-    } else {
-      return (asset.balance ?? 0) * exchangeRate;
-    }
+    // if (_isKrwAsset) {
+    //   return asset.balance ?? 0;
+    // } else {
+    //   return (asset.balance ?? 0) * exchangeRate;
+    // }
+    return 0;
   }
 
   /// [원화] 현재가 * 수량 = 현재가 총금액
   double get totalCurrentAmountKrw {
-    return currentSinglePriceKrw * totalQuantity;
+    // return currentSinglePriceKrw * totalQuantity;
+    return 0;
   }
 
   /// [원화] 원화환산금액의 수익률
   double get profitLossRateKrw {
-    final prev = totalBuyingAmountKrw;
-    final current = totalCurrentAmountKrw;
-    return calculatePercentageIncrease(prev, current);
+    // final prev = totalBuyingAmountKrw;
+    // final current = totalCurrentAmountKrw;
+    // return calculatePercentageIncrease(prev, current);
+    return 0;
   }
 
   /// [원화] 현재 평가 수익금액
   double get totalEvaluationAmountKrw {
-    if (totalCurrentAmountKrw == 0) {
-      return 0;
-    }
-    return totalCurrentAmountKrw - totalBuyingAmountKrw;
+    // if (totalCurrentAmountKrw == 0) {
+    //   return 0;
+    // }
+    // return totalCurrentAmountKrw - totalBuyingAmountKrw;
+    return 0;
   }
 
   //================================================================
 
   /// [외화] 실제 투자원금 총액
   double get totalBuyingAmountForeign {
-    if (isForeignCashAsset) {
-      final totalBuying = purchaseTransactions.fold(
-          0.0,
-          (total, transaction) =>
-              total +
-              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
-      final totalSelling = sellingTransactions.fold(
-          0.0,
-          (total, transaction) =>
-              total +
-              ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
+    // if (isForeignCashAsset) {
+    //   final totalBuying = purchaseTransactions.fold(
+    //       0.0,
+    //       (total, transaction) =>
+    //           total +
+    //           ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
+    //   final totalSelling = sellingTransactions.fold(
+    //       0.0,
+    //       (total, transaction) =>
+    //           total +
+    //           ((transaction.shares ?? 0) * (transaction.pricePerShare ?? 0)));
 
-      final total = totalBuying - totalSelling;
-      return total;
-    }
-    final totalBuying = purchaseTransactions.fold(
-        0.0, (total, transaction) => total + transaction.shares!);
-    final totalSelling = sellingTransactions.fold(
-        0.0, (total, transaction) => total + transaction.shares!);
+    //   final total = totalBuying - totalSelling;
+    //   return total;
+    // }
+    // final totalBuying = purchaseTransactions.fold(
+    //     0.0, (total, transaction) => total + transaction.shares!);
+    // final totalSelling = sellingTransactions.fold(
+    //     0.0, (total, transaction) => total + transaction.shares!);
 
-    final total = totalBuying - totalSelling;
-    return total * buyingSinglePriceForeign;
+    // final total = totalBuying - totalSelling;
+    // return total * buyingSinglePriceForeign;
+    return 0;
   }
 
   /// [외화] 평균 매입가
   double get buyingSinglePriceForeign {
-    final totalPurchasePrice = purchaseTransactions.fold(
-        0.0, (sum, transaction) => sum + transaction.pricePerShare!);
+    // final totalPurchasePrice = purchaseTransactions.fold(
+    //     0.0, (sum, transaction) => sum + transaction.pricePerShare!);
 
-    return totalPurchasePrice / purchaseTransactions.length;
+    // return totalPurchasePrice / purchaseTransactions.length;
+    return 0;
   }
 
   /// [외화] 입력받은 현재가
   double get currentSinglePriceForeign {
-    return asset.balance ?? 0;
+    // return asset.balance ?? 0;
+    return 0;
   }
 
   /// [외화] 현재가 * 수량 = 현재가 총금액
   double get totalCurrentAmountForeign {
-    return currentSinglePriceForeign * totalQuantity;
+    // return currentSinglePriceForeign * totalQuantity;
+    return 0;
   }
 
   /// [외화] 외화 수익률
   double get profitLossRateForeign {
-    final prev = totalBuyingAmountForeign;
-    final current = totalCurrentAmountForeign;
-    return calculatePercentageIncrease(prev, current);
+    // final prev = totalBuyingAmountForeign;
+    // final current = totalCurrentAmountForeign;
+    // return calculatePercentageIncrease(prev, current);
+    return 0;
   }
 
   /// [외화] 외화 예상 수익금
   double get totalEvaluationAmountForeign {
-    if (totalCurrentAmountForeign == 0) {
-      return 0;
-    }
-    return totalCurrentAmountForeign - totalBuyingAmountForeign;
+    // if (totalCurrentAmountForeign == 0) {
+    //   return 0;
+    // }
+    // return totalCurrentAmountForeign - totalBuyingAmountForeign;
+    return 0;
   }
 
   //================================================================
   /// [외환] 현재환율 * 총 금액
   double get totalCurrentCashAmountForeignKrw {
-    return exchangeRate * totalBuyingAmountForeign;
+    // return exchangeRate * totalBuyingAmountForeign;
+    return 0;
   }
 
   /// [외환] 원화 예상 수익금
   double get totalCashEvaluationAmountForeign {
-    if (totalCurrentCashAmountForeignKrw == 0) {
-      return 0;
-    }
-    return totalCurrentCashAmountForeignKrw - totalBuyingAmountKrw;
+    // if (totalCurrentCashAmountForeignKrw == 0) {
+    //   return 0;
+    // }
+    // return totalCurrentCashAmountForeignKrw - totalBuyingAmountKrw;
+    return 0;
   }
 
   /// 환차익율
   double get foreignCashProfitLossRate {
-    final previousPrice = totalBuyingAmountKrw;
-    final currentPrice = totalCurrentCashAmountForeignKrw;
+    // final previousPrice = totalBuyingAmountKrw;
+    // final currentPrice = totalCurrentCashAmountForeignKrw;
 
-    return calculatePercentageIncrease(previousPrice, currentPrice);
+    // return calculatePercentageIncrease(previousPrice, currentPrice);
+    return 0;
   }
   //================================================================
 
   /// 매입 환율 평균
   double get averageExchangeRate {
-    final transactionSize = purchaseTransactions.length;
-    final value = purchaseTransactions.fold(0.0, (total, transaction) {
-          return total + (transaction.exchangeRate!);
-        }) /
-        transactionSize;
+    // final transactionSize = purchaseTransactions.length;
+    // final value = purchaseTransactions.fold(0.0, (total, transaction) {
+    //       return total + (transaction.exchangeRate!);
+    //     }) /
+    //     transactionSize;
 
-    return value;
+    // return value;
+    return 0;
   }
 
   /// 환차익율
   double get foreignExchangeRateProfitLossRate {
-    final previousPrice = averageExchangeRate;
-    final currentPrice = exchangeRate;
+    // final previousPrice = averageExchangeRate;
+    // final currentPrice = exchangeRate;
 
-    return calculatePercentageIncrease(previousPrice, currentPrice);
+    // return calculatePercentageIncrease(previousPrice, currentPrice);
+    return 0;
   }
 }
