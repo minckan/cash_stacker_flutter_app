@@ -12,8 +12,6 @@ class _$WorkspaceIdAssetsPostRequest extends WorkspaceIdAssetsPostRequest {
   @override
   final String? assetName;
   @override
-  final double? balance;
-  @override
   final String? currencyCode;
   @override
   final AssetTransactionRequest? transactions;
@@ -23,11 +21,7 @@ class _$WorkspaceIdAssetsPostRequest extends WorkspaceIdAssetsPostRequest {
       (new WorkspaceIdAssetsPostRequestBuilder()..update(updates))._build();
 
   _$WorkspaceIdAssetsPostRequest._(
-      {this.assetTypeId,
-      this.assetName,
-      this.balance,
-      this.currencyCode,
-      this.transactions})
+      {this.assetTypeId, this.assetName, this.currencyCode, this.transactions})
       : super._();
 
   @override
@@ -45,7 +39,6 @@ class _$WorkspaceIdAssetsPostRequest extends WorkspaceIdAssetsPostRequest {
     return other is WorkspaceIdAssetsPostRequest &&
         assetTypeId == other.assetTypeId &&
         assetName == other.assetName &&
-        balance == other.balance &&
         currencyCode == other.currencyCode &&
         transactions == other.transactions;
   }
@@ -55,7 +48,6 @@ class _$WorkspaceIdAssetsPostRequest extends WorkspaceIdAssetsPostRequest {
     var _$hash = 0;
     _$hash = $jc(_$hash, assetTypeId.hashCode);
     _$hash = $jc(_$hash, assetName.hashCode);
-    _$hash = $jc(_$hash, balance.hashCode);
     _$hash = $jc(_$hash, currencyCode.hashCode);
     _$hash = $jc(_$hash, transactions.hashCode);
     _$hash = $jf(_$hash);
@@ -67,7 +59,6 @@ class _$WorkspaceIdAssetsPostRequest extends WorkspaceIdAssetsPostRequest {
     return (newBuiltValueToStringHelper(r'WorkspaceIdAssetsPostRequest')
           ..add('assetTypeId', assetTypeId)
           ..add('assetName', assetName)
-          ..add('balance', balance)
           ..add('currencyCode', currencyCode)
           ..add('transactions', transactions))
         .toString();
@@ -88,10 +79,6 @@ class WorkspaceIdAssetsPostRequestBuilder
   String? get assetName => _$this._assetName;
   set assetName(String? assetName) => _$this._assetName = assetName;
 
-  double? _balance;
-  double? get balance => _$this._balance;
-  set balance(double? balance) => _$this._balance = balance;
-
   String? _currencyCode;
   String? get currencyCode => _$this._currencyCode;
   set currencyCode(String? currencyCode) => _$this._currencyCode = currencyCode;
@@ -111,7 +98,6 @@ class WorkspaceIdAssetsPostRequestBuilder
     if ($v != null) {
       _assetTypeId = $v.assetTypeId;
       _assetName = $v.assetName;
-      _balance = $v.balance;
       _currencyCode = $v.currencyCode;
       _transactions = $v.transactions?.toBuilder();
       _$v = null;
@@ -140,7 +126,6 @@ class WorkspaceIdAssetsPostRequestBuilder
           new _$WorkspaceIdAssetsPostRequest._(
               assetTypeId: assetTypeId,
               assetName: assetName,
-              balance: balance,
               currencyCode: currencyCode,
               transactions: _transactions?.build());
     } catch (_) {

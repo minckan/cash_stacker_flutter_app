@@ -241,9 +241,6 @@ paths:
                 asset_name:
                   type: string
                   nullable: true
-                balance:
-                  type: number
-                  format: float
                 currency_code:
                   type: string
                 transactions:

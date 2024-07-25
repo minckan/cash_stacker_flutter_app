@@ -14,7 +14,6 @@ part 'workspace_id_assets_post_request.g.dart';
 /// Properties:
 /// * [assetTypeId]
 /// * [assetName]
-/// * [balance]
 /// * [currencyCode]
 /// * [transactions]
 @BuiltValue()
@@ -27,9 +26,6 @@ abstract class WorkspaceIdAssetsPostRequest
 
   @BuiltValueField(wireName: r'asset_name')
   String? get assetName;
-
-  @BuiltValueField(wireName: r'balance')
-  double? get balance;
 
   @BuiltValueField(wireName: r'currency_code')
   String? get currencyCode;
@@ -79,13 +75,6 @@ class _$WorkspaceIdAssetsPostRequestSerializer
       yield serializers.serialize(
         object.assetName,
         specifiedType: const FullType.nullable(String),
-      );
-    }
-    if (object.balance != null) {
-      yield r'balance';
-      yield serializers.serialize(
-        object.balance,
-        specifiedType: const FullType(double),
       );
     }
     if (object.currencyCode != null) {
@@ -141,13 +130,6 @@ class _$WorkspaceIdAssetsPostRequestSerializer
           ) as String?;
           if (valueDes == null) continue;
           result.assetName = valueDes;
-          break;
-        case r'balance':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(double),
-          ) as double;
-          result.balance = valueDes;
           break;
         case r'currency_code':
           final valueDes = serializers.deserialize(
