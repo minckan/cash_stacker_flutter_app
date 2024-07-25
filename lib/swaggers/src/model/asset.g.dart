@@ -16,8 +16,6 @@ class _$Asset extends Asset {
   @override
   final String? assetName;
   @override
-  final double? balance;
-  @override
   final DateTime? createdAt;
   @override
   final String? currencyCode;
@@ -30,7 +28,6 @@ class _$Asset extends Asset {
       this.workspaceId,
       this.assetTypeId,
       this.assetName,
-      this.balance,
       this.createdAt,
       this.currencyCode})
       : super._();
@@ -50,7 +47,6 @@ class _$Asset extends Asset {
         workspaceId == other.workspaceId &&
         assetTypeId == other.assetTypeId &&
         assetName == other.assetName &&
-        balance == other.balance &&
         createdAt == other.createdAt &&
         currencyCode == other.currencyCode;
   }
@@ -62,7 +58,6 @@ class _$Asset extends Asset {
     _$hash = $jc(_$hash, workspaceId.hashCode);
     _$hash = $jc(_$hash, assetTypeId.hashCode);
     _$hash = $jc(_$hash, assetName.hashCode);
-    _$hash = $jc(_$hash, balance.hashCode);
     _$hash = $jc(_$hash, createdAt.hashCode);
     _$hash = $jc(_$hash, currencyCode.hashCode);
     _$hash = $jf(_$hash);
@@ -76,7 +71,6 @@ class _$Asset extends Asset {
           ..add('workspaceId', workspaceId)
           ..add('assetTypeId', assetTypeId)
           ..add('assetName', assetName)
-          ..add('balance', balance)
           ..add('createdAt', createdAt)
           ..add('currencyCode', currencyCode))
         .toString();
@@ -102,10 +96,6 @@ class AssetBuilder implements Builder<Asset, AssetBuilder> {
   String? get assetName => _$this._assetName;
   set assetName(String? assetName) => _$this._assetName = assetName;
 
-  double? _balance;
-  double? get balance => _$this._balance;
-  set balance(double? balance) => _$this._balance = balance;
-
   DateTime? _createdAt;
   DateTime? get createdAt => _$this._createdAt;
   set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
@@ -125,7 +115,6 @@ class AssetBuilder implements Builder<Asset, AssetBuilder> {
       _workspaceId = $v.workspaceId;
       _assetTypeId = $v.assetTypeId;
       _assetName = $v.assetName;
-      _balance = $v.balance;
       _createdAt = $v.createdAt;
       _currencyCode = $v.currencyCode;
       _$v = null;
@@ -154,7 +143,6 @@ class AssetBuilder implements Builder<Asset, AssetBuilder> {
             workspaceId: workspaceId,
             assetTypeId: assetTypeId,
             assetName: assetName,
-            balance: balance,
             createdAt: createdAt,
             currencyCode: currencyCode);
     replace(_$result);

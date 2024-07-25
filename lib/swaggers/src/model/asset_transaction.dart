@@ -22,6 +22,7 @@ part 'asset_transaction.g.dart';
 /// * [exchangeRate]
 /// * [shares]
 /// * [pricePerShare]
+/// * [balance]
 @BuiltValue()
 abstract class AssetTransaction
     implements Built<AssetTransaction, AssetTransactionBuilder> {
@@ -57,6 +58,9 @@ abstract class AssetTransaction
 
   @BuiltValueField(wireName: r'price_per_share')
   double? get pricePerShare;
+
+  @BuiltValueField(wireName: r'balance')
+  double? get balance;
 
   AssetTransaction._();
 
@@ -161,6 +165,13 @@ class _$AssetTransactionSerializer
         specifiedType: const FullType(double),
       );
     }
+    if (object.balance != null) {
+      yield r'balance';
+      yield serializers.serialize(
+        object.balance,
+        specifiedType: const FullType(double),
+      );
+    }
   }
 
   @override
@@ -262,6 +273,13 @@ class _$AssetTransactionSerializer
             specifiedType: const FullType(double),
           ) as double;
           result.pricePerShare = valueDes;
+          break;
+        case r'balance':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(double),
+          ) as double;
+          result.balance = valueDes;
           break;
         default:
           unhandled.add(key);

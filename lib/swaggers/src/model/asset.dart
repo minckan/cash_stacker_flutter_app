@@ -15,7 +15,6 @@ part 'asset.g.dart';
 /// * [workspaceId]
 /// * [assetTypeId]
 /// * [assetName]
-/// * [balance]
 /// * [createdAt]
 /// * [currencyCode]
 @BuiltValue()
@@ -31,9 +30,6 @@ abstract class Asset implements Built<Asset, AssetBuilder> {
 
   @BuiltValueField(wireName: r'asset_name')
   String? get assetName;
-
-  @BuiltValueField(wireName: r'balance')
-  double? get balance;
 
   @BuiltValueField(wireName: r'created_at')
   DateTime? get createdAt;
@@ -90,13 +86,6 @@ class _$AssetSerializer implements PrimitiveSerializer<Asset> {
       yield serializers.serialize(
         object.assetName,
         specifiedType: const FullType(String),
-      );
-    }
-    if (object.balance != null) {
-      yield r'balance';
-      yield serializers.serialize(
-        object.balance,
-        specifiedType: const FullType(double),
       );
     }
     if (object.createdAt != null) {
@@ -165,13 +154,6 @@ class _$AssetSerializer implements PrimitiveSerializer<Asset> {
             specifiedType: const FullType(String),
           ) as String;
           result.assetName = valueDes;
-          break;
-        case r'balance':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(double),
-          ) as double;
-          result.balance = valueDes;
           break;
         case r'created_at':
           final valueDes = serializers.deserialize(

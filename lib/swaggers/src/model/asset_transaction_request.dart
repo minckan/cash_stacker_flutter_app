@@ -20,6 +20,7 @@ part 'asset_transaction_request.g.dart';
 /// * [shares]
 /// * [pricePerShare]
 /// * [currentPricePerShare]
+/// * [balance]
 @BuiltValue()
 abstract class AssetTransactionRequest
     implements Built<AssetTransactionRequest, AssetTransactionRequestBuilder> {
@@ -47,6 +48,9 @@ abstract class AssetTransactionRequest
 
   @BuiltValueField(wireName: r'current_price_per_share')
   double? get currentPricePerShare;
+
+  @BuiltValueField(wireName: r'balance')
+  double? get balance;
 
   AssetTransactionRequest._();
 
@@ -132,6 +136,13 @@ class _$AssetTransactionRequestSerializer
       yield r'current_price_per_share';
       yield serializers.serialize(
         object.currentPricePerShare,
+        specifiedType: const FullType.nullable(double),
+      );
+    }
+    if (object.balance != null) {
+      yield r'balance';
+      yield serializers.serialize(
+        object.balance,
         specifiedType: const FullType.nullable(double),
       );
     }
@@ -222,6 +233,14 @@ class _$AssetTransactionRequestSerializer
           ) as double?;
           if (valueDes == null) continue;
           result.currentPricePerShare = valueDes;
+          break;
+        case r'balance':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(double),
+          ) as double?;
+          if (valueDes == null) continue;
+          result.balance = valueDes;
           break;
         default:
           unhandled.add(key);

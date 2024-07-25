@@ -29,6 +29,8 @@ class _$AssetTransaction extends AssetTransaction {
   final int? shares;
   @override
   final double? pricePerShare;
+  @override
+  final double? balance;
 
   factory _$AssetTransaction(
           [void Function(AssetTransactionBuilder)? updates]) =>
@@ -45,7 +47,8 @@ class _$AssetTransaction extends AssetTransaction {
       this.amount,
       this.exchangeRate,
       this.shares,
-      this.pricePerShare})
+      this.pricePerShare,
+      this.balance})
       : super._();
 
   @override
@@ -70,7 +73,8 @@ class _$AssetTransaction extends AssetTransaction {
         amount == other.amount &&
         exchangeRate == other.exchangeRate &&
         shares == other.shares &&
-        pricePerShare == other.pricePerShare;
+        pricePerShare == other.pricePerShare &&
+        balance == other.balance;
   }
 
   @override
@@ -87,6 +91,7 @@ class _$AssetTransaction extends AssetTransaction {
     _$hash = $jc(_$hash, exchangeRate.hashCode);
     _$hash = $jc(_$hash, shares.hashCode);
     _$hash = $jc(_$hash, pricePerShare.hashCode);
+    _$hash = $jc(_$hash, balance.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -104,7 +109,8 @@ class _$AssetTransaction extends AssetTransaction {
           ..add('amount', amount)
           ..add('exchangeRate', exchangeRate)
           ..add('shares', shares)
-          ..add('pricePerShare', pricePerShare))
+          ..add('pricePerShare', pricePerShare)
+          ..add('balance', balance))
         .toString();
   }
 }
@@ -161,6 +167,10 @@ class AssetTransactionBuilder
   set pricePerShare(double? pricePerShare) =>
       _$this._pricePerShare = pricePerShare;
 
+  double? _balance;
+  double? get balance => _$this._balance;
+  set balance(double? balance) => _$this._balance = balance;
+
   AssetTransactionBuilder() {
     AssetTransaction._defaults(this);
   }
@@ -179,6 +189,7 @@ class AssetTransactionBuilder
       _exchangeRate = $v.exchangeRate;
       _shares = $v.shares;
       _pricePerShare = $v.pricePerShare;
+      _balance = $v.balance;
       _$v = null;
     }
     return this;
@@ -211,7 +222,8 @@ class AssetTransactionBuilder
             amount: amount,
             exchangeRate: exchangeRate,
             shares: shares,
-            pricePerShare: pricePerShare);
+            pricePerShare: pricePerShare,
+            balance: balance);
     replace(_$result);
     return _$result;
   }

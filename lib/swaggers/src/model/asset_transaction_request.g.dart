@@ -85,6 +85,8 @@ class _$AssetTransactionRequest extends AssetTransactionRequest {
   final double? pricePerShare;
   @override
   final double? currentPricePerShare;
+  @override
+  final double? balance;
 
   factory _$AssetTransactionRequest(
           [void Function(AssetTransactionRequestBuilder)? updates]) =>
@@ -98,7 +100,8 @@ class _$AssetTransactionRequest extends AssetTransactionRequest {
       this.exchangeRate,
       this.shares,
       this.pricePerShare,
-      this.currentPricePerShare})
+      this.currentPricePerShare,
+      this.balance})
       : super._();
 
   @override
@@ -121,7 +124,8 @@ class _$AssetTransactionRequest extends AssetTransactionRequest {
         exchangeRate == other.exchangeRate &&
         shares == other.shares &&
         pricePerShare == other.pricePerShare &&
-        currentPricePerShare == other.currentPricePerShare;
+        currentPricePerShare == other.currentPricePerShare &&
+        balance == other.balance;
   }
 
   @override
@@ -135,6 +139,7 @@ class _$AssetTransactionRequest extends AssetTransactionRequest {
     _$hash = $jc(_$hash, shares.hashCode);
     _$hash = $jc(_$hash, pricePerShare.hashCode);
     _$hash = $jc(_$hash, currentPricePerShare.hashCode);
+    _$hash = $jc(_$hash, balance.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -149,7 +154,8 @@ class _$AssetTransactionRequest extends AssetTransactionRequest {
           ..add('exchangeRate', exchangeRate)
           ..add('shares', shares)
           ..add('pricePerShare', pricePerShare)
-          ..add('currentPricePerShare', currentPricePerShare))
+          ..add('currentPricePerShare', currentPricePerShare)
+          ..add('balance', balance))
         .toString();
   }
 }
@@ -197,6 +203,10 @@ class AssetTransactionRequestBuilder
   set currentPricePerShare(double? currentPricePerShare) =>
       _$this._currentPricePerShare = currentPricePerShare;
 
+  double? _balance;
+  double? get balance => _$this._balance;
+  set balance(double? balance) => _$this._balance = balance;
+
   AssetTransactionRequestBuilder() {
     AssetTransactionRequest._defaults(this);
   }
@@ -212,6 +222,7 @@ class AssetTransactionRequestBuilder
       _shares = $v.shares;
       _pricePerShare = $v.pricePerShare;
       _currentPricePerShare = $v.currentPricePerShare;
+      _balance = $v.balance;
       _$v = null;
     }
     return this;
@@ -241,7 +252,8 @@ class AssetTransactionRequestBuilder
             exchangeRate: exchangeRate,
             shares: shares,
             pricePerShare: pricePerShare,
-            currentPricePerShare: currentPricePerShare);
+            currentPricePerShare: currentPricePerShare,
+            balance: balance);
     replace(_$result);
     return _$result;
   }
