@@ -48,7 +48,6 @@ class ForeignTransactionForm extends ConsumerWidget {
         suffixText: selectedCurrency?.currencyCode != null
             ? '/ 1 ${selectedCurrency?.currencyCode}'
             : '',
-        addComma: false,
       ),
       const SizedBox(
         width: 10,

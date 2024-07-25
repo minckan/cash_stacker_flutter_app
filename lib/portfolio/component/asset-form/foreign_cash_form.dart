@@ -34,7 +34,6 @@ class ForeignCashForm extends ConsumerWidget {
         suffixText: selectedCurrency?.currencyCode != null
             ? '/ 1 ${selectedCurrency?.currencyCode}'
             : '',
-        addComma: false,
       ),
       const SizedBox(height: 10),
       NumberFormField(

@@ -185,8 +185,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             (b) => b
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
-              ..transactionDate = selectedDate
-              ..exchangeRate = value['exchangeRate']
+              ..transactionDate = selectedDate.toUtc()
+              ..exchangeRate = removeComma(value['exchangeRate'])
               ..pricePerShare = removeComma(value['balance']),
           ));
         }
@@ -196,10 +196,11 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             (b) => b
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
-              ..transactionDate = selectedDate
-              ..shares = value['shares']
-              ..pricePerShare = value['pricePerShare']
-              ..currentPricePerShare = value['currentPricePerShare'],
+              ..transactionDate = selectedDate.toUtc()
+              ..shares = removeComma(value['shares'])
+              ..pricePerShare = removeComma(value['pricePerShare'])
+              ..currentPricePerShare =
+                  removeComma(value['currentPricePerShare']),
           ));
         }
         // 1-3. 해외 트레이드인 경우
@@ -208,11 +209,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             (b) => b
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
-              ..transactionDate = selectedDate
-              ..shares = value['shares']
-              ..pricePerShare = value['pricePerShare']
-              ..currentPricePerShare = value['currentPricePerShare']
-              ..exchangeRate = value['exchangeRate'],
+              ..transactionDate = selectedDate.toUtc()
+              ..shares = removeComma(value['shares'])
+              ..pricePerShare = removeComma(value['pricePerShare'])
+              ..currentPricePerShare =
+                  removeComma(value['currentPricePerShare'])
+              ..exchangeRate = removeComma(value['exchangeRate']),
           ));
         }
       }
@@ -238,8 +240,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               (b) => b
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
-                ..transactionDate = selectedDate
-                ..exchangeRate = value['exchangeRate']
+                ..transactionDate = selectedDate.toUtc()
+                ..exchangeRate = removeComma(value['exchangeRate'])
                 ..pricePerShare = removeComma(value['balance']),
             ),
           );
@@ -255,10 +257,11 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               (b) => b
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
-                ..transactionDate = selectedDate
-                ..shares = value['shares']
-                ..pricePerShare = value['pricePerShare']
-                ..currentPricePerShare = value['currentPricePerShare'],
+                ..transactionDate = selectedDate.toUtc()
+                ..shares = removeComma(value['shares'])
+                ..pricePerShare = removeComma(value['pricePerShare'])
+                ..currentPricePerShare =
+                    removeComma(value['currentPricePerShare']),
             ),
           );
         }
@@ -274,11 +277,12 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               (b) => b
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
-                ..transactionDate = selectedDate
-                ..shares = value['shares']
-                ..pricePerShare = value['pricePerShare']
-                ..currentPricePerShare = value['currentPricePerShare']
-                ..exchangeRate = value['exchangeRate'],
+                ..transactionDate = selectedDate.toUtc()
+                ..shares = removeComma(value['shares'])
+                ..pricePerShare = removeComma(value['pricePerShare'])
+                ..currentPricePerShare =
+                    removeComma(value['currentPricePerShare'])
+                ..exchangeRate = removeComma(value['exchangeRate']),
             ),
           );
         }
