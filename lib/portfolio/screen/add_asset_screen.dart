@@ -170,11 +170,10 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
   }
 
   handleSave() async {
-    final value = _formKey.currentState?.value;
-
-    if (value == null) return;
-    print(value);
     if (_formKey.currentState?.saveAndValidate() ?? false) {
+      final value = _formKey.currentState?.value;
+
+      if (value == null) return;
       // 🟠 1. 기존에 존재하는 자산에 거래내역만 추가하는 경우 : 한화 현금 제외
       if (widget.assetId != null) {
         final assetTransactionVM =
@@ -301,6 +300,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           );
         }
       }
+
+      Navigator.of(context).pop();
     }
   }
 }
