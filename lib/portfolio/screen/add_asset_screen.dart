@@ -179,8 +179,19 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
       if (widget.assetId != null) {
         final assetTransactionVM =
             ref.read(assetTransactionViewModelProvider.notifier);
-        // 1-1. 외환일 경우
-        if (selectedCategory?.assetTypeId == foreignCashCategoryId) {
+
+        // 1-1. 원화일 경우
+        if (selectedCategory?.assetTypeId == krwCashCategoryId) {
+          assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
+            (b) => b
+              ..assetId = widget.assetId
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
+              ..transactionDate = selectedDate.toUtc()
+              ..pricePerShare = removeComma(value['balance']),
+          ));
+        }
+        // 1-2. 외환일 경우
+        else if (selectedCategory?.assetTypeId == foreignCashCategoryId) {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
@@ -190,7 +201,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               ..pricePerShare = removeComma(value['balance']),
           ));
         }
-        // 1-2. 국내 트레이드인 경우
+        // 1-3. 국내 트레이드인 경우
         else if (selectedCategory?.isForeignAssetType == false) {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
@@ -203,7 +214,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                   removeComma(value['currentPricePerShare']),
           ));
         }
-        // 1-3. 해외 트레이드인 경우
+        // 1-4. 해외 트레이드인 경우
         else {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
@@ -226,15 +237,20 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         if (selectedCategory?.assetTypeId == krwCashCategoryId) {
           assetVM.addAsset(
             assetTypeId: krwCashCategoryId!,
-            balance: removeComma(value['balance']),
             currencyCode: 'KWR',
+            transaction: AssetTransactionRequest(
+              (b) => b
+                ..transactionType =
+                    AssetTransactionRequestTransactionTypeEnum.buy
+                ..transactionDate = selectedDate.toUtc()
+                ..balance = removeComma(value['balance']),
+            ),
           );
         }
         // 2-2. 외환일 경우
         else if (selectedCategory?.assetTypeId == foreignCashCategoryId) {
           assetVM.addAsset(
             assetTypeId: foreignCashCategoryId!,
-            balance: 0,
             currencyCode: selectedCurrency!.currencyCode,
             transaction: AssetTransactionRequest(
               (b) => b
@@ -242,7 +258,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                     AssetTransactionRequestTransactionTypeEnum.buy
                 ..transactionDate = selectedDate.toUtc()
                 ..exchangeRate = removeComma(value['exchangeRate'])
-                ..pricePerShare = removeComma(value['balance']),
+                ..balance = removeComma(value['balance']),
             ),
           );
         }
@@ -250,7 +266,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         else if (selectedCategory?.isForeignAssetType == false) {
           assetVM.addAsset(
             assetTypeId: selectedCategory!.assetTypeId!,
-            balance: 0,
             currencyCode: 'KWR',
             assetName: value['name'],
             transaction: AssetTransactionRequest(
@@ -270,7 +285,6 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         else {
           assetVM.addAsset(
             assetTypeId: selectedCategory!.assetTypeId!,
-            balance: 0,
             currencyCode: selectedCurrency!.currencyCode,
             assetName: value['name'],
             transaction: AssetTransactionRequest(

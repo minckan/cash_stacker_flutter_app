@@ -48,7 +48,6 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
 
   Future<void> addAsset({
     required int assetTypeId,
-    required double balance,
     required String currencyCode,
     String? assetName,
     AssetTransactionRequest? transaction,
@@ -60,7 +59,6 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
               (b) => b
                 ..assetName = assetName
                 ..assetTypeId = assetTypeId
-                ..balance = balance
                 ..currencyCode = currencyCode
                 ..transactions = transaction?.toBuilder(),
             ),
