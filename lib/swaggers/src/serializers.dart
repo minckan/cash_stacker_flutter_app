@@ -15,6 +15,7 @@ import 'date_serializer.dart';
 import 'model/date.dart';
 
 import 'model/asset.dart';
+import 'model/asset_info.dart';
 import 'model/asset_to_transaction.dart';
 import 'model/asset_transaction.dart';
 import 'model/asset_transaction_request.dart';
@@ -22,6 +23,8 @@ import 'model/asset_type.dart';
 import 'model/budget.dart';
 import 'model/exchange_rate_response.dart';
 import 'model/invitation.dart';
+import 'model/portfolio.dart';
+import 'model/portfolio_ratios_value.dart';
 import 'model/transaction.dart';
 import 'model/transaction_category.dart';
 import 'model/user.dart';
@@ -54,6 +57,7 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   Asset,
+  AssetInfo,
   AssetToTransaction,
   AssetTransaction,
   AssetTransactionRequest,
@@ -61,6 +65,8 @@ part 'serializers.g.dart';
   Budget,
   ExchangeRateResponse,
   Invitation,
+  Portfolio,
+  PortfolioRatiosValue,
   Transaction,
   TransactionCategory,
   User,

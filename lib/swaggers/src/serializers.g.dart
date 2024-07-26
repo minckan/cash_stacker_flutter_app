@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Asset.serializer)
+      ..add(AssetInfo.serializer)
       ..add(AssetToTransaction.serializer)
       ..add(AssetTransaction.serializer)
       ..add(AssetTransactionRequest.serializer)
@@ -17,6 +18,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ExchangeRateResponse.serializer)
       ..add(ExchangeRateResponseResultEnum.serializer)
       ..add(Invitation.serializer)
+      ..add(Portfolio.serializer)
+      ..add(PortfolioRatiosValue.serializer)
       ..add(Transaction.serializer)
       ..add(TransactionCategory.serializer)
       ..add(User.serializer)
@@ -46,7 +49,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(WorkspacesPostRequest.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Transaction)]),
-          () => new ListBuilder<Transaction>()))
+          () => new ListBuilder<Transaction>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap, const [
+            const FullType(String),
+            const FullType(PortfolioRatiosValue)
+          ]),
+          () => new MapBuilder<String, PortfolioRatiosValue>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(AssetInfo)]),
+          () => new ListBuilder<AssetInfo>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

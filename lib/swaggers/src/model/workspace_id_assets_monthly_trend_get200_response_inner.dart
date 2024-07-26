@@ -27,8 +27,9 @@ abstract class WorkspaceIdAssetsMonthlyTrendGet200ResponseInner
   WorkspaceIdAssetsMonthlyTrendGet200ResponseInner._();
 
   factory WorkspaceIdAssetsMonthlyTrendGet200ResponseInner(
-      [void Function(WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b)
-          updates]) = _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner;
+          [void updates(
+              WorkspaceIdAssetsMonthlyTrendGet200ResponseInnerBuilder b)]) =
+      _$WorkspaceIdAssetsMonthlyTrendGet200ResponseInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(

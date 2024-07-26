@@ -24,8 +24,8 @@ abstract class WorkspaceIdFinanceCategoryIdPutRequest
   WorkspaceIdFinanceCategoryIdPutRequest._();
 
   factory WorkspaceIdFinanceCategoryIdPutRequest(
-      [void Function(WorkspaceIdFinanceCategoryIdPutRequestBuilder b)
-          updates]) = _$WorkspaceIdFinanceCategoryIdPutRequest;
+          [void updates(WorkspaceIdFinanceCategoryIdPutRequestBuilder b)]) =
+      _$WorkspaceIdFinanceCategoryIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WorkspaceIdFinanceCategoryIdPutRequestBuilder b) => b;

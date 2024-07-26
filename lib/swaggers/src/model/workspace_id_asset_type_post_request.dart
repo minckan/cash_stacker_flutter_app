@@ -29,7 +29,7 @@ abstract class WorkspaceIdAssetTypePostRequest
   WorkspaceIdAssetTypePostRequest._();
 
   factory WorkspaceIdAssetTypePostRequest(
-          [void Function(WorkspaceIdAssetTypePostRequestBuilder b) updates]) =
+          [void updates(WorkspaceIdAssetTypePostRequestBuilder b)]) =
       _$WorkspaceIdAssetTypePostRequest;
 
   @BuiltValueHook(initializeBuilder: true)

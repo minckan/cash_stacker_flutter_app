@@ -7,20 +7,21 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:built_collection/built_collection.dart';
-import '../model/exchange_rate_response.dart';
+import '../api_util.dart';
+import '../model/portfolio.dart';
 
-class ExchangeRateApi {
+class DefaultApi {
   final Dio _dio;
 
   final Serializers _serializers;
 
-  const ExchangeRateApi(this._dio, this._serializers);
+  const DefaultApi(this._dio, this._serializers);
 
-  /// Fetch exchange rates
-  /// Retrieve the latest exchange rates.
+  /// Get portfolio details
+  /// Retrieve portfolio details based on the provided workspace ID
   ///
   /// Parameters:
+  /// * [workspaceId] - The ID of the workspace
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -28,9 +29,10 @@ class ExchangeRateApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [BuiltList<ExchangeRateResponse>] as data
+  /// Returns a [Future] containing a [Response] with a [Portfolio] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<ExchangeRateResponse>>> apiExchangeRatesGet({
+  Future<Response<Portfolio>> workspaceIdPortfolioGet({
+    required String workspaceId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -38,7 +40,10 @@ class ExchangeRateApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/exchange-rates';
+    final _path = r'/{workspaceId}/portfolio'.replaceAll(
+        '{' r'workspaceId' '}',
+        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -65,7 +70,7 @@ class ExchangeRateApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<ExchangeRateResponse>? _responseData;
+    Portfolio? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -73,9 +78,8 @@ class ExchangeRateApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType:
-                  const FullType(BuiltList, [FullType(ExchangeRateResponse)]),
-            ) as BuiltList<ExchangeRateResponse>;
+              specifiedType: const FullType(Portfolio),
+            ) as Portfolio;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -86,7 +90,7 @@ class ExchangeRateApi {
       );
     }
 
-    return Response<BuiltList<ExchangeRateResponse>>(
+    return Response<Portfolio>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
