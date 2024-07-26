@@ -26,6 +26,10 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
   Widget build(BuildContext context) {
     final categoryRatios = widget.ratios;
 
+    if (widget.categories.isEmpty) {
+      return const CircularProgressIndicator();
+    }
+
     return AspectRatio(
       aspectRatio: 1.3,
       child: Row(

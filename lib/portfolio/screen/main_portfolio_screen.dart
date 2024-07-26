@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset_type_ratio_chart.dart';
@@ -31,6 +32,7 @@ class _MainPortfolioScreenState extends ConsumerState<MainPortfolioScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(portfolioViewModelProvider.notifier).loadPortfolio();
       ref.read(assetTypeViewModelProvider.notifier).loadCategory();
+      ref.read(exchangeRateProvider.notifier).loadExchangeRates();
     });
   }
 
