@@ -33,7 +33,7 @@ abstract class Portfolio implements Built<Portfolio, PortfolioBuilder> {
 
   Portfolio._();
 
-  factory Portfolio([void updates(PortfolioBuilder b)]) = _$Portfolio;
+  factory Portfolio([void Function(PortfolioBuilder b) updates]) = _$Portfolio;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PortfolioBuilder b) => b;

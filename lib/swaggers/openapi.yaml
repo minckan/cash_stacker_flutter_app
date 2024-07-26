@@ -1696,6 +1696,9 @@ components:
     AssetInfo:
       type: object
       properties:
+        id:
+          type: number
+          description: 자산 아이디
         name:
           type: string
           description: 자산 이름

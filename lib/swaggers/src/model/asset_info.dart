@@ -12,6 +12,7 @@ part 'asset_info.g.dart';
 /// AssetInfo
 ///
 /// Properties:
+/// * [id] - 자산 아이디
 /// * [name] - 자산 이름
 /// * [amount] - 수량
 /// * [ratio] - 비율(비중)
@@ -31,6 +32,10 @@ part 'asset_info.g.dart';
 /// * [totalCurrentAmountForeign] - 외화 현재가 총 평가액
 @BuiltValue()
 abstract class AssetInfo implements Built<AssetInfo, AssetInfoBuilder> {
+  /// 자산 아이디
+  @BuiltValueField(wireName: r'id')
+  num? get id;
+
   /// 자산 이름
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -101,7 +106,7 @@ abstract class AssetInfo implements Built<AssetInfo, AssetInfoBuilder> {
 
   AssetInfo._();
 
-  factory AssetInfo([void updates(AssetInfoBuilder b)]) = _$AssetInfo;
+  factory AssetInfo([void Function(AssetInfoBuilder b) updates]) = _$AssetInfo;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetInfoBuilder b) => b;
@@ -122,6 +127,13 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
     AssetInfo object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
+    if (object.id != null) {
+      yield r'id';
+      yield serializers.serialize(
+        object.id,
+        specifiedType: const FullType(num),
+      );
+    }
     if (object.name != null) {
       yield r'name';
       yield serializers.serialize(
@@ -266,6 +278,13 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
+        case r'id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(num),
+          ) as num;
+          result.id = valueDes;
+          break;
         case r'name':
           final valueDes = serializers.deserialize(
             value,

@@ -40,11 +40,11 @@ class DefaultApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{workspaceId}/portfolio'.replaceAll(
+    final path = r'/{workspaceId}/portfolio'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final _options = Options(
+    final options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -62,19 +62,19 @@ class DefaultApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Portfolio? _responseData;
+    Portfolio? responseData;
 
     try {
-      final rawResponse = _response.data;
-      _responseData = rawResponse == null
+      final rawResponse = response.data;
+      responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -82,8 +82,8 @@ class DefaultApi {
             ) as Portfolio;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
+        requestOptions: response.requestOptions,
+        response: response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -91,14 +91,14 @@ class DefaultApi {
     }
 
     return Response<Portfolio>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 }

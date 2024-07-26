@@ -26,7 +26,8 @@ abstract class PortfolioRatiosValue
 
   PortfolioRatiosValue._();
 
-  factory PortfolioRatiosValue([void updates(PortfolioRatiosValueBuilder b)]) =
+  factory PortfolioRatiosValue(
+          [void Function(PortfolioRatiosValueBuilder b) updates]) =
       _$PortfolioRatiosValue;
 
   @BuiltValueHook(initializeBuilder: true)

@@ -23,7 +23,7 @@ abstract class WorkspaceIdAssetsIdPutRequest
   WorkspaceIdAssetsIdPutRequest._();
 
   factory WorkspaceIdAssetsIdPutRequest(
-          [void updates(WorkspaceIdAssetsIdPutRequestBuilder b)]) =
+          [void Function(WorkspaceIdAssetsIdPutRequestBuilder b) updates]) =
       _$WorkspaceIdAssetsIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)

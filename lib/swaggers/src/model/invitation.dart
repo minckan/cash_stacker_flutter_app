@@ -39,7 +39,8 @@ abstract class Invitation implements Built<Invitation, InvitationBuilder> {
 
   Invitation._();
 
-  factory Invitation([void updates(InvitationBuilder b)]) = _$Invitation;
+  factory Invitation([void Function(InvitationBuilder b) updates]) =
+      _$Invitation;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvitationBuilder b) => b;

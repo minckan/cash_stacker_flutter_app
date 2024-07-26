@@ -8,6 +8,8 @@ part of 'asset_info.dart';
 
 class _$AssetInfo extends AssetInfo {
   @override
+  final num? id;
+  @override
   final String? name;
   @override
   final num? amount;
@@ -46,7 +48,8 @@ class _$AssetInfo extends AssetInfo {
       (new AssetInfoBuilder()..update(updates))._build();
 
   _$AssetInfo._(
-      {this.name,
+      {this.id,
+      this.name,
       this.amount,
       this.ratio,
       this.initialPurchaseDate,
@@ -76,6 +79,7 @@ class _$AssetInfo extends AssetInfo {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is AssetInfo &&
+        id == other.id &&
         name == other.name &&
         amount == other.amount &&
         ratio == other.ratio &&
@@ -98,6 +102,7 @@ class _$AssetInfo extends AssetInfo {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, amount.hashCode);
     _$hash = $jc(_$hash, ratio.hashCode);
@@ -122,6 +127,7 @@ class _$AssetInfo extends AssetInfo {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'AssetInfo')
+          ..add('id', id)
           ..add('name', name)
           ..add('amount', amount)
           ..add('ratio', ratio)
@@ -145,6 +151,10 @@ class _$AssetInfo extends AssetInfo {
 
 class AssetInfoBuilder implements Builder<AssetInfo, AssetInfoBuilder> {
   _$AssetInfo? _$v;
+
+  num? _id;
+  num? get id => _$this._id;
+  set id(num? id) => _$this._id = id;
 
   String? _name;
   String? get name => _$this._name;
@@ -235,6 +245,7 @@ class AssetInfoBuilder implements Builder<AssetInfo, AssetInfoBuilder> {
   AssetInfoBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _id = $v.id;
       _name = $v.name;
       _amount = $v.amount;
       _ratio = $v.ratio;
@@ -274,6 +285,7 @@ class AssetInfoBuilder implements Builder<AssetInfo, AssetInfoBuilder> {
   _$AssetInfo _build() {
     final _$result = _$v ??
         new _$AssetInfo._(
+            id: id,
             name: name,
             amount: amount,
             ratio: ratio,
