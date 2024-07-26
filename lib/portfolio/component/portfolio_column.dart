@@ -1,247 +1,199 @@
-import 'package:flutter/material.dart';
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:flutter/material.dart';
 
 class PortfolioColumn extends StatelessWidget {
+  final String tappedKey;
   const PortfolioColumn({
     super.key,
-    required this.maxColumnWidth,
+    required this.tappedKey,
   });
-
-  final double maxColumnWidth;
-
-  final columnHeight = 40.0;
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle columnStyle = TextStyle(
-        fontSize: 12,
-        color: AppColors.tableColumnText,
-        fontWeight: FontWeight.w500);
-
-    final smallColumnWidth =
-        (MediaQuery.of(context).size.width - maxColumnWidth - 20) / 3;
-
-    const rightBorder = Border(
-      right: BorderSide(color: AppColors.tableBorderLight, width: 1),
-    );
-
-    return Column(
+    return Table(
+      border: const TableBorder.symmetric(
+          outside: BorderSide(color: AppColors.tableBorder, width: 1),
+          inside: BorderSide(color: AppColors.tableBorderLight, width: 1)),
+      columnWidths: const {
+        0: FlexColumnWidth(1.4),
+        1: FlexColumnWidth(1),
+        2: FlexColumnWidth(1),
+        3: FlexColumnWidth(1),
+      },
       children: [
-        // 첫번째 Column Row
-        SizedBox(
-          height: columnHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: maxColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Text(
-                  '종목명',
-                  style: columnStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '원화 매입가',
-                      style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '외화 매입가',
-                      style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Text(
-                  '수량',
-                  style: columnStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Divider
-        Container(
-          height: 1,
-          color: AppColors.tableBorderLight,
-        ),
-
-        // 두번째 Column Row
-        SizedBox(
-          height: columnHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: maxColumnWidth,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '원화 수익 평가액',
-                      style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      '(실 매수액)',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          height: 1,
-                          color: AppColors.tableColumnLightText),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '원화 현재가',
-                      style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '외화 현재가',
-                      style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                child: const Text(
-                  '비중',
-                  style: columnStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Divider
-        Container(
-          height: 1,
-          color: AppColors.tableBorderLight,
-        ),
-        // 세번째 Column Row
-        SizedBox(
-          height: columnHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: maxColumnWidth,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '외화 수익 평가액',
-                      style: columnStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    // Text(
-                    //   '(실 매수액)',
-                    //   style: TextStyle(
-                    //       fontSize: 10,
-                    //       fontWeight: FontWeight.w400,
-                    //       height: 1,
-                    //       color: AppColors.tableColumnLightText),
-                    //   textAlign: TextAlign.center,
-                    // ),
-                  ],
-                ),
-              ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
+        // 헤더 행
+        TableRow(
+          children: [
+            TableCell(
+              child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '원화 수익률',
-                      style: columnStyle.copyWith(fontSize: 12),
-                      textAlign: TextAlign.center,
+                    TableColumnCell(
+                      columnKey: 'name',
+                      name: '종목명',
+                      tappedKey: tappedKey,
+                    ),
+                    TableColumnCell(
+                      columnKey: 'buyingSinglePrice',
+                      name: '매입가\n(외화)',
+                      tappedKey: tappedKey,
+                    ),
+                    TableColumnCell(
+                      columnKey: 'currentSinglePrice',
+                      name: '현재가\n(외화)',
+                      tappedKey: tappedKey,
+                      bottomBorder: false,
                     ),
                   ],
                 ),
               ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
+            ),
+            TableCell(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TableColumnCell(
+                    columnKey:
+                        'totalEvaluationAmountKrw', // 수익률 : profitLossRateKrw
+                    name: '원화평가수익\n(수익률)',
+                    tappedKey: tappedKey,
+                  ),
+                  TableColumnCell(
+                    columnKey: 'amount',
+                    name: '수량',
+                    tappedKey: tappedKey,
+                  ),
+                  TableColumnCell(
+                    columnKey: 'initialPurchaseDate',
+                    name: '최초편입일',
+                    tappedKey: tappedKey,
+                    bottomBorder: false,
+                  ),
+                ],
+              ),
+            ),
+            TableCell(
+              child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '외화 수익률',
-                      style: columnStyle.copyWith(fontSize: 12),
-                      textAlign: TextAlign.center,
+                    TableColumnCell(
+                      columnKey:
+                          'totalEvaluationAmountForeign', // 수익률 : profitLossRateForeign
+                      name: '외화평가수익\n(수익률)',
+                      tappedKey: tappedKey,
+                    ),
+                    TableColumnCell(
+                      columnKey: 'totalBuyingAmount',
+                      name: '매입 총 금액\n(외화)',
+                      tappedKey: tappedKey,
+                    ),
+                    TableColumnCell(
+                      columnKey: 'totalCurrentAmount',
+                      name: '현재가 총 금액\n(외화)',
+                      tappedKey: tappedKey,
+                      bottomBorder: false,
                     ),
                   ],
                 ),
               ),
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                child: const Text(
-                  '최초\n편입일',
-                  style: columnStyle,
-                  textAlign: TextAlign.center,
+            ),
+            TableCell(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TableColumnCell(
+                      columnKey: 'ratio',
+                      name: '비중',
+                      tappedKey: tappedKey,
+                    ),
+                    TableColumnCell(
+                      columnKey: 'buyingExchangeRate',
+                      name: '매입환율',
+                      tappedKey: tappedKey,
+                    ),
+                    TableColumnCell(
+                      columnKey: 'currentExchangeRate',
+                      name: '현재환율',
+                      tappedKey: tappedKey,
+                      bottomBorder: false,
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
+    );
+  }
+}
+
+class TableColumnCell extends StatefulWidget {
+  final String name;
+  final bool bottomBorder;
+  final String tappedKey;
+  final String columnKey;
+
+  const TableColumnCell({
+    super.key,
+    required this.name,
+    required this.tappedKey,
+    required this.columnKey,
+    this.bottomBorder = true,
+  });
+
+  @override
+  State<TableColumnCell> createState() => _TableColumnCellState();
+}
+
+class _TableColumnCellState extends State<TableColumnCell> {
+  Color backgroundColor = AppColors.tableColumnBg;
+
+  void _increaseFontSize() {
+    setState(() {
+      backgroundColor = AppColors.switchOn;
+    });
+
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        backgroundColor = AppColors.tableColumnBg;
+      });
+    });
+  }
+
+  @override
+  void didUpdateWidget(TableColumnCell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.tappedKey == widget.columnKey) {
+      _increaseFontSize();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: 50,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        border: widget.bottomBorder
+            ? const Border(
+                bottom: BorderSide(color: AppColors.tableBorderLight, width: 1))
+            : null,
+      ),
+      child: Center(
+        child: Text(
+          widget.name,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              fontSize: 12.0,
+              color: AppColors.tableColumnText,
+              fontWeight: FontWeight.w500),
+        ),
+      ),
     );
   }
 }

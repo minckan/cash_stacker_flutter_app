@@ -2,15 +2,13 @@ import 'dart:io';
 
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
-import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
-
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/asset_type_ratio_chart.dart';
-import 'package:cash_stacker_flutter_app/portfolio/component/new/portfolio_table.dart';
+import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_table.dart';
+
 import 'package:cash_stacker_flutter_app/portfolio/screen/current_exchange_rate_screen.dart';
-import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
+import 'package:cash_stacker_flutter_app/portfolio/viewmodel/portfolio_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/screen/category_management/asset_category_screen.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 
@@ -18,16 +16,28 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainPortfolioScreen extends ConsumerWidget {
+class MainPortfolioScreen extends ConsumerStatefulWidget {
   const MainPortfolioScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final assets = ref.watch(assetViewModelProvider);
+  ConsumerState<MainPortfolioScreen> createState() =>
+      _MainPortfolioScreenState();
+}
+
+class _MainPortfolioScreenState extends ConsumerState<MainPortfolioScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(portfolioViewModelProvider.notifier).loadPortfolio();
+      ref.read(assetTypeViewModelProvider.notifier).loadCategory();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final assetCategories = ref.watch(assetTypeViewModelProvider);
-    final monthKey = getMonth(DateTime.now());
-    final monthlyAsset =
-        ref.watch(thisMonthMonthlyAssetAmountProvider(monthKey));
+    final portfolio = ref.watch(portfolioViewModelProvider);
 
     return DefaultLayout(
       isSliverView: true,
@@ -92,7 +102,7 @@ class MainPortfolioScreen extends ConsumerWidget {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(monthlyAsset?.totalValue ?? 0),
+                            addComma.format(portfolio?.totalAmount ?? 0),
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,
@@ -121,7 +131,7 @@ class MainPortfolioScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            if (assets.isEmpty)
+            if (portfolio?.ratios == null || portfolio!.ratios!.isEmpty)
               Container(
                 alignment: Alignment.center,
                 height: 100,
@@ -129,16 +139,13 @@ class MainPortfolioScreen extends ConsumerWidget {
               )
             else ...[
               AssetTypeRatioChart(
-                assets: assets,
+                ratios: portfolio.ratios!.toMap(),
                 categories: assetCategories,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                // child: PortfolioTable(
-                //   assets: assets,
-                // ),
                 child: PortfolioTable(
-                  assets: assets,
+                  rows: portfolio.rows!.toList(),
                 ),
               ),
             ],

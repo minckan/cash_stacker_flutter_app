@@ -1,317 +1,316 @@
+import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
+import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/model/table_row_asset.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_detail_view_model.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/asset.dart';
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
-
 class PortfolioRow extends ConsumerWidget {
+  final AssetInfo row;
+  final void Function(String) onTap;
+
   const PortfolioRow({
     super.key,
-    required this.maxColumnWidth,
-    required this.asset,
+    required this.row,
+    required this.onTap,
   });
-
-  final double maxColumnWidth;
-  final Asset asset;
-
-  final rowMinHeight = 40.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final assetVM = AssetDetailViewModel(asset: asset, ref: ref);
-    final row = TableRowAsset.fromAsset(asset, assetVM);
-    final hasTransactions = assetVM.transactions;
+    const hasTransactions = true;
 
-    return _buildRows(
-      context: context,
-      assetId: asset.assetId!,
-      row: row,
-      hasTransactions: hasTransactions.isNotEmpty,
-    );
-  }
+    final exchanges = ref.watch(exchangeRateProvider);
 
-  Column _buildRows({
-    required int assetId,
-    required BuildContext context,
-    required TableRowAsset row,
-    required bool hasTransactions,
-  }) {
-    const TextStyle rowStyle = TextStyle(
-        fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500);
-    final smallColumnWidth =
-        (MediaQuery.of(context).size.width - maxColumnWidth - 20) / 3;
-
-    const rightBorder = Border(
-      right: BorderSide(color: AppColors.tableBorderLight, width: 1),
-    );
-
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // 종목명
-              GestureDetector(
-                onTap: () {
-                  if (hasTransactions) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          AssetTransactionListScreen(assetId: assetId),
-                    ));
-                  }
-                },
-                child: Container(
-                  width: maxColumnWidth,
-                  alignment: Alignment.centerRight,
-                  decoration: const BoxDecoration(border: rightBorder),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        row.name,
-                        style: rowStyle.copyWith(
-                            decoration: hasTransactions
-                                ? TextDecoration.underline
-                                : null,
-                            letterSpacing: 0),
-                        textAlign: TextAlign.left,
-                      ),
-                      if (hasTransactions) ...[
-                        const SizedBox(width: 1),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: AppColors.chipViolet,
-                          ),
-                          width: 12,
-                          height: 12,
-                          child: const Icon(
-                            Icons.add,
-                            size: 12,
-                            color: Colors.white,
-                          ),
-                        )
-                      ]
-                    ],
-                  ),
-                ),
-              ),
-              // 매입가(원화)
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.centerRight,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Column(
-                    children: [
-                      Text(
-                        row.buyingSinglePriceKrw,
-                        style: rowStyle.copyWith(fontSize: 13),
-                        textAlign: TextAlign.right,
-                      ),
-                      if (row.buyingExchangeRate != '')
-                        Text(
-                          '(${row.buyingExchangeRate})',
-                          style: rowStyle.copyWith(
-                            fontSize: 11,
-                            color: AppColors.tableColumnLightText,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              // 매입가(외화)
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Text(
-                  row.buyingSinglePriceForeign,
-                  style: rowStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              // 수량
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Text(
-                  row.amount,
-                  style: rowStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
+    if (exchanges.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Center(
+          child: CircularProgressIndicator(),
         ),
-        Container(
-          height: 1,
-          color: AppColors.tableBorderLight,
+      );
+    }
+
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.tableBorder),
+          left: BorderSide(color: AppColors.tableBorder),
+          right: BorderSide(color: AppColors.tableBorder),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
+      child: Table(
+        border: const TableBorder.symmetric(
+            inside: BorderSide(color: AppColors.tableBorderLight, width: 1)),
+        columnWidths: const {
+          0: FlexColumnWidth(1.4),
+          1: FlexColumnWidth(1),
+          2: FlexColumnWidth(1),
+          3: FlexColumnWidth(1),
+        },
+        children: [
+          // 헤더 행
+          TableRow(
             children: [
-              // 평가액(원화환산 평가액)
-              Container(
-                width: maxColumnWidth,
-                alignment: Alignment.centerRight,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          row.totalEvaluationAmountKrw,
-                          style: rowStyle,
-                          textAlign: TextAlign.right,
-                        ),
-                        if (row.totalBuyingAmountKrw != '')
-                          Text(
-                            '(${row.totalBuyingAmountKrw})',
-                            style: rowStyle.copyWith(
-                              fontSize: 12,
-                              color: AppColors.tableColumnLightText,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                      ],
-                    )),
-              ),
-              // 현재가 (원화)
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.centerRight,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+              TableCell(
+                child: Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        row.currentSinglePriceKrw,
-                        style: rowStyle.copyWith(fontSize: 13),
-                        textAlign: TextAlign.right,
+                      // 종목명
+                      _buildTableRowCell(
+                        key: 'name',
+                        child: _buildRowName(
+                          context: context,
+                          name: row.name ?? '',
+                          assetId: row.assetId!,
+                          hasTransactions: hasTransactions.isNotEmpty,
+                        ),
                       ),
-                      if (row.currentExchangeRate != '')
-                        Text(
-                          '(${row.currentExchangeRate})',
-                          style: rowStyle.copyWith(
-                            fontSize: 11,
-                            color: AppColors.tableColumnLightText,
+                      // 매입가\n(외화)
+                      _buildTableRowCell(
+                        key: 'buyingSinglePrice',
+                        child: _buildCommonText(
+                          name: _buildString(
+                            row.buyingSinglePriceKrw,
+                            row.buyingSinglePriceForeign,
                           ),
-                          textAlign: TextAlign.right,
-                        )
+                        ),
+                      ),
+                      // 현재가\n(외화)
+                      _buildTableRowCell(
+                        key: 'currentSinglePrice',
+                        child: _buildCommonText(
+                          name: _buildString(
+                            row.currentSinglePriceKrw,
+                            row.currentSinglePriceForeign,
+                          ),
+                        ),
+                        bottomBorder: false,
+                      ),
                     ],
                   ),
                 ),
               ),
-              // 현재가(외화)
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
+              TableCell(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      row.currentSinglePriceForeign,
-                      style: rowStyle,
-                      textAlign: TextAlign.center,
+                    // 원화평가수익\n(수익률)
+                    _buildTableRowCell(
+                      key: 'totalEvaluationAmountKrw',
+                      child: Column(
+                        children: [
+                          _buildCommonText(name: row.totalEvaluationAmountKrw),
+                          if (row.profitLossRateKrw != '-')
+                            _buildROIText(row, row.profitLossRateKrw)
+                        ],
+                      ),
+                    ),
+                    // 수량
+                    _buildTableRowCell(
+                      key: 'amount',
+                      child: _buildCommonText(name: row.amount),
+                    ),
+                    // 최초편입일
+                    _buildTableRowCell(
+                      key: 'initialPurchaseDate',
+                      child: _buildCommonText(name: row.initialPurchaseDate),
+                      bottomBorder: false,
                     ),
                   ],
                 ),
               ),
-              // 비중
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                child: Text(
-                  row.ratio,
-                  style: rowStyle.copyWith(fontSize: 12),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          height: 1,
-          color: AppColors.tableBorderLight,
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // 외화 평가액
-              Container(
-                width: maxColumnWidth,
-                alignment: Alignment.centerRight,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text(
-                    row.totalEvaluationAmountForeign,
-                    style: rowStyle,
-                    textAlign: TextAlign.right,
+              TableCell(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // 외화평가수익\n(수익률)
+                      _buildTableRowCell(
+                        key: 'totalEvaluationAmountForeign',
+                        child: Column(
+                          children: [
+                            _buildCommonText(
+                                name: row.totalEvaluationAmountForeign),
+                            if (row.profitLossRateForeign != '-')
+                              _buildROIText(row, row.profitLossRateForeign),
+                          ],
+                        ),
+                      ),
+                      // 매입 총 금액\n(외화)
+                      _buildTableRowCell(
+                        key: 'totalBuyingAmount',
+                        child: _buildCommonText(
+                          name: _buildString(
+                            row.totalBuyingAmountKrw,
+                            row.totalBuyingAmountForeign,
+                          ),
+                        ),
+                      ),
+                      // 현재가 총 금액\n(외화)
+                      _buildTableRowCell(
+                        key: 'totalCurrentAmount',
+                        child: _buildCommonText(
+                          name: _buildString(
+                            row.totalCurrentAmountKrw,
+                            row.totalCurrentAmountForeign,
+                          ),
+                        ),
+                        bottomBorder: false,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              // 평가 수익률 (원화환산)
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.centerRight,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: _buildROIText(row, row.profitLossRateKrw),
-                ),
-              ),
-              // 평가 수익률 (외화)
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(border: rightBorder),
-                child: _buildROIText(row, row.profitLossRateForeign),
-              ),
-              // 최초 편입일
-              Container(
-                width: smallColumnWidth,
-                alignment: Alignment.center,
-                child: Text(
-                  row.initialPurchaseDate,
-                  style: rowStyle.copyWith(fontSize: 12),
-                  textAlign: TextAlign.center,
+              TableCell(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // 비중
+                      _buildTableRowCell(
+                        key: 'ratio',
+                        child: _buildCommonText(name: row.ratio),
+                      ),
+                      // 구매환율
+                      _buildTableRowCell(
+                        key: 'buyingExchangeRate',
+                        child: _buildCommonText(
+                            name: row.buyingExchangeRate ?? '-'),
+                      ),
+                      // 현재환율
+                      _buildTableRowCell(
+                        key: 'currentExchangeRate',
+                        child: _buildCommonText(
+                            name: row.currentExchangeRate ?? '-'),
+                        bottomBorder: false,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildROIText(TableRowAsset row, String text) {
-    if (text == '-') {
-      return Text(
-        text,
-        style: const TextStyle(
-            fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500),
-        textAlign: TextAlign.right,
-      );
+  String _buildString(
+    String? krw,
+    String? foreign,
+  ) {
+    // print(krw);
+    // print(foreign);
+    if (krw == null) {
+      return '-';
     }
+    if (foreign == null || foreign == '-') {
+      return krw;
+    }
+    return '$krw\n($foreign)';
+  }
+
+  Widget _buildTableRowCell({
+    required String key,
+    required Widget child,
+    bool bottomBorder = true,
+  }) {
+    return GestureDetector(
+      onTap: () => onTap(key),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        child: Container(
+          height: 50,
+          // padding: const EdgeInsets.symmetric(horizontal: 6),
+          decoration: BoxDecoration(
+            border: bottomBorder
+                ? const Border(
+                    bottom:
+                        BorderSide(color: AppColors.tableBorderLight, width: 1))
+                : null,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: child,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRowName({
+    required BuildContext context,
+    required String name,
+    required int assetId,
+    required bool hasTransactions,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        if (hasTransactions) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AssetTransactionListScreen(assetId: assetId),
+          ));
+        }
+      },
+      child: Container(
+        alignment: Alignment.centerRight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                decoration: hasTransactions ? TextDecoration.underline : null,
+                letterSpacing: 0,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            if (hasTransactions) ...[
+              const SizedBox(width: 1),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: AppColors.chipViolet,
+                ),
+                width: 12,
+                height: 12,
+                child: const Icon(
+                  Icons.add,
+                  size: 12,
+                  color: Colors.white,
+                ),
+              )
+            ]
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCommonText({
+    required String name,
+  }) {
+    return Text(name,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.tableColumnText,
+            fontWeight: FontWeight.w500));
+  }
+
+  Widget _buildROIText(TableRowAsset row, String text) {
     final condition = double.parse(removePercent(text));
 
     final isIncrease = condition > 0;
