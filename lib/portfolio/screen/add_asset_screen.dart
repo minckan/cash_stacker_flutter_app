@@ -207,7 +207,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
               ..transactionDate = selectedDate.toUtc()
-              ..shares = removeComma(value['shares'])
+              ..shares =
+                  int.tryParse(removeComma(value['shares'])!.toStringAsFixed(0))
               ..pricePerShare = removeComma(value['pricePerShare'])
               ..currentPricePerShare =
                   removeComma(value['currentPricePerShare']),
@@ -220,7 +221,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
               ..assetId = widget.assetId
               ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
               ..transactionDate = selectedDate.toUtc()
-              ..shares = removeComma(value['shares'])
+              ..shares =
+                  int.tryParse(removeComma(value['shares'])!.toStringAsFixed(0))
               ..pricePerShare = removeComma(value['pricePerShare'])
               ..currentPricePerShare =
                   removeComma(value['currentPricePerShare'])
@@ -272,7 +274,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
                 ..transactionDate = selectedDate.toUtc()
-                ..shares = removeComma(value['shares'])
+                ..shares = int.tryParse(
+                    removeComma(value['shares'])!.toStringAsFixed(0))
                 ..pricePerShare = removeComma(value['pricePerShare'])
                 ..currentPricePerShare =
                     removeComma(value['currentPricePerShare']),
@@ -291,7 +294,8 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
                 ..transactionType =
                     AssetTransactionRequestTransactionTypeEnum.buy
                 ..transactionDate = selectedDate.toUtc()
-                ..shares = removeComma(value['shares'])
+                ..shares = int.tryParse(
+                    removeComma(value['shares'])!.toStringAsFixed(0))
                 ..pricePerShare = removeComma(value['pricePerShare'])
                 ..currentPricePerShare =
                     removeComma(value['currentPricePerShare'])

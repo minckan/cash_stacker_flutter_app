@@ -67,7 +67,7 @@ class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
                           (b) => b
                             ..startDate = startDate.toUtc()
                             ..endDate = endDate.toUtc()
-                            ..amount = double.parse(removeComma(budget))
+                            ..amount = removeComma(budget)
                             ..isActive = isActive,
                         ),
                       );

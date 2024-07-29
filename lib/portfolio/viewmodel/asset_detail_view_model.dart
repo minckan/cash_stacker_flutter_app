@@ -1,7 +1,4 @@
-import 'package:cash_stacker_flutter_app/common/providers/asset_provider.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
-import 'package:cash_stacker_flutter_app/common/utill/calculation_helpers.dart';
-import 'package:cash_stacker_flutter_app/common/utill/date_format.dart';
 
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
@@ -61,7 +58,7 @@ class AssetDetailViewModel {
     final exchangeRate = ref.watch(exchangeRateProvider).firstWhere(
         (rate) => rate.currencyCode.contains(asset.currencyCode as Pattern));
 
-    final parseDouble = double.parse(removeComma(exchangeRate.rate));
+    final parseDouble = removeComma(exchangeRate.rate) ?? 0;
     final valueTransformed =
         asset.currencyCode == 'JPY' ? (parseDouble / 100) : parseDouble; // IDR
 
