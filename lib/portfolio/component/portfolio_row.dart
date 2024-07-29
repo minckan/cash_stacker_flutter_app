@@ -104,7 +104,8 @@ class PortfolioRow extends ConsumerWidget {
                           _buildCommonText(
                               name: '${row.totalEvaluationAmountKrw}'),
                           if (row.profitLossRateKrw != null)
-                            _buildROIText(row, '${row.profitLossRateKrw}')
+                            _buildROIText(
+                                row, row.profitLossRateKrw?.toStringAsFixed(2))
                         ],
                       ),
                     ),
@@ -135,7 +136,8 @@ class PortfolioRow extends ConsumerWidget {
                           children: [
                             _buildCommonText(
                                 name: '${row.totalEvaluationAmountForeign}'),
-                            _buildROIText(row, '${row.profitLossRateForeign}'),
+                            _buildROIText(row,
+                                '${row.profitLossRateForeign?.toStringAsFixed(2)}'),
                           ],
                         ),
                       ),
@@ -172,7 +174,8 @@ class PortfolioRow extends ConsumerWidget {
                       // 비중
                       _buildTableRowCell(
                         key: 'ratio',
-                        child: _buildCommonText(name: '${row.ratio}'),
+                        child: _buildCommonText(
+                            name: '${row.ratio?.toStringAsFixed(2)}'),
                       ),
                       // 구매환율
                       _buildTableRowCell(
