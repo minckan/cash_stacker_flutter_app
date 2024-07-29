@@ -101,7 +101,9 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
       return categoryItems;
     });
     return ratios.entries.map((entry) {
-      final isTouched = items.indexOf(entry.key) == touchedIndex;
+      final isTouched = items.indexOf(widget.categories
+              .firstWhere((e) => e.assetTypeId == int.parse(entry.key))) ==
+          touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
@@ -112,7 +114,7 @@ class AssetTypeRatioChartState extends ConsumerState<AssetTypeRatioChart> {
       return PieChartSectionData(
         color: _AppColors.categoryColors[colorIndex],
         value: double.tryParse('${entry.value.totalAssets}'),
-        title: '${entry.value.totalAssets?.toStringAsFixed(1)}%',
+        title: '${entry.value.totalAssets?.toStringAsFixed(2)}%',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
