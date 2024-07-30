@@ -144,13 +144,13 @@ class _CalenderState extends State<Calender> {
                           ),
                           if (transaction.income > 0)
                             Text(
-                              addComma.format(transaction.income),
+                              addComma(transaction.income) ?? '',
                               style: const TextStyle(
                                   fontSize: 9, color: AppColors.income),
                             ),
                           if (transaction.expense > 0)
                             Text(
-                              addComma.format(transaction.expense),
+                              addComma(transaction.expense) ?? '',
                               style: const TextStyle(
                                   fontSize: 9, color: AppColors.expense),
                             ),

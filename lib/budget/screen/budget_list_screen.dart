@@ -70,7 +70,7 @@ class _BudgetListScreenState extends ConsumerState<BudgetListScreen> {
                             style: const TextStyle(fontSize: 14),
                           ),
                           subtitle: Text(
-                            '예산: ${addComma.format(budget.amount)}원',
+                            '예산: ${addComma(budget.amount)}원',
                           ),
                           contentPadding:
                               const EdgeInsets.only(left: 0, right: 0),

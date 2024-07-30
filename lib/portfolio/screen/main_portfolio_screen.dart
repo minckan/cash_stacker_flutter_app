@@ -32,7 +32,7 @@ class _MainPortfolioScreenState extends ConsumerState<MainPortfolioScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(portfolioViewModelProvider.notifier).loadPortfolio();
       ref.read(assetTypeViewModelProvider.notifier).loadCategory();
-      ref.read(exchangeRateProvider.notifier).loadExchangeRates();
+      // ref.read(exchangeRateProvider.notifier).loadExchangeRates();
     });
   }
 
@@ -104,7 +104,7 @@ class _MainPortfolioScreenState extends ConsumerState<MainPortfolioScreen> {
                                 fontFamily: 'Roboto'),
                           ),
                           Text(
-                            addComma.format(portfolio?.totalAmount ?? 0),
+                            addComma(portfolio?.totalAmount) ?? '0',
                             style: const TextStyle(
                               fontFamily: 'Roboto',
                               color: Colors.white,

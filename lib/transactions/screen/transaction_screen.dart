@@ -251,7 +251,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                   ),
                   // const SizedBox(width: 4),
                   Text(
-                    addComma.format(monthlyState?.income ?? 0),
+                    addComma(monthlyState?.income) ?? '0',
                     style: numberStyle.copyWith(color: AppColors.income),
                   )
                 ],
@@ -266,7 +266,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                     style: TextStyle(fontSize: 10),
                   ),
                   // const SizedBox(width: 4),
-                  Text(addComma.format(monthlyState?.expense ?? 0),
+                  Text(addComma(monthlyState?.expense) ?? '0',
                       style: numberStyle.copyWith(color: AppColors.expense))
                 ],
               ),
@@ -282,7 +282,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen>
                     ),
                   ),
                   // const SizedBox(width: 4),
-                  Text(addComma.format(monthlyState?.netTotal ?? 0),
+                  Text(addComma(monthlyState?.netTotal) ?? '0',
                       style: numberStyle)
                 ],
               ),

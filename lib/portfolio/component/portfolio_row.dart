@@ -20,16 +20,16 @@ class PortfolioRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const hasTransactions = true;
 
-    final exchanges = ref.watch(exchangeRateProvider);
+    // final exchanges = ref.watch(exchangeRateProvider);
 
-    if (exchanges.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+    // if (exchanges.isEmpty) {
+    //   return const Padding(
+    //     padding: EdgeInsets.all(8.0),
+    //     child: Center(
+    //       child: CircularProgressIndicator(),
+    //     ),
+    //   );
+    // }
 
     return Container(
       decoration: const BoxDecoration(
@@ -71,7 +71,7 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'buyingSinglePrice',
                         child: _buildCommonText(
-                          name: _buildString(
+                          text: _buildKrwAndForeignStr(
                             row.buyingSinglePriceKrw,
                             row.buyingSinglePriceForeign,
                           ),
@@ -81,7 +81,7 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'currentSinglePrice',
                         child: _buildCommonText(
-                          name: _buildString(
+                          text: _buildKrwAndForeignStr(
                             row.currentSinglePriceKrw,
                             row.currentSinglePriceForeign,
                           ),
@@ -102,7 +102,8 @@ class PortfolioRow extends ConsumerWidget {
                       child: Column(
                         children: [
                           _buildCommonText(
-                              name: '${row.totalEvaluationAmountKrw}'),
+                              text: addComma(row.totalEvaluationAmountKrw) ??
+                                  '-'),
                           if (row.profitLossRateKrw != null)
                             _buildROIText(
                                 row, row.profitLossRateKrw?.toStringAsFixed(2))
@@ -112,13 +113,13 @@ class PortfolioRow extends ConsumerWidget {
                     // 수량
                     _buildTableRowCell(
                       key: 'amount',
-                      child: _buildCommonText(name: '${row.amount}'),
+                      child: _buildCommonText(text: '${row.amount}'),
                     ),
                     // 최초편입일
                     _buildTableRowCell(
                       key: 'initialPurchaseDate',
                       child: _buildCommonText(
-                          name: row.initialPurchaseDate.toString()),
+                          text: row.initialPurchaseDate.toString()),
                       bottomBorder: false,
                     ),
                   ],
@@ -134,10 +135,16 @@ class PortfolioRow extends ConsumerWidget {
                         key: 'totalEvaluationAmountForeign',
                         child: Column(
                           children: [
-                            _buildCommonText(
-                                name: '${row.totalEvaluationAmountForeign}'),
-                            _buildROIText(row,
-                                '${row.profitLossRateForeign?.toStringAsFixed(2)}'),
+                            if (row.totalEvaluationAmountForeign != null ||
+                                row.profitLossRateForeign != null) ...[
+                              _buildCommonText(
+                                  text: addComma(
+                                          row.totalEvaluationAmountForeign) ??
+                                      '-'),
+                              _buildROIText(row,
+                                  '${row.profitLossRateForeign?.toStringAsFixed(2)}'),
+                            ] else
+                              const Text('-')
                           ],
                         ),
                       ),
@@ -145,7 +152,7 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'totalBuyingAmount',
                         child: _buildCommonText(
-                          name: _buildString(
+                          text: _buildKrwAndForeignStr(
                             row.totalBuyingAmountKrw,
                             row.totalBuyingAmountForeign,
                           ),
@@ -155,7 +162,7 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'totalCurrentAmount',
                         child: _buildCommonText(
-                          name: _buildString(
+                          text: _buildKrwAndForeignStr(
                             row.totalCurrentAmountKrw,
                             row.totalCurrentAmountForeign,
                           ),
@@ -175,18 +182,18 @@ class PortfolioRow extends ConsumerWidget {
                       _buildTableRowCell(
                         key: 'ratio',
                         child: _buildCommonText(
-                            name: '${row.ratio?.toStringAsFixed(2)}'),
+                            text: '${row.ratio?.toStringAsFixed(2)}%'),
                       ),
                       // 구매환율
                       _buildTableRowCell(
                         key: 'buyingExchangeRate',
-                        child:
-                            _buildCommonText(name: '${row.buyingExchangeRate}'),
+                        child: _buildCommonText(
+                            text: addComma(row.buyingExchangeRate) ?? '-'),
                       ),
                       // 현재환율
                       _buildTableRowCell(
                         key: 'currentExchangeRate',
-                        child: _buildCommonText(name: '-'),
+                        child: _buildCommonText(text: '-'),
                         bottomBorder: false,
                       ),
                     ],
@@ -200,19 +207,17 @@ class PortfolioRow extends ConsumerWidget {
     );
   }
 
-  String _buildString(
+  String _buildKrwAndForeignStr(
     num? krw,
     num? foreign,
   ) {
-    // print(krw);
-    // print(foreign);
     if (krw == null) {
       return '-';
     }
     if (foreign == null) {
-      return '$krw';
+      return '${addComma(krw)}';
     }
-    return '$krw\n($foreign)';
+    return '${addComma(krw)}\n(${addComma(foreign)})';
   }
 
   Widget _buildTableRowCell({
@@ -300,17 +305,20 @@ class PortfolioRow extends ConsumerWidget {
   }
 
   Widget _buildCommonText({
-    required String name,
+    required String text,
   }) {
-    if (name == 'null') {
+    if (text == 'null') {
       return const Text('-');
     }
-    return Text(name,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.tableColumnText,
-            fontWeight: FontWeight.w500));
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: 12,
+        color: AppColors.tableColumnText,
+        fontWeight: FontWeight.w500,
+      ),
+    );
   }
 
   Widget _buildROIText(AssetInfo row, String? text) {

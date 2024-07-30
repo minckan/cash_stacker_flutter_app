@@ -1,6 +1,9 @@
 import 'package:intl/intl.dart';
 
-final addComma = NumberFormat.currency(locale: 'ko_KR', symbol: '');
+String? addComma(dynamic number) {
+  if (number == null) return null;
+  return NumberFormat.currency(locale: 'ko_KR', symbol: '').format(number);
+}
 
 double? removeComma(String? numberString) {
   if (numberString == null) return null;

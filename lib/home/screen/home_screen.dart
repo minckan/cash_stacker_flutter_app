@@ -147,7 +147,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontFamily: 'Roboto'),
                 ),
                 Text(
-                  addComma.format(monthlyAsset?.totalValue ?? 0),
+                  addComma(monthlyAsset?.totalValue) ?? '0',
                   style: const TextStyle(
                     fontFamily: 'Roboto',
                     color: Colors.white,
@@ -237,9 +237,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         fontFamily: 'Roboto'),
                   ),
                   Text(
-                    addComma.format(budgetStat
-                            .activeBudget?.expendableBudget?.expendableBudget ??
-                        0),
+                    addComma(budgetStat.activeBudget?.expendableBudget
+                            ?.expendableBudget) ??
+                        '0',
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 32,
@@ -249,7 +249,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
               Text(
-                '${addComma.format(budgetStat.activeBudget!.budget!.amount)}원 중 ${addComma.format(budgetVM.expenseInBudget)}원을 사용했어요!', // assetSummaryViewModel.monthlyExpenditure
+                '${addComma(budgetStat.activeBudget!.budget!.amount)}원 중 ${addComma(budgetVM.expenseInBudget)}원을 사용했어요!', // assetSummaryViewModel.monthlyExpenditure
                 style: const TextStyle(
                   fontSize: 12,
                 ),

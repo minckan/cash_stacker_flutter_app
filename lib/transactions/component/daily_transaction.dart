@@ -96,14 +96,14 @@ class DailyTransaction extends ConsumerWidget {
                     Row(
                       children: [
                         Text(
-                          addComma.format(totalIncome),
+                          addComma(totalIncome) ?? '',
                           style: normalStyle.copyWith(color: AppColors.income),
                         ),
                         Container(
                           width: 120,
                           alignment: Alignment.centerRight,
                           child: Text(
-                            addComma.format(totalExpense),
+                            addComma(totalExpense) ?? '',
                             style:
                                 normalStyle.copyWith(color: AppColors.expense),
                           ),
@@ -140,7 +140,7 @@ class DailyTransaction extends ConsumerWidget {
                       Row(
                         children: [
                           Text(
-                            addComma.format(transaction.amount),
+                            addComma(transaction.amount) ?? '',
                             style: normalStyle.copyWith(
                               color: transaction.transactionType ==
                                       TransactionType.expense.name
