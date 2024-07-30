@@ -22,6 +22,10 @@ part 'asset_transaction_response_type.g.dart';
 /// * [currentPricePerShare]
 /// * [balance]
 /// * [currencyCode]
+/// * [isForeignTr]
+/// * [assetTypeId]
+/// * [assetName]
+/// * [assetId]
 @BuiltValue()
 abstract class AssetTransactionResponseType
     implements
@@ -57,6 +61,18 @@ abstract class AssetTransactionResponseType
 
   @BuiltValueField(wireName: r'currencyCode')
   String? get currencyCode;
+
+  @BuiltValueField(wireName: r'isForeignTr')
+  bool? get isForeignTr;
+
+  @BuiltValueField(wireName: r'assetTypeId')
+  num? get assetTypeId;
+
+  @BuiltValueField(wireName: r'assetName')
+  String? get assetName;
+
+  @BuiltValueField(wireName: r'assetId')
+  num? get assetId;
 
   AssetTransactionResponseType._();
 
@@ -157,6 +173,34 @@ class _$AssetTransactionResponseTypeSerializer
       yield serializers.serialize(
         object.currencyCode,
         specifiedType: const FullType.nullable(String),
+      );
+    }
+    if (object.isForeignTr != null) {
+      yield r'isForeignTr';
+      yield serializers.serialize(
+        object.isForeignTr,
+        specifiedType: const FullType.nullable(bool),
+      );
+    }
+    if (object.assetTypeId != null) {
+      yield r'assetTypeId';
+      yield serializers.serialize(
+        object.assetTypeId,
+        specifiedType: const FullType.nullable(num),
+      );
+    }
+    if (object.assetName != null) {
+      yield r'assetName';
+      yield serializers.serialize(
+        object.assetName,
+        specifiedType: const FullType.nullable(String),
+      );
+    }
+    if (object.assetId != null) {
+      yield r'assetId';
+      yield serializers.serialize(
+        object.assetId,
+        specifiedType: const FullType.nullable(num),
       );
     }
   }
@@ -261,6 +305,38 @@ class _$AssetTransactionResponseTypeSerializer
           ) as String?;
           if (valueDes == null) continue;
           result.currencyCode = valueDes;
+          break;
+        case r'isForeignTr':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(bool),
+          ) as bool?;
+          if (valueDes == null) continue;
+          result.isForeignTr = valueDes;
+          break;
+        case r'assetTypeId':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
+          result.assetTypeId = valueDes;
+          break;
+        case r'assetName':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
+          result.assetName = valueDes;
+          break;
+        case r'assetId':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
+          result.assetId = valueDes;
           break;
         default:
           unhandled.add(key);

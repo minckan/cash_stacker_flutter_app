@@ -848,7 +848,7 @@ class AssetApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AllAssetsResponseType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AllAssetsResponseType>> workspaceIdAssetsTransactionsGet({
+  Future<Response<AllAssetsResponseType>> workspaceIdAssetsTransactionsAllGet({
     required String workspaceId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -857,7 +857,7 @@ class AssetApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/assets/transactions'.replaceAll(
+    final path = r'/{workspaceId}/assets/transactions/all'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());

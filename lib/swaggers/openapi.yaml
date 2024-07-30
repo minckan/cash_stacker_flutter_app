@@ -255,7 +255,7 @@ paths:
                 $ref: "#/components/schemas/Asset"
         "500":
           description: Failed to create asset.
-  "/{workspaceId}/assets/transactions":
+  "/{workspaceId}/assets/transactions/all":
     get:
       tags:
         - asset
@@ -1848,6 +1848,18 @@ components:
           nullable: true
         currencyCode:
           type: string
+          nullable: true
+        isForeignTr:
+          type: boolean
+          nullable: true
+        assetTypeId:
+          type: number
+          nullable: true
+        assetName:
+          type: string
+          nullable: true
+        assetId:
+          type: number
           nullable: true
   responses:
     NotFound:

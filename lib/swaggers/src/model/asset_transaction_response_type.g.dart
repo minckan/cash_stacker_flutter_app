@@ -90,6 +90,14 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
   final num? balance;
   @override
   final String? currencyCode;
+  @override
+  final bool? isForeignTr;
+  @override
+  final num? assetTypeId;
+  @override
+  final String? assetName;
+  @override
+  final num? assetId;
 
   factory _$AssetTransactionResponseType(
           [void Function(AssetTransactionResponseTypeBuilder)? updates]) =>
@@ -105,7 +113,11 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
       this.pricePerShare,
       this.currentPricePerShare,
       this.balance,
-      this.currencyCode})
+      this.currencyCode,
+      this.isForeignTr,
+      this.assetTypeId,
+      this.assetName,
+      this.assetId})
       : super._();
 
   @override
@@ -130,7 +142,11 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
         pricePerShare == other.pricePerShare &&
         currentPricePerShare == other.currentPricePerShare &&
         balance == other.balance &&
-        currencyCode == other.currencyCode;
+        currencyCode == other.currencyCode &&
+        isForeignTr == other.isForeignTr &&
+        assetTypeId == other.assetTypeId &&
+        assetName == other.assetName &&
+        assetId == other.assetId;
   }
 
   @override
@@ -146,6 +162,10 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
     _$hash = $jc(_$hash, currentPricePerShare.hashCode);
     _$hash = $jc(_$hash, balance.hashCode);
     _$hash = $jc(_$hash, currencyCode.hashCode);
+    _$hash = $jc(_$hash, isForeignTr.hashCode);
+    _$hash = $jc(_$hash, assetTypeId.hashCode);
+    _$hash = $jc(_$hash, assetName.hashCode);
+    _$hash = $jc(_$hash, assetId.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -162,7 +182,11 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
           ..add('pricePerShare', pricePerShare)
           ..add('currentPricePerShare', currentPricePerShare)
           ..add('balance', balance)
-          ..add('currencyCode', currencyCode))
+          ..add('currencyCode', currencyCode)
+          ..add('isForeignTr', isForeignTr)
+          ..add('assetTypeId', assetTypeId)
+          ..add('assetName', assetName)
+          ..add('assetId', assetId))
         .toString();
   }
 }
@@ -220,6 +244,22 @@ class AssetTransactionResponseTypeBuilder
   String? get currencyCode => _$this._currencyCode;
   set currencyCode(String? currencyCode) => _$this._currencyCode = currencyCode;
 
+  bool? _isForeignTr;
+  bool? get isForeignTr => _$this._isForeignTr;
+  set isForeignTr(bool? isForeignTr) => _$this._isForeignTr = isForeignTr;
+
+  num? _assetTypeId;
+  num? get assetTypeId => _$this._assetTypeId;
+  set assetTypeId(num? assetTypeId) => _$this._assetTypeId = assetTypeId;
+
+  String? _assetName;
+  String? get assetName => _$this._assetName;
+  set assetName(String? assetName) => _$this._assetName = assetName;
+
+  num? _assetId;
+  num? get assetId => _$this._assetId;
+  set assetId(num? assetId) => _$this._assetId = assetId;
+
   AssetTransactionResponseTypeBuilder() {
     AssetTransactionResponseType._defaults(this);
   }
@@ -237,6 +277,10 @@ class AssetTransactionResponseTypeBuilder
       _currentPricePerShare = $v.currentPricePerShare;
       _balance = $v.balance;
       _currencyCode = $v.currencyCode;
+      _isForeignTr = $v.isForeignTr;
+      _assetTypeId = $v.assetTypeId;
+      _assetName = $v.assetName;
+      _assetId = $v.assetId;
       _$v = null;
     }
     return this;
@@ -268,7 +312,11 @@ class AssetTransactionResponseTypeBuilder
             pricePerShare: pricePerShare,
             currentPricePerShare: currentPricePerShare,
             balance: balance,
-            currencyCode: currencyCode);
+            currencyCode: currencyCode,
+            isForeignTr: isForeignTr,
+            assetTypeId: assetTypeId,
+            assetName: assetName,
+            assetId: assetId);
     replace(_$result);
     return _$result;
   }
