@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_column.dart';
 import 'package:cash_stacker_flutter_app/portfolio/component/portfolio_row.dart';
+import 'package:cash_stacker_flutter_app/portfolio/screen/all_asset_transaction_list_screen.dart';
 
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
@@ -50,7 +51,8 @@ class _PortfolioTableState extends State<PortfolioTable> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => AssetTransactionListScreen(),
+                      builder: (context) =>
+                          const AllAssetTransactionListScreen(),
                     ),
                   );
                 },

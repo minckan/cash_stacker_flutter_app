@@ -4,7 +4,7 @@ import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
 import 'package:flutter/material.dart';
 
 class EditAssetTransactionScreen extends StatelessWidget {
-  final AssetTransaction assetTransaction;
+  final AssetTransactionResponseType assetTransaction;
   const EditAssetTransactionScreen({
     super.key,
     required this.assetTransaction,

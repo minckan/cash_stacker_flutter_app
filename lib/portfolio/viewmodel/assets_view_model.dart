@@ -46,6 +46,17 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     }
   }
 
+  Future<AssetDetailResponseType?> loadAssetById(int assetId) async {
+    if (workspaceId != null) {
+      final response = await _ref
+          .read(assetRepositoryProvider)
+          .getOneAsset(workspaceId: workspaceId!, id: assetId);
+
+      return response.data;
+    }
+    return null;
+  }
+
   Future<void> addAsset({
     required int assetTypeId,
     required String currencyCode,

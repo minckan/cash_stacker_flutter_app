@@ -31,9 +31,8 @@ Widget buildActionSheet(BuildContext context) => CupertinoActionSheet(
       ),
     );
 
-class AssetTransactionListScreen extends ConsumerWidget {
-  const AssetTransactionListScreen({super.key, required this.assetId});
-  final int assetId;
+class AllAssetTransactionListScreen extends ConsumerWidget {
+  const AllAssetTransactionListScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,40 +54,9 @@ class AssetTransactionListScreen extends ConsumerWidget {
     }
 
     return DefaultLayout(
-      title: '거래내역',
-      actions: [
-        ...[
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => SellAssetScreen(
-                          assetId: assetId,
-                        )));
-              },
-              child: const Text(
-                '매도',
-                style: TextStyle(
-                  color: AppColors.sell,
-                ),
-              )),
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => AddAssetScreen(
-                          assetId: assetId,
-                        )));
-              },
-              child: const Text(
-                '매수',
-                style: TextStyle(
-                  color: AppColors.buy,
-                ),
-              )),
-        ]
-      ],
+      title: '전체 거래내역',
       child: FutureBuilder(
-          future:
-              ref.read(assetViewModelProvider.notifier).loadAssetById(assetId),
+          future: ref.read(assetViewModelProvider.notifier).loadAssets(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: Text('데이터가 없습니다'));
@@ -209,125 +177,6 @@ class AssetTransactionListScreen extends ConsumerWidget {
           }),
     );
   }
-
-  // Column _buildCommonAssetCategoryTR(AssetTransaction transaction) {
-  //   final String type = transaction.typeToString() ?? '';
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       const Text(
-  //         '',
-  //         // transaction.name,
-  //         overflow: TextOverflow.clip,
-  //       ),
-  //       const SizedBox(height: 4),
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Row(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 type,
-  //                 style: TextStyle(
-  //                     fontWeight: FontWeight.w500,
-  //                     color: type == '매수' ? AppColors.buy : AppColors.sell),
-  //               ),
-  //               const SizedBox(width: 6),
-  //               Row(
-  //                 children: [
-  //                   Text(
-  //                     addComma.format(transaction.shares),
-  //                     style: const TextStyle(fontFamily: 'Roboto'),
-  //                   ),
-  //                   const Text(
-  //                     'units',
-  //                     style: TextStyle(fontSize: 10, fontFamily: 'Roboto'),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //           Row(
-  //             children: [
-  //               Text(transaction.pricePerShare!.toStringAsFixed(0),
-  //                   style: const TextStyle(fontFamily: 'Roboto')),
-  //               const Text(
-  //                 '/1unit',
-  //                 style: TextStyle(fontSize: 12, fontFamily: 'Roboto'),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //       const SizedBox(height: 4),
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           const Text('총 금액'),
-  //           Row(
-  //             children: [
-  //               Text(addComma.format(transaction.totalTransactionPrice),
-  //                   style: const TextStyle(fontFamily: 'Roboto')),
-  //               const SizedBox(width: 4),
-  //               Text(transaction.currencyCode,
-  //                   style: const TextStyle(fontFamily: 'Roboto'))
-  //             ],
-  //           ),
-  //         ],
-  //       )
-  //     ],
-  //   );
-  // }
-
-  // Column _buildCashAssetCategoryTR(AssetTransaction transaction) {
-  //   final String type = transaction.typeToString() ?? '';
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       const Text(
-  //         // transaction.name,
-  //         '',
-  //         overflow: TextOverflow.clip,
-  //       ),
-  //       const SizedBox(height: 4),
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Row(
-  //             children: [
-  //               Text(
-  //                 type,
-  //                 style: TextStyle(
-  //                     fontWeight: FontWeight.w500,
-  //                     color: type == '매수' ? AppColors.buy : AppColors.sell),
-  //               ),
-  //             ],
-  //           ),
-  //           Text('환율 ${transaction.exchangeRate}',
-  //               style: const TextStyle(fontFamily: 'Roboto')),
-  //         ],
-  //       ),
-  //       const SizedBox(height: 4),
-  //       const Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Text('총 금액'),
-  //           Row(
-  //             children: [
-  //               // Text(addComma.format(transaction.totalTransactionPrice),
-  //               //     style: const TextStyle(fontFamily: 'Roboto')),
-  //               // const SizedBox(width: 4),
-  //               // Text(transaction.currencyCode,
-  //               //     style: const TextStyle(fontFamily: 'Roboto'))
-  //             ],
-  //           ),
-  //         ],
-  //       )
-  //     ],
-  //   );
-  // }
 
   Container buildListTile(
       {required BuildContext context, required Widget child}) {
