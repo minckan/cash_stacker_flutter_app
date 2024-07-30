@@ -52,8 +52,7 @@ abstract class Transaction implements Built<Transaction, TransactionBuilder> {
 
   Transaction._();
 
-  factory Transaction([void Function(TransactionBuilder b) updates]) =
-      _$Transaction;
+  factory Transaction([void updates(TransactionBuilder b)]) = _$Transaction;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TransactionBuilder b) => b;

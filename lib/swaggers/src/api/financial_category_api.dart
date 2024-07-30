@@ -45,7 +45,7 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category/{id}'
+    final _path = r'/{workspaceId}/finance/category/{id}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -55,7 +55,7 @@ class FinancialCategoryApi {
             '{' r'id' '}',
             encodeQueryParameter(_serializers, id, const FullType(int))
                 .toString());
-    final options = Options(
+    final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
         ...?headers,
@@ -73,15 +73,15 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return response;
+    return _response;
   }
 
   /// Update a financial category
@@ -112,7 +112,7 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category/{id}'
+    final _path = r'/{workspaceId}/finance/category/{id}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -122,7 +122,7 @@ class FinancialCategoryApi {
             '{' r'id' '}',
             encodeQueryParameter(_serializers, id, const FullType(int))
                 .toString());
-    final options = Options(
+    final _options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
@@ -141,17 +141,17 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdFinanceCategoryIdPutRequest);
-      bodyData = _serializers.serialize(workspaceIdFinanceCategoryIdPutRequest,
-          specifiedType: type);
+      const _type = FullType(WorkspaceIdFinanceCategoryIdPutRequest);
+      _bodyData = _serializers.serialize(workspaceIdFinanceCategoryIdPutRequest,
+          specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+        requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -159,20 +159,20 @@ class FinancialCategoryApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    TransactionCategory? responseData;
+    TransactionCategory? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -180,8 +180,8 @@ class FinancialCategoryApi {
             ) as TransactionCategory;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -189,14 +189,14 @@ class FinancialCategoryApi {
     }
 
     return Response<TransactionCategory>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -226,11 +226,11 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category'.replaceAll(
+    final _path = r'/{workspaceId}/finance/category'.replaceAll(
         '{' r'workspaceId' '}',
         encodeQueryParameter(_serializers, workspaceId, const FullType(String))
             .toString());
-    final options = Options(
+    final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
@@ -249,17 +249,17 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    dynamic bodyData;
+    dynamic _bodyData;
 
     try {
-      const type = FullType(WorkspaceIdFinanceCategoryPostRequest);
-      bodyData = _serializers.serialize(workspaceIdFinanceCategoryPostRequest,
-          specifiedType: type);
+      const _type = FullType(WorkspaceIdFinanceCategoryPostRequest);
+      _bodyData = _serializers.serialize(workspaceIdFinanceCategoryPostRequest,
+          specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: options.compose(
+        requestOptions: _options.compose(
           _dio.options,
-          path,
+          _path,
         ),
         type: DioExceptionType.unknown,
         error: error,
@@ -267,20 +267,20 @@ class FinancialCategoryApi {
       );
     }
 
-    final response = await _dio.request<Object>(
-      path,
-      data: bodyData,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    TransactionCategory? responseData;
+    TransactionCategory? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -288,8 +288,8 @@ class FinancialCategoryApi {
             ) as TransactionCategory;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -297,14 +297,14 @@ class FinancialCategoryApi {
     }
 
     return Response<TransactionCategory>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 
@@ -334,7 +334,7 @@ class FinancialCategoryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/category/{type}'
+    final _path = r'/{workspaceId}/finance/category/{type}'
         .replaceAll(
             '{' r'workspaceId' '}',
             encodeQueryParameter(
@@ -344,7 +344,7 @@ class FinancialCategoryApi {
             '{' r'type' '}',
             encodeQueryParameter(_serializers, type, const FullType(String))
                 .toString());
-    final options = Options(
+    final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
         ...?headers,
@@ -362,19 +362,19 @@ class FinancialCategoryApi {
       validateStatus: validateStatus,
     );
 
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<TransactionCategory>? responseData;
+    BuiltList<TransactionCategory>? _responseData;
 
     try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
               rawResponse,
@@ -383,8 +383,8 @@ class FinancialCategoryApi {
             ) as BuiltList<TransactionCategory>;
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
+        requestOptions: _response.requestOptions,
+        response: _response,
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -392,14 +392,14 @@ class FinancialCategoryApi {
     }
 
     return Response<BuiltList<TransactionCategory>>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
     );
   }
 }

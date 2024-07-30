@@ -32,8 +32,7 @@ abstract class TransactionCategory
 
   TransactionCategory._();
 
-  factory TransactionCategory(
-          [void Function(TransactionCategoryBuilder b) updates]) =
+  factory TransactionCategory([void updates(TransactionCategoryBuilder b)]) =
       _$TransactionCategory;
 
   @BuiltValueHook(initializeBuilder: true)

@@ -7,6 +7,7 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(AllAssetsResponseType.serializer)
       ..add(Asset.serializer)
       ..add(AssetDetailResponseType.serializer)
       ..add(AssetInfo.serializer)
@@ -50,6 +51,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(WorkspaceIdInvitationPostRequest.serializer)
       ..add(WorkspacesPost201Response.serializer)
       ..add(WorkspacesPostRequest.serializer)
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(AssetTransactionResponseType)]),
+          () => new ListBuilder<AssetTransactionResponseType>())
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(AssetTransactionResponseType)]),

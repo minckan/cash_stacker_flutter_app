@@ -3,70 +3,69 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:built_collection/built_collection.dart';
+import 'asset_transaction_response_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'workspace.g.dart';
+part 'all_assets_response_type.g.dart';
 
-/// Workspace
+/// AllAssetsResponseType
 ///
 /// Properties:
-/// * [workspaceId]
-/// * [workspaceName]
-/// * [createdAt]
+/// * [total]
+/// * [transaction]
 @BuiltValue()
-abstract class Workspace implements Built<Workspace, WorkspaceBuilder> {
-  @BuiltValueField(wireName: r'workspace_id')
-  String? get workspaceId;
+abstract class AllAssetsResponseType
+    implements Built<AllAssetsResponseType, AllAssetsResponseTypeBuilder> {
+  @BuiltValueField(wireName: r'total')
+  num? get total;
 
-  @BuiltValueField(wireName: r'workspace_name')
-  String? get workspaceName;
+  @BuiltValueField(wireName: r'transaction')
+  BuiltList<AssetTransactionResponseType>? get transaction;
 
-  @BuiltValueField(wireName: r'created_at')
-  DateTime? get createdAt;
+  AllAssetsResponseType._();
 
-  Workspace._();
-
-  factory Workspace([void updates(WorkspaceBuilder b)]) = _$Workspace;
+  factory AllAssetsResponseType(
+      [void updates(AllAssetsResponseTypeBuilder b)]) = _$AllAssetsResponseType;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(WorkspaceBuilder b) => b;
+  static void _defaults(AllAssetsResponseTypeBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<Workspace> get serializer => _$WorkspaceSerializer();
+  static Serializer<AllAssetsResponseType> get serializer =>
+      _$AllAssetsResponseTypeSerializer();
 }
 
-class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
+class _$AllAssetsResponseTypeSerializer
+    implements PrimitiveSerializer<AllAssetsResponseType> {
   @override
-  final Iterable<Type> types = const [Workspace, _$Workspace];
+  final Iterable<Type> types = const [
+    AllAssetsResponseType,
+    _$AllAssetsResponseType
+  ];
 
   @override
-  final String wireName = r'Workspace';
+  final String wireName = r'AllAssetsResponseType';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    Workspace object, {
+    AllAssetsResponseType object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.workspaceId != null) {
-      yield r'workspace_id';
+    if (object.total != null) {
+      yield r'total';
       yield serializers.serialize(
-        object.workspaceId,
-        specifiedType: const FullType(String),
+        object.total,
+        specifiedType: const FullType(num),
       );
     }
-    if (object.workspaceName != null) {
-      yield r'workspace_name';
+    if (object.transaction != null) {
+      yield r'transaction';
       yield serializers.serialize(
-        object.workspaceName,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.createdAt != null) {
-      yield r'created_at';
-      yield serializers.serialize(
-        object.createdAt,
-        specifiedType: const FullType(DateTime),
+        object.transaction,
+        specifiedType:
+            const FullType(BuiltList, [FullType(AssetTransactionResponseType)]),
       );
     }
   }
@@ -74,7 +73,7 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
   @override
   Object serialize(
     Serializers serializers,
-    Workspace object, {
+    AllAssetsResponseType object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -87,33 +86,27 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required WorkspaceBuilder result,
+    required AllAssetsResponseTypeBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'workspace_id':
+        case r'total':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.workspaceId = valueDes;
+            specifiedType: const FullType(num),
+          ) as num;
+          result.total = valueDes;
           break;
-        case r'workspace_name':
+        case r'transaction':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.workspaceName = valueDes;
-          break;
-        case r'created_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(DateTime),
-          ) as DateTime;
-          result.createdAt = valueDes;
+            specifiedType: const FullType(
+                BuiltList, [FullType(AssetTransactionResponseType)]),
+          ) as BuiltList<AssetTransactionResponseType>;
+          result.transaction.replace(valueDes);
           break;
         default:
           unhandled.add(key);
@@ -124,12 +117,12 @@ class _$WorkspaceSerializer implements PrimitiveSerializer<Workspace> {
   }
 
   @override
-  Workspace deserialize(
+  AllAssetsResponseType deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = WorkspaceBuilder();
+    final result = AllAssetsResponseTypeBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

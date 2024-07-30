@@ -39,7 +39,7 @@ abstract class WorkspaceIdFinanceIdPutRequest
   WorkspaceIdFinanceIdPutRequest._();
 
   factory WorkspaceIdFinanceIdPutRequest(
-          [void Function(WorkspaceIdFinanceIdPutRequestBuilder b) updates]) =
+          [void updates(WorkspaceIdFinanceIdPutRequestBuilder b)]) =
       _$WorkspaceIdFinanceIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)

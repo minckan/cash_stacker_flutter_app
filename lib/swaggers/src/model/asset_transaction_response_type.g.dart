@@ -88,6 +88,8 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
   final num? currentPricePerShare;
   @override
   final num? balance;
+  @override
+  final String? currencyCode;
 
   factory _$AssetTransactionResponseType(
           [void Function(AssetTransactionResponseTypeBuilder)? updates]) =>
@@ -102,7 +104,8 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
       this.shares,
       this.pricePerShare,
       this.currentPricePerShare,
-      this.balance})
+      this.balance,
+      this.currencyCode})
       : super._();
 
   @override
@@ -126,7 +129,8 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
         shares == other.shares &&
         pricePerShare == other.pricePerShare &&
         currentPricePerShare == other.currentPricePerShare &&
-        balance == other.balance;
+        balance == other.balance &&
+        currencyCode == other.currencyCode;
   }
 
   @override
@@ -141,6 +145,7 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
     _$hash = $jc(_$hash, pricePerShare.hashCode);
     _$hash = $jc(_$hash, currentPricePerShare.hashCode);
     _$hash = $jc(_$hash, balance.hashCode);
+    _$hash = $jc(_$hash, currencyCode.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -156,7 +161,8 @@ class _$AssetTransactionResponseType extends AssetTransactionResponseType {
           ..add('shares', shares)
           ..add('pricePerShare', pricePerShare)
           ..add('currentPricePerShare', currentPricePerShare)
-          ..add('balance', balance))
+          ..add('balance', balance)
+          ..add('currencyCode', currencyCode))
         .toString();
   }
 }
@@ -210,6 +216,10 @@ class AssetTransactionResponseTypeBuilder
   num? get balance => _$this._balance;
   set balance(num? balance) => _$this._balance = balance;
 
+  String? _currencyCode;
+  String? get currencyCode => _$this._currencyCode;
+  set currencyCode(String? currencyCode) => _$this._currencyCode = currencyCode;
+
   AssetTransactionResponseTypeBuilder() {
     AssetTransactionResponseType._defaults(this);
   }
@@ -226,6 +236,7 @@ class AssetTransactionResponseTypeBuilder
       _pricePerShare = $v.pricePerShare;
       _currentPricePerShare = $v.currentPricePerShare;
       _balance = $v.balance;
+      _currencyCode = $v.currencyCode;
       _$v = null;
     }
     return this;
@@ -256,7 +267,8 @@ class AssetTransactionResponseTypeBuilder
             shares: shares,
             pricePerShare: pricePerShare,
             currentPricePerShare: currentPricePerShare,
-            balance: balance);
+            balance: balance,
+            currencyCode: currencyCode);
     replace(_$result);
     return _$result;
   }

@@ -20,6 +20,7 @@ export 'src/api/invitation_api.dart';
 export 'src/api/user_api.dart';
 export 'src/api/workspace_api.dart';
 
+export 'src/model/all_assets_response_type.dart';
 export 'src/model/asset.dart';
 export 'src/model/asset_detail_response_type.dart';
 export 'src/model/asset_info.dart';

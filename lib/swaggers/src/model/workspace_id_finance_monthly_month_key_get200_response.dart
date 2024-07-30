@@ -40,8 +40,9 @@ abstract class WorkspaceIdFinanceMonthlyMonthKeyGet200Response
   WorkspaceIdFinanceMonthlyMonthKeyGet200Response._();
 
   factory WorkspaceIdFinanceMonthlyMonthKeyGet200Response(
-      [void Function(WorkspaceIdFinanceMonthlyMonthKeyGet200ResponseBuilder b)
-          updates]) = _$WorkspaceIdFinanceMonthlyMonthKeyGet200Response;
+          [void updates(
+              WorkspaceIdFinanceMonthlyMonthKeyGet200ResponseBuilder b)]) =
+      _$WorkspaceIdFinanceMonthlyMonthKeyGet200Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(

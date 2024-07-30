@@ -21,6 +21,7 @@ part 'asset_transaction_response_type.g.dart';
 /// * [pricePerShare]
 /// * [currentPricePerShare]
 /// * [balance]
+/// * [currencyCode]
 @BuiltValue()
 abstract class AssetTransactionResponseType
     implements
@@ -54,10 +55,13 @@ abstract class AssetTransactionResponseType
   @BuiltValueField(wireName: r'balance')
   num? get balance;
 
+  @BuiltValueField(wireName: r'currencyCode')
+  String? get currencyCode;
+
   AssetTransactionResponseType._();
 
   factory AssetTransactionResponseType(
-          [void Function(AssetTransactionResponseTypeBuilder b) updates]) =
+          [void updates(AssetTransactionResponseTypeBuilder b)]) =
       _$AssetTransactionResponseType;
 
   @BuiltValueHook(initializeBuilder: true)
@@ -146,6 +150,13 @@ class _$AssetTransactionResponseTypeSerializer
       yield serializers.serialize(
         object.balance,
         specifiedType: const FullType.nullable(num),
+      );
+    }
+    if (object.currencyCode != null) {
+      yield r'currencyCode';
+      yield serializers.serialize(
+        object.currencyCode,
+        specifiedType: const FullType.nullable(String),
       );
     }
   }
@@ -243,6 +254,14 @@ class _$AssetTransactionResponseTypeSerializer
           if (valueDes == null) continue;
           result.balance = valueDes;
           break;
+        case r'currencyCode':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
+          result.currencyCode = valueDes;
+          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -284,7 +303,8 @@ class AssetTransactionResponseTypeTransactionTypeEnum extends EnumClass {
       get serializer =>
           _$assetTransactionResponseTypeTransactionTypeEnumSerializer;
 
-  const AssetTransactionResponseTypeTransactionTypeEnum._(super.name);
+  const AssetTransactionResponseTypeTransactionTypeEnum._(String name)
+      : super(name);
 
   static BuiltSet<AssetTransactionResponseTypeTransactionTypeEnum> get values =>
       _$assetTransactionResponseTypeTransactionTypeEnumValues;

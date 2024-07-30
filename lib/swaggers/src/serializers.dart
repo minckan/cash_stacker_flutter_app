@@ -14,6 +14,7 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'date_serializer.dart';
 import 'model/date.dart';
 
+import 'model/all_assets_response_type.dart';
 import 'model/asset.dart';
 import 'model/asset_detail_response_type.dart';
 import 'model/asset_info.dart';
@@ -58,6 +59,7 @@ import 'model/workspaces_post_request.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  AllAssetsResponseType,
   Asset,
   AssetDetailResponseType,
   AssetInfo,
@@ -109,6 +111,10 @@ Serializers serializers = (_$serializers.toBuilder()
         () => ListBuilder<Budget>(),
       )
       ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(AllAssetsResponseType)]),
+        () => ListBuilder<AllAssetsResponseType>(),
+      )
+      ..addBuilderFactory(
         const FullType(BuiltList, [FullType(AssetType)]),
         () => ListBuilder<AssetType>(),
       )
@@ -128,10 +134,6 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Invitation)]),
         () => ListBuilder<Invitation>(),
-      )
-      ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(Asset)]),
-        () => ListBuilder<Asset>(),
       )
       ..add(const OneOfSerializer())
       ..add(const AnyOfSerializer())

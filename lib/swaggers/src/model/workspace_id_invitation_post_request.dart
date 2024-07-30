@@ -39,7 +39,7 @@ abstract class WorkspaceIdInvitationPostRequest
   WorkspaceIdInvitationPostRequest._();
 
   factory WorkspaceIdInvitationPostRequest(
-          [void Function(WorkspaceIdInvitationPostRequestBuilder b) updates]) =
+          [void updates(WorkspaceIdInvitationPostRequestBuilder b)]) =
       _$WorkspaceIdInvitationPostRequest;
 
   @BuiltValueHook(initializeBuilder: true)

@@ -55,7 +55,7 @@ abstract class AssetTransactionRequest
   AssetTransactionRequest._();
 
   factory AssetTransactionRequest(
-          [void Function(AssetTransactionRequestBuilder b) updates]) =
+          [void updates(AssetTransactionRequestBuilder b)]) =
       _$AssetTransactionRequest;
 
   @BuiltValueHook(initializeBuilder: true)
@@ -282,7 +282,7 @@ class AssetTransactionRequestTransactionTypeEnum extends EnumClass {
   static Serializer<AssetTransactionRequestTransactionTypeEnum>
       get serializer => _$assetTransactionRequestTransactionTypeEnumSerializer;
 
-  const AssetTransactionRequestTransactionTypeEnum._(super.name);
+  const AssetTransactionRequestTransactionTypeEnum._(String name) : super(name);
 
   static BuiltSet<AssetTransactionRequestTransactionTypeEnum> get values =>
       _$assetTransactionRequestTransactionTypeEnumValues;

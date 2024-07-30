@@ -255,10 +255,11 @@ paths:
                 $ref: "#/components/schemas/Asset"
         "500":
           description: Failed to create asset.
+  "/{workspaceId}/assets/transactions":
     get:
       tags:
         - asset
-      summary: Get all assets
+      summary: Get all asset transactions
       description: Retrieve all assets for the specified workspace.
       security:
         - bearerAuth: []
@@ -271,13 +272,13 @@ paths:
           description: The ID of the workspace
       responses:
         "200":
-          description: A list of assets.
+          description: A list of asset transactions.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Asset"
+                  $ref: "#/components/schemas/AllAssetsResponseType"
         "500":
           description: Failed to retrieve assets.
   "/{workspaceId}/assets/{id}":
@@ -1807,6 +1808,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AssetTransactionResponseType"
+    AllAssetsResponseType:
+      type: object
+      properties:
+        total:
+          type: number
+        transaction:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetTransactionResponseType"
     AssetTransactionResponseType:
       type: object
       properties:
@@ -1837,6 +1847,9 @@ components:
           nullable: true
         balance:
           type: number
+          nullable: true
+        currencyCode:
+          type: string
           nullable: true
   responses:
     NotFound:
