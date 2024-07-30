@@ -33,17 +33,15 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     }
   }
 
-  Future<void> loadAssets() async {
+  Future<AllAssetsResponseType?> loadAssets() async {
     if (workspaceId != null) {
       final response = await _ref
           .read(assetRepositoryProvider)
-          .getAllAssets(workspaceId: workspaceId!);
+          .getAllAssetsTransactions(workspaceId: workspaceId!);
 
-      if (response.data != null || response.data!.isNotEmpty) {
-        List<Asset> assets = response.data!.toList();
-        state = _sortAssets(assets);
-      }
+      return response.data;
     }
+    return null;
   }
 
   Future<AssetDetailResponseType?> loadAssetById(int assetId) async {

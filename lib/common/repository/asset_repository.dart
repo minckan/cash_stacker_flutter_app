@@ -29,10 +29,10 @@ class AssetRepository {
     );
   }
 
-  Future<Response<BuiltList<Asset>>> getAllAssets({
+  Future<Response<AllAssetsResponseType>> getAllAssetsTransactions({
     required String workspaceId,
   }) {
-    return _assetApi.workspaceIdAssetsGet(
+    return _assetApi.workspaceIdAssetsTransactionsAllGet(
       workspaceId: workspaceId,
     );
   }

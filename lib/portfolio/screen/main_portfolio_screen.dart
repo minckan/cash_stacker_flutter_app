@@ -144,12 +144,17 @@ class _MainPortfolioScreenState extends ConsumerState<MainPortfolioScreen> {
                 ratios: portfolio.ratios!.toMap(),
                 categories: assetCategories,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: PortfolioTable(
-                  rows: portfolio.rows!.toList(),
+              if (portfolio.rows == null)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: PortfolioTable(
+                    rows: portfolio.rows!.toList(),
+                  ),
                 ),
-              ),
             ],
           ],
         ),

@@ -1,9 +1,8 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 
-import 'package:cash_stacker_flutter_app/portfolio/screen/add_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/edit_asset_transaction_screen.dart';
-import 'package:cash_stacker_flutter_app/portfolio/screen/sell_asset_screen.dart';
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
@@ -58,17 +57,17 @@ class AllAssetTransactionListScreen extends ConsumerWidget {
       child: FutureBuilder(
           future: ref.read(assetViewModelProvider.notifier).loadAssets(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: Text('데이터가 없습니다'));
-            }
-
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
+            if (!snapshot.hasData) {
+              return const Center(child: Text('데이터가 없습니다'));
+            }
 
             final assetTransactions = snapshot.data!.transaction;
+            final totalAmt = snapshot.data!.total;
 
             return ListView.builder(
               itemCount: assetTransactions!.length + 2,
@@ -92,21 +91,20 @@ class AllAssetTransactionListScreen extends ConsumerWidget {
                 if (index == 1) {
                   return buildListTile(
                     context: context,
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text('총 금액'),
-                          SizedBox(width: 10),
+                          const Text('총 금액'),
+                          const SizedBox(width: 10),
                           Text(
-                            // addComma.format(totalAmt),
-                            '-',
-                            style: TextStyle(fontFamily: 'Roboto'),
+                            addComma(totalAmt) ?? '0',
+                            style: const TextStyle(fontFamily: 'Roboto'),
                           ),
-                          SizedBox(width: 4),
-                          Text('KRW'),
+                          const SizedBox(width: 4),
+                          const Text('KRW'),
                         ],
                       ),
                     ),
