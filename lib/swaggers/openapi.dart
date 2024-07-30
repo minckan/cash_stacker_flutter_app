@@ -21,10 +21,12 @@ export 'src/api/user_api.dart';
 export 'src/api/workspace_api.dart';
 
 export 'src/model/asset.dart';
+export 'src/model/asset_detail_response_type.dart';
 export 'src/model/asset_info.dart';
 export 'src/model/asset_to_transaction.dart';
 export 'src/model/asset_transaction.dart';
 export 'src/model/asset_transaction_request.dart';
+export 'src/model/asset_transaction_response_type.dart';
 export 'src/model/asset_type.dart';
 export 'src/model/budget.dart';
 export 'src/model/exchange_rate_response.dart';

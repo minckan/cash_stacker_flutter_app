@@ -15,10 +15,12 @@ import 'date_serializer.dart';
 import 'model/date.dart';
 
 import 'model/asset.dart';
+import 'model/asset_detail_response_type.dart';
 import 'model/asset_info.dart';
 import 'model/asset_to_transaction.dart';
 import 'model/asset_transaction.dart';
 import 'model/asset_transaction_request.dart';
+import 'model/asset_transaction_response_type.dart';
 import 'model/asset_type.dart';
 import 'model/budget.dart';
 import 'model/exchange_rate_response.dart';
@@ -57,10 +59,12 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   Asset,
+  AssetDetailResponseType,
   AssetInfo,
   AssetToTransaction,
   AssetTransaction,
   AssetTransactionRequest,
+  AssetTransactionResponseType,
   AssetType,
   Budget,
   ExchangeRateResponse,

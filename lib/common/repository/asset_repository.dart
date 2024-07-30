@@ -37,7 +37,7 @@ class AssetRepository {
     );
   }
 
-  Future<Response<Asset>> getOneAsset({
+  Future<Response<AssetDetailResponseType>> getOneAsset({
     required String workspaceId,
     required int id,
   }) {

@@ -307,7 +307,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Asset"
+                $ref: "#/components/schemas/AssetDetailResponseType"
         "500":
           description: Failed to retrieve asset.
     put:
@@ -1705,6 +1705,7 @@ components:
         amount:
           type: number
           description: 수량
+          nullable: true
         ratio:
           type: number
           description: 비율(비중)
@@ -1723,15 +1724,19 @@ components:
         buyingSinglePriceKrw:
           type: number
           description: 원화 평균 매입가
+          nullable: true
         currentSinglePriceKrw:
           type: number
           description: 원화 가장 최근 입력받은 현재가
+          nullable: true
         totalEvaluationAmountKrw:
           type: number
           description: 원화 현재가 총금액
+          nullable: true
         profitLossRateKrw:
           type: number
           description: 원화 원화환산 수익률
+          nullable: true
         totalCurrentAmountKrw:
           type: number
           description: 원화 현재가 총 평가액
@@ -1743,15 +1748,19 @@ components:
         buyingSinglePriceForeign:
           type: number
           description: 외화 평균 매입가
+          nullable: true
         currentSinglePriceForeign:
           type: number
           description: 외화 가장 최근 입력 받은 현재가
+          nullable: true
         totalEvaluationAmountForeign:
           type: number
           description: 외화 현재가 총금액
+          nullable: true
         profitLossRateForeign:
           type: number
           description: 외화 외화 수익률 (외화 차제로 얼마나 수익이 있는지)
+          nullable: true
         totalCurrentAmountForeign:
           type: number
           description: 외화 현재가 총 평가액
@@ -1780,6 +1789,54 @@ components:
           items:
             $ref: "#/components/schemas/AssetInfo"
           description: List of asset details
+          nullable: true
+    AssetDetailResponseType:
+      type: object
+      properties:
+        assetId:
+          type: integer
+        isKrwCashAsset:
+          type: boolean
+        currencyCode:
+          type: string
+        total:
+          type: number
+        assetTypeId:
+          type: integer
+        transaction:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetTransactionResponseType"
+    AssetTransactionResponseType:
+      type: object
+      properties:
+        transactionId:
+          type: integer
+        transactionType:
+          type: string
+          enum:
+            - sell
+            - buy
+        description:
+          type: string
+          nullable: true
+        transactionDate:
+          type: string
+          format: date-time
+        exchangeRate:
+          type: number
+          nullable: true
+        shares:
+          type: integer
+          nullable: true
+        pricePerShare:
+          type: number
+          nullable: true
+        currentPricePerShare:
+          type: number
+          nullable: true
+        balance:
+          type: number
           nullable: true
   responses:
     NotFound:

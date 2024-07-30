@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 import '../api_util.dart';
 import '../model/asset.dart';
+import '../model/asset_detail_response_type.dart';
 import '../model/asset_transaction.dart';
 import '../model/asset_transaction_request.dart';
 import '../model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
@@ -527,9 +528,9 @@ class AssetApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [Asset] as data
+  /// Returns a [Future] containing a [Response] with a [AssetDetailResponseType] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Asset>> workspaceIdAssetsIdGet({
+  Future<Response<AssetDetailResponseType>> workspaceIdAssetsIdGet({
     required String workspaceId,
     required int id,
     CancelToken? cancelToken,
@@ -575,7 +576,7 @@ class AssetApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    Asset? responseData;
+    AssetDetailResponseType? responseData;
 
     try {
       final rawResponse = response.data;
@@ -583,8 +584,8 @@ class AssetApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(Asset),
-            ) as Asset;
+              specifiedType: const FullType(AssetDetailResponseType),
+            ) as AssetDetailResponseType;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -595,7 +596,7 @@ class AssetApi {
       );
     }
 
-    return Response<Asset>(
+    return Response<AssetDetailResponseType>(
       data: responseData,
       headers: response.headers,
       isRedirect: response.isRedirect,

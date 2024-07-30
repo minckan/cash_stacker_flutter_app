@@ -145,7 +145,7 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
       yield r'amount';
       yield serializers.serialize(
         object.amount,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.ratio != null) {
@@ -180,28 +180,28 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
       yield r'buyingSinglePriceKrw';
       yield serializers.serialize(
         object.buyingSinglePriceKrw,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.currentSinglePriceKrw != null) {
       yield r'currentSinglePriceKrw';
       yield serializers.serialize(
         object.currentSinglePriceKrw,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.totalEvaluationAmountKrw != null) {
       yield r'totalEvaluationAmountKrw';
       yield serializers.serialize(
         object.totalEvaluationAmountKrw,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.profitLossRateKrw != null) {
       yield r'profitLossRateKrw';
       yield serializers.serialize(
         object.profitLossRateKrw,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.totalCurrentAmountKrw != null) {
@@ -222,28 +222,28 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
       yield r'buyingSinglePriceForeign';
       yield serializers.serialize(
         object.buyingSinglePriceForeign,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.currentSinglePriceForeign != null) {
       yield r'currentSinglePriceForeign';
       yield serializers.serialize(
         object.currentSinglePriceForeign,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.totalEvaluationAmountForeign != null) {
       yield r'totalEvaluationAmountForeign';
       yield serializers.serialize(
         object.totalEvaluationAmountForeign,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.profitLossRateForeign != null) {
       yield r'profitLossRateForeign';
       yield serializers.serialize(
         object.profitLossRateForeign,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.totalCurrentAmountForeign != null) {
@@ -295,8 +295,9 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
         case r'amount':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.amount = valueDes;
           break;
         case r'ratio':
@@ -332,29 +333,33 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
         case r'buyingSinglePriceKrw':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.buyingSinglePriceKrw = valueDes;
           break;
         case r'currentSinglePriceKrw':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.currentSinglePriceKrw = valueDes;
           break;
         case r'totalEvaluationAmountKrw':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.totalEvaluationAmountKrw = valueDes;
           break;
         case r'profitLossRateKrw':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.profitLossRateKrw = valueDes;
           break;
         case r'totalCurrentAmountKrw':
@@ -376,29 +381,33 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
         case r'buyingSinglePriceForeign':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.buyingSinglePriceForeign = valueDes;
           break;
         case r'currentSinglePriceForeign':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.currentSinglePriceForeign = valueDes;
           break;
         case r'totalEvaluationAmountForeign':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.totalEvaluationAmountForeign = valueDes;
           break;
         case r'profitLossRateForeign':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.profitLossRateForeign = valueDes;
           break;
         case r'totalCurrentAmountForeign':
