@@ -106,7 +106,7 @@ abstract class AssetInfo implements Built<AssetInfo, AssetInfoBuilder> {
 
   AssetInfo._();
 
-  factory AssetInfo([void updates(AssetInfoBuilder b)]) = _$AssetInfo;
+  factory AssetInfo([void Function(AssetInfoBuilder b) updates]) = _$AssetInfo;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AssetInfoBuilder b) => b;

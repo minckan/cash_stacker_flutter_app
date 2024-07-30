@@ -43,7 +43,7 @@ abstract class Budget implements Built<Budget, BudgetBuilder> {
 
   Budget._();
 
-  factory Budget([void updates(BudgetBuilder b)]) = _$Budget;
+  factory Budget([void Function(BudgetBuilder b) updates]) = _$Budget;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(BudgetBuilder b) => b;

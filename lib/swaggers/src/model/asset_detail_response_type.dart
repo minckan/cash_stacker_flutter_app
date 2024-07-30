@@ -43,7 +43,7 @@ abstract class AssetDetailResponseType
   AssetDetailResponseType._();
 
   factory AssetDetailResponseType(
-          [void updates(AssetDetailResponseTypeBuilder b)]) =
+          [void Function(AssetDetailResponseTypeBuilder b) updates]) =
       _$AssetDetailResponseType;
 
   @BuiltValueHook(initializeBuilder: true)

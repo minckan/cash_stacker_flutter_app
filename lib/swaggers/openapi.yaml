@@ -276,9 +276,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/AllAssetsResponseType"
+                $ref: "#/components/schemas/AllAssetsResponseType"
         "500":
           description: Failed to retrieve assets.
   "/{workspaceId}/assets/{id}":

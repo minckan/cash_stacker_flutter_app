@@ -31,7 +31,8 @@ abstract class UsersIdPutRequest
 
   UsersIdPutRequest._();
 
-  factory UsersIdPutRequest([void updates(UsersIdPutRequestBuilder b)]) =
+  factory UsersIdPutRequest(
+          [void Function(UsersIdPutRequestBuilder b) updates]) =
       _$UsersIdPutRequest;
 
   @BuiltValueHook(initializeBuilder: true)

@@ -24,7 +24,8 @@ abstract class AssetToTransaction
 
   AssetToTransaction._();
 
-  factory AssetToTransaction([void updates(AssetToTransactionBuilder b)]) =
+  factory AssetToTransaction(
+          [void Function(AssetToTransactionBuilder b) updates]) =
       _$AssetToTransaction;
 
   @BuiltValueHook(initializeBuilder: true)

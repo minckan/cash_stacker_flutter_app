@@ -61,7 +61,7 @@ abstract class AssetTransactionResponseType
   AssetTransactionResponseType._();
 
   factory AssetTransactionResponseType(
-          [void updates(AssetTransactionResponseTypeBuilder b)]) =
+          [void Function(AssetTransactionResponseTypeBuilder b) updates]) =
       _$AssetTransactionResponseType;
 
   @BuiltValueHook(initializeBuilder: true)
@@ -303,8 +303,7 @@ class AssetTransactionResponseTypeTransactionTypeEnum extends EnumClass {
       get serializer =>
           _$assetTransactionResponseTypeTransactionTypeEnumSerializer;
 
-  const AssetTransactionResponseTypeTransactionTypeEnum._(String name)
-      : super(name);
+  const AssetTransactionResponseTypeTransactionTypeEnum._(super.name);
 
   static BuiltSet<AssetTransactionResponseTypeTransactionTypeEnum> get values =>
       _$assetTransactionResponseTypeTransactionTypeEnumValues;

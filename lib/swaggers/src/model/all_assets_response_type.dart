@@ -27,7 +27,8 @@ abstract class AllAssetsResponseType
   AllAssetsResponseType._();
 
   factory AllAssetsResponseType(
-      [void updates(AllAssetsResponseTypeBuilder b)]) = _$AllAssetsResponseType;
+          [void Function(AllAssetsResponseTypeBuilder b) updates]) =
+      _$AllAssetsResponseType;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AllAssetsResponseTypeBuilder b) => b;

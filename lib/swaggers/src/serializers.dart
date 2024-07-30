@@ -111,10 +111,6 @@ Serializers serializers = (_$serializers.toBuilder()
         () => ListBuilder<Budget>(),
       )
       ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(AllAssetsResponseType)]),
-        () => ListBuilder<AllAssetsResponseType>(),
-      )
-      ..addBuilderFactory(
         const FullType(BuiltList, [FullType(AssetType)]),
         () => ListBuilder<AssetType>(),
       )

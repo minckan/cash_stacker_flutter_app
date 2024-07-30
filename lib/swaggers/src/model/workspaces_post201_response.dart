@@ -23,7 +23,7 @@ abstract class WorkspacesPost201Response
   WorkspacesPost201Response._();
 
   factory WorkspacesPost201Response(
-          [void updates(WorkspacesPost201ResponseBuilder b)]) =
+          [void Function(WorkspacesPost201ResponseBuilder b) updates]) =
       _$WorkspacesPost201Response;
 
   @BuiltValueHook(initializeBuilder: true)
