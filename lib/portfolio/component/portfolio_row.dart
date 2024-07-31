@@ -110,10 +110,7 @@ class PortfolioRow extends ConsumerWidget {
                                     '₩${addComma((row.totalCurrentAmountKrw ?? 0) - (row.totalBuyingAmountKrw ?? 0))}'),
                             _buildROIText(
                               row,
-                              calculatePercentageIncrease(
-                                      (row.totalBuyingAmountKrw ?? 0),
-                                      (row.totalCurrentAmountKrw ?? 0))
-                                  .toStringAsFixed(2),
+                              '${calculatePercentageIncrease((row.totalBuyingAmountKrw ?? 0), (row.totalCurrentAmountKrw ?? 0)).toStringAsFixed(2)}%',
                             )
                           ] else
                             const Text('-')
@@ -149,7 +146,7 @@ class PortfolioRow extends ConsumerWidget {
                             if (row.totalCurrentAmountForeign != null) ...[
                               _buildCommonText(
                                   text:
-                                      '${row.currencyCode}${addComma((row.totalCurrentAmountForeign ?? 0) - (row.totalBuyingAmountForeign ?? 0))}'),
+                                      '${row.currencyCode} ${addComma((row.totalCurrentAmountForeign ?? 0) - (row.totalBuyingAmountForeign ?? 0))}'),
                               _buildROIText(
                                 row,
                                 '${calculatePercentageIncrease((row.totalBuyingAmountForeign ?? 0), (row.totalCurrentAmountForeign ?? 0)).toStringAsFixed(2)}%',
