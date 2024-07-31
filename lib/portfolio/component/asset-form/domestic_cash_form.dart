@@ -11,7 +11,7 @@ class DomesticCashForm extends StatelessWidget {
         NumberFormField(
           formName: 'balance',
           placeholder: '금액',
-          suffixText: 'KWR',
+          suffixText: 'KRW',
         ),
       ],
     );

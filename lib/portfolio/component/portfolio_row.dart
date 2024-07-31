@@ -1,5 +1,6 @@
 import 'package:cash_stacker_flutter_app/common/const/app_colors.dart';
 import 'package:cash_stacker_flutter_app/common/providers/exchange_rate_provider.dart';
+import 'package:cash_stacker_flutter_app/common/utill/calculation_helpers.dart';
 import 'package:cash_stacker_flutter_app/common/utill/number_format.dart';
 import 'package:cash_stacker_flutter_app/portfolio/screen/asset_transaction_list_screen.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
@@ -20,7 +21,7 @@ class PortfolioRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const hasTransactions = true;
 
-    // final exchanges = ref.watch(exchangeRateProvider);
+    final exchangesVM = ref.read(exchangeRateProvider.notifier);
 
     // if (exchanges.isEmpty) {
     //   return const Padding(
@@ -74,6 +75,7 @@ class PortfolioRow extends ConsumerWidget {
                           text: _buildKrwAndForeignStr(
                             row.buyingSinglePriceKrw,
                             row.buyingSinglePriceForeign,
+                            row.currencyCode,
                           ),
                         ),
                       ),
@@ -84,6 +86,7 @@ class PortfolioRow extends ConsumerWidget {
                           text: _buildKrwAndForeignStr(
                             row.currentSinglePriceKrw,
                             row.currentSinglePriceForeign,
+                            row.currencyCode,
                           ),
                         ),
                         bottomBorder: false,
@@ -101,19 +104,27 @@ class PortfolioRow extends ConsumerWidget {
                       key: 'totalEvaluationAmountKrw',
                       child: Column(
                         children: [
-                          _buildCommonText(
-                              text: addComma(row.totalEvaluationAmountKrw) ??
-                                  '-'),
-                          if (row.profitLossRateKrw != null)
+                          if (row.totalCurrentAmountKrw != null) ...[
+                            _buildCommonText(
+                                text:
+                                    '₩${addComma((row.totalCurrentAmountKrw ?? 0) - (row.totalBuyingAmountKrw ?? 0))}'),
                             _buildROIText(
-                                row, row.profitLossRateKrw?.toStringAsFixed(2))
+                              row,
+                              calculatePercentageIncrease(
+                                      (row.totalBuyingAmountKrw ?? 0),
+                                      (row.totalCurrentAmountKrw ?? 0))
+                                  .toStringAsFixed(2),
+                            )
+                          ] else
+                            const Text('-')
                         ],
                       ),
                     ),
                     // 수량
                     _buildTableRowCell(
                       key: 'amount',
-                      child: _buildCommonText(text: '${row.amount}'),
+                      child: _buildCommonText(
+                          text: row.amount != 0 ? '${row.amount}' : '-'),
                     ),
                     // 최초편입일
                     _buildTableRowCell(
@@ -135,14 +146,14 @@ class PortfolioRow extends ConsumerWidget {
                         key: 'totalEvaluationAmountForeign',
                         child: Column(
                           children: [
-                            if (row.totalEvaluationAmountForeign != null ||
-                                row.profitLossRateForeign != null) ...[
+                            if (row.totalCurrentAmountForeign != null) ...[
                               _buildCommonText(
-                                  text: addComma(
-                                          row.totalEvaluationAmountForeign) ??
-                                      '-'),
-                              _buildROIText(row,
-                                  '${row.profitLossRateForeign?.toStringAsFixed(2)}'),
+                                  text:
+                                      '${row.currencyCode}${addComma((row.totalCurrentAmountForeign ?? 0) - (row.totalBuyingAmountForeign ?? 0))}'),
+                              _buildROIText(
+                                row,
+                                '${calculatePercentageIncrease((row.totalBuyingAmountForeign ?? 0), (row.totalCurrentAmountForeign ?? 0)).toStringAsFixed(2)}%',
+                              ),
                             ] else
                               const Text('-')
                           ],
@@ -155,6 +166,7 @@ class PortfolioRow extends ConsumerWidget {
                           text: _buildKrwAndForeignStr(
                             row.totalBuyingAmountKrw,
                             row.totalBuyingAmountForeign,
+                            row.currencyCode,
                           ),
                         ),
                       ),
@@ -165,6 +177,7 @@ class PortfolioRow extends ConsumerWidget {
                           text: _buildKrwAndForeignStr(
                             row.totalCurrentAmountKrw,
                             row.totalCurrentAmountForeign,
+                            row.currencyCode,
                           ),
                         ),
                         bottomBorder: false,
@@ -210,14 +223,15 @@ class PortfolioRow extends ConsumerWidget {
   String _buildKrwAndForeignStr(
     num? krw,
     num? foreign,
+    String? currencyCode,
   ) {
     if (krw == null) {
       return '-';
     }
     if (foreign == null) {
-      return '${addComma(krw)}';
+      return '₩${addComma(krw)}';
     }
-    return '${addComma(krw)}\n(${addComma(foreign)})';
+    return '₩${addComma(krw)}\n($currencyCode ${addComma(foreign)})';
   }
 
   Widget _buildTableRowCell({

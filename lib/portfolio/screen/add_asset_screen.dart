@@ -238,7 +238,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         if (selectedCategory?.assetTypeId == krwCashCategoryId) {
           assetVM.addAsset(
             assetTypeId: krwCashCategoryId!,
-            currencyCode: 'KWR',
+            currencyCode: 'KRW',
             transaction: AssetTransactionRequest(
               (b) => b
                 ..transactionType =
@@ -267,7 +267,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
         else if (selectedCategory?.isForeignAssetType == false) {
           assetVM.addAsset(
             assetTypeId: selectedCategory!.assetTypeId!,
-            currencyCode: 'KWR',
+            currencyCode: 'KRW',
             assetName: value['name'],
             transaction: AssetTransactionRequest(
               (b) => b

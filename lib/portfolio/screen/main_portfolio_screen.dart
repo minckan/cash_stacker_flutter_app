@@ -32,7 +32,7 @@ class _MainPortfolioScreenState extends ConsumerState<MainPortfolioScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(portfolioViewModelProvider.notifier).loadPortfolio();
       ref.read(assetTypeViewModelProvider.notifier).loadCategory();
-      // ref.read(exchangeRateProvider.notifier).loadExchangeRates();
+      ref.read(exchangeRateProvider.notifier).loadExchangeRates();
     });
   }
 
