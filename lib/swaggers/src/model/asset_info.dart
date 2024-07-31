@@ -14,6 +14,7 @@ part 'asset_info.g.dart';
 /// Properties:
 /// * [id] - 자산 아이디
 /// * [name] - 자산 이름
+/// * [currencyCode] - 통화 코드
 /// * [amount] - 수량
 /// * [ratio] - 비율(비중)
 /// * [initialPurchaseDate] - 최초 편입일
@@ -39,6 +40,10 @@ abstract class AssetInfo implements Built<AssetInfo, AssetInfoBuilder> {
   /// 자산 이름
   @BuiltValueField(wireName: r'name')
   String? get name;
+
+  /// 통화 코드
+  @BuiltValueField(wireName: r'currencyCode')
+  String? get currencyCode;
 
   /// 수량
   @BuiltValueField(wireName: r'amount')
@@ -138,6 +143,13 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
       yield r'name';
       yield serializers.serialize(
         object.name,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.currencyCode != null) {
+      yield r'currencyCode';
+      yield serializers.serialize(
+        object.currencyCode,
         specifiedType: const FullType(String),
       );
     }
@@ -291,6 +303,13 @@ class _$AssetInfoSerializer implements PrimitiveSerializer<AssetInfo> {
             specifiedType: const FullType(String),
           ) as String;
           result.name = valueDes;
+          break;
+        case r'currencyCode':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.currencyCode = valueDes;
           break;
         case r'amount':
           final valueDes = serializers.deserialize(

@@ -12,6 +12,8 @@ class _$AssetInfo extends AssetInfo {
   @override
   final String? name;
   @override
+  final String? currencyCode;
+  @override
   final num? amount;
   @override
   final num? ratio;
@@ -50,6 +52,7 @@ class _$AssetInfo extends AssetInfo {
   _$AssetInfo._(
       {this.id,
       this.name,
+      this.currencyCode,
       this.amount,
       this.ratio,
       this.initialPurchaseDate,
@@ -81,6 +84,7 @@ class _$AssetInfo extends AssetInfo {
     return other is AssetInfo &&
         id == other.id &&
         name == other.name &&
+        currencyCode == other.currencyCode &&
         amount == other.amount &&
         ratio == other.ratio &&
         initialPurchaseDate == other.initialPurchaseDate &&
@@ -104,6 +108,7 @@ class _$AssetInfo extends AssetInfo {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, currencyCode.hashCode);
     _$hash = $jc(_$hash, amount.hashCode);
     _$hash = $jc(_$hash, ratio.hashCode);
     _$hash = $jc(_$hash, initialPurchaseDate.hashCode);
@@ -129,6 +134,7 @@ class _$AssetInfo extends AssetInfo {
     return (newBuiltValueToStringHelper(r'AssetInfo')
           ..add('id', id)
           ..add('name', name)
+          ..add('currencyCode', currencyCode)
           ..add('amount', amount)
           ..add('ratio', ratio)
           ..add('initialPurchaseDate', initialPurchaseDate)
@@ -159,6 +165,10 @@ class AssetInfoBuilder implements Builder<AssetInfo, AssetInfoBuilder> {
   String? _name;
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
+
+  String? _currencyCode;
+  String? get currencyCode => _$this._currencyCode;
+  set currencyCode(String? currencyCode) => _$this._currencyCode = currencyCode;
 
   num? _amount;
   num? get amount => _$this._amount;
@@ -247,6 +257,7 @@ class AssetInfoBuilder implements Builder<AssetInfo, AssetInfoBuilder> {
     if ($v != null) {
       _id = $v.id;
       _name = $v.name;
+      _currencyCode = $v.currencyCode;
       _amount = $v.amount;
       _ratio = $v.ratio;
       _initialPurchaseDate = $v.initialPurchaseDate;
@@ -287,6 +298,7 @@ class AssetInfoBuilder implements Builder<AssetInfo, AssetInfoBuilder> {
         new _$AssetInfo._(
             id: id,
             name: name,
+            currencyCode: currencyCode,
             amount: amount,
             ratio: ratio,
             initialPurchaseDate: initialPurchaseDate,
