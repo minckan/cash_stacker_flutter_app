@@ -12,6 +12,7 @@ import 'package:cash_stacker_flutter_app/common/utill/shared_preferences.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,7 +28,17 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     super.initState();
     // FirebaseAuth.instance.signOut();
+    _initDynamicLinks();
     _checkLoginStatus();
+  }
+
+  Future<void> _initDynamicLinks() async {
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+      // Navigator.pushNamed(context, dynamicLinkData.link.path);
+      print('successed init dynamic links: $dynamicLinkData');
+    }).onError((error) {
+      print('onLink error');
+    });
   }
 
   Future<void> _checkLoginStatus() async {

@@ -1,9 +1,11 @@
 import 'package:cash_stacker_flutter_app/common/component/form/form_field_with_lable.dart';
 import 'package:cash_stacker_flutter_app/common/layout/default_layout.dart';
+import 'package:cash_stacker_flutter_app/common/repository/invitation_repository.dart';
 import 'package:cash_stacker_flutter_app/common/utill/ui/input.dart';
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
 import 'package:cash_stacker_flutter_app/setting/model/invitation_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/invitation_view_model.dart';
+import 'package:cash_stacker_flutter_app/swaggers/src/model/create_invitation_req.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,21 +57,17 @@ class InvitationScreen extends ConsumerWidget {
                           ElevatedButton(
                             child: const Text("확인"),
                             onPressed: () async {
-                              final id = uuid.v4();
-
                               final email = value['email'];
+                              if (workspaceId != null && email != null) {
+                                await ref
+                                    .read(invitationRepositoryProvider)
+                                    .createInvitation(
+                                      workspaceId: workspaceId,
+                                      body: CreateInvitationReq(
+                                        (b) => b..email = email,
+                                      ),
+                                    );
 
-                              if (workspaceId != null) {
-                                final invitation = Invitation(
-                                    id: id,
-                                    email: email,
-                                    workspaceId: workspaceId,
-                                    status: InvitationStatus.pending,
-                                    token: '',
-                                    expiryDate: DateTime.now()
-                                        .add(const Duration(days: 7)));
-
-                                await viewModel.sendInvitation(invitation);
                                 Navigator.pop(context);
                               }
                             },
