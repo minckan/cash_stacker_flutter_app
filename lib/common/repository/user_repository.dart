@@ -19,24 +19,24 @@ class UserRepository {
   Future<Response<User>> getUser({
     required String id,
   }) {
-    return _userApi.usersIdGet(id: id);
+    return _userApi.getUser(id: id);
   }
 
-  Future<Response<UsersPost201Response>> createUser({
-    required UsersPostRequest body,
+  Future<Response<CreateUserResponse>> createUser({
+    required CreateUserRequest body,
   }) {
-    return _userApi.usersPost(
-      usersPostRequest: body,
+    return _userApi.createUser(
+      createUserRequest: body,
     );
   }
 
   Future<Response<void>> updateUser({
     required String id,
-    required UsersIdPutRequest body,
+    required UpdateUserRequest body,
   }) {
-    return _userApi.usersIdPut(
+    return _userApi.updateUserStatus(
       id: id,
-      usersIdPutRequest: body,
+      updateUserRequest: body,
     );
   }
 }

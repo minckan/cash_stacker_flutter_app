@@ -21,18 +21,18 @@ class AssetRepository {
 
   Future<Response<Asset>> createAsset({
     required String workspaceId,
-    required WorkspaceIdAssetsPostRequest body,
+    required CreateAssetReq body,
   }) {
-    return _assetApi.workspaceIdAssetsPost(
+    return _assetApi.createNewAsset(
       workspaceId: workspaceId,
-      workspaceIdAssetsPostRequest: body,
+      createAssetReq: body,
     );
   }
 
   Future<Response<AllAssetsResponseType>> getAllAssetsTransactions({
     required String workspaceId,
   }) {
-    return _assetApi.workspaceIdAssetsTransactionsAllGet(
+    return _assetApi.getAllAssetsTransaction(
       workspaceId: workspaceId,
     );
   }
@@ -41,7 +41,7 @@ class AssetRepository {
     required String workspaceId,
     required int id,
   }) {
-    return _assetApi.workspaceIdAssetsIdGet(
+    return _assetApi.getAssetById(
       workspaceId: workspaceId,
       id: id,
     );
@@ -50,12 +50,12 @@ class AssetRepository {
   Future<Response<Asset>> updateAsset({
     required String workspaceId,
     required int id,
-    required WorkspaceIdAssetsIdPutRequest body,
+    required UpdateAssetRes body,
   }) {
-    return _assetApi.workspaceIdAssetsIdPut(
+    return _assetApi.updateAsset(
       workspaceId: workspaceId,
       id: id,
-      workspaceIdAssetsIdPutRequest: body,
+      updateAssetRes: body,
     );
   }
 
@@ -63,7 +63,7 @@ class AssetRepository {
     required String workspaceId,
     required int id,
   }) {
-    return _assetApi.workspaceIdAssetsIdDelete(
+    return _assetApi.deleteAsset(
       workspaceId: workspaceId,
       id: id,
     );
@@ -74,7 +74,7 @@ class AssetRepository {
     required int assetId,
     required AssetTransactionRequest body,
   }) {
-    return _assetApi.workspaceIdAssetsAssetIdTransactionsPost(
+    return _assetApi.createAssetTransaction(
       workspaceId: workspaceId,
       assetId: assetId.toString(),
       assetTransactionRequest: body,
@@ -85,34 +85,33 @@ class AssetRepository {
     required String workspaceId,
     required int assetId,
     required int id,
-    required WorkspaceIdAssetsAssetIdTransactionsIdPutRequest body,
+    required UpdateAssetTransactionByIdReq body,
   }) {
-    return _assetApi.workspaceIdAssetsAssetIdTransactionsIdPut(
+    return _assetApi.updateAssetTransactionById(
       workspaceId: workspaceId,
-      assetId: assetId,
       id: id,
-      workspaceIdAssetsAssetIdTransactionsIdPutRequest: body,
+      updateAssetTransactionByIdReq: body,
+      assetId: assetId,
     );
   }
 
-  Future<Response<WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response>>
-      deleteAssetTransaction({
+  Future<Response<DeleteAssetTransaction201Response>> deleteAssetTransaction({
     required String workspaceId,
     required int assetId,
     required int id,
   }) {
-    return _assetApi.workspaceIdAssetsAssetIdTransactionsIdDelete(
+    return _assetApi.deleteAssetTransaction(
       workspaceId: workspaceId,
       assetId: assetId,
       id: id,
     );
   }
 
-  Future<Response<BuiltList<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner>>>
+  Future<Response<BuiltList<GetMonthlyAssetTrend200ResponseInner>>>
       getMonthlyTrends({
     required String workspaceId,
   }) {
-    return _assetApi.workspaceIdAssetsMonthlyTrendGet(
+    return _assetApi.getMonthlyAssetTrend(
       workspaceId: workspaceId,
     );
   }

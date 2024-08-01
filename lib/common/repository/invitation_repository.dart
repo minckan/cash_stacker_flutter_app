@@ -23,30 +23,18 @@ class InvitationRepository {
   Future<Response<BuiltList<Invitation>>> getAllInvitations({
     required String workspaceId,
   }) {
-    return _invitationApi.workspaceIdInvitationGet(
+    return _invitationApi.getAllInvitations(
       workspaceId: workspaceId,
     );
   }
 
-  Future<Response<Invitation>> createInvitation({
+  Future<Response<InvitationCreationResponse>> createInvitation({
     required String workspaceId,
-    required WorkspaceIdInvitationPostRequest body,
+    required CreateInvitationReq body,
   }) {
-    return _invitationApi.workspaceIdInvitationPost(
+    return _invitationApi.createInvitation(
       workspaceId: workspaceId,
-      workspaceIdInvitationPostRequest: body,
-    );
-  }
-
-  Future<Response<Invitation>> updateInvitation({
-    required String workspaceId,
-    required String id,
-    required WorkspaceIdInvitationIdPutRequest body,
-  }) {
-    return _invitationApi.workspaceIdInvitationIdPut(
-      workspaceId: workspaceId,
-      id: id,
-      workspaceIdInvitationIdPutRequest: body,
+      createInvitationReq: body,
     );
   }
 
@@ -54,7 +42,7 @@ class InvitationRepository {
     required String workspaceId,
     required String id,
   }) {
-    return _invitationApi.workspaceIdInvitationIdDelete(
+    return _invitationApi.deleteInvitation(
       workspaceId: workspaceId,
       id: id,
     );

@@ -8,10 +8,11 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import '../api_util.dart';
+import '../model/create_financial_tracker_transaction_req.dart';
+import '../model/get_daily_transactions200_response.dart';
+import '../model/get_monthly_asset_transaction_res.dart';
 import '../model/transaction.dart';
-import '../model/workspace_id_finance_id_put_request.dart';
-import '../model/workspace_id_finance_monthly_month_key_get200_response.dart';
-import '../model/workspace_id_finance_post_request.dart';
+import '../model/update_financial_tracker_transaction_req.dart';
 
 class FinancialTrackerApi {
   final Dio _dio;
@@ -20,172 +21,12 @@ class FinancialTrackerApi {
 
   const FinancialTrackerApi(this._dio, this._serializers);
 
-  /// Get daily transactions
-  /// Retrieve all financial transactions for the specified date.
+  /// Create a new transaction
+  /// Create a new financial transaction for the specified workspace.
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
-  /// * [dateKey] - The date key in YYYY-MM-DD format
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future] containing a [Response] with a [WorkspaceIdFinanceMonthlyMonthKeyGet200Response] as data
-  /// Throws [DioException] if API call or serialization fails
-  Future<Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>>
-      workspaceIdFinanceDailyDateKeyGet({
-    required String workspaceId,
-    required String dateKey,
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final path = r'/{workspaceId}/finance/daily/{dateKey}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'dateKey' '}',
-            encodeQueryParameter(_serializers, dateKey, const FullType(String))
-                .toString());
-    final options = Options(
-      method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'bearerAuth',
-          },
-        ],
-        ...?extra,
-      },
-      validateStatus: validateStatus,
-    );
-
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    WorkspaceIdFinanceMonthlyMonthKeyGet200Response? responseData;
-
-    try {
-      final rawResponse = response.data;
-      responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(
-                  WorkspaceIdFinanceMonthlyMonthKeyGet200Response),
-            ) as WorkspaceIdFinanceMonthlyMonthKeyGet200Response;
-    } catch (error, stackTrace) {
-      throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
-        type: DioExceptionType.unknown,
-        error: error,
-        stackTrace: stackTrace,
-      );
-    }
-
-    return Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>(
-      data: responseData,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      requestOptions: response.requestOptions,
-      redirects: response.redirects,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response.extra,
-    );
-  }
-
-  /// Delete a transaction
-  /// Delete an existing financial transaction by its ID.
-  ///
-  /// Parameters:
-  /// * [workspaceId] - The ID of the workspace
-  /// * [id] - The ID of the transaction
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future]
-  /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> workspaceIdFinanceIdDelete({
-    required String workspaceId,
-    required int id,
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final path = r'/{workspaceId}/finance/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(int))
-                .toString());
-    final options = Options(
-      method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'bearerAuth',
-          },
-        ],
-        ...?extra,
-      },
-      validateStatus: validateStatus,
-    );
-
-    final response = await _dio.request<Object>(
-      path,
-      options: options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    return response;
-  }
-
-  /// Update a transaction
-  /// Update an existing financial transaction by its ID.
-  ///
-  /// Parameters:
-  /// * [workspaceId] - The ID of the workspace
-  /// * [id] - The ID of the transaction
-  /// * [workspaceIdFinanceIdPutRequest]
+  /// * [createFinancialTrackerTransactionReq]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -195,10 +36,10 @@ class FinancialTrackerApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Transaction] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Transaction>> workspaceIdFinanceIdPut({
+  Future<Response<Transaction>> createTransaction({
     required String workspaceId,
-    required int id,
-    required WorkspaceIdFinanceIdPutRequest workspaceIdFinanceIdPutRequest,
+    required CreateFinancialTrackerTransactionReq
+        createFinancialTrackerTransactionReq,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -206,18 +47,12 @@ class FinancialTrackerApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance/{id}'
-        .replaceAll(
-            '{' r'workspaceId' '}',
-            encodeQueryParameter(
-                    _serializers, workspaceId, const FullType(String))
-                .toString())
-        .replaceAll(
-            '{' r'id' '}',
-            encodeQueryParameter(_serializers, id, const FullType(int))
-                .toString());
+    final path = r'/{workspaceId}/finance'.replaceAll(
+        '{' r'workspaceId' '}',
+        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
+            .toString());
     final options = Options(
-      method: r'PUT',
+      method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -238,8 +73,8 @@ class FinancialTrackerApi {
     dynamic bodyData;
 
     try {
-      const type = FullType(WorkspaceIdFinanceIdPutRequest);
-      bodyData = _serializers.serialize(workspaceIdFinanceIdPutRequest,
+      const type = FullType(CreateFinancialTrackerTransactionReq);
+      bodyData = _serializers.serialize(createFinancialTrackerTransactionReq,
           specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
@@ -294,6 +129,163 @@ class FinancialTrackerApi {
     );
   }
 
+  /// Delete a transaction
+  /// Delete an existing financial transaction by its ID.
+  ///
+  /// Parameters:
+  /// * [workspaceId] - The ID of the workspace
+  /// * [id] - The ID of the transaction
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future]
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<void>> deleteFinancialTrackerTransaction({
+    required String workspaceId,
+    required int id,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final path = r'/{workspaceId}/finance/{id}'
+        .replaceAll(
+            '{' r'workspaceId' '}',
+            encodeQueryParameter(
+                    _serializers, workspaceId, const FullType(String))
+                .toString())
+        .replaceAll(
+            '{' r'id' '}',
+            encodeQueryParameter(_serializers, id, const FullType(int))
+                .toString());
+    final options = Options(
+      method: r'DELETE',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'http',
+            'scheme': 'bearer',
+            'name': 'bearerAuth',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    return response;
+  }
+
+  /// Get daily transactions
+  /// Retrieve all financial transactions for the specified date.
+  ///
+  /// Parameters:
+  /// * [workspaceId] - The ID of the workspace
+  /// * [dateKey] - The date key in YYYY-MM-DD format
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [GetDailyTransactions200Response] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<GetDailyTransactions200Response>> getDailyTransactions({
+    required String workspaceId,
+    required String dateKey,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final path = r'/{workspaceId}/finance/daily/{dateKey}'
+        .replaceAll(
+            '{' r'workspaceId' '}',
+            encodeQueryParameter(
+                    _serializers, workspaceId, const FullType(String))
+                .toString())
+        .replaceAll(
+            '{' r'dateKey' '}',
+            encodeQueryParameter(_serializers, dateKey, const FullType(String))
+                .toString());
+    final options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'http',
+            'scheme': 'bearer',
+            'name': 'bearerAuth',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    GetDailyTransactions200Response? responseData;
+
+    try {
+      final rawResponse = response.data;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(GetDailyTransactions200Response),
+            ) as GetDailyTransactions200Response;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<GetDailyTransactions200Response>(
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
+    );
+  }
+
   /// Get monthly transactions
   /// Retrieve all financial transactions for the specified month.
   ///
@@ -307,10 +299,9 @@ class FinancialTrackerApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [WorkspaceIdFinanceMonthlyMonthKeyGet200Response] as data
+  /// Returns a [Future] containing a [Response] with a [GetMonthlyAssetTransactionRes] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>>
-      workspaceIdFinanceMonthlyMonthKeyGet({
+  Future<Response<GetMonthlyAssetTransactionRes>> getMonthlyTransactions({
     required String workspaceId,
     required String monthKey,
     CancelToken? cancelToken,
@@ -356,7 +347,7 @@ class FinancialTrackerApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    WorkspaceIdFinanceMonthlyMonthKeyGet200Response? responseData;
+    GetMonthlyAssetTransactionRes? responseData;
 
     try {
       final rawResponse = response.data;
@@ -364,9 +355,8 @@ class FinancialTrackerApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(
-                  WorkspaceIdFinanceMonthlyMonthKeyGet200Response),
-            ) as WorkspaceIdFinanceMonthlyMonthKeyGet200Response;
+              specifiedType: const FullType(GetMonthlyAssetTransactionRes),
+            ) as GetMonthlyAssetTransactionRes;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -377,7 +367,7 @@ class FinancialTrackerApi {
       );
     }
 
-    return Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>(
+    return Response<GetMonthlyAssetTransactionRes>(
       data: responseData,
       headers: response.headers,
       isRedirect: response.isRedirect,
@@ -389,12 +379,13 @@ class FinancialTrackerApi {
     );
   }
 
-  /// Create a new transaction
-  /// Create a new financial transaction for the specified workspace.
+  /// Update a transaction
+  /// Update an existing financial transaction by its ID.
   ///
   /// Parameters:
   /// * [workspaceId] - The ID of the workspace
-  /// * [workspaceIdFinancePostRequest]
+  /// * [id] - The ID of the transaction
+  /// * [updateFinancialTrackerTransactionReq]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -404,9 +395,11 @@ class FinancialTrackerApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Transaction] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Transaction>> workspaceIdFinancePost({
+  Future<Response<Transaction>> updateFinancialTrackerTransaction({
     required String workspaceId,
-    required WorkspaceIdFinancePostRequest workspaceIdFinancePostRequest,
+    required int id,
+    required UpdateFinancialTrackerTransactionReq
+        updateFinancialTrackerTransactionReq,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -414,12 +407,18 @@ class FinancialTrackerApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/{workspaceId}/finance'.replaceAll(
-        '{' r'workspaceId' '}',
-        encodeQueryParameter(_serializers, workspaceId, const FullType(String))
-            .toString());
+    final path = r'/{workspaceId}/finance/{id}'
+        .replaceAll(
+            '{' r'workspaceId' '}',
+            encodeQueryParameter(
+                    _serializers, workspaceId, const FullType(String))
+                .toString())
+        .replaceAll(
+            '{' r'id' '}',
+            encodeQueryParameter(_serializers, id, const FullType(int))
+                .toString());
     final options = Options(
-      method: r'POST',
+      method: r'PUT',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -440,8 +439,8 @@ class FinancialTrackerApi {
     dynamic bodyData;
 
     try {
-      const type = FullType(WorkspaceIdFinancePostRequest);
-      bodyData = _serializers.serialize(workspaceIdFinancePostRequest,
+      const type = FullType(UpdateFinancialTrackerTransactionReq);
+      bodyData = _serializers.serialize(updateFinancialTrackerTransactionReq,
           specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(

@@ -27,7 +27,7 @@ class IncomeAddCategoryScreen extends ConsumerWidget {
               final result = await ref
                   .read(transactionCategoryViewModelProvider.notifier)
                   .addCategory(
-                    WorkspaceIdFinanceCategoryPostRequest((b) => b
+                    CreateFinancialTrackerCategoryReq((b) => b
                       ..categoryName = controller.value.text.toString()
                       ..categoryType = CategoryType.income.name),
                   );

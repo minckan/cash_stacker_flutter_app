@@ -12,11 +12,12 @@ import 'auth/oauth.dart';
 import 'api/asset_api.dart';
 import 'api/asset_type_api.dart';
 import 'api/budget_api.dart';
-import 'api/default_api.dart';
 import 'api/exchange_rate_api.dart';
 import 'api/financial_category_api.dart';
 import 'api/financial_tracker_api.dart';
 import 'api/invitation_api.dart';
+import 'api/invitation_verify_api.dart';
+import 'api/portfolio_api.dart';
 import 'api/user_api.dart';
 import 'api/workspace_api.dart';
 
@@ -101,12 +102,6 @@ class Openapi {
     return BudgetApi(dio, serializers);
   }
 
-  /// Get DefaultApi instance, base route and serializer can be overridden by a given but be careful,
-  /// by doing that all interceptors will not be executed
-  DefaultApi getDefaultApi() {
-    return DefaultApi(dio, serializers);
-  }
-
   /// Get ExchangeRateApi instance, base route and serializer can be overridden by a given but be careful,
   /// by doing that all interceptors will not be executed
   ExchangeRateApi getExchangeRateApi() {
@@ -129,6 +124,18 @@ class Openapi {
   /// by doing that all interceptors will not be executed
   InvitationApi getInvitationApi() {
     return InvitationApi(dio, serializers);
+  }
+
+  /// Get InvitationVerifyApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  InvitationVerifyApi getInvitationVerifyApi() {
+    return InvitationVerifyApi(dio, serializers);
+  }
+
+  /// Get PortfolioApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  PortfolioApi getPortfolioApi() {
+    return PortfolioApi(dio, serializers);
   }
 
   /// Get UserApi instance, base route and serializer can be overridden by a given but be careful,

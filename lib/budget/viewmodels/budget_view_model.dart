@@ -69,7 +69,7 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
           } else {
             state = BudgetState(
                 budgets: response.data!.toList(),
-                activeBudget: WorkspaceIdBudgetActiveGet200Response());
+                activeBudget: GetActiveBudgetRes());
           }
           return response.data!.toList();
         }
@@ -113,7 +113,7 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
   }
 
   Future<dynamic> addBudget({
-    required WorkspaceIdBudgetPostRequest body,
+    required CreateBudgetReq body,
   }) async {
     try {
       if (workspaceId != null) {
@@ -150,7 +150,7 @@ class BudgetViewModel extends StateNotifier<BudgetStatBase> {
         final response = await _ref.read(budgetRepositoryProvider).updateBudget(
               workspaceId: workspaceId!,
               id: budgetId,
-              body: WorkspaceIdBudgetPostRequest(
+              body: UpdateBudgetRequest(
                 (b) => b..isActive = status,
               ),
             );

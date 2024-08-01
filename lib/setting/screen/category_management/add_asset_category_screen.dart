@@ -32,7 +32,7 @@ class _AssetAddCategoryScreenState
                 final value = _formKey.currentState?.value;
 
                 if (value != null) {
-                  final category = WorkspaceIdAssetTypePostRequest(
+                  final category = CreateAssetTypeReq(
                     (b) => b
                       ..assetTypeName = value['category_name']
                       ..isForeignAssetType =

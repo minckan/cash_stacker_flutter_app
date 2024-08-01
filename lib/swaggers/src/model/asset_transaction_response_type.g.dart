@@ -7,19 +7,19 @@ part of 'asset_transaction_response_type.dart';
 // **************************************************************************
 
 const AssetTransactionResponseTypeTransactionTypeEnum
-    _$assetTransactionResponseTypeTransactionTypeEnum_sell =
-    const AssetTransactionResponseTypeTransactionTypeEnum._('sell');
+    _$assetTransactionResponseTypeTransactionTypeEnum_SELL =
+    const AssetTransactionResponseTypeTransactionTypeEnum._('SELL');
 const AssetTransactionResponseTypeTransactionTypeEnum
-    _$assetTransactionResponseTypeTransactionTypeEnum_buy =
-    const AssetTransactionResponseTypeTransactionTypeEnum._('buy');
+    _$assetTransactionResponseTypeTransactionTypeEnum_BUY =
+    const AssetTransactionResponseTypeTransactionTypeEnum._('BUY');
 
 AssetTransactionResponseTypeTransactionTypeEnum
     _$assetTransactionResponseTypeTransactionTypeEnumValueOf(String name) {
   switch (name) {
-    case 'sell':
-      return _$assetTransactionResponseTypeTransactionTypeEnum_sell;
-    case 'buy':
-      return _$assetTransactionResponseTypeTransactionTypeEnum_buy;
+    case 'SELL':
+      return _$assetTransactionResponseTypeTransactionTypeEnum_SELL;
+    case 'BUY':
+      return _$assetTransactionResponseTypeTransactionTypeEnum_BUY;
     default:
       throw new ArgumentError(name);
   }
@@ -28,8 +28,8 @@ AssetTransactionResponseTypeTransactionTypeEnum
 final BuiltSet<AssetTransactionResponseTypeTransactionTypeEnum>
     _$assetTransactionResponseTypeTransactionTypeEnumValues = new BuiltSet<
         AssetTransactionResponseTypeTransactionTypeEnum>(const <AssetTransactionResponseTypeTransactionTypeEnum>[
-  _$assetTransactionResponseTypeTransactionTypeEnum_sell,
-  _$assetTransactionResponseTypeTransactionTypeEnum_buy,
+  _$assetTransactionResponseTypeTransactionTypeEnum_SELL,
+  _$assetTransactionResponseTypeTransactionTypeEnum_BUY,
 ]);
 
 Serializer<AssetTransactionResponseTypeTransactionTypeEnum>
@@ -40,12 +40,12 @@ class _$AssetTransactionResponseTypeTransactionTypeEnumSerializer
     implements
         PrimitiveSerializer<AssetTransactionResponseTypeTransactionTypeEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
-    'sell': 'sell',
-    'buy': 'buy',
+    'SELL': 'SELL',
+    'BUY': 'BUY',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
-    'sell': 'sell',
-    'buy': 'buy',
+    'SELL': 'SELL',
+    'BUY': 'BUY',
   };
 
   @override

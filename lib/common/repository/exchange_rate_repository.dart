@@ -20,6 +20,6 @@ class ExchangeRateRepository {
   ExchangeRateRepository(this._exchangeRateApi);
 
   Future<Response<BuiltList<ExchangeRateResponse>>> getCurrentExchangeRates() {
-    return _exchangeRateApi.apiExchangeRatesGet();
+    return _exchangeRateApi.getExchangeRate();
   }
 }

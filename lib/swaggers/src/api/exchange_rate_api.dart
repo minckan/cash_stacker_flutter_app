@@ -30,7 +30,7 @@ class ExchangeRateApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<ExchangeRateResponse>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<ExchangeRateResponse>>> apiExchangeRatesGet({
+  Future<Response<BuiltList<ExchangeRateResponse>>> getExchangeRate({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,

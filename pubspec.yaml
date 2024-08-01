@@ -82,7 +82,8 @@ dev_dependencies:
 
 #rps generate_api
 scripts:
-  generate_api: openapi-generator-cli generate -i lib/swaggers/openapi.yaml -g dart-dio -o lib/swaggers/generated_code
+  # generate_api: chmod +x generate_and_clean.sh && ./generate_and_clean.sh
+  generate_api: openapi-generator-cli generate -i http://localhost:8000/swagger.yaml -g dart-dio -o lib/swaggers/generated
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

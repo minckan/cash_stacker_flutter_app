@@ -36,7 +36,7 @@ abstract class AssetTransactionResponseType
 
   @BuiltValueField(wireName: r'transactionType')
   AssetTransactionResponseTypeTransactionTypeEnum? get transactionType;
-  // enum transactionTypeEnum {  sell,  buy,  };
+  // enum transactionTypeEnum {  SELL,  BUY,  };
 
   @BuiltValueField(wireName: r'description')
   String? get description;
@@ -368,12 +368,12 @@ class _$AssetTransactionResponseTypeSerializer
 }
 
 class AssetTransactionResponseTypeTransactionTypeEnum extends EnumClass {
-  @BuiltValueEnumConst(wireName: r'sell')
-  static const AssetTransactionResponseTypeTransactionTypeEnum sell =
-      _$assetTransactionResponseTypeTransactionTypeEnum_sell;
-  @BuiltValueEnumConst(wireName: r'buy')
-  static const AssetTransactionResponseTypeTransactionTypeEnum buy =
-      _$assetTransactionResponseTypeTransactionTypeEnum_buy;
+  @BuiltValueEnumConst(wireName: r'SELL')
+  static const AssetTransactionResponseTypeTransactionTypeEnum SELL =
+      _$assetTransactionResponseTypeTransactionTypeEnum_SELL;
+  @BuiltValueEnumConst(wireName: r'BUY')
+  static const AssetTransactionResponseTypeTransactionTypeEnum BUY =
+      _$assetTransactionResponseTypeTransactionTypeEnum_BUY;
 
   static Serializer<AssetTransactionResponseTypeTransactionTypeEnum>
       get serializer =>

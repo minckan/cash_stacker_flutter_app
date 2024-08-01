@@ -12,7 +12,7 @@ class BudgetStatLoading extends BudgetStatBase {}
 
 class BudgetState extends BudgetStatBase {
   final List<Budget>? budgets;
-  final WorkspaceIdBudgetActiveGet200Response? activeBudget;
+  final GetActiveBudgetRes? activeBudget;
 
   double get expendablePercentage {
     final double? expendableBudgetPercentage =

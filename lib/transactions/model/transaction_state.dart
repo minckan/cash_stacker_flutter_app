@@ -16,13 +16,11 @@ class TransactionStateError extends TransactionStateBase {
 class TransactionStateLoading extends TransactionStateBase {}
 
 class TransactionState extends TransactionStateBase {
-  final WorkspaceIdFinanceMonthlyMonthKeyGet200Response? monthlyResponse;
-  final WorkspaceIdFinanceMonthlyMonthKeyGet200Response? dailyResponse;
+  final GetMonthlyAssetTransactionRes? monthlyResponse;
+  final GetDailyTransactions200Response? dailyResponse;
 
-  final Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>?
-      monthlyCache;
-  final Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>?
-      dailyCache;
+  final Map<String, GetMonthlyAssetTransactionRes>? monthlyCache;
+  final Map<String, GetDailyTransactions200Response>? dailyCache;
 
   TransactionState({
     this.monthlyResponse,

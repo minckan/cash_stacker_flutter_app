@@ -11,6 +11,7 @@ import 'package:cash_stacker_flutter_app/portfolio/viewmodel/asset_transaction_v
 import 'package:cash_stacker_flutter_app/portfolio/viewmodel/assets_view_model.dart';
 import 'package:cash_stacker_flutter_app/setting/viewmodel/asset_type_view_model.dart';
 import 'package:cash_stacker_flutter_app/swaggers/openapi.dart';
+
 import 'package:cash_stacker_flutter_app/transactions/component/calender/weekly_calender.dart';
 
 import 'package:flutter/material.dart';
@@ -184,7 +185,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
-              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.BUY
               ..transactionDate = selectedDate.toUtc()
               ..pricePerShare = removeComma(value['balance']),
           ));
@@ -194,7 +195,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
-              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.BUY
               ..transactionDate = selectedDate.toUtc()
               ..exchangeRate = removeComma(value['exchangeRate'])
               ..pricePerShare = removeComma(value['balance']),
@@ -205,7 +206,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
-              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.BUY
               ..transactionDate = selectedDate.toUtc()
               ..shares =
                   int.tryParse(removeComma(value['shares'])!.toStringAsFixed(0))
@@ -219,7 +220,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
           assetTransactionVM.addAssetTransaction(AssetTransactionRequest(
             (b) => b
               ..assetId = widget.assetId
-              ..transactionType = AssetTransactionRequestTransactionTypeEnum.buy
+              ..transactionType = AssetTransactionRequestTransactionTypeEnum.BUY
               ..transactionDate = selectedDate.toUtc()
               ..shares =
                   int.tryParse(removeComma(value['shares'])!.toStringAsFixed(0))
@@ -242,7 +243,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             transaction: AssetTransactionRequest(
               (b) => b
                 ..transactionType =
-                    AssetTransactionRequestTransactionTypeEnum.buy
+                    AssetTransactionRequestTransactionTypeEnum.BUY
                 ..transactionDate = selectedDate.toUtc()
                 ..balance = removeComma(value['balance']),
             ),
@@ -256,7 +257,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             transaction: AssetTransactionRequest(
               (b) => b
                 ..transactionType =
-                    AssetTransactionRequestTransactionTypeEnum.buy
+                    AssetTransactionRequestTransactionTypeEnum.BUY
                 ..transactionDate = selectedDate.toUtc()
                 ..exchangeRate = removeComma(value['exchangeRate'])
                 ..balance = removeComma(value['balance']),
@@ -272,7 +273,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             transaction: AssetTransactionRequest(
               (b) => b
                 ..transactionType =
-                    AssetTransactionRequestTransactionTypeEnum.buy
+                    AssetTransactionRequestTransactionTypeEnum.BUY
                 ..transactionDate = selectedDate.toUtc()
                 ..shares = int.tryParse(
                     removeComma(value['shares'])!.toStringAsFixed(0))
@@ -292,7 +293,7 @@ class _AddAssetScreenState extends ConsumerState<AddAssetScreen> {
             transaction: AssetTransactionRequest(
               (b) => b
                 ..transactionType =
-                    AssetTransactionRequestTransactionTypeEnum.buy
+                    AssetTransactionRequestTransactionTypeEnum.BUY
                 ..transactionDate = selectedDate.toUtc()
                 ..shares = int.tryParse(
                     removeComma(value['shares'])!.toStringAsFixed(0))

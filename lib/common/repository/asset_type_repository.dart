@@ -24,30 +24,30 @@ class AssetTypeRepository {
   Future<Response<BuiltList<AssetType>>> getAllAssetTypes({
     required String workspaceId,
   }) {
-    return _assetTypeApi.workspaceIdAssetTypeGet(
+    return _assetTypeApi.getAllAssetTypes(
       workspaceId: workspaceId,
     );
   }
 
   Future<Response<AssetType>> createAssetType({
     required String workspaceId,
-    required WorkspaceIdAssetTypePostRequest body,
+    required CreateAssetTypeReq body,
   }) {
-    return _assetTypeApi.workspaceIdAssetTypePost(
+    return _assetTypeApi.createAssetType(
       workspaceId: workspaceId,
-      workspaceIdAssetTypePostRequest: body,
+      createAssetTypeReq: body,
     );
   }
 
   Future<Response<AssetType>> updateAssetType({
     required String workspaceId,
     required int id,
-    required WorkspaceIdAssetTypeIdPutRequest body,
+    required UpdateAssetTypeReq body,
   }) {
-    return _assetTypeApi.workspaceIdAssetTypeIdPut(
+    return _assetTypeApi.updateAssetType(
       workspaceId: workspaceId,
       id: id,
-      workspaceIdAssetTypeIdPutRequest: body,
+      updateAssetTypeReq: body,
     );
   }
 
@@ -55,7 +55,7 @@ class AssetTypeRepository {
     required String workspaceId,
     required int id,
   }) {
-    return _assetTypeApi.workspaceIdAssetTypeIdDelete(
+    return _assetTypeApi.deleteAssetType(
       workspaceId: workspaceId,
       id: id,
     );

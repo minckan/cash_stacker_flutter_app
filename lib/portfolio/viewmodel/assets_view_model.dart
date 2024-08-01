@@ -64,7 +64,7 @@ class AssetsViewModel extends StateNotifier<List<Asset>> {
     if (workspaceId != null) {
       final response = await _ref.read(assetRepositoryProvider).createAsset(
             workspaceId: workspaceId!,
-            body: WorkspaceIdAssetsPostRequest(
+            body: CreateAssetReq(
               (b) => b
                 ..assetName = assetName
                 ..assetTypeId = assetTypeId

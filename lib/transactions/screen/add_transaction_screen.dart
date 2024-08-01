@@ -61,7 +61,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
   }
 
   void handleSubmit() async {
-    WorkspaceIdFinancePostRequest transaction;
+    CreateFinancialTrackerTransactionReq transaction;
 
     if (_addIncomeTabKey.currentState != null &&
         _addIncomeTabKey.currentState?.selectedCategory != null) {
@@ -69,7 +69,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       final selectedIncomeCategory =
           _addIncomeTabKey.currentState!.selectedCategory;
 
-      transaction = WorkspaceIdFinancePostRequest(
+      transaction = CreateFinancialTrackerTransactionReq(
         (b) => b
           ..categoryId = selectedIncomeCategory!.categoryId
           ..amount = double.parse(incomePrice)
@@ -94,7 +94,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       if (expensePaymentMethod == null) {
         return;
       }
-      transaction = WorkspaceIdFinancePostRequest(
+      transaction = CreateFinancialTrackerTransactionReq(
         (b) => b
           ..categoryId = selectedExpenseCategory!.categoryId
           ..amount = double.parse(expensePrice)

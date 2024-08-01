@@ -7,16 +7,16 @@ final portfolioRepositoryProvider = Provider<PortfolioRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
     final openapi = Openapi(dio: dio);
-    final repository = PortfolioRepository(openapi.getDefaultApi());
+    final repository = PortfolioRepository(openapi.getPortfolioApi());
     return repository;
   },
 );
 
 class PortfolioRepository {
-  final DefaultApi _portfolioApi;
+  final PortfolioApi _portfolioApi;
   PortfolioRepository(this._portfolioApi);
 
   Future<Response<Portfolio>> getPortfolio(String workspaceId) {
-    return _portfolioApi.workspaceIdPortfolioGet(workspaceId: workspaceId);
+    return _portfolioApi.getPortfolioDetails(workspaceId: workspaceId);
   }
 }

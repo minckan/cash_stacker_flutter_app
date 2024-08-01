@@ -63,7 +63,7 @@ class _BudgetSettingScreenState extends ConsumerState<BudgetSettingScreen> {
 
               final result =
                   await ref.read(budgetViewModelProvider.notifier).addBudget(
-                        body: WorkspaceIdBudgetPostRequest(
+                        body: CreateBudgetReq(
                           (b) => b
                             ..startDate = startDate.toUtc()
                             ..endDate = endDate.toUtc()

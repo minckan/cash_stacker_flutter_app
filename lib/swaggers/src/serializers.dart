@@ -24,37 +24,41 @@ import 'model/asset_transaction_request.dart';
 import 'model/asset_transaction_response_type.dart';
 import 'model/asset_type.dart';
 import 'model/budget.dart';
+import 'model/create_asset_req.dart';
+import 'model/create_asset_type_req.dart';
+import 'model/create_budget_req.dart';
+import 'model/create_financial_tracker_category_req.dart';
+import 'model/create_financial_tracker_transaction_req.dart';
+import 'model/create_invitation_req.dart';
+import 'model/create_user_request.dart';
+import 'model/create_user_response.dart';
+import 'model/create_workspace_req.dart';
+import 'model/create_workspace_res.dart';
+import 'model/delete_asset_transaction201_response.dart';
+import 'model/delete_asset_transaction500_response.dart';
 import 'model/exchange_rate_response.dart';
+import 'model/expendable_budget.dart';
+import 'model/get_active_budget_res.dart';
+import 'model/get_daily_transactions200_response.dart';
+import 'model/get_monthly_asset_transaction_res.dart';
+import 'model/get_monthly_asset_trend200_response_inner.dart';
 import 'model/invitation.dart';
+import 'model/invitation_creation_response.dart';
+import 'model/invitation_token_verify_response.dart';
 import 'model/portfolio.dart';
 import 'model/portfolio_ratios_value.dart';
 import 'model/transaction.dart';
 import 'model/transaction_category.dart';
+import 'model/update_asset_res.dart';
+import 'model/update_asset_transaction_by_id_req.dart';
+import 'model/update_asset_type_req.dart';
+import 'model/update_budget_request.dart';
+import 'model/update_financial_tracker_category_req.dart';
+import 'model/update_financial_tracker_transaction_req.dart';
+import 'model/update_user_request.dart';
 import 'model/user.dart';
-import 'model/users_id_put_request.dart';
-import 'model/users_post201_response.dart';
-import 'model/users_post_request.dart';
+import 'model/verify_invitation_token_req.dart';
 import 'model/workspace.dart';
-import 'model/workspace_id_asset_type_id_put_request.dart';
-import 'model/workspace_id_asset_type_post_request.dart';
-import 'model/workspace_id_assets_asset_id_transactions_id_delete201_response.dart';
-import 'model/workspace_id_assets_asset_id_transactions_id_delete500_response.dart';
-import 'model/workspace_id_assets_asset_id_transactions_id_put_request.dart';
-import 'model/workspace_id_assets_id_put_request.dart';
-import 'model/workspace_id_assets_monthly_trend_get200_response_inner.dart';
-import 'model/workspace_id_assets_post_request.dart';
-import 'model/workspace_id_budget_active_get200_response.dart';
-import 'model/workspace_id_budget_active_get200_response_expendable_budget.dart';
-import 'model/workspace_id_budget_post_request.dart';
-import 'model/workspace_id_finance_category_id_put_request.dart';
-import 'model/workspace_id_finance_category_post_request.dart';
-import 'model/workspace_id_finance_id_put_request.dart';
-import 'model/workspace_id_finance_monthly_month_key_get200_response.dart';
-import 'model/workspace_id_finance_post_request.dart';
-import 'model/workspace_id_invitation_id_put_request.dart';
-import 'model/workspace_id_invitation_post_request.dart';
-import 'model/workspaces_post201_response.dart';
-import 'model/workspaces_post_request.dart';
 
 part 'serializers.g.dart';
 
@@ -69,37 +73,41 @@ part 'serializers.g.dart';
   AssetTransactionResponseType,
   AssetType,
   Budget,
+  CreateAssetReq,
+  CreateAssetTypeReq,
+  CreateBudgetReq,
+  CreateFinancialTrackerCategoryReq,
+  CreateFinancialTrackerTransactionReq,
+  CreateInvitationReq,
+  CreateUserRequest,
+  CreateUserResponse,
+  CreateWorkspaceReq,
+  CreateWorkspaceRes,
+  DeleteAssetTransaction201Response,
+  DeleteAssetTransaction500Response,
   ExchangeRateResponse,
+  ExpendableBudget,
+  GetActiveBudgetRes,
+  GetDailyTransactions200Response,
+  GetMonthlyAssetTransactionRes,
+  GetMonthlyAssetTrend200ResponseInner,
   Invitation,
+  InvitationCreationResponse,
+  InvitationTokenVerifyResponse,
   Portfolio,
   PortfolioRatiosValue,
   Transaction,
   TransactionCategory,
+  UpdateAssetRes,
+  UpdateAssetTransactionByIdReq,
+  UpdateAssetTypeReq,
+  UpdateBudgetRequest,
+  UpdateFinancialTrackerCategoryReq,
+  UpdateFinancialTrackerTransactionReq,
+  UpdateUserRequest,
   User,
-  UsersIdPutRequest,
-  UsersPost201Response,
-  UsersPostRequest,
+  VerifyInvitationTokenReq,
   Workspace,
-  WorkspaceIdAssetTypeIdPutRequest,
-  WorkspaceIdAssetTypePostRequest,
-  WorkspaceIdAssetsAssetIdTransactionsIdDelete201Response,
-  WorkspaceIdAssetsAssetIdTransactionsIdDelete500Response,
-  WorkspaceIdAssetsAssetIdTransactionsIdPutRequest,
-  WorkspaceIdAssetsIdPutRequest,
-  WorkspaceIdAssetsMonthlyTrendGet200ResponseInner,
-  WorkspaceIdAssetsPostRequest,
-  WorkspaceIdBudgetActiveGet200Response,
-  WorkspaceIdBudgetActiveGet200ResponseExpendableBudget,
-  WorkspaceIdBudgetPostRequest,
-  WorkspaceIdFinanceCategoryIdPutRequest,
-  WorkspaceIdFinanceCategoryPostRequest,
-  WorkspaceIdFinanceIdPutRequest,
-  WorkspaceIdFinanceMonthlyMonthKeyGet200Response,
-  WorkspaceIdFinancePostRequest,
-  WorkspaceIdInvitationIdPutRequest,
-  WorkspaceIdInvitationPostRequest,
-  WorkspacesPost201Response,
-  WorkspacesPostRequest,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
@@ -109,6 +117,11 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Budget)]),
         () => ListBuilder<Budget>(),
+      )
+      ..addBuilderFactory(
+        const FullType(
+            BuiltList, [FullType(GetMonthlyAssetTrend200ResponseInner)]),
+        () => ListBuilder<GetMonthlyAssetTrend200ResponseInner>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(AssetType)]),
@@ -121,11 +134,6 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(ExchangeRateResponse)]),
         () => ListBuilder<ExchangeRateResponse>(),
-      )
-      ..addBuilderFactory(
-        const FullType(BuiltList,
-            [FullType(WorkspaceIdAssetsMonthlyTrendGet200ResponseInner)]),
-        () => ListBuilder<WorkspaceIdAssetsMonthlyTrendGet200ResponseInner>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Invitation)]),

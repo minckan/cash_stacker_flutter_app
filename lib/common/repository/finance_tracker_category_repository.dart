@@ -27,7 +27,7 @@ class FinanceTrackerCategoryRepository {
     required String workspaceId,
     required String type,
   }) async {
-    return await _financialCategoryApi.workspaceIdFinanceCategoryTypeGet(
+    return await _financialCategoryApi.getFinancialCategoryById(
       workspaceId: workspaceId,
       type: type,
     );
@@ -35,23 +35,23 @@ class FinanceTrackerCategoryRepository {
 
   Future<Response<TransactionCategory>> createTransactionCategory({
     required String workspaceId,
-    required WorkspaceIdFinanceCategoryPostRequest body,
+    required CreateFinancialTrackerCategoryReq body,
   }) async {
-    return await _financialCategoryApi.workspaceIdFinanceCategoryPost(
+    return await _financialCategoryApi.create(
       workspaceId: workspaceId,
-      workspaceIdFinanceCategoryPostRequest: body,
+      createFinancialTrackerCategoryReq: body,
     );
   }
 
   Future<Response<TransactionCategory>> updateTransactionCategory({
     required String workspaceId,
     required int id,
-    required WorkspaceIdFinanceCategoryIdPutRequest body,
+    required UpdateFinancialTrackerCategoryReq body,
   }) async {
-    return await _financialCategoryApi.workspaceIdFinanceCategoryIdPut(
+    return await _financialCategoryApi.updateFinancialCategory(
       workspaceId: workspaceId,
       id: id,
-      workspaceIdFinanceCategoryIdPutRequest: body,
+      updateFinancialTrackerCategoryReq: body,
     );
   }
 
@@ -59,7 +59,7 @@ class FinanceTrackerCategoryRepository {
     required String workspaceId,
     required int id,
   }) async {
-    return await _financialCategoryApi.workspaceIdFinanceCategoryIdDelete(
+    return await _financialCategoryApi.deleteFinancialCategory(
       workspaceId: workspaceId,
       id: id,
     );

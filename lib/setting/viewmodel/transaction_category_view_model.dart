@@ -63,8 +63,7 @@ class TransactionCategoryViewModel
     }
   }
 
-  Future<bool> addCategory(
-      WorkspaceIdFinanceCategoryPostRequest category) async {
+  Future<bool> addCategory(CreateFinancialTrackerCategoryReq category) async {
     try {
       if (workspaceId != null) {
         final response = await _ref
@@ -91,7 +90,7 @@ class TransactionCategoryViewModel
 
   Future<void> updateCategory(
     int categoryId,
-    WorkspaceIdFinanceCategoryIdPutRequest body,
+    UpdateFinancialTrackerCategoryReq body,
   ) async {
     try {
       if (workspaceId != null) {

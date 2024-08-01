@@ -22,23 +22,23 @@ class FinanceTrackerRepository {
 
   Future<Response<Transaction>> createTransaction({
     required String workspaceId,
-    required WorkspaceIdFinancePostRequest body,
+    required CreateFinancialTrackerTransactionReq body,
   }) async {
-    return await _financialTrackerApi.workspaceIdFinancePost(
+    return await _financialTrackerApi.createTransaction(
       workspaceId: workspaceId,
-      workspaceIdFinancePostRequest: body,
+      createFinancialTrackerTransactionReq: body,
     );
   }
 
   Future<Response<Transaction>> updateTransaction({
     required String workspaceId,
     required int id,
-    required WorkspaceIdFinanceIdPutRequest body,
+    required UpdateFinancialTrackerTransactionReq body,
   }) async {
-    return await _financialTrackerApi.workspaceIdFinanceIdPut(
+    return await _financialTrackerApi.updateFinancialTrackerTransaction(
       workspaceId: workspaceId,
       id: id,
-      workspaceIdFinanceIdPutRequest: body,
+      updateFinancialTrackerTransactionReq: body,
     );
   }
 
@@ -46,23 +46,21 @@ class FinanceTrackerRepository {
     required String workspaceId,
     required int id,
   }) async {
-    return await _financialTrackerApi.workspaceIdFinanceIdDelete(
+    return await _financialTrackerApi.deleteFinancialTrackerTransaction(
       workspaceId: workspaceId,
       id: id,
     );
   }
 
-  Future<Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>>
-      getAllMonthlyTransactions({
+  Future<Response<GetMonthlyAssetTransactionRes>> getAllMonthlyTransactions({
     required String workspaceId,
     required String monthKey,
   }) async {
-    final response =
-        await _financialTrackerApi.workspaceIdFinanceMonthlyMonthKeyGet(
+    final response = await _financialTrackerApi.getMonthlyTransactions(
       workspaceId: workspaceId,
       monthKey: monthKey,
     );
-    return Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>(
+    return Response<GetMonthlyAssetTransactionRes>(
       data: response.data,
       requestOptions: response.requestOptions,
       statusCode: response.statusCode,
@@ -72,17 +70,15 @@ class FinanceTrackerRepository {
     );
   }
 
-  Future<Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>>
-      getDailyTransactions({
+  Future<Response<GetDailyTransactions200Response>> getDailyTransactions({
     required String workspaceId,
     required String dateKey,
   }) async {
-    final response =
-        await _financialTrackerApi.workspaceIdFinanceDailyDateKeyGet(
+    final response = await _financialTrackerApi.getDailyTransactions(
       workspaceId: workspaceId,
       dateKey: dateKey,
     );
-    return Response<WorkspaceIdFinanceMonthlyMonthKeyGet200Response>(
+    return Response<GetDailyTransactions200Response>(
       data: response.data,
       requestOptions: response.requestOptions,
       statusCode: response.statusCode,

@@ -18,22 +18,22 @@ class WorkspaceRepository {
   final WorkspaceApi _workspaceApi;
   WorkspaceRepository(this._workspaceApi);
 
-  Future<Response<WorkspacesPost201Response>> createWorkspace({
-    required WorkspacesPostRequest body,
+  Future<Response<CreateWorkspaceRes>> createWorkspace({
+    required CreateWorkspaceReq body,
   }) {
-    return _workspaceApi.workspacesPost(
-      workspacesPostRequest: body,
+    return _workspaceApi.createWorkspace(
+      createWorkspaceReq: body,
     );
   }
 
   Future<Response<BuiltList<Workspace>>> getAllWorkspaces() {
-    return _workspaceApi.workspacesGet();
+    return _workspaceApi.getAllWorkspace();
   }
 
   Future<Response<Workspace>> getOneWorkspace({
     required String id,
   }) {
-    return _workspaceApi.workspacesIdGet(
+    return _workspaceApi.getWorkspaceById(
       id: id,
     );
   }

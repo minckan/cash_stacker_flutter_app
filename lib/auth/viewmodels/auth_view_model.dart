@@ -7,8 +7,7 @@ import 'package:cash_stacker_flutter_app/common/screen/root_tab.dart';
 import 'package:cash_stacker_flutter_app/common/utill/logger.dart';
 
 import 'package:cash_stacker_flutter_app/home/viewmodels/workspace_viewmodel.dart';
-import 'package:cash_stacker_flutter_app/swaggers/src/model/user.dart'
-    as swagger;
+import 'package:cash_stacker_flutter_app/swaggers/openapi.dart' as openapi;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,10 +17,10 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart'
     as kakao_user;
 
 final authViewModelProvider =
-    StateNotifierProvider<AuthViewModel, swagger.User?>(
+    StateNotifierProvider<AuthViewModel, openapi.User?>(
         (ref) => AuthViewModel(ref));
 
-class AuthViewModel extends StateNotifier<swagger.User?> {
+class AuthViewModel extends StateNotifier<openapi.User?> {
   final Ref _ref;
 
   AuthViewModel(this._ref) : super(null) {
@@ -30,9 +29,9 @@ class AuthViewModel extends StateNotifier<swagger.User?> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final kakao_user.UserApi kakaoUserApi = kakao_user.UserApi.instance;
-  swagger.User? _user;
+  openapi.User? _user;
 
-  swagger.User? get user => _user;
+  openapi.User? get user => _user;
 
   Future<void> loadUser() async {
     final firebaseUser = _auth.currentUser;

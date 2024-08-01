@@ -25,37 +25,36 @@ class BudgetRepository {
   Future<Response<BuiltList<Budget>>> getAllBudget({
     required String workspaceId,
   }) async {
-    return await _budgetApi.workspaceIdBudgetGet(
+    return await _budgetApi.getAllBudgets(
       workspaceId: workspaceId,
     );
   }
 
-  Future<Response<WorkspaceIdBudgetActiveGet200Response>> getActiveBudget({
+  Future<Response<GetActiveBudgetRes>> getActiveBudget({
     required String workspaceId,
   }) async {
-    return await _budgetApi.workspaceIdBudgetActiveGet(
-        workspaceId: workspaceId);
+    return await _budgetApi.getActiveBudget(workspaceId: workspaceId);
   }
 
   Future<Response<Budget>> createBudget({
     required String workspaceId,
-    required WorkspaceIdBudgetPostRequest body,
+    required CreateBudgetReq body,
   }) {
-    return _budgetApi.workspaceIdBudgetPost(
+    return _budgetApi.createBudget(
       workspaceId: workspaceId,
-      workspaceIdBudgetPostRequest: body,
+      createBudgetReq: body,
     );
   }
 
   Future<Response<Budget>> updateBudget({
     required String workspaceId,
     required int id,
-    required WorkspaceIdBudgetPostRequest body,
+    required UpdateBudgetRequest body,
   }) async {
-    return await _budgetApi.workspaceIdBudgetIdPut(
+    return await _budgetApi.updateBudget(
       workspaceId: workspaceId,
       id: id,
-      workspaceIdBudgetPostRequest: body,
+      updateBudgetRequest: body,
     );
   }
 
@@ -63,7 +62,7 @@ class BudgetRepository {
     required String workspaceId,
     required int id,
   }) async {
-    return await _budgetApi.workspaceIdBudgetIdDelete(
+    return await _budgetApi.deleteBudget(
       workspaceId: workspaceId,
       id: id,
     );

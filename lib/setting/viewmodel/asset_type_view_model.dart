@@ -46,7 +46,7 @@ class AssetTypeViewModel extends StateNotifier<List<AssetType>> {
     }
   }
 
-  Future<bool> addCategory(WorkspaceIdAssetTypePostRequest category) async {
+  Future<bool> addCategory(CreateAssetTypeReq category) async {
     try {
       if (workspaceId != null) {
         final response = await _ref
@@ -66,7 +66,7 @@ class AssetTypeViewModel extends StateNotifier<List<AssetType>> {
 
   Future<void> updateCategory(
     int id,
-    WorkspaceIdAssetTypeIdPutRequest category,
+    UpdateAssetTypeReq category,
   ) async {
     try {
       if (workspaceId != null) {

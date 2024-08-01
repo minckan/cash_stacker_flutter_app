@@ -111,8 +111,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
       return;
     }
 
-    Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response> previousCache =
-        {};
+    Map<String, GetMonthlyAssetTransactionRes> previousCache = {};
 
     if (cachedData != null) {
       previousCache = {
@@ -137,8 +136,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
       );
 
       if (response.data != null) {
-        final Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>
-            newMonthlyCache = {
+        final Map<String, GetMonthlyAssetTransactionRes> newMonthlyCache = {
           ...previousCache,
           monthKey: response.data!,
         };
@@ -191,7 +189,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
         if (response.data != null) {
           final newDailyCache =
-              Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              Map<String, GetDailyTransactions200Response>.from(
             currentState.dailyCache ?? {},
           )..[dateKey] = response.data!;
 
@@ -211,7 +209,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
   }
 
   Future<void> addTransaction({
-    required WorkspaceIdFinancePostRequest transaction,
+    required CreateFinancialTrackerTransactionReq transaction,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
     if (workspaceId == null) {
@@ -262,8 +260,8 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
               );
 
               if (updatedMonthlyResponse != null) {
-                final newMonthlyCache = Map<String,
-                    WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+                final newMonthlyCache =
+                    Map<String, GetMonthlyAssetTransactionRes>.from(
                   currentState.monthlyCache ?? {},
                 )..[getMonth(transactionDate)] = updatedMonthlyResponse;
 
@@ -287,11 +285,11 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
               );
 
               if (updatedDailyResponse != null) {
-                final newDailyCache = Map<String,
-                    WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+                final newDailyCache =
+                    Map<String, GetDailyTransactions200Response>.from(
                   currentState.dailyCache ?? {},
                 )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
-                    updatedDailyResponse;
+                        updatedDailyResponse;
 
                 state = TransactionState(
                   monthlyResponse: currentState.monthlyResponse,
@@ -317,7 +315,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
   Future<void> updateTransaction({
     required int transactionId,
-    required WorkspaceIdFinanceIdPutRequest modifiedData,
+    required UpdateFinancialTrackerTransactionReq modifiedData,
   }) async {
     final financialTrackerRep = _ref.read(financialTrackerRepositoryProvider);
     if (workspaceId == null) {
@@ -358,8 +356,8 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
               (b) => b..transactions = updatedTransactions,
             );
 
-            final newMonthlyCache = Map<String,
-                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+            final newMonthlyCache =
+                Map<String, GetMonthlyAssetTransactionRes>.from(
               currentState.monthlyCache ?? {},
             )..[getMonth(transactionDate)] = updatedMonthlyResponse!;
 
@@ -386,11 +384,11 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
               (b) => b..transactions = updatedDailyTransactions,
             );
 
-            final newDailyCache = Map<String,
-                WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+            final newDailyCache =
+                Map<String, GetDailyTransactions200Response>.from(
               currentState.dailyCache ?? {},
             )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
-                updatedDailyResponse!;
+                    updatedDailyResponse!;
 
             state = TransactionState(
               monthlyResponse: currentState.monthlyResponse,
@@ -440,7 +438,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
           );
 
           final newMonthlyCache =
-              Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              Map<String, GetMonthlyAssetTransactionRes>.from(
             currentState.monthlyCache ?? {},
           )..[getMonth(transactionDate)] = updatedMonthlyResponse!;
 
@@ -466,7 +464,7 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
           );
 
           final newDailyCache =
-              Map<String, WorkspaceIdFinanceMonthlyMonthKeyGet200Response>.from(
+              Map<String, GetDailyTransactions200Response>.from(
             currentState.dailyCache ?? {},
           )..[DateFormat('yyyy-MM-dd').format(transactionDate)] =
                   updatedDailyResponse!;
@@ -486,12 +484,12 @@ class TransactionStateNotifier extends StateNotifier<TransactionStateBase> {
 
   void clear() {
     state = TransactionState(
-      monthlyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response((b) => b
+      monthlyResponse: GetMonthlyAssetTransactionRes((b) => b
         ..netTotal = 0
         ..expense = 0
         ..income = 0
         ..transactions = ListBuilder<Transaction>()),
-      dailyResponse: WorkspaceIdFinanceMonthlyMonthKeyGet200Response((b) => b
+      dailyResponse: GetDailyTransactions200Response((b) => b
         ..netTotal = 0
         ..expense = 0
         ..income = 0

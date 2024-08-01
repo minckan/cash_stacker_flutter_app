@@ -7,19 +7,19 @@ part of 'asset_transaction_request.dart';
 // **************************************************************************
 
 const AssetTransactionRequestTransactionTypeEnum
-    _$assetTransactionRequestTransactionTypeEnum_sell =
-    const AssetTransactionRequestTransactionTypeEnum._('sell');
+    _$assetTransactionRequestTransactionTypeEnum_SELL =
+    const AssetTransactionRequestTransactionTypeEnum._('SELL');
 const AssetTransactionRequestTransactionTypeEnum
-    _$assetTransactionRequestTransactionTypeEnum_buy =
-    const AssetTransactionRequestTransactionTypeEnum._('buy');
+    _$assetTransactionRequestTransactionTypeEnum_BUY =
+    const AssetTransactionRequestTransactionTypeEnum._('BUY');
 
 AssetTransactionRequestTransactionTypeEnum
     _$assetTransactionRequestTransactionTypeEnumValueOf(String name) {
   switch (name) {
-    case 'sell':
-      return _$assetTransactionRequestTransactionTypeEnum_sell;
-    case 'buy':
-      return _$assetTransactionRequestTransactionTypeEnum_buy;
+    case 'SELL':
+      return _$assetTransactionRequestTransactionTypeEnum_SELL;
+    case 'BUY':
+      return _$assetTransactionRequestTransactionTypeEnum_BUY;
     default:
       throw new ArgumentError(name);
   }
@@ -28,8 +28,8 @@ AssetTransactionRequestTransactionTypeEnum
 final BuiltSet<AssetTransactionRequestTransactionTypeEnum>
     _$assetTransactionRequestTransactionTypeEnumValues = new BuiltSet<
         AssetTransactionRequestTransactionTypeEnum>(const <AssetTransactionRequestTransactionTypeEnum>[
-  _$assetTransactionRequestTransactionTypeEnum_sell,
-  _$assetTransactionRequestTransactionTypeEnum_buy,
+  _$assetTransactionRequestTransactionTypeEnum_SELL,
+  _$assetTransactionRequestTransactionTypeEnum_BUY,
 ]);
 
 Serializer<AssetTransactionRequestTransactionTypeEnum>
@@ -39,12 +39,12 @@ Serializer<AssetTransactionRequestTransactionTypeEnum>
 class _$AssetTransactionRequestTransactionTypeEnumSerializer
     implements PrimitiveSerializer<AssetTransactionRequestTransactionTypeEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
-    'sell': 'sell',
-    'buy': 'buy',
+    'SELL': 'SELL',
+    'BUY': 'BUY',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
-    'sell': 'sell',
-    'buy': 'buy',
+    'SELL': 'SELL',
+    'BUY': 'BUY',
   };
 
   @override
